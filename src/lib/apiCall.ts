@@ -1,8 +1,6 @@
 import { ApiCallRequest, ApiCallResponse } from "../types/ApiCallTypes";
 import { appBaseUrl } from "./constants";
 
-
-
 const apiCall = async (params: ApiCallRequest): Promise<ApiCallResponse> => {
   if (!params.method) {
     params.method = "GET";
