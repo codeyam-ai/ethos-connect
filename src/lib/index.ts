@@ -1,11 +1,11 @@
-import login from './login.js';
+import login from './login';
 import logout from './logout.js';
 import transact from './transact.js';
-import walletContents from './walletContents.js';
+import walletContents from './walletContents';
 import activeUser from './activeUser.js';
-import tokenTransfers from './tokenTransfers.js';
+import tokenTransfers from './tokenTransfers';
 import query from './query.js';
-import ethBalance from './ethBalance.js';
+import getBalanceInEther from './getBalanceInEther';
 import showWallet from './showWallet.js';
 import hideWallet from './hideWallet.js';
 
@@ -17,7 +17,7 @@ export {
   activeUser,
   tokenTransfers,
   query,
-  ethBalance,
+  getBalanceInEther,
   showWallet,
   hideWallet
 };

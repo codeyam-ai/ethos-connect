@@ -13,6 +13,7 @@ cd node_modules/react
 yarn link
 cd ../../node_modules/react-dom
 yarn link
+cd ../..
 yarn build:watch
 ```
 The last line of the previous commands will watch for changes and the UI will automatically update after you link.
@@ -24,4 +25,11 @@ yarn link ethos-react2
 yarn link react
 yarn link react-dom
 yarn dev
+```
+
+To go back to using the published NPM packages (**not** your local version), run this in your UI project:
+```
+yarn add ethos-react2
+yarn add react
+yarn add react-dom
 ```
