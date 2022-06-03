@@ -5,7 +5,7 @@ export type ApiCallResponse = {
 
 export type ApiCallRequest = {
     relativePath: string,
-    body?: any,
+    body: any,
     method?: string,
     host?: string
 }

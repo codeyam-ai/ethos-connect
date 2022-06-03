@@ -1,13 +1,13 @@
 import apiCall from "./apiCall";
 
-const getBalanceInEther = async (network: string, address: string): Promise<number> => {
+const ethBalance = async ({ network, address }) => {
   const { json: { balance } } = await apiCall({
     relativePath: 'wallet/balance',
     method: 'POST',
     body: { network, address }
   });
 
-  return +balance;
+  return balance;
 }
 
-export default getBalanceInEther;
+export default ethBalance;

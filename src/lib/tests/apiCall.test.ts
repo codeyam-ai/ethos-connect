@@ -43,10 +43,10 @@ describe('apiCall', () => {
     const expectedApiCallParameters = {
       method: 'GET',
       headers: expectedHeaders,
-      body: undefined,
+      body: JSON.stringify(body),
     };
 
-    const result = await apiCall({ relativePath });
+    const result = await apiCall({ relativePath, body });
 
     expect(spyFetch).toBeCalledTimes(1);
     expect(spyFetch).toBeCalledWith(expectedEndpointCalled, expectedApiCallParameters);
