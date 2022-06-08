@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WalletConnect = ({ width=18 }) => (
+const WalletConnect = ({ width=18 }: { width?: number }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="125 125 250 250"

@@ -1,28 +1,32 @@
-import { ApiCallRequest, ApiCallResponse } from "../types/ApiCallTypes";
-import { appBaseUrl } from "./constants";
+import getAppBaseUrl from "./getAppBaseUrl"
 
-const apiCall = async (params: ApiCallRequest): Promise<ApiCallResponse> => {
-  if (!params.method) {
-    params.method = "GET";
-  }
+type ApiCallProps = {
+  relativePath: string
+  method?: string
+  body?: any
+}
 
-  if (!params.host) {
-    params.host = appBaseUrl;
-  }
-
+const apiCall = async ({ relativePath, method = "GET", body }: ApiCallProps) => {
+  const host = getAppBaseUrl();
   const data = {
-    method: params.method,
+    method: method,
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(params.body),
-  };
+      'Accept': 'application/json'
+    }
+  } as any;
 
-  const response = await fetch(`${params.host}/api/${params.relativePath}`, data);
+  if (body) {
+    data.body = JSON.stringify(body)
+  }
+
+  const response = await fetch(
+    `${host}/api/${relativePath}`,
+    data
+  );
   const json = await response.json();
   const { status } = response;
   return { json, status };
-};
+}
 
 export default apiCall;

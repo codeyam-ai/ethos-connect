@@ -1,8 +1,5 @@
-# todo
-- Dynamically change the magic link redirect URL by following [this guide](https://github.com/supabase/supabase/discussions/600#discussioncomment-1879317)
-- Move all files to TS and fully test
-- Write instructions on how to edit NPM package locally
-- get tsc watch to make local edits easier
+# To Do
+- Update all params and types
 
 # Setting up local development
 From the root directory of this project:

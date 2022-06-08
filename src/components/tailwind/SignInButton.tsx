@@ -2,12 +2,12 @@ import React from 'react';
 import Button from '../headless/Button';
 import SignInModal from './SignInModal';
 
-const SignInButton = (props) => {
+const SignInButton = (props: any) => {
   const { appId, children, onClick, onSignIn, ...reactProps } = props;
 
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const _onClick = (e) => {
+  const _onClick = (e: any) => {
     setIsOpen(true);
 
     if (onClick) {

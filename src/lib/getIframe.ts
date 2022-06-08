@@ -1,30 +1,38 @@
-import { appBaseUrl } from "./constants";
+import getAppBaseUrl from "./getAppBaseUrl"
 
-const getIframe = (appId, show=false) => {
+type getIframeProps = {
+  appId: string
+  show?: boolean
+}
+
+const getIframe = ({ appId, show=false }: getIframeProps) => {
   const iframeId = 'ethos-wallet-iframe'
 
-  let iframe = document.getElementById(iframeId);
+  let iframe = document.getElementById(iframeId) as HTMLIFrameElement;
 
   const close = () => {
-    iframe.style.width = 0;
-    iframe.style.height = 0;
+    if (!iframe) return;
+    iframe.style.width = '0';
+    iframe.style.height = '0';
   }
 
+  const walletAppUrl = getAppBaseUrl();
+
   if (!iframe) {
-    iframe = document.createElement('IFRAME');
-    iframe.src = appBaseUrl + `/wallet?appId=${appId}`;
+    iframe = document.createElement('IFRAME') as HTMLIFrameElement;
+    iframe.src = walletAppUrl + `/wallet?appId=${appId}`;
     iframe.id = iframeId;
     iframe.style.border = 'none';
     iframe.style.position = 'absolute';
     iframe.style.top = '0';
     iframe.style.right = '60px';
-    iframe.style.width = 0;
-    iframe.style.height = 0;
+    iframe.style.width = '0';
+    iframe.style.height = '0';
     iframe.setAttribute('allow', "payment; clipboard-read; clipboard-write")
     document.body.appendChild(iframe);
     
     window.addEventListener('message', (message) => {
-      if (message.origin === appBaseUrl) {
+      if (message.origin === walletAppUrl) {
         if (message.data.close) {
           close();
         }

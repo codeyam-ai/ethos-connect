@@ -1,65 +1,66 @@
 {
-  "name": "ethos-react2",
-  "version": "0.0.25",
-  "private": false,
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./tailwind": "./dist/components/tailwind",
-    "./headless": "./dist/components/headless",
-    "./lib": "./dist/lib"
-  },
+  "name": "ethos-wallet",
+  "version": "0.0.0",
+  "description": "Alpha version of the Ethos Wallet NPM Package",
+  "main": "dist/index.cjs",
+  "typings": "dist/index.d.ts",
+  "module": "dist/ethos-test-react-components.esm.js",
+  "license": "MIT",
   "files": [
-    "dist",
-    "README.md"
+    "README.md",
+    "dist"
   ],
-  "dependencies": {
-    "@babel/polyfill": "^7.12.1",
-    "@headlessui/react": "^1.6.0",
-    "@mysten/sui.js": "^0.1.2",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
-    "@testing-library/user-event": "^13.5.0",
-    "babel-plugin-inline-dotenv": "^1.7.0",
-    "core-js": "3",
-    "ethers": "^5.6.8",
-    "moralis": "^1.6.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-scripts": "5.0.1",
-    "store2": "^2.13.2",
-    "typescript": "^4.7.2",
-    "web-vitals": "^2.1.4"
+  "exports": {
+    "import": "./dist/ethos-test-react-components.esm.js",
+    "require": "./dist/index.cjs",
+    "types": "./dist/index.d.ts"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EthosWallet/react-api.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build": "tsc",
-    "build:watch": "tsc -w"
+    "prepublishOnly": "npm run build",
+    "build": "./scripts/build.sh --external:react --external:react-dom",
+    "watch": "./scripts/watch.sh --external:react --external:react-dom",
+    "test": "./scripts/test.sh",
+    "test:watch": "./scripts/test.sh --watch",
+    "lint": "./scripts/lint.sh",
+    "playground": "yarn workspace playground-react dev",
+    "clean": "rimraf ./dist"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "peerDependencies": {
+    "react": "^16 || ^17 || ^18",
+    "react-dom": "^16 || ^17 || ^18"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10"
+    "@swc/core": "^1.2.197",
+    "@swc/jest": "^0.2.21",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.0.0",
+    "@types/jest": "^28.1.0",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "esbuild": "^0.11.18",
+    "fast-glob": "^3.2.11",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rimraf": "^3.0.2",
+    "snapshot-diff": "^0.8.1",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "ethers": "^5.6.8",
+    "store2": "^2.13.2"
   }
 }

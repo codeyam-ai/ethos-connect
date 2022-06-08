@@ -1,6 +1,11 @@
 import apiCall from "./apiCall";
 
-const ethBalance = async ({ network, address }) => {
+type EthBalanceProps = {
+  network: string
+  address: string
+}
+
+const ethBalance = async ({ network, address }: EthBalanceProps) => {
   const { json: { balance } } = await apiCall({
     relativePath: 'wallet/balance',
     method: 'POST',

@@ -8,6 +8,8 @@ import query from './query.js';
 import ethBalance from './ethBalance.js';
 import showWallet from './showWallet.js';
 import hideWallet from './hideWallet.js';
+import getAppBaseUrl from './getAppBaseUrl.js';
+import initialize from './initialize.js';
 
 export {
   login,
@@ -19,5 +21,7 @@ export {
   query,
   ethBalance,
   showWallet,
-  hideWallet
+  hideWallet,
+  getAppBaseUrl,
+  initialize
 };

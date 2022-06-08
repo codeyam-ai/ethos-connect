@@ -1,7 +1,7 @@
 import store from "store2";
 import apiCall from "./apiCall";
 
-const login = async (email, appId) => {
+const login = async (email: string, appId: string) => {
   const userStore = store.namespace('users');
 
   const { json: { user } } = await apiCall({

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Metamask = ({ width=18 }) => (
+const Metamask = ({ width=18 }: { width?: number }) => (
   <svg 
     version="1.1" 
     id="metamask" 
@@ -8,7 +8,7 @@ const Metamask = ({ width=18 }) => (
     width={width}
     height={width} 
     viewBox="40 40 238.6 238.6"
-    style={{enableBackground: "new 40 40 238.6 238.6"}} 
+    style={{enableBackground: "new 40 40 238.6 238.6"} as React.CSSProperties} 
     xmlSpace="preserve"
   >
     <polygon style={st0} points="274.1,35.5 174.6,109.4 193,65.8 "/>
@@ -62,69 +62,69 @@ const st0 = ({
   stroke: '#E2761B',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st1 = ({
   fill: '#E4761B',
   stroke: '#E4761B',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st2 = ({
   fill: '#D7C1B3',
   stroke: '#D7C1B3',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st3 = ({
   fill: '#233447',
   stroke: '#233447',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st4 = ({
   fill: '#CD6116',
   stroke: '#CD6116',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st5 = ({
   fill: '#E4751F',
   stroke: '#E4751F',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st6 = ({
   fill: '#F6851B',
   stroke: '#F6851B',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st7 = ({
   fill: '#C0AD9E',
   stroke: '#C0AD9E',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st8 = ({
   fill: '#161616',
   stroke: '#161616',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 const st9 = ({
   fill: '#763D16',
   stroke: '#763D16',
   strokeLinecap: 'round',
   strokeLinejoin: 'round'
-})
+}) as React.CSSProperties;
 
 export default Metamask;

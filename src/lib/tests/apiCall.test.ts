@@ -1,4 +1,3 @@
-import { ApiCallRequest } from '../../types/ApiCallTypes';
 import apiCall from '../apiCall';
 import { appBaseUrl } from '../constants';
 
@@ -18,6 +17,7 @@ describe('apiCall', () => {
   } as Response;
 
   beforeEach(() => {
+    global.fetch = jest.fn()
     spyFetch = jest.spyOn(global, 'fetch').mockResolvedValue(mockResponse);
   });
 
@@ -30,7 +30,7 @@ describe('apiCall', () => {
       body: JSON.stringify(body),
     };
 
-    const result = await apiCall({ relativePath, body, method, host: appBaseUrl });
+    const result = await apiCall({ relativePath, body, method });
 
     expect(spyFetch).toBeCalledTimes(1);
     expect(spyFetch).toBeCalledWith(expectedEndpointCalled, expectedApiCallParameters);
@@ -43,10 +43,10 @@ describe('apiCall', () => {
     const expectedApiCallParameters = {
       method: 'GET',
       headers: expectedHeaders,
-      body: JSON.stringify(body),
+      body: undefined,
     };
 
-    const result = await apiCall({ relativePath, body });
+    const result = await apiCall({ relativePath });
 
     expect(spyFetch).toBeCalledTimes(1);
     expect(spyFetch).toBeCalledWith(expectedEndpointCalled, expectedApiCallParameters);

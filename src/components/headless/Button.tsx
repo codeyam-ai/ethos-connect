@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = (props) => {
+const Button = (props: any) => {
   const { children, onClick, isWorking, workingComponent, ...reactProps } = props;
 
   return (

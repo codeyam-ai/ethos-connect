@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Ethos = ({ width=18 }) => (
+const Ethos = ({ width=18 }: { width?: number }) => (
   <svg 
     id="Layer_1" 
     xmlns="http://www.w3.org/2000/svg" 

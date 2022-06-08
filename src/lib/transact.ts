@@ -1,11 +1,11 @@
 import apiCall from "./apiCall";
-import { appBaseUrl } from "./constants";
+import getAppBaseUrl from "./getAppBaseUrl";
 import getIframe from "./getIframe";
 
-const confirmBlockNumber = async (address, blockNumber, host) => {
+const confirmBlockNumber = async (address: string, blockNumber: string) => {
   return new Promise(
     async (resolve) => {
-      const { json: { nfts }, status } = await apiCall({
+      const { json: { nfts } } = await apiCall({
         relativePath: `nfts/${address}`
       })
       
@@ -24,9 +24,24 @@ const confirmBlockNumber = async (address, blockNumber, host) => {
   );
 }
 
-const transact = async ({appId, network, address, abi, functionName, inputValues, onSigned, onSent, onComplete, onConfirmed}) => {
+type transactProps = {
+  appId: string
+  network: string
+  address: string
+  abi: any
+  functionName: string
+  inputValues: any
+  onSigned?: (data: any) => void
+  onSent?: (data: any) => void
+  onComplete?: (data: any) => void
+  onConfirmed?: (data: any) => void
+}
+
+const transact = async ({appId, network, address, abi, functionName, inputValues, onSigned, onSent, onComplete, onConfirmed}: transactProps) => {
+  const walletAppUrl = getAppBaseUrl();
+  
   window.addEventListener("message", (message) => {
-    if (message.origin === appBaseUrl) {
+    if (message.origin === walletAppUrl) {
       const { action, data } = message.data;
       
       switch (action) {
@@ -48,8 +63,8 @@ const transact = async ({appId, network, address, abi, functionName, inputValues
     }
   });
 
-  const iframe = getIframe(appId);
-  iframe.contentWindow.postMessage({
+  const iframe = getIframe({ appId });
+  iframe?.contentWindow?.postMessage({
     action: 'transact',
     data: {
       network,
@@ -58,9 +73,9 @@ const transact = async ({appId, network, address, abi, functionName, inputValues
       functionName,
       inputValues
     }
-  }, appBaseUrl);
+  }, walletAppUrl);
 
-  getIframe(appId, true);
+  getIframe({ appId, show: true });
 }
 
 export default transact;

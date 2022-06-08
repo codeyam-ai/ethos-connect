@@ -1,12 +1,13 @@
 import apiCall from './apiCall';
+import log from './log';
 
-const walletContents = async (address) => {
+const walletContents = async (address: string) => {
   const { json: { nfts }, status } = await apiCall({
     relativePath: `nfts/${address}`
   })
 
   if (status !== 200) {
-    console.log("Error with wallet contents", status);
+    log("walletContents", "Error with wallet contents", status);
     return;
   }
 
