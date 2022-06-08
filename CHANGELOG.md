@@ -1,4 +1,5 @@
-*Note: this file is kept from HeadlessUI to serve as an example but should be updated with our info.*
+_Note: this file is kept from HeadlessUI to serve as an example but should be updated with our info._
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

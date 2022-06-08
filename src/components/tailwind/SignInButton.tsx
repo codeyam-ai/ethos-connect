@@ -1,37 +1,32 @@
-import React from 'react';
-import Button from '../headless/Button';
-import SignInModal from './SignInModal';
+import React from 'react'
+import Button from '../headless/Button'
+import SignInModal from './SignInModal'
 
 const SignInButton = (props: any) => {
-  const { appId, children, onClick, onSignIn, ...reactProps } = props;
+  const { appId, children, onClick, onSignIn, ...reactProps } = props
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const _onClick = (e: any) => {
-    setIsOpen(true);
+    setIsOpen(true)
 
     if (onClick) {
-      onClick(e);
+      onClick(e)
     }
   }
 
   return (
     <>
-      <SignInModal 
+      <SignInModal
         appId={appId}
-        isOpen={isOpen} 
+        isOpen={isOpen}
         onSignIn={onSignIn}
-        onClose={() => setIsOpen(false)} 
+        onClose={() => setIsOpen(false)}
       />
-      <Button
-        onClick={_onClick}
-        isWorking={isOpen}
-        {...reactProps}
-      >
+      <Button onClick={_onClick} isWorking={isOpen} {...reactProps}>
         {props.children || <>Sign In</>}
       </Button>
-
     </>
   )
 }
-export default SignInButton;
+export default SignInButton

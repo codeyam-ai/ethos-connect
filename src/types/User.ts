@@ -1,4 +1,4 @@
 export type User = {
-  email: string;
-  wallet: string;
-};
+  email: string
+  wallet: string
+}

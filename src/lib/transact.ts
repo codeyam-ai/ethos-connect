@@ -1,27 +1,27 @@
-import apiCall from "./apiCall";
-import getAppBaseUrl from "./getAppBaseUrl";
-import getIframe from "./getIframe";
+import apiCall from './apiCall'
+import getAppBaseUrl from './getAppBaseUrl'
+import getIframe from './getIframe'
 
 const confirmBlockNumber = async (address: string, blockNumber: string) => {
-  return new Promise(
-    async (resolve) => {
-      const { json: { nfts } } = await apiCall({
-        relativePath: `nfts/${address}`
-      })
-      
-      for (const nft of nfts.result) {
-        if ((nft.block_number_minted || "").toString() === blockNumber.toString()) {
-          resolve(nft);
-          return;
-        }
+  return new Promise(async (resolve) => {
+    const {
+      json: { nfts },
+    } = await apiCall({
+      relativePath: `nfts/${address}`,
+    })
+
+    for (const nft of nfts.result) {
+      if ((nft.block_number_minted || '').toString() === blockNumber.toString()) {
+        resolve(nft)
+        return
       }
-      
-      setTimeout(async () => {
-        const nft = await confirmBlockNumber(address, blockNumber)
-        if (nft) resolve(nft);
-      }, 10000)
     }
-  );
+
+    setTimeout(async () => {
+      const nft = await confirmBlockNumber(address, blockNumber)
+      if (nft) resolve(nft)
+    }, 10000)
+  })
 }
 
 type transactProps = {
@@ -37,45 +37,59 @@ type transactProps = {
   onConfirmed?: (data: any) => void
 }
 
-const transact = async ({appId, network, address, abi, functionName, inputValues, onSigned, onSent, onComplete, onConfirmed}: transactProps) => {
-  const walletAppUrl = getAppBaseUrl();
-  
-  window.addEventListener("message", (message) => {
+const transact = async ({
+  appId,
+  network,
+  address,
+  abi,
+  functionName,
+  inputValues,
+  onSigned,
+  onSent,
+  onComplete,
+  onConfirmed,
+}: transactProps) => {
+  const walletAppUrl = getAppBaseUrl()
+
+  window.addEventListener('message', (message) => {
     if (message.origin === walletAppUrl) {
-      const { action, data } = message.data;
-      
+      const { action, data } = message.data
+
       switch (action) {
         case 'signed':
-          if (onSigned) onSigned(data);
-          break;
+          if (onSigned) onSigned(data)
+          break
         case 'sent':
-          if (onSent) onSent(data);
-          break;
+          if (onSent) onSent(data)
+          break
         case 'complete':
-          if (onComplete) onComplete(data);
-          break;
+          if (onComplete) onComplete(data)
+          break
         case 'confirmed':
-          if (onConfirmed) onConfirmed(data);
-          break;
+          if (onConfirmed) onConfirmed(data)
+          break
         default:
-          break;
+          break
       }
     }
-  });
+  })
 
-  const iframe = getIframe({ appId });
-  iframe?.contentWindow?.postMessage({
-    action: 'transact',
-    data: {
-      network,
-      address,
-      abi,
-      functionName,
-      inputValues
-    }
-  }, walletAppUrl);
+  const iframe = getIframe({ appId })
+  iframe?.contentWindow?.postMessage(
+    {
+      action: 'transact',
+      data: {
+        network,
+        address,
+        abi,
+        functionName,
+        inputValues,
+      },
+    },
+    walletAppUrl
+  )
 
-  getIframe({ appId, show: true });
+  getIframe({ appId, show: true })
 }
 
-export default transact;
+export default transact

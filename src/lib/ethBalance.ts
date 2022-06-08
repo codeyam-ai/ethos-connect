@@ -1,4 +1,4 @@
-import apiCall from "./apiCall";
+import apiCall from './apiCall'
 
 type EthBalanceProps = {
   network: string
@@ -6,13 +6,15 @@ type EthBalanceProps = {
 }
 
 const ethBalance = async ({ network, address }: EthBalanceProps) => {
-  const { json: { balance } } = await apiCall({
+  const {
+    json: { balance },
+  } = await apiCall({
     relativePath: 'wallet/balance',
     method: 'POST',
-    body: { network, address }
-  });
+    body: { network, address },
+  })
 
-  return balance;
+  return balance
 }
 
-export default ethBalance;
+export default ethBalance

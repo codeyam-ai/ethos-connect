@@ -5,9 +5,5 @@ import * as ReactApi from './index'
  * the outside world that we didn't want!
  */
 it('should expose the correct components', () => {
-  expect(Object.keys(ReactApi)).toEqual([
-    'headless',
-    'tailwind',
-    'lib'
-  ])
+  expect(Object.keys(ReactApi)).toEqual(['headless', 'tailwind', 'lib'])
 })

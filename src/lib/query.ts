@@ -1,4 +1,4 @@
-import apiCall from "./apiCall";
+import apiCall from './apiCall'
 
 type QueryProps = {
   network: string
@@ -13,21 +13,23 @@ const query = async ({
   contractAddress,
   contractABI,
   functionName,
-  inputValues
+  inputValues,
 }: QueryProps) => {
-  const { json: { response } } = await apiCall({
-    relativePath: "contracts/query",
-    method: "POST",
+  const {
+    json: { response },
+  } = await apiCall({
+    relativePath: 'contracts/query',
+    method: 'POST',
     body: {
       network,
       address: contractAddress,
       abi: contractABI,
       functionName,
-      inputValues
-    }
+      inputValues,
+    },
   })
 
-  return response;
+  return response
 }
 
-export default query;
+export default query

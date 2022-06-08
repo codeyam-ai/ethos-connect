@@ -1,6 +1,6 @@
-import { ethers } from 'ethers';
+import { ethers } from 'ethers'
 
 export type TokenTransferInformation = {
-  orderedTransfers: ethers.Event[];
-  currentTokenIds: string[];
-};
+  orderedTransfers: ethers.Event[]
+  currentTokenIds: string[]
+}

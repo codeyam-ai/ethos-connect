@@ -28,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && npm test && npm run lint",
     "build": "./scripts/build.sh --external:react --external:react-dom",
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
     "test": "./scripts/test.sh",
@@ -53,6 +53,8 @@
     "fast-glob": "^3.2.11",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.11",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "rimraf": "^3.0.2",
@@ -62,5 +64,14 @@
   "dependencies": {
     "ethers": "^5.6.8",
     "store2": "^2.13.2"
+  },
+  "lint-staged": {
+    "*": "yarn lint"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }

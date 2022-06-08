@@ -1,5 +1,5 @@
-import { TokenTransferInformation } from "types/TokenTransferInformation";
-import apiCall from "./apiCall";
+import { TokenTransferInformation } from 'types/TokenTransferInformation'
+import apiCall from './apiCall'
 
 type TokenTransfersProps = {
   network: string
@@ -12,15 +12,17 @@ const tokenTransfers = async ({
   network,
   walletAddress,
   contractAddress,
-  contractABI
+  contractABI,
 }: TokenTransfersProps): Promise<TokenTransferInformation> => {
-  const { json: { transferInformation } } = await apiCall({
-    relativePath: "contracts/transfers",
-    method: "POST",
-    body: { network, walletAddress, contractAddress, contractABI }
+  const {
+    json: { transferInformation },
+  } = await apiCall({
+    relativePath: 'contracts/transfers',
+    method: 'POST',
+    body: { network, walletAddress, contractAddress, contractABI },
   })
 
-  return transferInformation;
+  return transferInformation
 }
 
-export default tokenTransfers;
+export default tokenTransfers

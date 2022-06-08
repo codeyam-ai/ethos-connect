@@ -1,15 +1,15 @@
-import login from './login.js';
-import logout from './logout.js';
-import transact from './transact.js';
-import walletContents from './walletContents.js';
-import activeUser from './activeUser.js';
-import tokenTransfers from './tokenTransfers.js';
-import query from './query.js';
-import ethBalance from './ethBalance.js';
-import showWallet from './showWallet.js';
-import hideWallet from './hideWallet.js';
-import getAppBaseUrl from './getAppBaseUrl.js';
-import initialize from './initialize.js';
+import login from './login.js'
+import logout from './logout.js'
+import transact from './transact.js'
+import walletContents from './walletContents.js'
+import activeUser from './activeUser.js'
+import tokenTransfers from './tokenTransfers.js'
+import query from './query.js'
+import ethBalance from './ethBalance.js'
+import showWallet from './showWallet.js'
+import hideWallet from './hideWallet.js'
+import getAppBaseUrl from './getAppBaseUrl.js'
+import initialize from './initialize.js'
 
 export {
   login,
@@ -23,5 +23,5 @@ export {
   showWallet,
   hideWallet,
   getAppBaseUrl,
-  initialize
-};
+  initialize,
+}
