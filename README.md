@@ -26,3 +26,10 @@ yarn link react
 yarn link react-dom
 yarn dev
 ```
+
+# Publishing
+When you're ready to publish your changes, update the `package.json` file with a new version number following [Semantic Versioning guidelines](https://zellwk.com/blog/semantic-versioning/). Then run:
+```
+npm publish
+```
+This will run the `prepublishOnly` script and publish the new version to NPM.
