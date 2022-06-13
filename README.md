@@ -13,7 +13,8 @@ cd node_modules/react
 yarn link
 cd ../../node_modules/react-dom
 yarn link
-yarn build:watch
+cd ../..
+yarn watch
 ```
 
 The last line of the previous commands will watch for changes and the UI will automatically update after you link.
@@ -21,7 +22,7 @@ The last line of the previous commands will watch for changes and the UI will au
 Then, from the root directory of the UI project
 
 ```
-yarn link ethos-react2
+yarn link ethos-wallet
 yarn link react
 yarn link react-dom
 yarn dev
