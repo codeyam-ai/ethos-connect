@@ -37,5 +37,6 @@ const lib = {
   showWallet,
   hideWallet,
 }
+console.log('local 💩');
 
 export { headless, tailwind, lib }

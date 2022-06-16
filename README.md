@@ -28,6 +28,11 @@ yarn link react-dom
 yarn dev
 ```
 
+If something messes up, you can reset all your linked packages by running (mac only):
+```
+rm -rf cd ~/.config/yarn/*
+```
+
 # Publishing
 When you're ready to publish your changes, update the `package.json` file with a new version number following [Semantic Versioning guidelines](https://zellwk.com/blog/semantic-versioning/). Then run:
 ```
