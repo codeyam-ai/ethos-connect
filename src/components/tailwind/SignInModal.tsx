@@ -13,12 +13,11 @@ type SignInModalProps = {
   appId: string
   isOpen: boolean
   onClose: () => void
-  onSignIn: (wallet: any) => void,
   setProvider: React.Dispatch<React.SetStateAction<ethers.providers.Web3Provider | undefined>>,
   setSigner: React.Dispatch<React.SetStateAction<ethers.providers.JsonRpcSigner | undefined>>
 }
 
-const SignInModal = ({ appId, isOpen, onClose, onSignIn, setProvider, setSigner }: SignInModalProps) => {
+const SignInModal = ({ appId, isOpen, onClose, setProvider, setSigner }: SignInModalProps) => {
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
@@ -27,20 +26,17 @@ const SignInModal = ({ appId, isOpen, onClose, onSignIn, setProvider, setSigner 
     setSigningIn(true)
     const user = await login(email, appId)
     setEmail('')
-    onSignIn(user)
     console.log('user :>> ', user);
     const provider = new ethers.providers.JsonRpcProvider(appBaseUrl + '/api/rpc');
     const signer = provider.getSigner();
     // Provider has a different type here...
     // setProvider(provider);
-    setSigner(signer);
+    // setSigner(signer);
     onClose()
   }
 
   const _connectWallet = async () => {
-    const user = await connectWallet(appId)
     onClose()
-    onSignIn(user)
   }
 
   const _connectMetaMask = async () => {

@@ -14,6 +14,7 @@ import query from './lib/query'
 import ethBalance from './lib/ethBalance'
 import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
+import getSigner from './lib/getSigner';
 
 const headless = {
   Button,
@@ -36,6 +37,7 @@ const lib = {
   ethBalance,
   showWallet,
   hideWallet,
+  getSigner
 }
 console.log('local 💩');
 
