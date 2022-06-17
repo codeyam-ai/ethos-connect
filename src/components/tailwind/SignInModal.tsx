@@ -7,6 +7,7 @@ import Metamask from '../svg/Metamask'
 import Loader from '..//svg/Loader'
 import { connectMetaMask } from 'utils/metamask'
 import { ethers } from 'ethers'
+import { Signer } from '../../lib/ethersWrapper/Signer';
 import { getAppBaseUrl } from 'lib'
 
 type SignInModalProps = {
@@ -28,7 +29,7 @@ const SignInModal = ({ appId, isOpen, onClose, setProvider, setSigner }: SignInM
     setEmail('')
     console.log('user :>> ', user);
     const provider = new ethers.providers.JsonRpcProvider(appBaseUrl + '/api/rpc');
-    const signer = provider.getSigner();
+    const signer = provider.getSigner() as Signer;
     // Provider has a different type here...
     // setProvider(provider);
     // setSigner(signer);

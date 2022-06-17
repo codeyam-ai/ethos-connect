@@ -1,3 +1,5 @@
+import { PopulatedTransaction } from 'ethers'
+import { UnpopulatedTransaction } from 'types/UnpopulatedTransaction'
 import apiCall from './apiCall'
 import getAppBaseUrl from './getAppBaseUrl'
 import getIframe from './getIframe'
@@ -26,11 +28,9 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 
 type transactProps = {
   appId: string
-  network: string
-  address: string
-  abi: any
-  functionName: string
-  inputValues: any
+  network: number
+  // This naming is incredibly confusing. Refactor.
+  unpopulatedTransaction: PopulatedTransaction
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
   onComplete?: (data: any) => void
@@ -40,10 +40,7 @@ type transactProps = {
 const transact = async ({
   appId,
   network,
-  address,
-  abi,
-  functionName,
-  inputValues,
+  unpopulatedTransaction,
   onSigned,
   onSent,
   onComplete,
@@ -80,10 +77,7 @@ const transact = async ({
       action: 'transact',
       data: {
         network,
-        address,
-        abi,
-        functionName,
-        inputValues,
+        unpopulatedTransaction
       },
     },
     walletAppUrl

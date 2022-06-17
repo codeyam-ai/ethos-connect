@@ -16,6 +16,8 @@ import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
 import getSigner from './lib/getSigner';
 
+import { ethers } from './lib/ethersWrapper';
+
 const headless = {
   Button,
 }
@@ -41,4 +43,4 @@ const lib = {
 }
 console.log('local 💩');
 
-export { headless, tailwind, lib }
+export { headless, tailwind, lib, ethers }

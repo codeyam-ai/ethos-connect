@@ -6,6 +6,8 @@ type getIframeProps = {
 }
 
 const getIframe = ({ appId, show = false }: getIframeProps) => {
+  console.log('in getIframe, show: ', show);
+  
   const iframeId = 'ethos-wallet-iframe'
 
   let iframe = document.getElementById(iframeId) as HTMLIFrameElement
@@ -19,6 +21,8 @@ const getIframe = ({ appId, show = false }: getIframeProps) => {
   const walletAppUrl = getAppBaseUrl()
 
   if (!iframe) {
+    console.log('creating iframe');
+    
     iframe = document.createElement('IFRAME') as HTMLIFrameElement
     iframe.src = walletAppUrl + `/wallet?appId=${appId}`
     iframe.id = iframeId
