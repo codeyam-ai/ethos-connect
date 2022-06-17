@@ -1,14 +1,10 @@
 import { ethers } from "ethers";
-import apiCall from "./apiCall";
+import activeUser from "./activeUser";
 import { appBaseUrl } from "./constants";
 
 const getSigner = async (): Promise<ethers.providers.JsonRpcSigner | undefined> => {
-    const { json: { isUserSignedIn } } = await apiCall({
-        relativePath: 'users/isUserSignedIn',
-    })
-    console.log('isUserSignedIn :>> ', isUserSignedIn);
-
-    if (isUserSignedIn) {
+    const user = await activeUser('coffee-demo')
+    if (user) {
         const provider = new ethers.providers.JsonRpcProvider(appBaseUrl + '/api/rpc');
         return provider.getSigner();
     }
