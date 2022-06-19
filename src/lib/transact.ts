@@ -28,9 +28,11 @@ type transactProps = {
   appId: string
   network: string
   address: string
-  abi: any
+  abi?: any
+  moduleName?: string
   functionName: string
   inputValues: any
+  gasBudget?: number
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
   onComplete?: (data: any) => void
@@ -42,8 +44,10 @@ const transact = async ({
   network,
   address,
   abi,
+  moduleName,
   functionName,
   inputValues,
+  gasBudget,
   onSigned,
   onSent,
   onComplete,
@@ -82,8 +86,10 @@ const transact = async ({
         network,
         address,
         abi,
+        moduleName,
         functionName,
         inputValues,
+        gasBudget
       },
     },
     walletAppUrl

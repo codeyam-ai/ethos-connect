@@ -7,18 +7,28 @@ const activeUser = (appId: string) => {
   console.log('WALLET APP URL', walletAppUrl)
 
   return new Promise((resolve) => {
-    window.addEventListener('message', (message) => {
+    const listener = (message: any) => {
       log('activeUser', 'MESSAGE ORIGIN: ', message.origin, walletAppUrl, message)
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data
         log('MESSAGE2: ', action, data)
         if (action === 'user') {
-          resolve(data?.user)
+          console.log("RESOLVE ACTIVE USER", data)
+          window.removeEventListener('message', listener)
+          resolve(data?.user);
         }
       }
-    })
+    }
+    
+    window.addEventListener('message', listener)
 
-    getIframe({ appId })
+    const iframe = getIframe({ appId })
+    iframe?.contentWindow?.postMessage(
+      {
+        action: 'activeUser'
+      },
+      walletAppUrl
+    )
   })
 }
 
