@@ -13,13 +13,12 @@ const activeUser = (appId: string) => {
         const { action, data } = message.data
         log('MESSAGE2: ', action, data)
         if (action === 'user') {
-          console.log("RESOLVE ACTIVE USER", data)
           window.removeEventListener('message', listener)
           resolve(data?.user);
         }
       }
     }
-    
+
     window.addEventListener('message', listener)
 
     const iframe = getIframe({ appId })
