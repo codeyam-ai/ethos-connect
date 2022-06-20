@@ -7,6 +7,7 @@ type getIframeProps = {
 
 const getIframe = ({ appId, show = false }: getIframeProps) => {
   const iframeId = 'ethos-wallet-iframe'
+  let scrollY: number = 0;
 
   let iframe = document.getElementById(iframeId) as HTMLIFrameElement
 
@@ -24,7 +25,7 @@ const getIframe = ({ appId, show = false }: getIframeProps) => {
     iframe.id = iframeId
     iframe.style.border = 'none'
     iframe.style.position = 'absolute'
-    iframe.style.top = '0'
+    iframe.style.top = scrollY + 'px';
     iframe.style.right = '60px'
     iframe.style.width = '0'
     iframe.style.height = '0'
@@ -38,6 +39,11 @@ const getIframe = ({ appId, show = false }: getIframeProps) => {
         }
       }
     })
+
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+      iframe.style.top = scrollY + 'px';
+    });
   }
 
   if (show) {

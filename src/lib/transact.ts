@@ -35,10 +35,12 @@ type transactProps = {
   objectId?: string
   recipientAddress?: string
   gasBudget?: number
+  confirmMessage?: string
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
   onComplete?: (data: any) => void
   onConfirmed?: (data: any) => void
+  onCanceled?: () => void
 }
 
 const transact = async ({
@@ -52,10 +54,12 @@ const transact = async ({
   objectId,
   recipientAddress,
   gasBudget,
+  confirmMessage,
   onSigned,
   onSent,
   onComplete,
   onConfirmed,
+  onCanceled
 }: transactProps) => {
   const walletAppUrl = getAppBaseUrl()
 
@@ -75,7 +79,10 @@ const transact = async ({
           break
         case 'confirmed':
           if (onConfirmed) onConfirmed(data)
-          break
+          break;
+        case 'canceled':
+          if (onCanceled) onCanceled();
+          break;
         default:
           break
       }
@@ -95,7 +102,8 @@ const transact = async ({
         inputValues,
         objectId,
         recipientAddress,
-        gasBudget
+        gasBudget,
+        confirmMessage
       },
     },
     walletAppUrl
