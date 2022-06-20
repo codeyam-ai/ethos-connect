@@ -27,11 +27,13 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 type transactProps = {
   appId: string
   network: string
-  address: string
+  address?: string
   abi?: any
   moduleName?: string
-  functionName: string
-  inputValues: any
+  functionName?: string
+  inputValues?: any
+  objectId?: string
+  recipientAddress?: string
   gasBudget?: number
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
@@ -47,6 +49,8 @@ const transact = async ({
   moduleName,
   functionName,
   inputValues,
+  objectId,
+  recipientAddress,
   gasBudget,
   onSigned,
   onSent,
@@ -89,6 +93,8 @@ const transact = async ({
         moduleName,
         functionName,
         inputValues,
+        objectId,
+        recipientAddress,
         gasBudget
       },
     },
