@@ -1,3 +1,4 @@
+import { UnpopulatedTransaction } from 'types/UnpopulatedTransaction'
 import apiCall from './apiCall'
 import getAppBaseUrl from './getAppBaseUrl'
 import getIframe from './getIframe'
@@ -26,16 +27,10 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 
 type transactProps = {
   appId: string
-  network: string
-  address?: string
-  abi?: any
-  moduleName?: string
-  functionName?: string
-  inputValues?: any
-  objectId?: string
-  recipientAddress?: string
-  gasBudget?: number
-  confirmMessage?: string
+  network: number,
+  abi: any,
+  address: string,
+  unpopulatedTransaction: UnpopulatedTransaction
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
   onComplete?: (data: any) => void
@@ -46,15 +41,9 @@ type transactProps = {
 const transact = async ({
   appId,
   network,
-  address,
   abi,
-  moduleName,
-  functionName,
-  inputValues,
-  objectId,
-  recipientAddress,
-  gasBudget,
-  confirmMessage,
+  address,
+  unpopulatedTransaction,
   onSigned,
   onSent,
   onComplete,
@@ -95,15 +84,9 @@ const transact = async ({
       action: 'transact',
       data: {
         network,
-        address,
         abi,
-        moduleName,
-        functionName,
-        inputValues,
-        objectId,
-        recipientAddress,
-        gasBudget,
-        confirmMessage
+        address,
+        unpopulatedTransaction
       },
     },
     walletAppUrl

@@ -3,7 +3,7 @@ set -e
 
 # Known variables
 outdir="./dist"
-name="ethos-test-react-components"
+name="ethos-wallet"
 input="./src/index.ts"
 
 # Find executables

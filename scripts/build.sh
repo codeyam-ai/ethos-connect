@@ -7,7 +7,7 @@ SCRIPT_DIR=$(cd ${0%/*} && pwd -P)
 # Known variables
 SRC='./src'
 DST='./dist'
-name="ethos-test-react-components"
+name="ethos-wallet"
 input="./${SRC}/index.ts"
 
 # Find executables

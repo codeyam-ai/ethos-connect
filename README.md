@@ -1,6 +1,9 @@
 # To Do
 
-- Update all params and types
+- Add types for wrapped ethers
+- Remove duplicate types between NPM and wallet (like UnpopulatedTransaction)
+- naming of `unpopulatedTransaction: PopulatedTransaction` in `interceptTransaction.ts` and `transact.ts` is very confusing. PopulatedTransaction is an ethers type but it's not what we call a PopulatedTranaction in `wallet`. Fix this.
+- Have RPC return correct address when ethers calls `eth_accounts` (currently hard coded)
 
 # Setting up local development
 
@@ -26,6 +29,15 @@ yarn link ethos-wallet
 yarn link react
 yarn link react-dom
 yarn dev
+```
+
+If something messes up, you can reset all your linked packages by running (mac only):
+```
+rm -rf cd ~/.config/yarn/*
+```
+Or, for windows powershell:
+```
+Remove-Item C:\Users\<USERNAME>\AppData\Local\Yarn\Data\link\* -Recurse -Force
 ```
 
 # Publishing

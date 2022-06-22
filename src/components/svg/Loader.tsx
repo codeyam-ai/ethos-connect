@@ -10,7 +10,7 @@ const Loader = ({ width = 100, color = '#333' }: { width?: number; color?: strin
     viewBox="0 0 100 100"
     width={width}
     height={width}
-    enable-background="new 0 0 0 0"
+    enableBackground="new 0 0 0 0"
   >
     <circle fill={color} stroke="none" cx="6" cy="50" r="6">
       <animate

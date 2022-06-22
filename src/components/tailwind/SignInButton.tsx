@@ -20,7 +20,8 @@ const SignInButton = (props: any) => {
       <SignInModal
         appId={appId}
         isOpen={isOpen}
-        onSignIn={onSignIn}
+        setSigner={onSignIn}
+        setProvider={() => {}}
         onClose={() => setIsOpen(false)}
       />
       <Button onClick={_onClick} isWorking={isOpen} {...reactProps}>
