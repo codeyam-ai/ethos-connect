@@ -2,7 +2,7 @@ import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 
 const hideWallet = () => {
-  const { appId } = getConfiguration();
+  const { appId } = getConfiguration()
   getIframe({ appId })
 }
 

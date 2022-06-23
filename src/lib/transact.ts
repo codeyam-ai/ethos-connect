@@ -27,9 +27,9 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 
 type transactProps = {
   appId: string
-  network: string|number,
-  abi?: any,
-  address: string,
+  network: string | number
+  abi?: any
+  address: string
   unpopulatedTransaction: UnpopulatedTransaction
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
@@ -48,7 +48,7 @@ const transact = async ({
   onSent,
   onComplete,
   onConfirmed,
-  onCanceled
+  onCanceled,
 }: transactProps) => {
   const { walletAppUrl } = getConfiguration()
 
@@ -68,10 +68,10 @@ const transact = async ({
           break
         case 'confirmed':
           if (onConfirmed) onConfirmed(data)
-          break;
+          break
         case 'canceled':
-          if (onCanceled) onCanceled();
-          break;
+          if (onCanceled) onCanceled()
+          break
         default:
           break
       }
@@ -86,7 +86,7 @@ const transact = async ({
         network,
         abi,
         address,
-        unpopulatedTransaction
+        unpopulatedTransaction,
       },
     },
     walletAppUrl

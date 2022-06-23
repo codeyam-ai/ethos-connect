@@ -14,7 +14,7 @@ const activeUser = (appId: string) => {
         log('MESSAGE2: ', action, data)
         if (action === 'user') {
           window.removeEventListener('message', listener)
-          resolve(data?.user);
+          resolve(data?.user)
         }
       }
     }
@@ -24,7 +24,7 @@ const activeUser = (appId: string) => {
     const iframe = getIframe({ appId })
     iframe?.contentWindow?.postMessage(
       {
-        action: 'activeUser'
+        action: 'activeUser',
       },
       walletAppUrl
     )

@@ -12,12 +12,12 @@ import getConfiguration from '../../lib/getConfiguration'
 type SignInModalProps = {
   isOpen: boolean
   onClose: () => void
-  setProvider: React.Dispatch<React.SetStateAction<ethers.providers.Web3Provider | undefined>>,
+  setProvider: React.Dispatch<React.SetStateAction<ethers.providers.Web3Provider | undefined>>
   setSigner: React.Dispatch<React.SetStateAction<ethers.providers.JsonRpcSigner | undefined>>
 }
 
 const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalProps) => {
-  const { appId } = getConfiguration();
+  const { appId } = getConfiguration()
 
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
@@ -26,7 +26,7 @@ const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalPro
     setSigningIn(true)
     const user = await login(email, appId)
     setEmail('')
-    console.log('user :>> ', user);
+    console.log('user :>> ', user)
     if (!user) {
       setSigner(user)
     }
@@ -38,10 +38,10 @@ const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalPro
   }
 
   const _connectMetaMask = async () => {
-    const { provider, signer } = await connectMetaMask();
-    setProvider(provider);
-    setSigner(signer);
-    onClose();
+    const { provider, signer } = await connectMetaMask()
+    setProvider(provider)
+    setSigner(signer)
+    onClose()
   }
 
   const walletOptions = [
@@ -97,111 +97,111 @@ const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalPro
 }
 
 const modalStyle = (isOpen: boolean) =>
-({
-  textAlign: 'left',
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  transitionProperty: 'opacity',
-  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  transitionDuration: '250ms',
-  opacity: isOpen ? 1 : 0,
-  position: 'absolute',
-  left: isOpen ? '50%' : '-9999px',
-  top: '40%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  width: '660px',
-  fontWeight: '400',
-} as React.CSSProperties)
+  ({
+    textAlign: 'left',
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    transitionProperty: 'opacity',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    transitionDuration: '250ms',
+    opacity: isOpen ? 1 : 0,
+    position: 'absolute',
+    left: isOpen ? '50%' : '-9999px',
+    top: '40%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    width: '660px',
+    fontWeight: '400',
+  } as React.CSSProperties)
 
 const headerStyle = () =>
-({
-  borderBottom: '1px solid rgb(241 245 249)',
-  padding: '12px',
-  display: 'flex',
-  justifyContent: 'space-between',
-} as React.CSSProperties)
+  ({
+    borderBottom: '1px solid rgb(241 245 249)',
+    padding: '12px',
+    display: 'flex',
+    justifyContent: 'space-between',
+  } as React.CSSProperties)
 
 const titleStyle = () =>
-({
-  fontSize: '1rem',
-  fontWeight: '500',
-} as React.CSSProperties)
+  ({
+    fontSize: '1rem',
+    fontWeight: '500',
+  } as React.CSSProperties)
 
 const closeStyle = () =>
-({
-  backgroundColor: '#F9FAFB',
-  borderRadius: '100%',
-  width: '24px',
-  height: '24px',
-  textAlign: 'center',
-  color: '#A0AEBA',
-  cursor: 'pointer',
-} as React.CSSProperties)
+  ({
+    backgroundColor: '#F9FAFB',
+    borderRadius: '100%',
+    width: '24px',
+    height: '24px',
+    textAlign: 'center',
+    color: '#A0AEBA',
+    cursor: 'pointer',
+  } as React.CSSProperties)
 
 const mainContentStyle = () =>
-({
-  display: 'flex',
-  justifyContent: 'space-between',
-} as React.CSSProperties)
+  ({
+    display: 'flex',
+    justifyContent: 'space-between',
+  } as React.CSSProperties)
 
 const walletOptionsStyle = () =>
-({
-  width: '300px',
-  padding: '24px 12px',
-  borderRight: '1px solid rgb(241 245 249)',
-  gap: '12px',
-  display: 'flex',
-  flexDirection: 'column',
-} as React.CSSProperties)
+  ({
+    width: '300px',
+    padding: '24px 12px',
+    borderRight: '1px solid rgb(241 245 249)',
+    gap: '12px',
+    display: 'flex',
+    flexDirection: 'column',
+  } as React.CSSProperties)
 
 const walletOptionStyle = () =>
-({
-  padding: '12px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'start',
-  gap: '0.75rem',
-  backgroundColor: '#F9FAFB',
-  borderRadius: '0.5rem',
-  fontWeight: '500',
-  cursor: 'pointer',
-} as React.CSSProperties)
+  ({
+    padding: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'start',
+    gap: '0.75rem',
+    backgroundColor: '#F9FAFB',
+    borderRadius: '0.5rem',
+    fontWeight: '500',
+    cursor: 'pointer',
+  } as React.CSSProperties)
 
 const registrationStyle = () =>
-({
-  padding: '24px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-} as React.CSSProperties)
+  ({
+    padding: '24px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  } as React.CSSProperties)
 
 const registrationHeaderStyle = () =>
-({
-  fontWeight: '500',
-} as React.CSSProperties)
+  ({
+    fontWeight: '500',
+  } as React.CSSProperties)
 
 const explainerStyle = () =>
-({
-  fontSize: 'smaller',
-} as React.CSSProperties)
+  ({
+    fontSize: 'smaller',
+  } as React.CSSProperties)
 
 const inputStyle = () =>
-({
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  padding: '12px',
-  width: '100%',
-} as React.CSSProperties)
+  ({
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    padding: '12px',
+    width: '100%',
+  } as React.CSSProperties)
 
 const buttonStyle = () =>
-({
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  padding: '12px',
-  backgroundColor: '#761AC7',
-  color: '#FFFFFF',
-  width: '50%',
-} as React.CSSProperties)
+  ({
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    padding: '12px',
+    backgroundColor: '#761AC7',
+    color: '#FFFFFF',
+    width: '50%',
+  } as React.CSSProperties)
 
 export default SignInModal

@@ -1,4 +1,4 @@
 export enum Chain {
-  Eth = "ethereum",
-  Sui = "sui"
+  Eth = 'ethereum',
+  Sui = 'sui',
 }

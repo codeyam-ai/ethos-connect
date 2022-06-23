@@ -1,3 +1,3 @@
-import * as ethers from './ethersWrapper';
+import * as ethers from './ethersWrapper'
 
-export { ethers };
+export { ethers }

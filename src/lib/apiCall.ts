@@ -7,7 +7,7 @@ type ApiCallProps = {
 }
 
 const apiCall = async ({ relativePath, method = 'GET', body }: ApiCallProps) => {
-  console.log("TEST", getConfiguration())
+  console.log('TEST', getConfiguration())
   const { walletAppUrl } = getConfiguration()
   const data = {
     method: method,
