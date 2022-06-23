@@ -1,4 +1,4 @@
-import getAppBaseUrl from './getAppBaseUrl'
+import getConfiguration from './getConfiguration'
 
 type getIframeProps = {
   appId: string
@@ -19,7 +19,7 @@ const getIframe = ({ appId, show = false }: getIframeProps) => {
     iframe.style.height = '0'
   }
 
-  const walletAppUrl = getAppBaseUrl()
+  const { walletAppUrl } = getConfiguration()
 
   if (!iframe) {
     console.log('creating iframe');

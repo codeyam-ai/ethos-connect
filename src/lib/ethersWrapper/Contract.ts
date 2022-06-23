@@ -1,4 +1,5 @@
 import { ethers, Contract as EthersContract } from "ethers";
+import getConfiguration from "../getConfiguration";
 import apiCall from "../apiCall";
 import showWallet from "../showWallet";
 import transact from "../transact";
@@ -24,7 +25,7 @@ export class Contract {
           (item: any) => item.name === prop
         )
         if (signerOrProvider.ethos && abiCall) {
-          const { appId, network } = signerOrProvider.ethos;
+          const { appId, network } = getConfiguration();
           
           return (...inputValues: any[]) => {
             return new Promise<void>((resolve, _reject) => {

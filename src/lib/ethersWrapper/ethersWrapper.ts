@@ -58,6 +58,7 @@ import {
 ////////////////////////
 // Exports
 
+console.log("providers", providers)
 export {
     // Signer,
 

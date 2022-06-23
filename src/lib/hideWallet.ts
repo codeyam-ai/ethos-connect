@@ -1,6 +1,8 @@
+import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 
-const hideWallet = (appId: string) => {
+const hideWallet = () => {
+  const { appId } = getConfiguration();
   getIframe({ appId })
 }
 

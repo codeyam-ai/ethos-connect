@@ -1,12 +1,9 @@
 import store from 'store2'
+import { EthosConfiguration } from '../types/EthosConfiguration'
 
-type InitializeOptions = {
-  walletAppUrl: string
-}
-
-const initialize = ({ walletAppUrl }: InitializeOptions): void => {
+const initialize = (ethosConfiguration: EthosConfiguration): void => {
   const ethosStore = store.namespace('ethos')
-  ethosStore('walletAppUrl', walletAppUrl)
+  ethosStore('configuration', ethosConfiguration)
 }
 
 export default initialize

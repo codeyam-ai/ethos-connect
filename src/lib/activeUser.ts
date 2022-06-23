@@ -1,9 +1,9 @@
-import getAppBaseUrl from './getAppBaseUrl'
+import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 import log from './log'
 
 const activeUser = (appId: string) => {
-  const walletAppUrl = getAppBaseUrl()
+  const { walletAppUrl } = getConfiguration()
   console.log('WALLET APP URL', walletAppUrl)
 
   return new Promise((resolve) => {

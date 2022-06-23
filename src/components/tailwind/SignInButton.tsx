@@ -18,7 +18,6 @@ const SignInButton = (props: any) => {
   return (
     <>
       <SignInModal
-        appId={appId}
         isOpen={isOpen}
         setSigner={onSignIn}
         setProvider={() => {}}

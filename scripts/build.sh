@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -e
-set -x
+# set -x
 
 SCRIPT_DIR=$(cd ${0%/*} && pwd -P)
 
 # Known variables
 SRC='./src'
 DST='./dist'
-name="ethos-wallet"
+name="ethos-wallet-beta"
 input="./${SRC}/index.ts"
 
 # Find executables
@@ -40,7 +40,7 @@ NODE_ENV=development $esbuild $input --format=cjs --outfile=$DST/$name.dev.cjs  
 tsc --emitDeclarationOnly --outDir $DST &
 
 # Copy build files over
-cp -rf ./build/ $DST
+# cp -rf ./build/ $DST
 
 # Wait for all the scripts to finish
 wait

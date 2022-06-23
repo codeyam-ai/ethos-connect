@@ -7,23 +7,22 @@ import Metamask from '../svg/Metamask'
 import Loader from '..//svg/Loader'
 import connectMetaMask from '../../utils/metamask'
 import { ethers } from 'ethers'
-// import { Signer } from '../../lib/ethersWrapper/Signer';
-// import { getAppBaseUrl } from 'lib'
+import getConfiguration from '../../lib/getConfiguration'
 
 type SignInModalProps = {
-  appId: string
   isOpen: boolean
   onClose: () => void
   setProvider: React.Dispatch<React.SetStateAction<ethers.providers.Web3Provider | undefined>>,
   setSigner: React.Dispatch<React.SetStateAction<ethers.providers.JsonRpcSigner | undefined>>
 }
 
-const SignInModal = ({ appId, isOpen, onClose, setProvider, setSigner }: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalProps) => {
+  const { appId } = getConfiguration();
+
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
   const _login = async () => {
-    // const appBaseUrl = getAppBaseUrl();
     setSigningIn(true)
     const user = await login(email, appId)
     setEmail('')
@@ -31,11 +30,6 @@ const SignInModal = ({ appId, isOpen, onClose, setProvider, setSigner }: SignInM
     if (!user) {
       setSigner(user)
     }
-    // const provider = new ethers.providers.JsonRpcProvider(appBaseUrl + '/api/rpc');
-    // const signer = provider.getSigner() as Signer;
-    // Provider has a different type here...
-    // setProvider(provider);
-    // setSigner(signer);
     onClose()
   }
 

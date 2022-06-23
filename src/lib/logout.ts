@@ -1,9 +1,9 @@
-import getAppBaseUrl from './getAppBaseUrl'
+import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 import log from './log'
 
 const logout = async (appId: string, wallet: any) => {
-  const walletAppUrl = getAppBaseUrl()
+  const { walletAppUrl } = getConfiguration()
 
   return new Promise((resolve) => {
     window.addEventListener('message', (message) => {

@@ -1,6 +1,6 @@
 import { UnpopulatedTransaction } from 'types/UnpopulatedTransaction'
 import apiCall from './apiCall'
-import getAppBaseUrl from './getAppBaseUrl'
+import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 
 const confirmBlockNumber = async (address: string, blockNumber: string) => {
@@ -27,8 +27,8 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 
 type transactProps = {
   appId: string
-  network: number,
-  abi: any,
+  network: string|number,
+  abi?: any,
   address: string,
   unpopulatedTransaction: UnpopulatedTransaction
   onSigned?: (data: any) => void
@@ -50,7 +50,7 @@ const transact = async ({
   onConfirmed,
   onCanceled
 }: transactProps) => {
-  const walletAppUrl = getAppBaseUrl()
+  const { walletAppUrl } = getConfiguration()
 
   window.addEventListener('message', (message) => {
     if (message.origin === walletAppUrl) {
