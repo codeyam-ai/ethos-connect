@@ -1,4 +1,5 @@
 import { ethers, Contract as EthersContract } from "ethers";
+import apiCall from "../apiCall";
 import showWallet from "../showWallet";
 import transact from "../transact";
 // import { CustomBaseContract } from "./CustomBaseContract";
@@ -38,8 +39,19 @@ export class Contract {
                   functionName: prop,
                   inputValues,
                 },
-                onComplete: async () => {
-                  resolve();
+                onSent: async (transaction: any) => {
+                  transaction.wait = async () => {
+                    const { json: { receipt } } = await apiCall({
+                      relativePath: "transaction/wait",
+                      method: "POST",
+                      body: { 
+                        transactionHash: transaction.hash, 
+                        network
+                      }
+                    });
+                    return receipt;
+                  }
+                  resolve(transaction);
                 }
               })
             })

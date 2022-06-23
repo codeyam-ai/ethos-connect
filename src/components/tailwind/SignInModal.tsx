@@ -28,6 +28,9 @@ const SignInModal = ({ appId, isOpen, onClose, setProvider, setSigner }: SignInM
     const user = await login(email, appId)
     setEmail('')
     console.log('user :>> ', user);
+    if (!user) {
+      setSigner(user)
+    }
     // const provider = new ethers.providers.JsonRpcProvider(appBaseUrl + '/api/rpc');
     // const signer = provider.getSigner() as Signer;
     // Provider has a different type here...
