@@ -14,9 +14,9 @@ import query from './lib/query'
 import ethBalance from './lib/ethBalance'
 import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
-import getSigner from './lib/getSigner'
+import getProvider from './lib/getProvider'
 
-import { ethers } from './lib/ethersWrapper'
+import * as ethers from './lib/ethersWrapper/ethersWrapper'
 
 const headless = {
   Button,
@@ -39,7 +39,7 @@ const lib = {
   ethBalance,
   showWallet,
   hideWallet,
-  getSigner,
+  getProvider,
 }
 console.log('local 💩')
 

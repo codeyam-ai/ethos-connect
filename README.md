@@ -25,7 +25,7 @@ The last line of the previous commands will watch for changes and the UI will au
 Then, from the root directory of the UI project
 
 ```
-yarn link ethos-wallet
+yarn link ethos-wallet-beta
 yarn link react
 yarn link react-dom
 yarn dev

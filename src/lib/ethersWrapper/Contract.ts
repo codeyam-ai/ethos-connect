@@ -4,7 +4,6 @@ import apiCall from '../apiCall'
 import showWallet from '../showWallet'
 import transact from '../transact'
 // import { CustomBaseContract } from "./CustomBaseContract";
-import { Signer } from './Signer'
 
 export class Contract {
   // The meta-class properties
@@ -13,7 +12,7 @@ export class Contract {
   constructor(
     addressOrName: string,
     contractInterface: ethers.ContractInterface,
-    signerOrProvider?: Signer | any
+    signerOrProvider?: any
   ) {
     const ethersContract = new EthersContract(addressOrName, contractInterface, signerOrProvider)
 
@@ -27,8 +26,6 @@ export class Contract {
 
           return (...inputValues: any[]) => {
             return new Promise<void>((resolve, _reject) => {
-              showWallet(appId)
-
               transact({
                 appId: appId,
                 network: network,
@@ -39,22 +36,26 @@ export class Contract {
                   inputValues,
                 },
                 onSent: async (transaction: any) => {
-                  transaction.wait = async () => {
-                    const {
-                      json: { receipt },
-                    } = await apiCall({
-                      relativePath: 'transaction/wait',
-                      method: 'POST',
-                      body: {
-                        transactionHash: transaction.hash,
-                        network,
-                      },
-                    })
-                    return receipt
+                  const transactionWithWait = {
+                    ...transaction,
+                    wait: async () => {
+                      const {
+                        json: { receipt },
+                      } = await apiCall({
+                        relativePath: 'transaction/wait',
+                        method: 'POST',
+                        body: {
+                          transactionHash: transaction.hash,
+                          network,
+                        },
+                      })
+                      return receipt
+                    },
                   }
-                  resolve(transaction)
+                  resolve(transactionWithWait)
                 },
               })
+              showWallet(appId)
             })
           }
         }
@@ -62,5 +63,7 @@ export class Contract {
         return Reflect.get(ethersContract, prop, receiver)
       },
     })
+
+    return ethersContract
   }
 }

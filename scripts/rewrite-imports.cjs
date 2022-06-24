@@ -9,8 +9,14 @@ fastGlob.sync([process.argv.slice(2).join('')]).forEach((file) => {
   file = path.resolve(process.cwd(), file)
   let content = fs.readFileSync(file, 'utf8')
   let result = content.replace(/(import|export)([^"']*?)(["'])\.(.*?)\3;/g, '$1$2".$4.js";')
-  result = content.replace(/.js.js/g, '.js')
+  result = result.replace(
+    /(import|export)([^"']*?)(["'])ethers\/lib\/(.*?)\3;/g,
+    '$1$2"ethers/lib/$4.js";'
+  )
+  result = result.replace(/.js.js/g, '.js')
+
   if (result !== content) {
+    console.log('REWRITING', file)
     fs.writeFileSync(file, result, 'utf8')
   }
 })

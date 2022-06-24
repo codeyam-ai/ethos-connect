@@ -7,17 +7,13 @@ declare global {
   }
 }
 
-// Not sure if I like this
-export type ProviderAndSigner = {
-  provider: ethers.providers.Web3Provider
-  signer: ethers.providers.JsonRpcSigner
-}
+const connectMetaMask = async (): Promise<ethers.providers.Web3Provider | undefined> => {
+  if (typeof window === undefined) {
+    return
+  }
 
-const connectMetaMask = async (): Promise<ProviderAndSigner> => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  await provider.send('eth_requestAccounts', [])
-  const signer = provider.getSigner()
-  return { provider, signer }
+  await window.ethereum.enable()
+  return new ethers.providers.Web3Provider(window.ethereum)
 }
 
 export default connectMetaMask

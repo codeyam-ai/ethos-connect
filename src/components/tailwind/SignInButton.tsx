@@ -3,7 +3,7 @@ import Button from '../headless/Button'
 import SignInModal from './SignInModal'
 
 const SignInButton = (props: any) => {
-  const { appId, children, onClick, onSignIn, ...reactProps } = props
+  const { appId, children, onClick, onEmailSent, onProviderSelected, ...reactProps } = props
 
   const [isOpen, setIsOpen] = React.useState(false)
 
@@ -19,8 +19,8 @@ const SignInButton = (props: any) => {
     <>
       <SignInModal
         isOpen={isOpen}
-        setSigner={onSignIn}
-        setProvider={() => {}}
+        onEmailSent={onEmailSent}
+        onProviderSelected={onProviderSelected}
         onClose={() => setIsOpen(false)}
       />
       <Button onClick={_onClick} isWorking={isOpen} {...reactProps}>

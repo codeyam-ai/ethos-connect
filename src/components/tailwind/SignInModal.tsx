@@ -12,24 +12,23 @@ import getConfiguration from '../../lib/getConfiguration'
 type SignInModalProps = {
   isOpen: boolean
   onClose: () => void
-  setProvider: React.Dispatch<React.SetStateAction<ethers.providers.Web3Provider | undefined>>
-  setSigner: React.Dispatch<React.SetStateAction<ethers.providers.JsonRpcSigner | undefined>>
+  onEmailSent: () => void
+  onProviderSelected: React.Dispatch<
+    React.SetStateAction<ethers.providers.Web3Provider | undefined>
+  >
 }
 
-const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignInModalProps) => {
   const { appId } = getConfiguration()
 
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
-  const _login = async () => {
+  const sendEmail = async () => {
     setSigningIn(true)
-    const user = await login(email, appId)
+    await login(email, appId)
     setEmail('')
-    console.log('user :>> ', user)
-    if (!user) {
-      setSigner(user)
-    }
+    onEmailSent()
     onClose()
   }
 
@@ -38,9 +37,8 @@ const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalPro
   }
 
   const _connectMetaMask = async () => {
-    const { provider, signer } = await connectMetaMask()
-    setProvider(provider)
-    setSigner(signer)
+    const provider = await connectMetaMask()
+    onProviderSelected(provider)
     onClose()
   }
 
@@ -85,7 +83,7 @@ const SignInModal = ({ isOpen, onClose, setProvider, setSigner }: SignInModalPro
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <button style={buttonStyle()} onClick={_login}>
+              <button style={buttonStyle()} onClick={sendEmail}>
                 Send Magic Link
               </button>
             </>

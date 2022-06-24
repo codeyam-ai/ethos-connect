@@ -52,7 +52,6 @@ import {
 ////////////////////////
 // Exports
 
-console.log('providers', providers)
 export {
   // Signer,
 
@@ -102,4 +101,3 @@ export type {
 // OVERRIDDEN METHODS
 
 export { Contract } from './Contract'
-export { Signer } from './Signer'
