@@ -16,7 +16,6 @@ fastGlob.sync([process.argv.slice(2).join('')]).forEach((file) => {
   result = result.replace(/.js.js/g, '.js')
 
   if (result !== content) {
-    console.log('REWRITING', file)
     fs.writeFileSync(file, result, 'utf8')
   }
 })

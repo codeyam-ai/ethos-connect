@@ -41,6 +41,5 @@ const lib = {
   hideWallet,
   getProvider,
 }
-console.log('local 💩')
 
 export { headless, tailwind, lib, ethers }
