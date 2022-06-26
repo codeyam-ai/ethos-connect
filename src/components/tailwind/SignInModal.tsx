@@ -12,13 +12,20 @@ import { Provider } from '../../lib/ethersWrapper/Provider'
 type SignInModalProps = {
   isOpen: boolean
   onClose: () => void
+  onLoaded: () => void
   onEmailSent: () => void
   onProviderSelected: React.Dispatch<
     React.SetStateAction<ethers.providers.Web3Provider | any | undefined>
   >
 }
 
-const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignInModalProps) => {
+const SignInModal = ({
+  isOpen,
+  onClose,
+  onLoaded,
+  onEmailSent,
+  onProviderSelected,
+}: SignInModalProps) => {
   const { appId } = getConfiguration()
 
   const [signingIn, setSigningIn] = useState(false)
@@ -39,6 +46,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignI
 
   useEffect(() => {
     onProviderSelected(provider)
+    onLoaded()
   }, [provider])
 
   const sendEmail = async () => {
@@ -53,12 +61,12 @@ const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignI
     close()
   }
 
-  const logo = (connectorName: string) => {
-    switch (connectorName) {
-      case 'MetaMask':
+  const logo = (connectorId: string) => {
+    switch (connectorId) {
+      case 'metaMask':
         return <Metamask />
       // case 'Coinbase Wallet':
-      case 'Ethos':
+      case 'ethos':
         return <Ethos />
       default:
         return <WalletConnect />
@@ -77,22 +85,27 @@ const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignI
         <div style={walletOptionsStyle()}>
           <div style={walletOptionStyle()} onClick={() => connectEthos()}>
             <button style={walletOptionButtonStyle()}>
-              {logo('Ethos')}
+              {logo('ethos')}
               Ethos
             </button>
           </div>
-          {connectors.map((connector) => (
-            <div key={connector.id} style={walletOptionStyle()} onClick={() => connect(connector)}>
-              <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
-                {logo(connector.name)}
-                {connector.name}
-                {!connector.ready && <span style={connectorSubStyle()}>(unsupported)</span>}
-                {isConnecting && connector.id === pendingConnector?.id && (
-                  <span style={connectorSubStyle()}>(connecting)</span>
-                )}
-              </button>
-            </div>
-          ))}
+          {isOpen &&
+            connectors.map((connector) => (
+              <div
+                key={connector.id}
+                style={walletOptionStyle()}
+                onClick={() => connect(connector)}
+              >
+                <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
+                  {logo(connector.id)}
+                  {connector.name}
+                  {!connector.ready && <span style={connectorSubStyle()}>(unsupported)</span>}
+                  {isConnecting && connector.id === pendingConnector?.id && (
+                    <span style={connectorSubStyle()}>(connecting)</span>
+                  )}
+                </button>
+              </div>
+            ))}
 
           {error && <div>{error.message}</div>}
         </div>

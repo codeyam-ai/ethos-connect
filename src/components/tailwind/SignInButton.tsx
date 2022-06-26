@@ -46,9 +46,11 @@ const client = createClient({
 })
 
 const SignInButton = (props: any) => {
-  const { appId, children, onClick, onEmailSent, onProviderSelected, ...reactProps } = props
+  const { appId, children, onClick, onLoaded, onEmailSent, onProviderSelected, ...reactProps } =
+    props
 
   const [isOpen, setIsOpen] = React.useState(false)
+  const [loaded, setLoaded] = React.useState(false)
 
   const _onClick = (e: any) => {
     setIsOpen(true)
@@ -58,17 +60,25 @@ const SignInButton = (props: any) => {
     }
   }
 
+  const _onLoaded = () => {
+    setLoaded(true)
+    onLoaded()
+  }
+
   return (
     <WagmiConfig client={client}>
       <SignInModal
         isOpen={isOpen}
+        onLoaded={_onLoaded}
         onEmailSent={onEmailSent}
         onProviderSelected={onProviderSelected}
         onClose={() => setIsOpen(false)}
       />
-      <Button onClick={_onClick} isWorking={isOpen} {...reactProps}>
-        {props.children || <>Sign In</>}
-      </Button>
+      {loaded && (
+        <Button onClick={_onClick} isWorking={isOpen} {...reactProps}>
+          {props.children || <>Sign In</>}
+        </Button>
+      )}
     </WagmiConfig>
   )
 }
