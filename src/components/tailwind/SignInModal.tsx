@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-// import connectWallet from '../../lib/connectWallet'
+import React, { useEffect, useState } from 'react'
 import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
 import Loader from '..//svg/Loader'
-import connectMetaMask from '../../utils/metamask'
 import { ethers } from 'ethers'
 import getConfiguration from '../../lib/getConfiguration'
+import { useConnect, useProvider, useSigner } from 'wagmi'
+import { Provider } from '../../lib/ethersWrapper/Provider'
 
 type SignInModalProps = {
   isOpen: boolean
   onClose: () => void
   onEmailSent: () => void
   onProviderSelected: React.Dispatch<
-    React.SetStateAction<ethers.providers.Web3Provider | undefined>
+    React.SetStateAction<ethers.providers.Web3Provider | any | undefined>
   >
 }
 
@@ -23,6 +23,23 @@ const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignI
 
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
+  const provider = useProvider()
+  const { data: signer } = useSigner()
+  const { connect, connectors, error, isConnecting, pendingConnector } = useConnect()
+
+  useEffect(() => {
+    if (!signer) {
+      return
+    }
+
+    const fullProvider = new Provider(provider, signer)
+    onProviderSelected(fullProvider)
+    onClose()
+  }, [signer])
+
+  useEffect(() => {
+    onProviderSelected(provider)
+  }, [provider])
 
   const sendEmail = async () => {
     setSigningIn(true)
@@ -32,21 +49,21 @@ const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignI
     onClose()
   }
 
-  const _connectWallet = async () => {
-    onClose()
+  const connectEthos = () => {
+    close()
   }
 
-  const _connectMetaMask = async () => {
-    const provider = await connectMetaMask()
-    onProviderSelected(provider)
-    onClose()
+  const logo = (connectorName: string) => {
+    switch (connectorName) {
+      case 'MetaMask':
+        return <Metamask />
+      // case 'Coinbase Wallet':
+      case 'Ethos':
+        return <Ethos />
+      default:
+        return <WalletConnect />
+    }
   }
-
-  const walletOptions = [
-    { name: 'Ethos', logo: <Ethos />, onClick: _connectWallet },
-    { name: 'Metamask', logo: <Metamask />, onClick: _connectMetaMask },
-    { name: 'WalletConnect', logo: <WalletConnect />, onClick: _connectWallet },
-  ]
 
   return (
     <div style={modalStyle(isOpen)}>
@@ -58,12 +75,26 @@ const SignInModal = ({ isOpen, onClose, onEmailSent, onProviderSelected }: SignI
       </div>
       <div style={mainContentStyle()}>
         <div style={walletOptionsStyle()}>
-          {walletOptions.map((option, index) => (
-            <div key={index} style={walletOptionStyle()} onClick={option.onClick}>
-              {option.logo}
-              {option.name}
+          <div style={walletOptionStyle()} onClick={() => connectEthos()}>
+            <button style={walletOptionButtonStyle()}>
+              {logo('Ethos')}
+              Ethos
+            </button>
+          </div>
+          {connectors.map((connector) => (
+            <div key={connector.id} style={walletOptionStyle()} onClick={() => connect(connector)}>
+              <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
+                {logo(connector.name)}
+                {connector.name}
+                {!connector.ready && <span style={connectorSubStyle()}>(unsupported)</span>}
+                {isConnecting && connector.id === pendingConnector?.id && (
+                  <span style={connectorSubStyle()}>(connecting)</span>
+                )}
+              </button>
             </div>
           ))}
+
+          {error && <div>{error.message}</div>}
         </div>
         <div style={registrationStyle()}>
           <h3 style={registrationHeaderStyle()}>Magic Link</h3>
@@ -148,7 +179,7 @@ const walletOptionsStyle = () =>
     width: '300px',
     padding: '24px 12px',
     borderRight: '1px solid rgb(241 245 249)',
-    gap: '12px',
+    gap: '6px',
     display: 'flex',
     flexDirection: 'column',
   } as React.CSSProperties)
@@ -156,15 +187,25 @@ const walletOptionsStyle = () =>
 const walletOptionStyle = () =>
   ({
     padding: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'start',
-    gap: '0.75rem',
     backgroundColor: '#F9FAFB',
     borderRadius: '0.5rem',
     fontWeight: '500',
     cursor: 'pointer',
   } as React.CSSProperties)
+
+const walletOptionButtonStyle = () =>
+  ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'start',
+    gap: '0.5rem',
+  } as React.CSSProperties)
+
+const connectorSubStyle = () => ({
+  fontWeight: '300',
+  color: 'gray',
+  fontSize: 'smaller',
+})
 
 const registrationStyle = () =>
   ({

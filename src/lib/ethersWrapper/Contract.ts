@@ -63,7 +63,5 @@ export class Contract {
         return Reflect.get(ethersContract, prop, receiver)
       },
     })
-
-    return ethersContract
   }
 }

@@ -63,7 +63,8 @@
   },
   "dependencies": {
     "ethers": "^5.6.8",
-    "store2": "^2.13.2"
+    "store2": "^2.13.2",
+    "wagmi": "^0.4.12"
   },
   "lint-staged": {
     "*": "yarn lint"
