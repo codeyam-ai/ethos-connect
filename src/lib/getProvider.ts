@@ -5,11 +5,11 @@ import getConfiguration from './getConfiguration'
 import networkToChain from './networkToChain'
 
 const getProvider = async (network?: Networkish): Promise<ethers.providers.Web3Provider> => {
-  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-  const addresses = (await provider?.listAccounts()) || []
-  if (addresses.length > 0) {
-    return provider
-  }
+  // const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  // const addresses = (await provider?.listAccounts()) || []
+  // if (addresses.length > 0) {
+  //   return provider
+  // }
 
   const { appId, walletAppUrl, network: defaultNetwork } = getConfiguration()
   const rpcProvider = new ethers.providers.JsonRpcProvider(
