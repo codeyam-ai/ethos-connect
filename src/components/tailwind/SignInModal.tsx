@@ -3,11 +3,12 @@ import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
-import Loader from '..//svg/Loader'
+import Loader from '../svg/Loader'
 import { ethers } from 'ethers'
 import getConfiguration from '../../lib/getConfiguration'
 import { useConnect, useProvider, useSigner } from 'wagmi'
 import { Provider } from '../../lib/ethersWrapper/Provider'
+import getProvider from '../../lib/getProvider'
 
 type SignInModalProps = {
   isOpen: boolean
@@ -50,6 +51,18 @@ const SignInModal = ({
       onLoaded()
     }
   }, [provider, isFetched])
+
+  useEffect(() => {
+    const fetchEthosProvider = async () => {
+      const ethosProvider = await getProvider()
+      if (ethosProvider) {
+        onProviderSelected(ethosProvider)
+        onLoaded()
+      }
+    }
+
+    fetchEthosProvider()
+  }, [])
 
   const sendEmail = async () => {
     setSigningIn(true)
