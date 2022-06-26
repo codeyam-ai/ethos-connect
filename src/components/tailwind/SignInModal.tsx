@@ -31,7 +31,7 @@ const SignInModal = ({
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const provider = useProvider()
-  const { data: signer } = useSigner()
+  const { data: signer, isFetched } = useSigner()
   const { connect, connectors, error, isConnecting, pendingConnector } = useConnect()
 
   useEffect(() => {
@@ -45,9 +45,11 @@ const SignInModal = ({
   }, [signer])
 
   useEffect(() => {
-    onProviderSelected(provider)
-    onLoaded()
-  }, [provider])
+    if (isFetched && !signer) {
+      onProviderSelected(provider)
+      onLoaded()
+    }
+  }, [provider, isFetched])
 
   const sendEmail = async () => {
     setSigningIn(true)
