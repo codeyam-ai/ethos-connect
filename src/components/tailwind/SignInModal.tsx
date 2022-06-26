@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
@@ -6,9 +6,10 @@ import Metamask from '../svg/Metamask'
 import Loader from '../svg/Loader'
 import { ethers } from 'ethers'
 import getConfiguration from '../../lib/getConfiguration'
-import { useConnect, useProvider, useSigner } from 'wagmi'
+import { useAccount, useConnect, useProvider, useSigner } from 'wagmi'
 import { Provider } from '../../lib/ethersWrapper/Provider'
 import getProvider from '../../lib/getProvider'
+// import { checkResultErrors } from 'ethers/lib/utils'
 
 type SignInModalProps = {
   isOpen: boolean
@@ -32,31 +33,40 @@ const SignInModal = ({
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const provider = useProvider()
-  const { data: signer, isFetched } = useSigner()
+  const { data: account } = useAccount()
+  const { data: signer } = useSigner()
   const { connect, connectors, error, isConnecting, pendingConnector } = useConnect()
+  const providersChecked = useRef({
+    wagmi: null,
+    ethos: null,
+  })
 
   useEffect(() => {
-    if (!signer) {
-      return
-    }
+    const checks = providersChecked.current as any
+    if (checks.ethos) return
 
-    const fullProvider = new Provider(provider, signer)
-    onProviderSelected(fullProvider)
-    onClose()
-  }, [signer])
-
-  useEffect(() => {
-    if (isFetched && !signer) {
-      onProviderSelected(provider)
-      onLoaded()
+    if (!account) {
+      checks.wagmi = false
+      if (checks.ethos === false) {
+        onProviderSelected(provider)
+      }
+    } else if (signer) {
+      checks.wagmi = true
+      const fullProvider = new Provider(provider, signer)
+      onProviderSelected(fullProvider)
     }
-  }, [provider, isFetched])
+  }, [account, signer])
 
   useEffect(() => {
     const fetchEthosProvider = async () => {
       const ethosProvider = await getProvider()
-      if (ethosProvider) {
-        onProviderSelected(ethosProvider)
+      const checks = providersChecked.current as any
+      if (ethosProvider && checks.ethos === null && !checks.wagmi) {
+        const hasSigner = ethosProvider.getSigner() !== undefined
+        checks.ethos = hasSigner
+        if (checks.wagmi === false || (hasSigner && !checks.wagmi)) {
+          onProviderSelected(ethosProvider)
+        }
         onLoaded()
       }
     }
