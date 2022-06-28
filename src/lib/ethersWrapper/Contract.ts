@@ -3,10 +3,10 @@ import getConfiguration from '../getConfiguration'
 import apiCall from '../apiCall'
 import showWallet from '../showWallet'
 import transact from '../transact'
-// import { CustomBaseContract } from "./CustomBaseContract";
+import { FunctionFragment } from 'ethers/lib/utils'
 
 export class Contract {
-  // The meta-class properties
+  // Contract function properties
   readonly [key: string]: ethers.ContractFunction | any
 
   constructor(
@@ -19,9 +19,9 @@ export class Contract {
     const base = new Object()
 
     return new Proxy(base, {
-      get: (_target: any, prop: any, receiver: any) => {
-        const abiCall = (contractInterface as any[]).find((item: any) => item.name === prop)
-        if (signerOrProvider.ethos && abiCall) {
+      get: (_target: any, contractFunctionName: string, receiver: any) => {
+        const contractHasFunction = doesContractHaveFunction(contractInterface, contractFunctionName)
+        if (signerOrProvider.ethos && contractHasFunction) {
           const { appId, network } = getConfiguration()
 
           return (...inputValues: any[]) => {
@@ -32,7 +32,7 @@ export class Contract {
                 abi: contractInterface,
                 address: addressOrName,
                 unpopulatedTransaction: {
-                  functionName: prop,
+                  functionName: contractFunctionName,
                   inputValues,
                 },
                 onSent: async (transaction: any) => {
@@ -60,8 +60,12 @@ export class Contract {
           }
         }
 
-        return Reflect.get(ethersContract, prop, receiver)
+        return Reflect.get(ethersContract, contractFunctionName, receiver)
       },
     })
   }
+}
+
+function doesContractHaveFunction(contractInterface: ethers.ContractInterface, prop: string) {
+  return !!(contractInterface as FunctionFragment[]).find((item: FunctionFragment) => item.name === prop)
 }
