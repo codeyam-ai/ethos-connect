@@ -40,7 +40,7 @@ NODE_ENV=development $esbuild $input --format=cjs --outfile=$DST/$name.dev.cjs  
 tsc --emitDeclarationOnly --outDir $DST &
 
 # Copy build files over
-# cp -rf ./build/ $DST
+cp -rf ./build/ $DST
 
 # Wait for all the scripts to finish
 wait

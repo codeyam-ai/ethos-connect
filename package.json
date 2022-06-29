@@ -1,8 +1,8 @@
 {
   "name": "ethos-wallet-beta",
-  "version": "0.0.20",
+  "version": "0.0.25",
   "description": "Beta version of the Ethos Wallet NPM Package",
-  "main": "dist/ethos-wallet-beta.prod.cjs",
+  "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
   "module": "dist/ethos-wallet-beta.esm.js",
   "license": "MIT",
