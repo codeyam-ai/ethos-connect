@@ -20,7 +20,10 @@ export class Contract {
 
     return new Proxy(base, {
       get: (_target: any, contractFunctionName: string, receiver: any) => {
-        const contractHasFunction = doesContractHaveFunction(contractInterface, contractFunctionName)
+        const contractHasFunction = doesContractHaveFunction(
+          contractInterface,
+          contractFunctionName
+        )
         if (signerOrProvider.ethos && contractHasFunction) {
           const { appId, network } = getConfiguration()
 
@@ -67,5 +70,7 @@ export class Contract {
 }
 
 function doesContractHaveFunction(contractInterface: ethers.ContractInterface, prop: string) {
-  return !!(contractInterface as FunctionFragment[]).find((item: FunctionFragment) => item.name === prop)
+  return !!(contractInterface as FunctionFragment[]).find(
+    (item: FunctionFragment) => item.name === prop
+  )
 }

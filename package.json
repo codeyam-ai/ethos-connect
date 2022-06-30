@@ -1,6 +1,6 @@
 {
   "name": "ethos-wallet-beta",
-  "version": "0.0.25",
+  "version": "0.0.27",
   "description": "Beta version of the Ethos Wallet NPM Package",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -54,7 +54,6 @@
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
     "prettier": "^2.6.2",
-    "prettier-plugin-tailwindcss": "^0.1.11",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "rimraf": "^3.0.2",

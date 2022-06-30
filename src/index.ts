@@ -1,7 +1,7 @@
 import Button from './components/headless/Button'
 
-import SignInButton from './components/tailwind/SignInButton'
-import SignInModal from './components/tailwind/SignInModal'
+import SignInButton from './components/styled/SignInButton'
+import SignInModal from './components/styled/SignInModal'
 
 import initialize from './lib/initialize'
 import login from './lib/login'
@@ -22,10 +22,12 @@ const headless = {
   Button,
 }
 
-const tailwind = {
+const styled = {
   SignInButton,
   SignInModal,
 }
+
+const components = { headless, styled }
 
 const lib = {
   initialize,
@@ -42,4 +44,4 @@ const lib = {
   getProvider,
 }
 
-export { headless, tailwind, lib, ethers }
+export { components, lib, ethers }

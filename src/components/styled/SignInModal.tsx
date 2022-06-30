@@ -1,6 +1,5 @@
 import React from 'react'
-import Button from '../headless/Button'
-import SignInModal from './SignInModal'
+import { ethers } from 'ethers'
 import { WagmiConfig, createClient, defaultChains, configureChains } from 'wagmi'
 
 import { alchemyProvider } from 'wagmi/providers/alchemy'
@@ -10,6 +9,7 @@ import { publicProvider } from 'wagmi/providers/public'
 // import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import WagmiWrappedSignInModal from './WagmiWrappedSignInModal'
 
 const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
   alchemyProvider({ alchemyId: 'rFuRqqP4t7WQ0hFHrN6h7HdVXOatTnBV' }),
@@ -45,41 +45,25 @@ const client = createClient({
   webSocketProvider,
 })
 
-const SignInButton = (props: any) => {
-  const { appId, children, onClick, onLoaded, onEmailSent, onProviderSelected, ...reactProps } =
-    props
+export type ProviderAndSigner = {
+  provider: ethers.providers.Web3Provider | any | undefined
+  signer: any
+}
 
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [loaded, setLoaded] = React.useState(false)
+export type SignInModalProps = {
+  isOpen: boolean
+  onClose?: () => void
+  onLoaded?: () => void
+  onEmailSent?: () => void
+  onProviderSelected: ({ provider, signer }: ProviderAndSigner) => void
+}
 
-  const _onClick = (e: any) => {
-    setIsOpen(true)
-
-    if (onClick) {
-      onClick(e)
-    }
-  }
-
-  const _onLoaded = () => {
-    setLoaded(true)
-    onLoaded()
-  }
-
+const SignInModal = (props: SignInModalProps) => {
   return (
     <WagmiConfig client={client}>
-      <SignInModal
-        isOpen={isOpen}
-        onLoaded={_onLoaded}
-        onEmailSent={onEmailSent}
-        onProviderSelected={onProviderSelected}
-        onClose={() => setIsOpen(false)}
-      />
-      {loaded && (
-        <Button onClick={_onClick} isWorking={isOpen} {...reactProps}>
-          {props.children || <>Sign In</>}
-        </Button>
-      )}
+      <WagmiWrappedSignInModal {...props} />
     </WagmiConfig>
   )
 }
-export default SignInButton
+
+export default SignInModal

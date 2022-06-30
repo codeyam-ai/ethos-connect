@@ -4,24 +4,13 @@ import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
 import Loader from '../svg/Loader'
-import { ethers } from 'ethers'
 import getConfiguration from '../../lib/getConfiguration'
 import { useAccount, useConnect, useProvider, useSigner } from 'wagmi'
 import { Provider } from '../../lib/ethersWrapper/Provider'
 import getProvider from '../../lib/getProvider'
-// import { checkResultErrors } from 'ethers/lib/utils'
+import { SignInModalProps } from './SignInModal'
 
-type SignInModalProps = {
-  isOpen: boolean
-  onClose: () => void
-  onLoaded: () => void
-  onEmailSent: () => void
-  onProviderSelected: React.Dispatch<
-    React.SetStateAction<ethers.providers.Web3Provider | any | undefined>
-  >
-}
-
-const SignInModal = ({
+const WagmiWrappedSignInModal = ({
   isOpen,
   onClose,
   onLoaded,
@@ -48,12 +37,12 @@ const SignInModal = ({
     if (!account) {
       checks.wagmi = false
       if (checks.ethos === false) {
-        onProviderSelected(provider)
+        onProviderSelected({ provider, signer: null })
       }
     } else if (signer) {
       checks.wagmi = true
       const fullProvider = new Provider(provider, signer)
-      onProviderSelected(fullProvider)
+      onProviderSelected({ provider: fullProvider, signer })
     }
   }, [account, signer])
 
@@ -65,9 +54,12 @@ const SignInModal = ({
         const hasSigner = ethosProvider.getSigner() !== undefined
         checks.ethos = hasSigner
         if (checks.wagmi === false || (hasSigner && !checks.wagmi)) {
-          onProviderSelected(ethosProvider)
+          onProviderSelected({
+            provider: ethosProvider,
+            signer: ethosProvider.getSigner(),
+          })
         }
-        onLoaded()
+        onLoaded && onLoaded()
       }
     }
 
@@ -78,8 +70,8 @@ const SignInModal = ({
     setSigningIn(true)
     await login(email, appId)
     setEmail('')
-    onEmailSent()
-    onClose()
+    onEmailSent && onEmailSent()
+    onClose && onClose()
   }
 
   const connectEthos = () => {
@@ -140,8 +132,8 @@ const SignInModal = ({
             Enter your email and we&#39;ll send you a magic link that will sign you in.
           </div>
           {signingIn ? (
-            <div className="flex justify-center">
-              <Loader width={100} />
+            <div style={loaderStyle()}>
+              <Loader width={50} />
             </div>
           ) : (
             <>
@@ -281,4 +273,11 @@ const buttonStyle = () =>
     width: '50%',
   } as React.CSSProperties)
 
-export default SignInModal
+const loaderStyle = () =>
+  ({
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '45px 0',
+  } as React.CSSProperties)
+
+export default WagmiWrappedSignInModal

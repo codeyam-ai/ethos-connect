@@ -1,8 +1,5 @@
 import { ethers } from 'ethers'
-
-export interface EthosProvider extends ethers.providers.BaseProvider {
-  getSigner: () => any
-}
+import { EthosProvider } from 'types/EthosProvider'
 
 export class Provider {
   constructor(base: any, signer: any) {
