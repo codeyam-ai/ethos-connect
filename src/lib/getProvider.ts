@@ -25,6 +25,8 @@ const getProvider = async (network?: Networkish): Promise<ethers.providers.Web3P
       switch (prop) {
         case 'ethos':
           return true
+        case 'email':
+          return user.email
         case 'getAddress':
           return async () => {
             const networkString = networkToChain((network || defaultNetwork).toString())

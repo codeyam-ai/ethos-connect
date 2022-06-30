@@ -1,3 +1,4 @@
+import { Chain } from '../../enums/Chain'
 import { NFT } from '../../types/NFT'
 import * as apiCall from '../apiCall'
 import walletContents from '../walletContents'
@@ -23,10 +24,10 @@ describe('walletContents', () => {
     }
     const spyApiCall = jest.spyOn(apiCall, 'default').mockResolvedValueOnce(apiCallReturn)
 
-    const result = await walletContents(walletAddress)
+    const result = await walletContents(walletAddress, Chain.Eth)
 
     expect(spyApiCall).toBeCalledTimes(1)
-    expect(spyApiCall).toBeCalledWith({ relativePath: `nfts/${walletAddress}` })
+    expect(spyApiCall).toBeCalledWith({ relativePath: `nfts/${walletAddress}?chain=${Chain.Eth}` })
     expect(result).toEqual(returnedNfts)
   })
 })

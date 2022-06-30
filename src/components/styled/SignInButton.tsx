@@ -3,7 +3,6 @@ import Button from '../headless/Button'
 import SignInModal, { ProviderAndSigner } from './SignInModal'
 
 export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  appId: string
   onClick?: () => void
   onLoaded?: () => void
   onEmailSent?: () => void
@@ -14,7 +13,6 @@ export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElemen
 
 const SignInButton = (props: SignInButtonProps) => {
   const {
-    appId,
     children,
     onClick,
     onLoaded,
