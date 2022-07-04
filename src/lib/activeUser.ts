@@ -4,7 +4,7 @@ import log from './log'
 // import postMessage from './postMessage'
 
 const activeUser = () => {
-  const { walletAppUrl, iframeOrigin } = getConfiguration()
+  const { walletAppUrl } = getConfiguration()
   console.log('WALLET APP URL', walletAppUrl)
 
   const resolver = (resolve: any) => {
@@ -24,7 +24,7 @@ const activeUser = () => {
     // Compiler isn't handling postMessage
     const message = { action: 'activeUser' }
     const iframe = getIframe()
-    iframe?.contentWindow?.postMessage(message, iframeOrigin || '*')
+    iframe?.contentWindow?.postMessage(message, '*')
     // postMessage(message)
   }
 
