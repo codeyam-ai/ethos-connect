@@ -1,12 +1,13 @@
 import getConfiguration from './getConfiguration'
+import getIframe from './getIframe'
 import log from './log'
-import postMessage from './postMessage'
+// import postMessage from './postMessage'
 
 const activeUser = () => {
-  const { walletAppUrl } = getConfiguration()
+  const { walletAppUrl, iframeOrigin } = getConfiguration()
   console.log('WALLET APP URL', walletAppUrl)
 
-  return new Promise((resolve) => {
+  const resolver = (resolve: any) => {
     const listener = (message: any) => {
       log('activeUser', 'MESSAGE ORIGIN: ', message.origin, walletAppUrl, message)
       if (message.origin === walletAppUrl) {
@@ -18,13 +19,16 @@ const activeUser = () => {
         }
       }
     }
-
     window.addEventListener('message', listener)
 
-    postMessage({
-      action: 'activeUser',
-    })
-  })
+    // Compiler isn't handling postMessage
+    const message = { action: 'activeUser' }
+    const iframe = getIframe()
+    iframe?.contentWindow?.postMessage(message, iframeOrigin || '*')
+    // postMessage(message)
+  }
+
+  return new Promise(resolver)
 }
 
 export default activeUser
