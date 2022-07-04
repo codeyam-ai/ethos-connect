@@ -11,15 +11,16 @@ const getProvider = async (network?: Networkish): Promise<ethers.providers.Web3P
   //   return provider
   // }
 
-  const { appId, walletAppUrl, network: defaultNetwork } = getConfiguration()
-  const rpcProvider = new ethers.providers.JsonRpcProvider(
-    walletAppUrl + '/api/rpc',
-    defaultNetwork
-  )
+  const { walletAppUrl, network: defaultNetwork } = getConfiguration()
 
-  const user: any = await activeUser(appId)
+  const rpcProvider =
+    defaultNetwork === 'sui'
+      ? Object()
+      : new ethers.providers.JsonRpcProvider(walletAppUrl + '/api/rpc', defaultNetwork)
 
-  const signer = rpcProvider.getSigner()
+  const user: any = await activeUser()
+
+  const signer = defaultNetwork === 'sui' ? Object() : rpcProvider.getSigner()
   const proxySigner = new Proxy(signer, {
     get: (target: any, prop: any, receiver: any) => {
       switch (prop) {

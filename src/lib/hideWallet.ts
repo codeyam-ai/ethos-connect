@@ -1,9 +1,7 @@
-import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 
 const hideWallet = () => {
-  const { appId } = getConfiguration()
-  getIframe({ appId })
+  getIframe()
 }
 
 export default hideWallet

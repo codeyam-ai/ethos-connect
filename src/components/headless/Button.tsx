@@ -13,7 +13,7 @@ const Button = (props: any) => {
           </span>
         )
       ) : (
-        <h4>{children}</h4>
+        <>{children}</>
       )}
     </button>
   )

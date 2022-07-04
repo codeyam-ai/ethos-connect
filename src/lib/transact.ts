@@ -2,6 +2,7 @@ import { UnpopulatedTransaction } from 'types/UnpopulatedTransaction'
 import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
+import postMessage from './postMessage'
 
 const confirmBlockNumber = async (address: string, blockNumber: string) => {
   return new Promise(async (resolve) => {
@@ -26,7 +27,6 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 }
 
 type transactProps = {
-  appId: string
   network: string | number
   abi?: any
   address: string
@@ -39,7 +39,6 @@ type transactProps = {
 }
 
 const transact = async ({
-  appId,
   network,
   abi,
   address,
@@ -78,21 +77,17 @@ const transact = async ({
     }
   })
 
-  const iframe = getIframe({ appId })
-  iframe?.contentWindow?.postMessage(
-    {
-      action: 'transact',
-      data: {
-        network,
-        abi,
-        address,
-        unpopulatedTransaction,
-      },
+  postMessage({
+    action: 'transact',
+    data: {
+      network,
+      abi,
+      address,
+      unpopulatedTransaction,
     },
-    walletAppUrl
-  )
+  })
 
-  getIframe({ appId, show: true })
+  getIframe(true)
 }
 
 export default transact

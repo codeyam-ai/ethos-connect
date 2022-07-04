@@ -25,12 +25,11 @@ export class Contract {
           contractFunctionName
         )
         if (signerOrProvider.ethos && contractHasFunction) {
-          const { appId, network } = getConfiguration()
+          const { network } = getConfiguration()
 
           return (...inputValues: any[]) => {
             return new Promise<void>((resolve, _reject) => {
               transact({
-                appId: appId,
                 network: network,
                 abi: contractInterface,
                 address: addressOrName,
@@ -58,7 +57,7 @@ export class Contract {
                   resolve(transactionWithWait)
                 },
               })
-              showWallet(appId)
+              showWallet()
             })
           }
         }

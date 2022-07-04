@@ -1,8 +1,8 @@
 import getConfiguration from './getConfiguration'
-import getIframe from './getIframe'
 import log from './log'
+import postMessage from './postMessage'
 
-const logout = async (appId: string, wallet: any) => {
+const logout = async (wallet: boolean = false) => {
   const { walletAppUrl } = getConfiguration()
 
   return new Promise((resolve) => {
@@ -17,14 +17,10 @@ const logout = async (appId: string, wallet: any) => {
       }
     })
 
-    const iframe = getIframe({ appId })
-    iframe?.contentWindow?.postMessage(
-      {
-        action: 'logout',
-        data: { wallet },
-      },
-      walletAppUrl
-    )
+    postMessage({
+      action: 'logout',
+      data: { wallet },
+    })
   })
 }
 

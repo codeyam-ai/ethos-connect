@@ -1,11 +1,8 @@
 import getConfiguration from './getConfiguration'
 
-type getIframeProps = {
-  appId: string
-  show?: boolean
-}
+const getIframe = (show = false) => {
+  const { appId } = getConfiguration()
 
-const getIframe = ({ appId, show = false }: getIframeProps) => {
   const iframeId = 'ethos-wallet-iframe'
   let scrollY: number = 0
 

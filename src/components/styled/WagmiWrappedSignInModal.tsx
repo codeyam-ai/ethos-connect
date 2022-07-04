@@ -22,9 +22,9 @@ const WagmiWrappedSignInModal = ({
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const provider = useProvider()
-  const { data: account } = useAccount()
+  const { address } = useAccount()
   const { data: signer } = useSigner()
-  const { connect, connectors, error, isConnecting, pendingConnector } = useConnect()
+  const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
   const providersChecked = useRef({
     wagmi: null,
     ethos: null,
@@ -34,7 +34,7 @@ const WagmiWrappedSignInModal = ({
     const checks = providersChecked.current as any
     if (checks.ethos) return
 
-    if (!account) {
+    if (!address) {
       checks.wagmi = false
       if (checks.ethos === false) {
         onProviderSelected({ provider, signer: null })
@@ -44,7 +44,7 @@ const WagmiWrappedSignInModal = ({
       const fullProvider = new Provider(provider, signer)
       onProviderSelected({ provider: fullProvider, signer })
     }
-  }, [account, signer])
+  }, [address, signer])
 
   useEffect(() => {
     const fetchEthosProvider = async () => {
@@ -107,17 +107,17 @@ const WagmiWrappedSignInModal = ({
             </button>
           </div>
           {isOpen &&
-            connectors.map((connector) => (
+            connectors.map((connector: any) => (
               <div
                 key={connector.id}
                 style={walletOptionStyle()}
-                onClick={() => connect(connector)}
+                onClick={() => connect({ connector })}
               >
                 <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
                   {logo(connector.id)}
                   {connector.name}
                   {!connector.ready && <span style={connectorSubStyle()}>(unsupported)</span>}
-                  {isConnecting && connector.id === pendingConnector?.id && (
+                  {isLoading && pendingConnector?.id === connector.id && (
                     <span style={connectorSubStyle()}>(connecting)</span>
                   )}
                 </button>
@@ -185,6 +185,7 @@ const titleStyle = () =>
   ({
     fontSize: '1rem',
     fontWeight: '500',
+    margin: '0',
   } as React.CSSProperties)
 
 const closeStyle = () =>
@@ -229,6 +230,9 @@ const walletOptionButtonStyle = () =>
     alignItems: 'center',
     justifyContent: 'start',
     gap: '0.5rem',
+    border: 'none',
+    background: 'none',
+    textDecoration: 'none',
   } as React.CSSProperties)
 
 const connectorSubStyle = () => ({
@@ -248,6 +252,7 @@ const registrationStyle = () =>
 const registrationHeaderStyle = () =>
   ({
     fontWeight: '500',
+    margin: '0',
   } as React.CSSProperties)
 
 const explainerStyle = () =>
@@ -260,7 +265,7 @@ const inputStyle = () =>
     border: '1px solid rgb(203 213 225)',
     borderRadius: '0.5rem',
     padding: '12px',
-    width: '100%',
+    width: '90%',
   } as React.CSSProperties)
 
 const buttonStyle = () =>
@@ -271,6 +276,7 @@ const buttonStyle = () =>
     backgroundColor: '#761AC7',
     color: '#FFFFFF',
     width: '50%',
+    textDecoration: 'none',
   } as React.CSSProperties)
 
 const loaderStyle = () =>

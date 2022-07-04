@@ -1,8 +1,8 @@
 import getConfiguration from './getConfiguration'
-import getIframe from './getIframe'
 import log from './log'
+import postMessage from './postMessage'
 
-const activeUser = (appId: string) => {
+const activeUser = () => {
   const { walletAppUrl } = getConfiguration()
   console.log('WALLET APP URL', walletAppUrl)
 
@@ -21,13 +21,9 @@ const activeUser = (appId: string) => {
 
     window.addEventListener('message', listener)
 
-    const iframe = getIframe({ appId })
-    iframe?.contentWindow?.postMessage(
-      {
-        action: 'activeUser',
-      },
-      walletAppUrl
-    )
+    postMessage({
+      action: 'activeUser',
+    })
   })
 }
 
