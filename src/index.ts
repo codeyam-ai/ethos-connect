@@ -1,3 +1,5 @@
+import EthosWrapper from './components/EthosWrapper'
+
 import Button from './components/headless/Button'
 
 import SignInButton from './components/styled/SignInButton'
@@ -27,7 +29,7 @@ const styled = {
   SignInModal,
 }
 
-const components = { headless, styled }
+const components = { EthosWrapper, headless, styled }
 
 const lib = {
   initialize,

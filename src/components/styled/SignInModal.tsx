@@ -1,49 +1,15 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ethers } from 'ethers'
-import { WagmiConfig, createClient, defaultChains, configureChains } from 'wagmi'
-
-import { alchemyProvider } from 'wagmi/providers/alchemy'
-import { publicProvider } from 'wagmi/providers/public'
-
-// import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-// import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import WagmiWrappedSignInModal from './WagmiWrappedSignInModal'
-
-const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
-  alchemyProvider({ alchemyId: 'rFuRqqP4t7WQ0hFHrN6h7HdVXOatTnBV' }),
-  publicProvider(),
-])
-
-// Set up client
-const client = createClient({
-  autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    // new CoinbaseWalletConnector({
-    //   chains,
-    //   options: {
-    //     appName: 'wagmi',
-    //   },
-    // }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: true,
-      },
-    }),
-    // new InjectedConnector({
-    //   chains,
-    //   options: {
-    //     name: 'Injected',
-    //     shimDisconnect: true,
-    //   },
-    // }),
-  ],
-  provider,
-  webSocketProvider,
-})
+import login from '../../lib/login'
+import WalletConnect from '../svg/WalletConnect'
+import Ethos from '../svg/Ethos'
+import Metamask from '../svg/Metamask'
+import Loader from '../svg/Loader'
+import getConfiguration from '../../lib/getConfiguration'
+import { useAccount, useConnect, useProvider, useSigner } from 'wagmi'
+import { Provider } from '../../lib/ethersWrapper/Provider'
+import getProvider from '../../lib/getProvider'
+import { Chain } from '../../enums/Chain'
 
 export type ProviderAndSigner = {
   provider: ethers.providers.Web3Provider | any | undefined
@@ -58,12 +24,293 @@ export type SignInModalProps = {
   onProviderSelected: ({ provider, signer }: ProviderAndSigner) => void
 }
 
-const SignInModal = (props: SignInModalProps) => {
+const SignInModal = ({
+  isOpen,
+  onClose,
+  onLoaded,
+  onEmailSent,
+  onProviderSelected,
+}: SignInModalProps) => {
+  const { appId, chain } = getConfiguration()
+  const eth = chain === Chain.Eth
+
+  const [signingIn, setSigningIn] = useState(false)
+  const [email, setEmail] = useState('')
+
+  const provider = eth ? useProvider() : null
+  const { address } = eth ? useAccount() : { address: null }
+  const { data: signer } = eth ? useSigner() : { data: null }
+  const { connect, connectors, error, isLoading, pendingConnector } = eth
+    ? useConnect()
+    : {
+        connect: null,
+        connectors: [],
+        error: null,
+        isLoading: false,
+        pendingConnector: null,
+      }
+  const providersChecked = useRef({
+    wagmi: null,
+    ethos: null,
+  })
+
+  useEffect(() => {
+    if (!eth) return
+
+    const checks = providersChecked.current as any
+    if (checks.ethos) return
+
+    if (!address) {
+      checks.wagmi = false
+      if (checks.ethos === false) {
+        onProviderSelected({ provider, signer: null })
+      }
+    } else if (signer) {
+      checks.wagmi = true
+      const fullProvider = new Provider(provider, signer)
+      onProviderSelected({ provider: fullProvider, signer })
+    }
+  }, [address, signer])
+
+  useEffect(() => {
+    const fetchEthosProvider = async () => {
+      const ethosProvider = await getProvider()
+      const checks = providersChecked.current as any
+      if (ethosProvider && checks.ethos === null && !checks.wagmi) {
+        const hasSigner = ethosProvider.getSigner() !== undefined
+        checks.ethos = hasSigner
+        if (checks.wagmi === false || (hasSigner && !checks.wagmi)) {
+          onProviderSelected({
+            provider: ethosProvider,
+            signer: ethosProvider.getSigner(),
+          })
+        }
+        onLoaded && onLoaded()
+      }
+    }
+
+    fetchEthosProvider()
+  }, [])
+
+  const sendEmail = async () => {
+    setSigningIn(true)
+    await login(email, appId)
+    setEmail('')
+    onEmailSent && onEmailSent()
+    onClose && onClose()
+    setSigningIn(false)
+  }
+
+  const connectEthos = () => {
+    close()
+  }
+
+  const logo = (connectorId: string) => {
+    switch (connectorId) {
+      case 'metaMask':
+        return <Metamask />
+      // case 'Coinbase Wallet':
+      case 'ethos':
+        return <Ethos />
+      default:
+        return <WalletConnect />
+    }
+  }
+
   return (
-    <WagmiConfig client={client}>
-      <WagmiWrappedSignInModal {...props} />
-    </WagmiConfig>
+    <div style={modalStyle(isOpen)}>
+      <div style={headerStyle()}>
+        <h3 style={titleStyle()}>Sign In</h3>
+        <div style={closeStyle()} onClick={onClose}>
+          &#x2715;
+        </div>
+      </div>
+      <div style={mainContentStyle()}>
+        <div style={walletOptionsStyle()}>
+          <div style={walletOptionStyle()} onClick={() => connectEthos()}>
+            <button style={walletOptionButtonStyle()}>
+              {logo('ethos')}
+              Ethos
+            </button>
+          </div>
+          {isOpen &&
+            connectors.map((connector: any) => (
+              <div
+                key={connector.id}
+                style={walletOptionStyle()}
+                onClick={() => connect!({ connector })}
+              >
+                <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
+                  {logo(connector.id)}
+                  {connector.name}
+                  {!connector.ready && <span style={connectorSubStyle()}>(unsupported)</span>}
+                  {isLoading && pendingConnector?.id === connector.id && (
+                    <span style={connectorSubStyle()}>(connecting)</span>
+                  )}
+                </button>
+              </div>
+            ))}
+
+          {error && <div>{error.message}</div>}
+        </div>
+        <div style={registrationStyle()}>
+          <h3 style={registrationHeaderStyle()}>Magic Link</h3>
+          <div style={explainerStyle()}>
+            Enter your email and we&#39;ll send you a magic link that will sign you in.
+          </div>
+          {signingIn ? (
+            <div style={loaderStyle()}>
+              <Loader width={50} />
+            </div>
+          ) : (
+            <>
+              <input
+                style={inputStyle()}
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button style={buttonStyle()} onClick={sendEmail}>
+                Send Magic Link
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
+
+const modalStyle = (isOpen: boolean) =>
+  ({
+    textAlign: 'left',
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    transitionProperty: 'opacity',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    transitionDuration: '250ms',
+    opacity: isOpen ? 1 : 0,
+    position: 'absolute',
+    left: isOpen ? '50%' : '-9999px',
+    top: '40%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    width: '660px',
+    fontWeight: '400',
+  } as React.CSSProperties)
+
+const headerStyle = () =>
+  ({
+    borderBottom: '1px solid rgb(241 245 249)',
+    padding: '12px',
+    display: 'flex',
+    justifyContent: 'space-between',
+  } as React.CSSProperties)
+
+const titleStyle = () =>
+  ({
+    fontSize: '1rem',
+    fontWeight: '500',
+    margin: '0',
+  } as React.CSSProperties)
+
+const closeStyle = () =>
+  ({
+    backgroundColor: '#F9FAFB',
+    borderRadius: '100%',
+    width: '24px',
+    height: '24px',
+    textAlign: 'center',
+    color: '#A0AEBA',
+    cursor: 'pointer',
+  } as React.CSSProperties)
+
+const mainContentStyle = () =>
+  ({
+    display: 'flex',
+    justifyContent: 'space-between',
+  } as React.CSSProperties)
+
+const walletOptionsStyle = () =>
+  ({
+    width: '300px',
+    padding: '24px 12px',
+    borderRight: '1px solid rgb(241 245 249)',
+    gap: '6px',
+    display: 'flex',
+    flexDirection: 'column',
+  } as React.CSSProperties)
+
+const walletOptionStyle = () =>
+  ({
+    padding: '12px',
+    backgroundColor: '#F9FAFB',
+    borderRadius: '0.5rem',
+    fontWeight: '500',
+    cursor: 'pointer',
+  } as React.CSSProperties)
+
+const walletOptionButtonStyle = () =>
+  ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'start',
+    gap: '0.5rem',
+    border: 'none',
+    background: 'none',
+    textDecoration: 'none',
+  } as React.CSSProperties)
+
+const connectorSubStyle = () => ({
+  fontWeight: '300',
+  color: 'gray',
+  fontSize: 'smaller',
+})
+
+const registrationStyle = () =>
+  ({
+    padding: '24px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  } as React.CSSProperties)
+
+const registrationHeaderStyle = () =>
+  ({
+    fontWeight: '500',
+    margin: '0',
+  } as React.CSSProperties)
+
+const explainerStyle = () =>
+  ({
+    fontSize: 'smaller',
+  } as React.CSSProperties)
+
+const inputStyle = () =>
+  ({
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    padding: '12px',
+    width: '90%',
+  } as React.CSSProperties)
+
+const buttonStyle = () =>
+  ({
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    padding: '12px',
+    backgroundColor: '#761AC7',
+    color: '#FFFFFF',
+    width: '50%',
+    textDecoration: 'none',
+  } as React.CSSProperties)
+
+const loaderStyle = () =>
+  ({
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '45px 0',
+  } as React.CSSProperties)
 
 export default SignInModal
