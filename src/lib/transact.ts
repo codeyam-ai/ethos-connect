@@ -1,4 +1,4 @@
-import { UnpopulatedTransaction } from 'types/UnpopulatedTransaction'
+import { EthosTransaction } from 'types/Transaction'
 import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
@@ -27,10 +27,7 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 }
 
 type transactProps = {
-  network: string | number
-  abi?: any
-  address: string
-  unpopulatedTransaction: UnpopulatedTransaction
+  details: EthosTransaction
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
   onComplete?: (data: any) => void
@@ -39,10 +36,7 @@ type transactProps = {
 }
 
 const transact = async ({
-  network,
-  abi,
-  address,
-  unpopulatedTransaction,
+  details,
   onSigned,
   onSent,
   onComplete,
@@ -79,12 +73,7 @@ const transact = async ({
 
   postMessage({
     action: 'transact',
-    data: {
-      network,
-      abi,
-      address,
-      unpopulatedTransaction,
-    },
+    data: { details },
   })
 
   getIframe(true)

@@ -4,6 +4,7 @@ import apiCall from '../apiCall'
 import showWallet from '../showWallet'
 import transact from '../transact'
 import { FunctionFragment } from 'ethers/lib/utils'
+import { EthereumTransaction } from 'types/Transaction'
 
 export class Contract {
   // Contract function properties
@@ -29,14 +30,16 @@ export class Contract {
 
           return (...inputValues: any[]) => {
             return new Promise<void>((resolve, _reject) => {
-              transact({
-                network: network,
-                abi: contractInterface,
+              const details: EthereumTransaction = {
                 address: addressOrName,
-                unpopulatedTransaction: {
-                  functionName: contractFunctionName,
-                  inputValues,
-                },
+                network,
+                abi: contractInterface,
+                functionName: contractFunctionName,
+                inputValues,
+              }
+
+              transact({
+                details,
                 onSent: async (transaction: any) => {
                   const transactionWithWait = {
                     ...transaction,

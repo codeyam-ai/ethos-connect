@@ -1,45 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ethers } from 'ethers'
+import React, { useState } from 'react'
 import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
-import { useAccount, useConnect, useProvider, useSigner } from 'wagmi'
-import { Provider } from '../../lib/ethersWrapper/Provider'
-import getProvider from '../../lib/getProvider'
+import { useConnect } from 'wagmi'
 import { Chain } from '../../enums/Chain'
-
-export type ProviderAndSigner = {
-  provider: ethers.providers.Web3Provider | any | undefined
-  signer: any
-}
 
 export type SignInModalProps = {
   isOpen: boolean
   onClose?: () => void
-  onLoaded?: () => void
   onEmailSent?: () => void
-  onProviderSelected: ({ provider, signer }: ProviderAndSigner) => void
 }
 
-const SignInModal = ({
-  isOpen,
-  onClose,
-  onLoaded,
-  onEmailSent,
-  onProviderSelected,
-}: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const { appId, chain } = getConfiguration()
   const eth = chain === Chain.Eth
 
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
-  const provider = eth ? useProvider() : null
-  const { address } = eth ? useAccount() : { address: null }
-  const { data: signer } = eth ? useSigner() : { data: null }
   const { connect, connectors, error, isLoading, pendingConnector } = eth
     ? useConnect()
     : {
@@ -49,48 +30,6 @@ const SignInModal = ({
         isLoading: false,
         pendingConnector: null,
       }
-  const providersChecked = useRef({
-    wagmi: null,
-    ethos: null,
-  })
-
-  useEffect(() => {
-    if (!eth) return
-
-    const checks = providersChecked.current as any
-    if (checks.ethos) return
-
-    if (!address) {
-      checks.wagmi = false
-      if (checks.ethos === false) {
-        onProviderSelected({ provider, signer: null })
-      }
-    } else if (signer) {
-      checks.wagmi = true
-      const fullProvider = new Provider(provider, signer)
-      onProviderSelected({ provider: fullProvider, signer })
-    }
-  }, [address, signer])
-
-  useEffect(() => {
-    const fetchEthosProvider = async () => {
-      const ethosProvider = await getProvider()
-      const checks = providersChecked.current as any
-      if (ethosProvider && checks.ethos === null && !checks.wagmi) {
-        const hasSigner = ethosProvider.getSigner() !== undefined
-        checks.ethos = hasSigner
-        if (checks.wagmi === false || (hasSigner && !checks.wagmi)) {
-          onProviderSelected({
-            provider: ethosProvider,
-            signer: ethosProvider.getSigner(),
-          })
-        }
-        onLoaded && onLoaded()
-      }
-    }
-
-    fetchEthosProvider()
-  }, [])
 
   const sendEmail = async () => {
     setSigningIn(true)
