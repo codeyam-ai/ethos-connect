@@ -1,4 +1,9 @@
-import { EthosTransaction } from 'types/Transaction'
+import {
+  EthereumTransaction,
+  SuiCoinTransferTransaction,
+  SuiObjectTransferTransaction,
+  SuiFunctionTransaction,
+} from 'types/Transaction'
 import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
@@ -27,7 +32,11 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 }
 
 type transactProps = {
-  details: EthosTransaction
+  details:
+    | EthereumTransaction
+    | SuiCoinTransferTransaction
+    | SuiObjectTransferTransaction
+    | SuiFunctionTransaction
   onSigned?: (data: any) => void
   onSent?: (data: any) => void
   onComplete?: (data: any) => void

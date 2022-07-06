@@ -50,7 +50,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
         return <Metamask />
       // case 'Coinbase Wallet':
       case 'ethos':
-        return <Ethos />
+        return <Ethos width={17} />
       default:
         return <WalletConnect />
     }
@@ -93,9 +93,9 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
           {error && <div>{error.message}</div>}
         </div>
         <div style={registrationStyle()}>
-          <h3 style={registrationHeaderStyle()}>Magic Link</h3>
+          <h3 style={registrationHeaderStyle()}>One-Click Login Link</h3>
           <div style={explainerStyle()}>
-            Enter your email and we&#39;ll send you a magic link that will sign you in.
+            Enter your email and we&#39;ll send you a link that will sign you in.
           </div>
           {signingIn ? (
             <div style={loaderStyle()}>
@@ -111,7 +111,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button style={buttonStyle()} onClick={sendEmail}>
-                Send Magic Link
+                Send Login Link
               </button>
             </>
           )}

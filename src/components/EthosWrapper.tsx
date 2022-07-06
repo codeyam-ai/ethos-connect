@@ -75,7 +75,7 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
         //   },
         // }),
       ],
-      chainsProvider,
+      provider: chainsProvider,
       webSocketProvider,
     })
 
