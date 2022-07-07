@@ -18,6 +18,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const { appId, chain } = getConfiguration()
   const eth = chain === Chain.Eth
 
+  const [showEthosMessage, setShowEthosMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
@@ -41,7 +42,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   }
 
   const connectEthos = () => {
-    close()
+    setShowEthosMessage(true)
   }
 
   const logo = (connectorId: string) => {
@@ -90,7 +91,12 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
               </div>
             ))}
 
-          {error && <div>{error.message}</div>}
+          {error && <div style={connectorWarning()}>{error.message}</div>}
+          {showEthosMessage && (
+            <div style={connectorWarning()}>
+              You do not have the ethos wallet extension installed.
+            </div>
+          )}
         </div>
         <div style={registrationStyle()}>
           <h3 style={registrationHeaderStyle()}>One-Click Login Link</h3>
@@ -251,5 +257,11 @@ const loaderStyle = () =>
     justifyContent: 'center',
     padding: '45px 0',
   } as React.CSSProperties)
+
+const connectorWarning = () => ({
+  fontSize: 'small',
+  textAlign: 'center',
+  paddingTop: '6px',
+})
 
 export default SignInModal
