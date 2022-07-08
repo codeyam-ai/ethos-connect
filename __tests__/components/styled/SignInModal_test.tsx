@@ -2,6 +2,8 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 
 import SignInModal from '../../../src/components/styled/SignInModal';
+import Ethos from '../../../src/components/svg/Ethos';
+import * as lib from '../../../src/lib/login'
 
 const modalExists = ({ root, hidden }: { root: any, hidden: boolean }) => {
   const modals = root.findAll(
@@ -37,4 +39,60 @@ describe("SignInModal", () => {
     expect(modalExists({ root, hidden: true })).toBeFalsy()
     expect(signInModal.toJSON()).toMatchSnapshot()
   });
+
+  it('shows a warning if you click the Ethos wallet button', () => {
+    const warningCount = (root: any) => root.findAllByProps({
+      children: "You do not have the ethos wallet extension installed."
+    }).length
+
+    const signInModal = create(
+      <SignInModal isOpen={true} />
+    )
+    
+    const root = signInModal.root;
+    expect(warningCount(root)).toBe(0)
+
+    const ethosWalletButton = root.findByType(Ethos)
+    act(() => {
+      ethosWalletButton.parent.parent.props.onClick()
+    })
+    expect(warningCount(root)).toBe(1)
+  })
+
+  it('sends an email if you click the send email button', async () => {
+    const testEmail = 'test@example.com'
+
+    let emailProvided;
+    jest.spyOn(lib, 'default').mockImplementation((email, appId) => {      
+      emailProvided = email;
+      expect(appId).toBe('test')
+      return Promise.resolve({})
+    })
+    const onEmailSent = jest.fn()
+    const onClose = jest.fn()
+
+    const signInModal = create(
+      <SignInModal 
+        isOpen={true} 
+        onEmailSent={onEmailSent}
+        onClose={onClose}
+      />
+    )
+
+    const root = signInModal.root;
+    const emailInput = root.findByProps({ type: 'email' })
+    const emailButton = emailInput.parent.find((node) => node.props.onClick)
+
+    act(() => {
+      emailInput.props.onChange({ target: { value: testEmail }}) 
+    })
+
+    await act(async () => {
+      emailButton.props.onClick();     
+    })
+
+    expect(emailProvided).toBe(testEmail)
+    expect(onEmailSent.mock.calls.length).toBe(1)
+    expect(onClose.mock.calls.length).toBe(1)
+  })
 });
