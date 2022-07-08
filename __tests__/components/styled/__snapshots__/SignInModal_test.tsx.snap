@@ -1,5 +1,647 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SignInModal Ethereum renders the wagmi connector buttons 1`] = `
+<div
+  style={
+    Object {
+      "backgroundColor": "white",
+      "border": "1px solid rgb(203 213 225)",
+      "borderRadius": "0.5rem",
+      "fontWeight": "400",
+      "left": "50%",
+      "opacity": 1,
+      "position": "absolute",
+      "textAlign": "left",
+      "top": "40%",
+      "transform": "translate(-50%, -50%)",
+      "transitionDuration": "250ms",
+      "transitionProperty": "opacity",
+      "transitionTimingFunction": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "width": "660px",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "borderBottom": "1px solid rgb(241 245 249)",
+        "display": "flex",
+        "justifyContent": "space-between",
+        "padding": "12px",
+      }
+    }
+  >
+    <h3
+      style={
+        Object {
+          "fontSize": "1rem",
+          "fontWeight": "500",
+          "margin": "0",
+        }
+      }
+    >
+      Sign In
+    </h3>
+    <div
+      style={
+        Object {
+          "backgroundColor": "#F9FAFB",
+          "borderRadius": "100%",
+          "color": "#A0AEBA",
+          "cursor": "pointer",
+          "height": "24px",
+          "textAlign": "center",
+          "width": "24px",
+        }
+      }
+    >
+      ✕
+    </div>
+  </div>
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "borderRight": "1px solid rgb(241 245 249)",
+          "display": "flex",
+          "flexDirection": "column",
+          "gap": "6px",
+          "padding": "24px 12px",
+          "width": "300px",
+        }
+      }
+    >
+      <div
+        onClick={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#F9FAFB",
+            "borderRadius": "0.5rem",
+            "cursor": "pointer",
+            "fontWeight": "500",
+            "padding": "12px",
+          }
+        }
+      >
+        <button
+          style={
+            Object {
+              "alignItems": "center",
+              "background": "none",
+              "border": "none",
+              "display": "flex",
+              "gap": "0.5rem",
+              "justifyContent": "start",
+              "textDecoration": "none",
+            }
+          }
+        >
+          <svg
+            fill="none"
+            height={23.51063829787234}
+            viewBox="0 0 47 65"
+            width={17}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.00471 1H40.0029C42.7644 1 45.0029 3.23858 45.0029 6V44.8425C45.0029 47.604 42.7643 49.8425 40.0029 49.8425H6.0047C3.24328 49.8425 1.0047 47.604 1.0047 44.8425V6C1.0047 3.23858 3.24329 1 6.00471 1Z"
+              stroke="url(#paint0_linear_83_95)"
+              strokeWidth="2"
+            />
+            <path
+              d="M6.68764 3.64648L30.6631 14.8026C32.0736 15.4589 32.9756 16.8735 32.9756 18.4292V58.6799C32.9756 61.5743 29.9966 63.5105 27.3515 62.3353L3.37601 51.683C1.93126 51.0411 1.00013 49.6085 1.00013 48.0276V7.27309C1.00013 4.34854 4.03609 2.41268 6.68764 3.64648Z"
+              fill="#1e293b"
+            />
+            <defs>
+              <linearGradient
+                gradientUnits="userSpaceOnUse"
+                id="paint0_linear_83_95"
+                x1="45.0029"
+                x2="23.0029"
+                y1="14"
+                y2="25"
+              >
+                <stop
+                  stopColor="#1e293b"
+                />
+                <stop
+                  offset="1"
+                  stopColor="#1e293b"
+                  stopOpacity="0"
+                />
+              </linearGradient>
+            </defs>
+          </svg>
+          Ethos
+        </button>
+      </div>
+      <div
+        onClick={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#F9FAFB",
+            "borderRadius": "0.5rem",
+            "cursor": "pointer",
+            "fontWeight": "500",
+            "padding": "12px",
+          }
+        }
+      >
+        <button
+          disabled={true}
+          style={
+            Object {
+              "alignItems": "center",
+              "background": "none",
+              "border": "none",
+              "display": "flex",
+              "gap": "0.5rem",
+              "justifyContent": "start",
+              "textDecoration": "none",
+            }
+          }
+        >
+          <svg
+            height={18}
+            id="metamask"
+            style={
+              Object {
+                "enableBackground": "new 40 40 238.6 238.6",
+              }
+            }
+            version="1.1"
+            viewBox="40 40 238.6 238.6"
+            width={18}
+            xmlSpace="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon
+              points="274.1,35.5 174.6,109.4 193,65.8 "
+              style={
+                Object {
+                  "fill": "#E2761B",
+                  "stroke": "#E2761B",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <g>
+              <polygon
+                points="44.4,35.5 143.1,110.1 125.6,65.8 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="238.3,206.8 211.8,247.4 268.5,263 284.8,207.7 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="33.9,207.7 50.1,263 106.8,247.4 80.3,206.8 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="103.6,138.2 87.8,162.1 144.1,164.6 142.1,104.1 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="214.9,138.2 175.9,103.4 174.6,164.6 230.8,162.1 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="106.8,247.4 140.6,230.9 111.4,208.1 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="177.9,230.9 211.8,247.4 207.1,208.1 "
+                style={
+                  Object {
+                    "fill": "#E4761B",
+                    "stroke": "#E4761B",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+            </g>
+            <g>
+              <polygon
+                points="211.8,247.4 177.9,230.9 180.6,253 180.3,262.3 "
+                style={
+                  Object {
+                    "fill": "#D7C1B3",
+                    "stroke": "#D7C1B3",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="106.8,247.4 138.3,262.3 138.1,253 140.6,230.9 "
+                style={
+                  Object {
+                    "fill": "#D7C1B3",
+                    "stroke": "#D7C1B3",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+            </g>
+            <polygon
+              points="138.8,193.5 110.6,185.2 130.5,176.1 "
+              style={
+                Object {
+                  "fill": "#233447",
+                  "stroke": "#233447",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <polygon
+              points="179.7,193.5 188,176.1 208,185.2 "
+              style={
+                Object {
+                  "fill": "#233447",
+                  "stroke": "#233447",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <g>
+              <polygon
+                points="106.8,247.4 111.6,206.8 80.3,207.7 "
+                style={
+                  Object {
+                    "fill": "#CD6116",
+                    "stroke": "#CD6116",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="207,206.8 211.8,247.4 238.3,207.7 "
+                style={
+                  Object {
+                    "fill": "#CD6116",
+                    "stroke": "#CD6116",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="230.8,162.1 174.6,164.6 179.8,193.5 188.1,176.1 208.1,185.2 "
+                style={
+                  Object {
+                    "fill": "#CD6116",
+                    "stroke": "#CD6116",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="110.6,185.2 130.6,176.1 138.8,193.5 144.1,164.6 87.8,162.1 "
+                style={
+                  Object {
+                    "fill": "#CD6116",
+                    "stroke": "#CD6116",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+            </g>
+            <g>
+              <polygon
+                points="87.8,162.1 111.4,208.1 110.6,185.2 "
+                style={
+                  Object {
+                    "fill": "#E4751F",
+                    "stroke": "#E4751F",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="208.1,185.2 207.1,208.1 230.8,162.1 "
+                style={
+                  Object {
+                    "fill": "#E4751F",
+                    "stroke": "#E4751F",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="144.1,164.6 138.8,193.5 145.4,227.6 146.9,182.7 "
+                style={
+                  Object {
+                    "fill": "#E4751F",
+                    "stroke": "#E4751F",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="174.6,164.6 171.9,182.6 173.1,227.6 179.8,193.5 "
+                style={
+                  Object {
+                    "fill": "#E4751F",
+                    "stroke": "#E4751F",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+            </g>
+            <polygon
+              points="179.8,193.5 173.1,227.6 177.9,230.9 207.1,208.1 208.1,185.2 "
+              style={
+                Object {
+                  "fill": "#F6851B",
+                  "stroke": "#F6851B",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <polygon
+              points="110.6,185.2 111.4,208.1 140.6,230.9 145.4,227.6 138.8,193.5 "
+              style={
+                Object {
+                  "fill": "#F6851B",
+                  "stroke": "#F6851B",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <polygon
+              points="180.3,262.3 180.6,253 178.1,250.8 140.4,250.8 138.1,253 138.3,262.3 106.8,247.4 117.8,256.4 140.1,271.9 178.4,271.9 200.8,256.4 211.8,247.4 "
+              style={
+                Object {
+                  "fill": "#C0AD9E",
+                  "stroke": "#C0AD9E",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <polygon
+              points="177.9,230.9 173.1,227.6 145.4,227.6 140.6,230.9 138.1,253 140.4,250.8 178.1,250.8 180.6,253 "
+              style={
+                Object {
+                  "fill": "#161616",
+                  "stroke": "#161616",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <g>
+              <polygon
+                points="278.3,114.2 286.8,73.4 274.1,35.5 177.9,106.9 214.9,138.2 267.2,153.5 278.8,140 273.8,136.4 281.8,129.1 275.6,124.3 283.6,118.2 "
+                style={
+                  Object {
+                    "fill": "#763D16",
+                    "stroke": "#763D16",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+              <polygon
+                points="31.8,73.4 40.3,114.2 34.9,118.2 42.9,124.3 36.8,129.1 44.8,136.4 39.8,140 51.3,153.5 103.6,138.2 140.6,106.9 44.4,35.5 "
+                style={
+                  Object {
+                    "fill": "#763D16",
+                    "stroke": "#763D16",
+                    "strokeLinecap": "round",
+                    "strokeLinejoin": "round",
+                  }
+                }
+              />
+            </g>
+            <polygon
+              points="267.2,153.5 214.9,138.2 230.8,162.1 207.1,208.1 238.3,207.7 284.8,207.7 "
+              style={
+                Object {
+                  "fill": "#F6851B",
+                  "stroke": "#F6851B",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <polygon
+              points="103.6,138.2 51.3,153.5 33.9,207.7 80.3,207.7 111.4,208.1 87.8,162.1 "
+              style={
+                Object {
+                  "fill": "#F6851B",
+                  "stroke": "#F6851B",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+            <polygon
+              points="174.6,164.6 177.9,106.9 193.1,65.8 125.6,65.8 140.6,106.9 144.1,164.6 145.3,182.8 145.4,227.6 173.1,227.6 173.3,182.8 "
+              style={
+                Object {
+                  "fill": "#F6851B",
+                  "stroke": "#F6851B",
+                  "strokeLinecap": "round",
+                  "strokeLinejoin": "round",
+                }
+              }
+            />
+          </svg>
+          <span
+            style={
+              Object {
+                "color": "gray",
+                "fontSize": "smaller",
+                "fontWeight": "300",
+              }
+            }
+          >
+            (unsupported)
+          </span>
+        </button>
+      </div>
+      <div
+        onClick={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#F9FAFB",
+            "borderRadius": "0.5rem",
+            "cursor": "pointer",
+            "fontWeight": "500",
+            "padding": "12px",
+          }
+        }
+      >
+        <button
+          disabled={true}
+          style={
+            Object {
+              "alignItems": "center",
+              "background": "none",
+              "border": "none",
+              "display": "flex",
+              "gap": "0.5rem",
+              "justifyContent": "start",
+              "textDecoration": "none",
+            }
+          }
+        >
+          <svg
+            height={18}
+            viewBox="125 125 250 250"
+            width={18}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M163.172735,195.197802 C211.105735,148.267399 288.820482,148.267399 336.75348,195.197802 L342.522294,200.845951 C344.918944,203.192471 344.918944,206.996932 342.522294,209.343453 L322.788333,228.664646 C321.590008,229.837907 319.647139,229.837907 318.448814,228.664646 L310.510241,220.892121 C277.070983,188.152299 222.855233,188.152299 189.415974,220.892121 L180.914419,229.215854 C179.716093,230.389114 177.773224,230.389114 176.5749,229.215854 L156.840939,209.894661 C154.444289,207.54814 154.444289,203.743679 156.840939,201.397159 L163.172735,195.197802 Z M377.565175,235.156072 L395.128438,252.352031 C397.525076,254.69854 397.52509,258.502978 395.128469,260.849503 L315.934501,338.388214 C313.537868,340.734752 309.652131,340.734778 307.255464,338.388275 C307.255454,338.388265 307.255443,338.388254 307.255433,338.388244 L251.048373,283.356763 C250.449211,282.770133 249.477776,282.770133 248.878614,283.356763 C248.87861,283.356767 248.878607,283.356771 248.878603,283.356774 L192.67274,338.388214 C190.276114,340.734758 186.390376,340.734797 183.993702,338.3883 C183.993688,338.388286 183.993673,338.388272 183.993658,338.388257 L104.797487,260.848515 C102.400838,258.501995 102.400838,254.697534 104.797487,252.351014 L122.360782,235.155084 C124.757431,232.808564 128.643169,232.808564 131.039819,235.155084 L187.247697,290.187334 C187.84686,290.773964 188.818293,290.773964 189.417456,290.187334 C189.417465,290.187325 189.417473,290.187317 189.417482,290.18731 L245.622543,235.155084 C248.019138,232.80851 251.904876,232.808422 254.301581,235.154888 C254.301614,235.154921 254.301647,235.154954 254.30168,235.154987 L310.509484,290.18731 C311.108646,290.773939 312.080081,290.773939 312.679243,290.18731 L368.886138,235.156072 C371.282788,232.809551 375.168525,232.809551 377.565175,235.156072 Z"
+              fill="#3B99FC"
+              fillRule="nonzero"
+              id="WalletConnect"
+            />
+          </svg>
+          <span
+            style={
+              Object {
+                "color": "gray",
+                "fontSize": "smaller",
+                "fontWeight": "300",
+              }
+            }
+          >
+            (unsupported)
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      style={
+        Object {
+          "display": "flex",
+          "flexDirection": "column",
+          "gap": "12px",
+          "padding": "24px",
+        }
+      }
+    >
+      <h3
+        style={
+          Object {
+            "fontWeight": "500",
+            "margin": "0",
+          }
+        }
+      >
+        One-Click Login Link
+      </h3>
+      <div
+        style={
+          Object {
+            "fontSize": "smaller",
+          }
+        }
+      >
+        Enter your email and we'll send you a link that will sign you in.
+      </div>
+      <input
+        onChange={[Function]}
+        placeholder="Email address"
+        style={
+          Object {
+            "border": "1px solid rgb(203 213 225)",
+            "borderRadius": "0.5rem",
+            "padding": "12px",
+            "width": "90%",
+          }
+        }
+        type="email"
+        value=""
+      />
+      <button
+        onClick={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#761AC7",
+            "border": "1px solid rgb(203 213 225)",
+            "borderRadius": "0.5rem",
+            "color": "#FFFFFF",
+            "padding": "12px",
+            "textDecoration": "none",
+            "width": "50%",
+          }
+        }
+      >
+        Send Login Link
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
 <div
   style={

@@ -1,19 +1,12 @@
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
 
-// jest.mock('', () => ({
-//   default: jest.fn(() => ({
-//     walletAppUrl: "test",
-//     appId: 'test',
-//     network: 'test'
-//   }))
-// }))
+import * as getConfiguration from './src/lib/getConfiguration'
 
-jest.mock('./src/lib/getConfiguration', () =>
-  jest.fn(() => {
-    return {
-      walletAppUrl: 'test',
-      appId: 'test',
-      network: 'test',
-    }
-  })
-)
+beforeEach(() => {
+  jest.spyOn(getConfiguration, 'default').mockImplementation(() => ({
+    walletAppUrl: 'test',
+    appId: 'test',
+    network: 'test',
+    chain: 'test'
+  }));  
+})

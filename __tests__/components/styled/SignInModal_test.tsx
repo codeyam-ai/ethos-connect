@@ -4,6 +4,12 @@ import { create, act } from 'react-test-renderer';
 import SignInModal from '../../../src/components/styled/SignInModal';
 import Ethos from '../../../src/components/svg/Ethos';
 import * as lib from '../../../src/lib/login'
+import * as getConfiguration from '../../../src/lib/getConfiguration'
+import { Chain } from '../../../src/enums/Chain';
+
+import * as wagmi from 'wagmi'
+import Metamask from '../../../src/components/svg/Metamask';
+import WalletConnect from '../../../src/components/svg/WalletConnect';
 
 const modalExists = ({ root, hidden }: { root: any, hidden: boolean }) => {
   const modals = root.findAll(
@@ -37,6 +43,10 @@ describe("SignInModal", () => {
     const root = signInModal.root;
     expect(modalExists({ root, hidden: false })).toBeTruthy()
     expect(modalExists({ root, hidden: true })).toBeFalsy()
+
+    expect(root.findAllByType(Metamask).length).toBe(0)
+    expect(root.findAllByType(WalletConnect).length).toBe(0)
+
     expect(signInModal.toJSON()).toMatchSnapshot()
   });
 
@@ -94,5 +104,34 @@ describe("SignInModal", () => {
     expect(emailProvided).toBe(testEmail)
     expect(onEmailSent.mock.calls.length).toBe(1)
     expect(onClose.mock.calls.length).toBe(1)
+  })
+
+  describe("Ethereum", () => {
+    beforeEach(() => {
+      jest.spyOn(getConfiguration, 'default').mockImplementation(() => ({
+        walletAppUrl: 'test',
+        appId: 'test',
+        network: 'test',
+        chain: Chain.Eth
+      }));
+
+      jest.spyOn(wagmi as any, 'useConnect').mockReturnValue({
+        connectors: [
+          {id: 'metaMask'},
+          {id: 'walletConnect'}
+        ]
+      })
+    })
+
+    it('renders the wagmi connector buttons', () => {
+      const signInModal = create(
+        <SignInModal isOpen={true} />
+      )
+
+      const root = signInModal.root;
+      expect(root.findByType(Metamask)).toBeDefined()
+      expect(root.findByType(WalletConnect)).toBeDefined()
+      expect(signInModal.toJSON()).toMatchSnapshot();
+    })
   })
 });

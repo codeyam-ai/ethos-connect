@@ -33,73 +33,73 @@ export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElemen
 }
 
 const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: EthosWrapperProps) => {
-  initialize(ethosConfiguration)
+  // initialize(ethosConfiguration)
 
-  const eth = ethosConfiguration.chain === Chain.Eth
+  // const eth = ethosConfiguration.chain === Chain.Eth
 
-  if (eth) {
-    const provider = useProvider()
-    const { address } = useAccount()
-    const { data: signer } = useSigner()
-    const ethConfiguration = ethosConfiguration as EthereumConfiguration
-    const {
-      chains,
-      provider: chainsProvider,
-      webSocketProvider,
-    } = configureChains(defaultChains, [
-      alchemyProvider({ alchemyId: ethConfiguration.alchemyId }),
-      publicProvider(),
-    ])
+  // if (eth) {
+  //   const provider = useProvider()
+  //   const { address } = useAccount()
+  //   const { data: signer } = useSigner()
+  //   const ethConfiguration = ethosConfiguration as EthereumConfiguration
+  //   const {
+  //     chains,
+  //     provider: chainsProvider,
+  //     webSocketProvider,
+  //   } = configureChains(defaultChains, [
+  //     alchemyProvider({ alchemyId: ethConfiguration.alchemyId }),
+  //     publicProvider(),
+  //   ])
 
-    const client = createClient({
-      autoConnect: true,
-      connectors: [
-        new MetaMaskConnector({ chains }),
-        // new CoinbaseWalletConnector({
-        //   chains,
-        //   options: {
-        //     appName: 'wagmi',
-        //   },
-        // }),
-        new WalletConnectConnector({
-          chains,
-          options: {
-            qrcode: true,
-          },
-        }),
-        // new InjectedConnector({
-        //   chains,
-        //   options: {
-        //     name: 'Injected',
-        //     shimDisconnect: true,
-        //   },
-        // }),
-      ],
-      provider: chainsProvider,
-      webSocketProvider,
-    })
+  //   const client = createClient({
+  //     autoConnect: true,
+  //     connectors: [
+  //       new MetaMaskConnector({ chains }),
+  //       // new CoinbaseWalletConnector({
+  //       //   chains,
+  //       //   options: {
+  //       //     appName: 'wagmi',
+  //       //   },
+  //       // }),
+  //       new WalletConnectConnector({
+  //         chains,
+  //         options: {
+  //           qrcode: true,
+  //         },
+  //       }),
+  //       // new InjectedConnector({
+  //       //   chains,
+  //       //   options: {
+  //       //     name: 'Injected',
+  //       //     shimDisconnect: true,
+  //       //   },
+  //       // }),
+  //     ],
+  //     provider: chainsProvider,
+  //     webSocketProvider,
+  //   })
 
-    if (!address) {
-      onProviderSelected({ provider, signer: null })
-    } else if (signer) {
-      const fullProvider = new Provider(provider, signer)
-      onProviderSelected({ provider: fullProvider, signer })
-    }
+  //   if (!address) {
+  //     onProviderSelected({ provider, signer: null })
+  //   } else if (signer) {
+  //     const fullProvider = new Provider(provider, signer)
+  //     onProviderSelected({ provider: fullProvider, signer })
+  //   }
 
-    return <WagmiConfig client={client}>{children}</WagmiConfig>
-  }
+  //   return <WagmiConfig client={client}>{children}</WagmiConfig>
+  // }
 
-  useEffect(() => {
-    const fetchEthosProvider = async () => {
-      const ethosProvider = await getProvider()
-      onProviderSelected({
-        provider: ethosProvider,
-        signer: ethosProvider?.getSigner(),
-      })
-    }
+  // useEffect(() => {
+  //   const fetchEthosProvider = async () => {
+  //     const ethosProvider = await getProvider()
+  //     onProviderSelected({
+  //       provider: ethosProvider,
+  //       signer: ethosProvider?.getSigner(),
+  //     })
+  //   }
 
-    fetchEthosProvider()
-  }, [])
+  //   fetchEthosProvider()
+  // }, [])
 
   return <>{children}</>
 }
