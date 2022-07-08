@@ -21,15 +21,15 @@ describe("SignInButton", () => {
         onClick={onClick}
       />
     )
-    const testInstance = signInButton.root;
-    expect(testInstance.findAllByProps({ isOpen: true }).length).toBe(0)
+    const root = signInButton.root;
+    expect(root.findAllByProps({ isOpen: true }).length).toBe(0)
     expect(onClick.mock.calls.length).toBe(0)
 
     act(() => {
-      testInstance.findByType(Button).props.onClick();
+      root.findByType(Button).props.onClick();
     })
 
-    expect(testInstance.findAllByProps({ isOpen: true }).length).toBe(1)
+    expect(root.findAllByProps({ isOpen: true }).length).toBe(1)
     expect(onClick.mock.calls.length).toBe(1)
   });
 
@@ -40,8 +40,8 @@ describe("SignInButton", () => {
         onEmailSent={onEmailSent}
       />
     )
-    const testInstance = signInButton.root;
-    const modal = testInstance.findByType(SignInModal)
+    const root = signInButton.root;
+    const modal = root.findByType(SignInModal)
     expect(modal.props.onEmailSent).toBe(onEmailSent)
   })
 });
