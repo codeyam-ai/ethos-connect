@@ -2,11 +2,11 @@ import SignInButton from '../../../src/components/styled/SignInButton'
 import Button from '../../../src/components/headless/Button'
 
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import { create, act } from 'react-test-renderer';
 
 describe("SignInButton", () => {
   it('renders correctly', () => {
-    const rendered = TestRenderer.create(
+    const rendered = create(
       <SignInButton />
     ).toJSON();
     expect(rendered).toMatchSnapshot()
@@ -14,13 +14,19 @@ describe("SignInButton", () => {
 
   it('triggers the SignInModal when clicked and triggers onClick callback', () => {
     const onClick = jest.fn();
-    const signInButton = TestRenderer.create(
+    const signInButton = create(
       <SignInButton 
         onClick={onClick}
       />
     )
     const testInstance = signInButton.root;
-    testInstance.findByType(Button).props.onClick();
-    expect(signInButton.toJSON()).toMatchSnapshot();
-  });
+    expect(testInstance.findAllByProps({ isOpen: true }).length).toBe(0)
+
+    act(() => {
+      testInstance.findByType(Button).props.onClick();
+    })
+
+    expect(testInstance.findAllByProps({ isOpen: true }).length).toBe(1)
+    expect(signInButton.toJSON()).toMatchSnapshot();  
+});
 });

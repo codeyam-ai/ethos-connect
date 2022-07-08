@@ -262,6 +262,6 @@ const connectorWarning = () => ({
   fontSize: 'small',
   textAlign: 'center',
   paddingTop: '6px',
-})
+} as React.CSSProperties)
 
 export default SignInModal
