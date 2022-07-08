@@ -6,8 +6,6 @@ export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElemen
   onClick?: () => void
   onLoaded?: () => void
   onEmailSent?: () => void
-  showWhileLoading?: boolean
-  workingComponent?: React.ReactElement
 }
 
 const SignInButton = (props: SignInButtonProps) => {
@@ -15,8 +13,6 @@ const SignInButton = (props: SignInButtonProps) => {
     children,
     onClick,
     onEmailSent,
-    showWhileLoading = true,
-    workingComponent,
     ...reactProps
   } = props
 
@@ -31,11 +27,9 @@ const SignInButton = (props: SignInButtonProps) => {
   return (
     <>
       <SignInModal isOpen={isOpen} onEmailSent={onEmailSent} onClose={() => setIsOpen(false)} />
-      {showWhileLoading && (
-        <Button onClick={_onClick} workingComponent={workingComponent} {...reactProps}>
-          {children || <>Sign In</>}
-        </Button>
-      )}
+      <Button onClick={_onClick} {...reactProps}>
+        {children || <>Sign In</>}
+      </Button>
     </>
   )
 }
