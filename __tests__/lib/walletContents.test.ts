@@ -1,7 +1,7 @@
-import { Chain } from '../../enums/Chain'
-import { NFT } from '../../types/NFT'
-import * as apiCall from '../apiCall'
-import walletContents from '../walletContents'
+import { Chain } from '../../src/enums/Chain'
+import { NFT } from '../../src/types/NFT'
+import * as apiCall from '../../src/lib/apiCall'
+import walletContents from '../../src/lib/walletContents'
 
 describe('walletContents', () => {
   it('should call the nfts/[address] endpoint', async () => {

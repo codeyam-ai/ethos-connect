@@ -3,9 +3,9 @@
  */
 
 import store from 'store2'
-import { User } from '../../types/User'
-import * as apiCall from '../apiCall'
-import login from '../login'
+import { User } from '../../src/types/User'
+import * as apiCall from '../../src/lib/apiCall'
+import login from '../../src/lib/login'
 
 describe('login', () => {
   let spyApiCall: jest.SpyInstance

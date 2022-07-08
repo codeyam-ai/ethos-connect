@@ -1,4 +1,4 @@
-import apiCall from '../apiCall'
+import apiCall from '../../src/lib/apiCall'
 
 describe('apiCall', () => {
   let spyFetch: jest.SpyInstance

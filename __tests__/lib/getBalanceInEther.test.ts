@@ -1,5 +1,5 @@
-import * as apiCall from '../apiCall'
-import ethBalance from '../ethBalance'
+import * as apiCall from '../../src/lib/apiCall'
+import ethBalance from '../../src/lib/ethBalance'
 
 describe('register', () => {
   it('should register a new user', async () => {
