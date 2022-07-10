@@ -7,6 +7,6 @@ beforeEach(() => {
     walletAppUrl: 'test',
     appId: 'test',
     network: 'test',
-    chain: 'test'
-  }));  
+    chain: 'test',
+  }))
 })

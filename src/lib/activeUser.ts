@@ -4,8 +4,7 @@ import log from './log'
 // import postMessage from './postMessage'
 
 const activeUser = () => {
-  const { walletAppUrl } = getConfiguration()
-  console.log('WALLET APP URL', walletAppUrl)
+  const { walletAppUrl, appId } = getConfiguration()
 
   const resolver = (resolve: any) => {
     const listener = (message: any) => {
@@ -13,7 +12,7 @@ const activeUser = () => {
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data
         log('MESSAGE2: ', action, data)
-        if (action === 'user') {
+        if (action === 'user' && data.appId === appId) {
           window.removeEventListener('message', listener)
           resolve(data?.user)
         }

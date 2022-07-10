@@ -3,7 +3,6 @@ import getConfiguration from './getConfiguration'
 const connectWallet = (appId: string) => {
   return new Promise((resolve) => {
     const { walletAppUrl } = getConfiguration()
-    console.log('walletAppUrl', walletAppUrl)
     window.addEventListener('message', (message) => {
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data

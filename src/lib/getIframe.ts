@@ -17,8 +17,23 @@ const getIframe = (show = false) => {
   const { walletAppUrl } = getConfiguration()
 
   if (!iframe) {
+    const queryParams = new URLSearchParams(window.location.search)
+    const auth = queryParams.get('auth')
+
+    let fullWalletAppUrl = walletAppUrl + `/wallet?appId=${appId}`
+    if (auth) {
+      fullWalletAppUrl += `&auth=${auth}`
+
+      queryParams.delete('auth')
+      let fullPath = location.protocol + '//' + location.host + location.pathname
+      if (queryParams.toString().length > 0) {
+        fullPath += '?' + queryParams.toString()
+      }
+      window.history.pushState({}, '', fullPath)
+    }
+
     iframe = document.createElement('IFRAME') as HTMLIFrameElement
-    iframe.src = walletAppUrl + `/wallet?appId=${appId}`
+    iframe.src = fullWalletAppUrl
     iframe.id = iframeId
     iframe.style.border = 'none'
     iframe.style.position = 'absolute'

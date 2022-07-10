@@ -258,10 +258,11 @@ const loaderStyle = () =>
     padding: '45px 0',
   } as React.CSSProperties)
 
-const connectorWarning = () => ({
-  fontSize: 'small',
-  textAlign: 'center',
-  paddingTop: '6px',
-} as React.CSSProperties)
+const connectorWarning = () =>
+  ({
+    fontSize: 'small',
+    textAlign: 'center',
+    paddingTop: '6px',
+  } as React.CSSProperties)
 
 export default SignInModal
