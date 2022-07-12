@@ -138,7 +138,7 @@ const modalStyle = (isOpen: boolean) =>
     opacity: isOpen ? 1 : 0,
     position: 'absolute',
     left: isOpen ? '50%' : '-9999px',
-    top: '40%',
+    top: typeof window === 'undefined' ? '40%' : window.innerHeight * 0.4,
     transform: 'translate(-50%, -50%)',
     backgroundColor: 'white',
     width: '660px',
