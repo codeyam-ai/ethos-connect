@@ -17,7 +17,7 @@ yarn link
 cd ../../node_modules/react-dom
 yarn link
 cd ../..
-yarn watch
+yarn build
 ```
 
 The last line of the previous commands will watch for changes and the UI will automatically update after you link.
@@ -41,6 +41,11 @@ Or, for windows powershell:
 
 ```
 Remove-Item C:\Users\<USERNAME>\AppData\Local\Yarn\Data\link\* -Recurse -Force
+```
+
+To reset your UI back to normal, simply run:
+```
+yarn add ethos-wallet-beta react react-dom
 ```
 
 # Publishing
