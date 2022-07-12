@@ -143,6 +143,7 @@ const modalStyle = (isOpen: boolean) =>
     backgroundColor: 'white',
     width: '660px',
     fontWeight: '400',
+    zIndex: '99'
   } as React.CSSProperties)
 
 const headerStyle = () =>
