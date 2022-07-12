@@ -18,6 +18,7 @@ exports[`SignInModal Ethereum renders the wagmi connector buttons 1`] = `
       "transitionProperty": "opacity",
       "transitionTimingFunction": "cubic-bezier(0.4, 0, 0.2, 1)",
       "width": "660px",
+      "zIndex": "99",
     }
   }
 >
@@ -660,6 +661,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
       "transitionProperty": "opacity",
       "transitionTimingFunction": "cubic-bezier(0.4, 0, 0.2, 1)",
       "width": "660px",
+      "zIndex": "99",
     }
   }
 >
@@ -867,6 +869,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
       "transitionProperty": "opacity",
       "transitionTimingFunction": "cubic-bezier(0.4, 0, 0.2, 1)",
       "width": "660px",
+      "zIndex": "99",
     }
   }
 >
