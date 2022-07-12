@@ -1,5 +1,4 @@
-import React, { useState, Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import React, { useState } from 'react'
 import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
@@ -9,7 +8,7 @@ import getConfiguration from '../../lib/getConfiguration'
 import { useConnect } from 'wagmi'
 import { Chain } from '../../enums/Chain'
 import Sui from '../svg/Sui'
-import useWindowDimensions from '../../hooks/useWindowDimensions';
+import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
 
 export type SignInModalProps = {
@@ -19,7 +18,7 @@ export type SignInModalProps = {
 }
 
 const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
-  const { height, width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions()
 
   const { appId, chain } = getConfiguration()
   const eth = chain === Chain.Eth
@@ -70,123 +69,95 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   }
 
   return (
-    <>
-      <Transition.Root show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => onClose()}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div style={backdropStyle()} />
-          </Transition.Child>
+    <div style={dialogStyle(isOpen)} role='dialog'>
+      <div
+        style={backdropStyle()}
+        onClick={() => console.log('clicked')}
+      />
 
-          <div style={modalOuterWrapperStyle()}>
-            <div style={modalInnerWrapperStyle(width)}>
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              >
-
-                <Dialog.Panel style={dialogPanelStyle(width)}>
-                  <div>
-                    <div style={headerStyle()}>
-                      <h3 style={titleStyle()}>Sign In</h3>
-                      <div style={closeStyle()} onClick={onClose}>
-                        &#x2715;
-                      </div>
-                    </div>
-                    <div style={mainContentStyle(width)}>
-                      <div style={walletOptionsStyle(width)}>
-                        <div style={walletOptionStyle()} onClick={() => connectEthos()}>
-                          <button style={walletOptionButtonStyle()}>
-                            {logo('ethos')}
-                            Ethos
-                          </button>
-                        </div>
-                        <div style={walletOptionStyle()} onClick={() => connectSui()}>
-                          <button style={walletOptionButtonStyle()}>
-                            {logo('sui')}
-                            Sui Wallet
-                          </button>
-                        </div>
-                        {isOpen &&
-                          connectors.map((connector: any) => (
-                            <div
-                              key={connector.id}
-                              style={walletOptionStyle()}
-                              onClick={() => connect!({ connector })}
-                            >
-                              <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
-                                {logo(connector.id)}
-                                {connector.name}
-                                {!connector.ready && <span style={connectorSubStyle()}>(unsupported)</span>}
-                                {isLoading && pendingConnector?.id === connector.id && (
-                                  <span style={connectorSubStyle()}>(connecting)</span>
-                                )}
-                              </button>
-                            </div>
-                          ))}
-                        {error && <div style={connectorWarning()}>{error.message}</div>}
-                        {showEthosMessage && (
-                          <div style={connectorWarning()}>
-                            You do not have the necessary wallet extension installed.
-                          </div>
-                        )}
-                      </div>
-                      <div style={registrationStyle()}>
-                        <h3 style={registrationHeaderStyle()}>One-Click Login Link</h3>
-                        <div style={explainerStyle()}>
-                          Enter your email and we&#39;ll send you a link that will sign you in.
-                        </div>
-                        {signingIn ? (
-                          <div style={loaderStyle()}>
-                            <Loader width={50} />
-                          </div>
-                        ) : (
-                          <form onSubmit={sendEmail}>
-                            <input
-                              style={inputStyle()}
-                              type="email"
-                              placeholder="Email address"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <button
-                              style={buttonStyle(width)}
-                              type='submit'
-                            >
-                              Send Login Link
-                            </button>
-                          </form>
-                        )}
-                      </div>
-                    </div>
+      <div style={modalOuterWrapperStyle()}>
+        <div style={modalInnerWrapperStyle(width)}>
+          <div style={dialogPanelStyle(width)}>
+            <div>
+              <div style={headerStyle()}>
+                <h3 style={titleStyle()}>Sign In</h3>
+                <div style={closeStyle()} onClick={onClose}>
+                  &#x2715;
+                </div>
+              </div>
+              <div style={mainContentStyle(width)}>
+                <div style={walletOptionsStyle(width)}>
+                  <div style={walletOptionStyle()} onClick={() => connectEthos()}>
+                    <button style={walletOptionButtonStyle()}>
+                      {logo('ethos')}
+                      Ethos
+                    </button>
                   </div>
-                  {/* <div>
-                    width: {width} ~ height: {height}
-                  </div> */}
-                </Dialog.Panel>
-
-              </Transition.Child>
+                  <div style={walletOptionStyle()} onClick={() => connectSui()}>
+                    <button style={walletOptionButtonStyle()}>
+                      {logo('sui')}
+                      Sui Wallet
+                    </button>
+                  </div>
+                  {isOpen &&
+                    connectors.map((connector: any) => (
+                      <div
+                        key={connector.id}
+                        style={walletOptionStyle()}
+                        onClick={() => connect!({ connector })}
+                      >
+                        <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
+                          {logo(connector.id)}
+                          {connector.name}
+                          {!connector.ready && (
+                            <span style={connectorSubStyle()}>(unsupported)</span>
+                          )}
+                          {isLoading && pendingConnector?.id === connector.id && (
+                            <span style={connectorSubStyle()}>(connecting)</span>
+                          )}
+                        </button>
+                      </div>
+                    ))}
+                  {error && <div style={connectorWarning()}>{error.message}</div>}
+                  {showEthosMessage && (
+                    <div style={connectorWarning()}>
+                      You do not have the necessary wallet extension installed.
+                    </div>
+                  )}
+                </div>
+                <div style={registrationStyle()}>
+                  <h3 style={registrationHeaderStyle()}>One-Click Login Link</h3>
+                  <div style={explainerStyle()}>
+                    Enter your email and we&#39;ll send you a link that will sign you in.
+                  </div>
+                  {signingIn ? (
+                    <div style={loaderStyle()}>
+                      <Loader width={50} />
+                    </div>
+                  ) : (
+                    <form onSubmit={sendEmail}>
+                      <input
+                        style={inputStyle()}
+                        type="email"
+                        placeholder="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <button style={buttonStyle(width)} type="submit">
+                        Send Login Link
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </div>
             </div>
-
           </div>
+        </div>
+      </div>
 
-        </Dialog>
-      </Transition.Root>
-
-    </>
+    </div>
   )
+
 }
 
 /*
@@ -196,6 +167,21 @@ Set aside the media queries
 Paste that output into https://staxmanade.com/CssToReact/
 Add media queries using `modalInnerWrapperStyle` as an example
 */
+
+const dialogStyle = (isOpen: boolean) =>
+({
+  display: isOpen ? "block" : "none",
+  position: "relative",
+  zIndex: "10"
+} as React.CSSProperties)
+
+const mainWrapper = (isOpen: boolean) =>
+// flex justify-center items-center
+({
+  display: isOpen ? "block" : "none",
+  justifyContent: "center",
+  alignItems: "center",
+} as React.CSSProperties)
 
 const backdropStyle = () =>
 // fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
@@ -227,40 +213,40 @@ const modalInnerWrapperStyle = (width: number): React.CSSProperties => {
     alignItems: 'flex-end',
     justifyContent: 'center',
     minHeight: '100%',
-    padding: '1rem'/* 16px */,
+    padding: '1rem' /* 16px */,
     textAlign: 'center',
-  };
+  }
   const sm = {
     padding: '0',
     alignItems: 'center',
   }
 
-  return width < Breakpoints.sm ?
-    styles as React.CSSProperties :
-    { ...styles, ...sm } as React.CSSProperties
+  return width < Breakpoints.sm
+    ? (styles as React.CSSProperties)
+    : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
 const dialogPanelStyle = (width: number) => {
   // relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6
   const styles = {
-    overflow: "hidden",
-    position: "relative",
-    backgroundColor: "#ffffff",
-    transitionProperty: "all",
-    textAlign: "left",
-    borderRadius: "0.5rem",
-    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-  };
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#ffffff',
+    transitionProperty: 'all',
+    textAlign: 'left',
+    borderRadius: '0.5rem',
+    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+  }
   const sm = {
-    marginTop: "2rem",
-    marginBottom: "2rem",
-    width: "100%",
-    maxWidth: "40rem"
+    marginTop: '2rem',
+    marginBottom: '2rem',
+    width: '100%',
+    maxWidth: '40rem',
   }
 
-  return width < Breakpoints.sm ?
-    styles as React.CSSProperties :
-    { ...styles, ...sm } as React.CSSProperties
+  return width < Breakpoints.sm
+    ? (styles as React.CSSProperties)
+    : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
 const closeStyle = () =>
@@ -274,7 +260,7 @@ const closeStyle = () =>
   cursor: 'pointer',
 } as React.CSSProperties)
 
-const modalStyle = () =>
+const modalStyle = (isOpen: boolean) =>
 ({
   textAlign: 'left',
   border: '1px solid rgb(203 213 225)',
@@ -282,15 +268,15 @@ const modalStyle = () =>
   transitionProperty: 'opacity',
   transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
   transitionDuration: '250ms',
-  opacity: 1,
+  opacity: isOpen ? 1 : 0,
   position: 'absolute',
-  left: '50%',
+  left: isOpen ? '50%' : '-9999px',
   top: '40%',
   transform: 'translate(-50%, -50%)',
   backgroundColor: 'white',
   width: '660px',
   fontWeight: '400',
-  zIndex: '99'
+  zIndex: '99',
 } as React.CSSProperties)
 
 const headerStyle = () =>
@@ -311,14 +297,14 @@ const titleStyle = () =>
 const mainContentStyle = (width: number) => {
   const styles = {
     justifyContent: 'space-between',
-  };
+  }
   const sm = {
     display: 'flex',
   }
 
-  return width < Breakpoints.sm ?
-    styles as React.CSSProperties :
-    { ...styles, ...sm } as React.CSSProperties
+  return width < Breakpoints.sm
+    ? (styles as React.CSSProperties)
+    : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
 const walletOptionsStyle = (width: number) => {
@@ -327,16 +313,16 @@ const walletOptionsStyle = (width: number) => {
     gap: '6px',
     display: 'flex',
     flexDirection: 'column',
-  };
+  }
   const sm = {
     width: '300px',
     padding: '24px 12px',
     borderRight: '1px solid rgb(241 245 249)',
   }
 
-  return width < Breakpoints.sm ?
-    styles as React.CSSProperties :
-    { ...styles, ...sm } as React.CSSProperties
+  return width < Breakpoints.sm
+    ? (styles as React.CSSProperties)
+    : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
 const walletOptionStyle = () =>
@@ -402,15 +388,15 @@ const buttonStyle = (width: number) => {
     color: '#FFFFFF',
     width: '50%',
     textDecoration: 'none',
-    minWidth: '10rem'
-    };
+    minWidth: '10rem',
+  }
   const sm = {
     marginTop: '1rem',
   }
 
-  return width < Breakpoints.sm ?
-    styles as React.CSSProperties :
-    { ...styles, ...sm } as React.CSSProperties
+  return width < Breakpoints.sm
+    ? (styles as React.CSSProperties)
+    : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
 const loaderStyle = () =>
