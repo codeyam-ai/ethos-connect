@@ -2,6 +2,7 @@ import getConfiguration from './getConfiguration'
 
 const getIframe = (show = false) => {
   const { appId } = getConfiguration()
+  console.log('GET IFRAME', appId)
 
   const iframeId = 'ethos-wallet-iframe'
   let scrollY: number = 0
@@ -32,6 +33,7 @@ const getIframe = (show = false) => {
       window.history.pushState({}, '', fullPath)
     }
 
+    console.log('LOAD IFRAME!', fullWalletAppUrl)
     iframe = document.createElement('IFRAME') as HTMLIFrameElement
     iframe.src = fullWalletAppUrl
     iframe.id = iframeId
