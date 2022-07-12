@@ -33,6 +33,7 @@ export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElemen
 }
 
 const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: EthosWrapperProps) => {
+  console.log('EthosWrapper', ethosConfiguration)
   initialize(ethosConfiguration)
 
   const eth = ethosConfiguration.chain === Chain.Eth

@@ -50,10 +50,6 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
     setShowEthosMessage(true)
   }
 
-  const connectSui = () => {
-    setShowEthosMessage(true)
-  }
-
   const logo = (connectorId: string) => {
     switch (connectorId) {
       case 'metaMask':
@@ -93,7 +89,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                       Ethos
                     </button>
                   </div>
-                  <div style={walletOptionStyle()} onClick={() => connectSui()}>
+                  <div style={walletOptionStyle()} onClick={() => connectEthos()}>
                     <button style={walletOptionButtonStyle()}>
                       {logo('sui')}
                       Sui Wallet

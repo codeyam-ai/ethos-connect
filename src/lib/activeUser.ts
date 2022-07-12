@@ -4,6 +4,7 @@ import log from './log'
 // import postMessage from './postMessage'
 
 const activeUser = () => {
+  console.log('ACTIVE USER')
   const { walletAppUrl, appId } = getConfiguration()
 
   const resolver = (resolve: any) => {
@@ -23,6 +24,7 @@ const activeUser = () => {
     // Compiler isn't handling postMessage
     const message = { action: 'activeUser' }
     const iframe = getIframe()
+    console.log('API POST MESSAGE ACTION')
     iframe?.contentWindow?.postMessage(message, '*')
     // postMessage(message)
   }
