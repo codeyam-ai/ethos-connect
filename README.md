@@ -46,6 +46,9 @@ Remove-Item C:\Users\<USERNAME>\AppData\Local\Yarn\Data\link\* -Recurse -Force
 To reset your UI back to normal, simply run:
 
 ```
+yarn unlink ethos-wallet-beta
+yarn unlink react
+yarn unlink react-dom
 yarn add ethos-wallet-beta react react-dom
 ```
 

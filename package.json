@@ -1,6 +1,6 @@
 {
   "name": "ethos-wallet-beta",
-  "version": "0.0.60",
+  "version": "0.0.61",
   "description": "Beta version of the Ethos Wallet NPM Package",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "npm run build && npm test && npm run lint",
+    "prepublishOnly": "npm run build && npm run test && npm run lint",
     "build": "./scripts/build.sh --external:react --external:react-dom",
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
     "test": "./scripts/test.sh",

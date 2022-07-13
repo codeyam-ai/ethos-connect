@@ -11,12 +11,9 @@ import * as wagmi from 'wagmi'
 import Metamask from '../../../src/components/svg/Metamask'
 import WalletConnect from '../../../src/components/svg/WalletConnect'
 
-const modalExists = ({ root, hidden }: { root: any; hidden: boolean }) => {
-  const modals = root.findAll((node) => {
-    const style = node.props.style || {}
-    return style.opacity === (hidden ? 0 : 1) && parseInt(style.left || 0) * (hidden ? -1 : 1) > 0
-  })
-  return modals.length > 0
+const modalExists = (root: any) => {
+  const modal = root.findByProps({ role: 'dialog' })
+  return modal.props.style.display === 'block'
 }
 
 describe('SignInModal', () => {
@@ -24,8 +21,7 @@ describe('SignInModal', () => {
     const signInModal = create(<SignInModal isOpen={false} />)
 
     const root = signInModal.root
-    expect(modalExists({ root, hidden: true })).toBeTruthy()
-    expect(modalExists({ root, hidden: false })).toBeFalsy()
+    expect(modalExists(root)).toBeFalsy()
 
     expect(signInModal.toJSON()).toMatchSnapshot()
   })
@@ -34,8 +30,7 @@ describe('SignInModal', () => {
     const signInModal = create(<SignInModal isOpen={true} />)
 
     const root = signInModal.root
-    expect(modalExists({ root, hidden: false })).toBeTruthy()
-    expect(modalExists({ root, hidden: true })).toBeFalsy()
+    expect(modalExists(root)).toBeTruthy()
 
     expect(root.findAllByType(Metamask).length).toBe(0)
     expect(root.findAllByType(WalletConnect).length).toBe(0)
@@ -46,7 +41,7 @@ describe('SignInModal', () => {
   it('shows a warning if you click the Ethos wallet button', () => {
     const warningCount = (root: any) =>
       root.findAllByProps({
-        children: 'You do not have the ethos wallet extension installed.',
+        children: 'You do not have the necessary wallet extension installed.',
       }).length
 
     const signInModal = create(<SignInModal isOpen={true} />)
@@ -79,14 +74,14 @@ describe('SignInModal', () => {
 
     const root = signInModal.root
     const emailInput = root.findByProps({ type: 'email' })
-    const emailButton = emailInput.parent.find((node) => node.props.onClick)
+    const emailForm = emailInput.parent
 
     act(() => {
       emailInput.props.onChange({ target: { value: testEmail } })
     })
 
     await act(async () => {
-      emailButton.props.onClick()
+      emailForm.props.onSubmit()
     })
 
     expect(emailProvided).toBe(testEmail)
