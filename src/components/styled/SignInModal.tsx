@@ -20,7 +20,7 @@ export type SignInModalProps = {
 const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const { width } = useWindowDimensions()
 
-  const { appId, chain } = getConfiguration()
+  const { appId, chain, walletAppUrl } = getConfiguration()
   const eth = chain === Chain.Eth
 
   const [showEthosMessage, setShowEthosMessage] = useState<boolean>(false)
@@ -128,18 +128,31 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                       <Loader width={50} />
                     </div>
                   ) : (
-                    <form onSubmit={sendEmail}>
-                      <input
-                        style={inputStyle()}
-                        type="email"
-                        placeholder="Email address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <button style={buttonStyle(width)} type="submit">
-                        Send Login Link
-                      </button>
-                    </form>
+                    <>
+                      <form onSubmit={sendEmail}>
+                        <input
+                          style={inputStyle()}
+                          type="email"
+                          placeholder="Email address"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <button style={buttonStyle(width)} type="submit">
+                          Send Login Link
+                        </button>
+                      </form>
+                      <div style={selfCustodialSection()}>
+                        Advanced:&nbsp;
+                        <a
+                          href={`${walletAppUrl}/self-custodial`}
+                          style={selfCustodialLink()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Create A Self-Custodial Wallet
+                        </a>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -402,6 +415,19 @@ const connectorWarning = () =>
     fontSize: 'small',
     textAlign: 'center',
     paddingTop: '6px',
+  } as React.CSSProperties)
+
+const selfCustodialSection = () =>
+  ({
+    paddingTop: '6px',
+    fontSize: 'small',
+    paddingLeft: '3px',
+  } as React.CSSProperties)
+
+const selfCustodialLink = () =>
+  ({
+    color: 'blue',
+    textDecoration: 'underline',
   } as React.CSSProperties)
 
 export default SignInModal
