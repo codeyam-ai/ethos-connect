@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import {
   WagmiConfig,
@@ -34,15 +34,27 @@ export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElemen
 
 const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: EthosWrapperProps) => {
   console.log('EthosWrapper', ethosConfiguration)
-  initialize(ethosConfiguration)
-
   const eth = ethosConfiguration.chain === Chain.Eth
 
+  const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
+
+  const _onProviderSelected = (providerAndSigner: ProviderAndSigner) => {
+    setProviderAndSigner(providerAndSigner)
+    onProviderSelected && onProviderSelected(providerAndSigner)
+  }
+
+  const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { ...providerAndSigner })
+    }
+    return child
+  })
+
   if (eth) {
+    const ethConfiguration = ethosConfiguration as EthereumConfiguration
     const provider = useProvider()
     const { address } = useAccount()
     const { data: signer } = useSigner()
-    const ethConfiguration = ethosConfiguration as EthereumConfiguration
     const {
       chains,
       provider: chainsProvider,
@@ -80,20 +92,22 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
       webSocketProvider,
     })
 
-    if (!address) {
-      onProviderSelected({ provider, signer: null })
-    } else if (signer) {
-      const fullProvider = new Provider(provider, signer)
-      onProviderSelected({ provider: fullProvider, signer })
-    }
+    useEffect(() => {
+      if (!address) {
+        _onProviderSelected({ provider, signer: null })
+      } else if (signer) {
+        const fullProvider = new Provider(provider, signer)
+        _onProviderSelected({ provider: fullProvider, signer })
+      }
+    }, [])
 
-    return <WagmiConfig client={client}>{children}</WagmiConfig>
+    return <WagmiConfig client={client}>{childrenWithProviderAndSigner}</WagmiConfig>
   }
 
   useEffect(() => {
     const fetchEthosProvider = async () => {
       const ethosProvider = await getProvider()
-      onProviderSelected({
+      _onProviderSelected({
         provider: ethosProvider,
         signer: ethosProvider?.getSigner(),
       })
@@ -102,7 +116,11 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
     fetchEthosProvider()
   }, [])
 
-  return <>{children}</>
+  useEffect(() => {
+    initialize(ethosConfiguration)
+  }, [])
+
+  return <>{childrenWithProviderAndSigner}</>
 }
 
 export default EthosWrapper

@@ -2,7 +2,7 @@ import { Networkish } from '@ethersproject/networks'
 import { ethers } from 'ethers'
 import activeUser from './activeUser'
 import getConfiguration from './getConfiguration'
-import log from './log'
+// import log from './log'
 import networkToChain from './networkToChain'
 
 const getProvider = async (network?: Networkish): Promise<ethers.providers.Web3Provider> => {

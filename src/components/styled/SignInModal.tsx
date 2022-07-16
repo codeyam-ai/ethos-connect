@@ -18,7 +18,7 @@ export type SignInModalProps = {
 }
 
 const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
-  const { height, width } = useWindowDimensions()
+  const { width } = useWindowDimensions()
 
   const { appId, chain } = getConfiguration()
   const eth = chain === Chain.Eth
@@ -30,12 +30,12 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const { connect, connectors, error, isLoading, pendingConnector } = eth
     ? useConnect()
     : {
-      connect: null,
-      connectors: [],
-      error: null,
-      isLoading: false,
-      pendingConnector: null,
-    }
+        connect: null,
+        connectors: [],
+        error: null,
+        isLoading: false,
+        pendingConnector: null,
+      }
 
   const sendEmail = async () => {
     setSigningIn(true)
@@ -65,11 +65,8 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   }
 
   return (
-    <div style={dialogStyle(isOpen)} role='dialog'>
-      <div
-        style={backdropStyle()}
-        onClick={() => console.log('clicked')}
-      />
+    <div style={dialogStyle(isOpen)} role="dialog">
+      <div style={backdropStyle()} onClick={() => console.log('clicked')} />
 
       <div style={modalOuterWrapperStyle()}>
         <div style={modalInnerWrapperStyle(width)}>
@@ -150,10 +147,8 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
           </div>
         </div>
       </div>
-
     </div>
   )
-
 }
 
 /*
@@ -165,42 +160,42 @@ Add media queries using `modalInnerWrapperStyle` as an example
 */
 
 const dialogStyle = (isOpen: boolean) =>
-({
-  display: isOpen ? "block" : "none",
-  position: "relative",
-  zIndex: "10"
-} as React.CSSProperties)
+  ({
+    display: isOpen ? 'block' : 'none',
+    position: 'relative',
+    zIndex: '10',
+  } as React.CSSProperties)
 
-const mainWrapper = (isOpen: boolean) =>
-// flex justify-center items-center
-({
-  display: isOpen ? "block" : "none",
-  justifyContent: "center",
-  alignItems: "center",
-} as React.CSSProperties)
+// const mainWrapper = (isOpen: boolean) =>
+//   // flex justify-center items-center
+//   ({
+//     display: isOpen ? 'block' : 'none',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   } as React.CSSProperties)
 
 const backdropStyle = () =>
-// fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
-({
-  position: 'fixed',
-  top: '0px',
-  right: '0px',
-  bottom: '0px',
-  left: '0px',
-  backgroundColor: 'rgb(107 114 128 / .75)',
-} as React.CSSProperties)
+  // fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
+  ({
+    position: 'fixed',
+    top: '0px',
+    right: '0px',
+    bottom: '0px',
+    left: '0px',
+    backgroundColor: 'rgb(107 114 128 / .75)',
+  } as React.CSSProperties)
 
 const modalOuterWrapperStyle = () =>
-// fixed z-10 inset-0 overflow-y-auto
-({
-  position: 'fixed',
-  zIndex: '99',
-  top: '0px',
-  right: '0px',
-  bottom: '0px',
-  left: '0px',
-  overflowY: 'auto',
-} as React.CSSProperties)
+  // fixed z-10 inset-0 overflow-y-auto
+  ({
+    position: 'fixed',
+    zIndex: '99',
+    top: '0px',
+    right: '0px',
+    bottom: '0px',
+    left: '0px',
+    overflowY: 'auto',
+  } as React.CSSProperties)
 
 const modalInnerWrapperStyle = (width: number): React.CSSProperties => {
   // flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0
@@ -246,49 +241,49 @@ const dialogPanelStyle = (width: number) => {
 }
 
 const closeStyle = () =>
-({
-  backgroundColor: '#F9FAFB',
-  borderRadius: '100%',
-  width: '24px',
-  height: '24px',
-  textAlign: 'center',
-  color: '#A0AEBA',
-  cursor: 'pointer',
-} as React.CSSProperties)
+  ({
+    backgroundColor: '#F9FAFB',
+    borderRadius: '100%',
+    width: '24px',
+    height: '24px',
+    textAlign: 'center',
+    color: '#A0AEBA',
+    cursor: 'pointer',
+  } as React.CSSProperties)
 
-const modalStyle = (isOpen: boolean) =>
-({
-  textAlign: 'left',
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  transitionProperty: 'opacity',
-  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  transitionDuration: '250ms',
-  opacity: isOpen ? 1 : 0,
-  position: 'absolute',
-  left: isOpen ? '50%' : '-9999px',
-  top: '40%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  width: '660px',
-  fontWeight: '400',
-  zIndex: '99',
-} as React.CSSProperties)
+// const modalStyle = (isOpen: boolean) =>
+//   ({
+//     textAlign: 'left',
+//     border: '1px solid rgb(203 213 225)',
+//     borderRadius: '0.5rem',
+//     transitionProperty: 'opacity',
+//     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+//     transitionDuration: '250ms',
+//     opacity: isOpen ? 1 : 0,
+//     position: 'absolute',
+//     left: isOpen ? '50%' : '-9999px',
+//     top: '40%',
+//     transform: 'translate(-50%, -50%)',
+//     backgroundColor: 'white',
+//     width: '660px',
+//     fontWeight: '400',
+//     zIndex: '99',
+//   } as React.CSSProperties)
 
 const headerStyle = () =>
-({
-  borderBottom: '1px solid rgb(241 245 249)',
-  padding: '12px',
-  display: 'flex',
-  justifyContent: 'space-between',
-} as React.CSSProperties)
+  ({
+    borderBottom: '1px solid rgb(241 245 249)',
+    padding: '12px',
+    display: 'flex',
+    justifyContent: 'space-between',
+  } as React.CSSProperties)
 
 const titleStyle = () =>
-({
-  fontSize: '1rem',
-  fontWeight: '500',
-  margin: '0',
-} as React.CSSProperties)
+  ({
+    fontSize: '1rem',
+    fontWeight: '500',
+    margin: '0',
+  } as React.CSSProperties)
 
 const mainContentStyle = (width: number) => {
   const styles = {
@@ -322,24 +317,24 @@ const walletOptionsStyle = (width: number) => {
 }
 
 const walletOptionStyle = () =>
-({
-  padding: '12px',
-  backgroundColor: '#F9FAFB',
-  borderRadius: '0.5rem',
-  fontWeight: '500',
-  cursor: 'pointer',
-} as React.CSSProperties)
+  ({
+    padding: '12px',
+    backgroundColor: '#F9FAFB',
+    borderRadius: '0.5rem',
+    fontWeight: '500',
+    cursor: 'pointer',
+  } as React.CSSProperties)
 
 const walletOptionButtonStyle = () =>
-({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'start',
-  gap: '0.5rem',
-  border: 'none',
-  background: 'none',
-  textDecoration: 'none',
-} as React.CSSProperties)
+  ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'start',
+    gap: '0.5rem',
+    border: 'none',
+    background: 'none',
+    textDecoration: 'none',
+  } as React.CSSProperties)
 
 const connectorSubStyle = () => ({
   fontWeight: '300',
@@ -348,31 +343,31 @@ const connectorSubStyle = () => ({
 })
 
 const registrationStyle = () =>
-({
-  padding: '24px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-} as React.CSSProperties)
+  ({
+    padding: '24px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  } as React.CSSProperties)
 
 const registrationHeaderStyle = () =>
-({
-  fontWeight: '500',
-  margin: '0',
-} as React.CSSProperties)
+  ({
+    fontWeight: '500',
+    margin: '0',
+  } as React.CSSProperties)
 
 const explainerStyle = () =>
-({
-  fontSize: 'smaller',
-} as React.CSSProperties)
+  ({
+    fontSize: 'smaller',
+  } as React.CSSProperties)
 
 const inputStyle = () =>
-({
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  padding: '12px',
-  width: '90%',
-} as React.CSSProperties)
+  ({
+    border: '1px solid rgb(203 213 225)',
+    borderRadius: '0.5rem',
+    padding: '12px',
+    width: '90%',
+  } as React.CSSProperties)
 
 const buttonStyle = (width: number) => {
   const styles = {
@@ -396,17 +391,17 @@ const buttonStyle = (width: number) => {
 }
 
 const loaderStyle = () =>
-({
-  display: 'flex',
-  justifyContent: 'center',
-  padding: '45px 0',
-} as React.CSSProperties)
+  ({
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '45px 0',
+  } as React.CSSProperties)
 
 const connectorWarning = () =>
-({
-  fontSize: 'small',
-  textAlign: 'center',
-  paddingTop: '6px',
-} as React.CSSProperties)
+  ({
+    fontSize: 'small',
+    textAlign: 'center',
+    paddingTop: '6px',
+  } as React.CSSProperties)
 
 export default SignInModal
