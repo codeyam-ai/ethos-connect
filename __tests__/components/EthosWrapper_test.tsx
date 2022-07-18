@@ -5,7 +5,7 @@ import EthosWrapper from '../../src/components/EthosWrapper'
 import * as getProvider from '../../src/lib/getProvider'
 import { Chain } from '../../src/enums/Chain'
 
-import * as wagmi from 'wagmi'
+// import * as wagmi from 'wagmi'
 
 describe('EthosWrapper', () => {
   const signer = {}
@@ -49,61 +49,61 @@ describe('EthosWrapper', () => {
     expect(ethosWrapper.toJSON()).toMatchSnapshot()
   })
 
-  describe('Eth', () => {
-    const testWagmi = wagmi as any
+  // describe('Eth', () => {
+  //   const testWagmi = wagmi as any
 
-    let ethosWrapper
-    let account: { address: string | null } = { address: null }
-    let ethSigner: { data: any | null } = { data: null }
+  //   let ethosWrapper
+  //   let account: { address: string | null } = { address: null }
+  //   let ethSigner: { data: any | null } = { data: null }
 
-    beforeEach(async () => {
-      jest.spyOn(testWagmi, 'WagmiConfig').mockImplementation((props: any) => {
-        return <div>{props.children}</div>
-      })
-      jest.spyOn(testWagmi, 'useProvider').mockReturnValue({})
-      jest.spyOn(testWagmi, 'useAccount').mockReturnValue(account)
-      jest.spyOn(testWagmi, 'useSigner').mockReturnValue(ethSigner)
-      jest.spyOn(testWagmi, 'createClient').mockImplementation(() => ({}))
-    })
+  //   beforeEach(async () => {
+  //     jest.spyOn(testWagmi, 'WagmiConfig').mockImplementation((props: any) => {
+  //       return <div>{props.children}</div>
+  //     })
+  //     jest.spyOn(testWagmi, 'useProvider').mockReturnValue({})
+  //     jest.spyOn(testWagmi, 'useAccount').mockReturnValue(account)
+  //     jest.spyOn(testWagmi, 'useSigner').mockReturnValue(ethSigner)
+  //     jest.spyOn(testWagmi, 'createClient').mockImplementation(() => ({}))
+  //   })
 
-    it('returns no signer if the address is null', async () => {
-      await act(async () => {
-        ethosWrapper = create(
-          <EthosWrapper
-            ethosConfiguration={{ chain: Chain.Eth }}
-            onProviderSelected={onProviderSelected}
-          >
-            test
-          </EthosWrapper>
-        )
-      })
+  //   it('returns no signer if the address is null', async () => {
+  //     await act(async () => {
+  //       ethosWrapper = create(
+  //         <EthosWrapper
+  //           ethosConfiguration={{ chain: Chain.Eth }}
+  //           onProviderSelected={onProviderSelected}
+  //         >
+  //           test
+  //         </EthosWrapper>
+  //       )
+  //     })
 
-      expect(receivedProvider).toBeDefined()
-      expect(receivedSigner).toBeNull()
-    })
+  //     expect(receivedProvider).toBeDefined()
+  //     expect(receivedSigner).toBeNull()
+  //   })
 
-    it('returns both provider and signer if address is not null', async () => {
-      const address = 'ADDRESS'
-      account = { address }
-      ethSigner = { data: signer }
+  //   it('returns both provider and signer if address is not null', async () => {
+  //     const address = 'ADDRESS'
+  //     account = { address }
+  //     ethSigner = { data: signer }
 
-      jest.spyOn(testWagmi, 'useAccount').mockReturnValue(account)
-      jest.spyOn(testWagmi, 'useSigner').mockReturnValue(ethSigner)
+  //     jest.spyOn(testWagmi, 'useAccount').mockReturnValue(account)
+  //     jest.spyOn(testWagmi, 'useSigner').mockReturnValue(ethSigner)
 
-      await act(async () => {
-        ethosWrapper = create(
-          <EthosWrapper
-            ethosConfiguration={{ chain: Chain.Eth }}
-            onProviderSelected={onProviderSelected}
-          >
-            test
-          </EthosWrapper>
-        )
-      })
+  //     await act(async () => {
+  //       ethosWrapper = create(
+  //         <EthosWrapper
+  //           ethosConfiguration={{ chain: Chain.Eth }}
+  //           onProviderSelected={onProviderSelected}
+  //         >
+  //           test
+  //         </EthosWrapper>
+  //       )
+  //     })
 
-      expect(receivedProvider).toBeDefined()
-      expect(receivedSigner).toBe(signer)
-      expect(receivedProvider.getSigner()).toBe(signer)
-    })
-  })
+  //     expect(receivedProvider).toBeDefined()
+  //     expect(receivedSigner).toBe(signer)
+  //     expect(receivedProvider.getSigner()).toBe(signer)
+  //   })
+  // })
 })

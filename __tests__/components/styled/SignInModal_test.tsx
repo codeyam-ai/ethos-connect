@@ -7,7 +7,7 @@ import * as lib from '../../../src/lib/login'
 import * as getConfiguration from '../../../src/lib/getConfiguration'
 import { Chain } from '../../../src/enums/Chain'
 
-import * as wagmi from 'wagmi'
+// import * as wagmi from 'wagmi'
 import Metamask from '../../../src/components/svg/Metamask'
 import WalletConnect from '../../../src/components/svg/WalletConnect'
 
@@ -89,27 +89,27 @@ describe('SignInModal', () => {
     expect(onClose.mock.calls.length).toBe(1)
   })
 
-  describe('Ethereum', () => {
-    beforeEach(() => {
-      jest.spyOn(getConfiguration, 'default').mockImplementation(() => ({
-        walletAppUrl: 'test',
-        appId: 'test',
-        network: 'test',
-        chain: Chain.Eth,
-      }))
+  // describe('Ethereum', () => {
+  //   beforeEach(() => {
+  //     jest.spyOn(getConfiguration, 'default').mockImplementation(() => ({
+  //       walletAppUrl: 'test',
+  //       appId: 'test',
+  //       network: 'test',
+  //       chain: Chain.Eth,
+  //     }))
 
-      jest.spyOn(wagmi as any, 'useConnect').mockReturnValue({
-        connectors: [{ id: 'metaMask' }, { id: 'walletConnect' }],
-      })
-    })
+  //     jest.spyOn(wagmi as any, 'useConnect').mockReturnValue({
+  //       connectors: [{ id: 'metaMask' }, { id: 'walletConnect' }],
+  //     })
+  //   })
 
-    it('renders the wagmi connector buttons', () => {
-      const signInModal = create(<SignInModal isOpen={true} />)
+  //   it('renders the wagmi connector buttons', () => {
+  //     const signInModal = create(<SignInModal isOpen={true} />)
 
-      const root = signInModal.root
-      expect(root.findByType(Metamask)).toBeDefined()
-      expect(root.findByType(WalletConnect)).toBeDefined()
-      expect(signInModal.toJSON()).toMatchSnapshot()
-    })
-  })
+  //     const root = signInModal.root
+  //     expect(root.findByType(Metamask)).toBeDefined()
+  //     expect(root.findByType(WalletConnect)).toBeDefined()
+  //     expect(signInModal.toJSON()).toMatchSnapshot()
+  //   })
+  // })
 })

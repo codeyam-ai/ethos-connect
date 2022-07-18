@@ -1,25 +1,39 @@
-import { useEffect, useState } from "react";
-import store from "store2";
+import { useEffect, useState } from 'react'
+import store from 'store2'
 
 const useSuiWallet = () => {
-  const [providerAndSigner, setProviderAndSigner] = useState<any>({})
+  const [providerAndSigner, setProviderAndSigner] = useState<any | null>(null)
 
-  const suiWallet = () =>  (window as any).suiWallet
+  const suiWallet = () => (window as any).suiWallet
 
-  const initSignerAndProvider = (account: string|null) => {
-    const signer = account ? {
-      extension: true,
-      getAddress: () => account,
-      transact: async (details: any) => suiWallet().executeMoveCall(ensureCompatible(details))
-    } : null
-  
-    const provider = account ? {
-      getSigner: signer
-    } : null
+  const initSignerAndProvider = (account: string | null) => {
+    console.log('INITSIGNERANDPROVIDER')
+    const signer = account
+      ? {
+          extension: true,
+          getAddress: () => account,
+          transact: async (details: any) => {
+            try {
+              const response = await suiWallet().executeMoveCall(ensureCompatible(details))
+              return response
+            } catch (e) {
+              console.log('Error with sui transaction', e)
+            }
+          },
+        }
+      : null
 
+    const provider = {
+      getSigner: signer,
+    }
+
+    console.log('SET', {
+      provider,
+      signer,
+    })
     setProviderAndSigner({
       provider,
-      signer
+      signer,
     })
   }
 
@@ -28,40 +42,52 @@ const useSuiWallet = () => {
       const hasPermissions = await suiWallet().hasPermissions()
       if (hasPermissions) {
         const accounts = await suiWallet().getAccounts()
-             
+
         if (accounts && accounts.length > 0) {
+          console.log('INIT SUI 1', accounts)
           initSignerAndProvider(accounts[0])
         }
+      } else {
+        console.log('INIT SUI 2')
+        initSignerAndProvider(null)
       }
+    } else {
+      console.log('INIT SUI 3')
+      initSignerAndProvider(null)
     }
   }
 
   useEffect(() => {
-    retrieveSuiAccount();
+    retrieveSuiAccount()
 
-    const storageListener = (event: any) => { 
+    const storageListener = (event: any) => {
       if (event.type === 'ethos-storage-changed') {
         const suiStore = store.namespace('sui')
-        const account = suiStore('account');
+        const account = suiStore('account')
+        console.log('INIT SUI 4', account)
         initSignerAndProvider(account)
       }
     }
-    
-    window.addEventListener('storage', storageListener);
+
+    window.addEventListener('storage', storageListener)
     window.addEventListener('ethos-storage-changed', storageListener)
 
-    return () => {  
-      window.removeEventListener('storage', storageListener);
-      window.removeEventListener('ethos-storage-changed', storageListener);
-    } 
-  }, []);
+    return () => {
+      window.removeEventListener('storage', storageListener)
+      window.removeEventListener('ethos-storage-changed', storageListener)
+    }
+  }, [])
 
   const ensureCompatible = (details: any) => ({
     ...details,
-    arguments: details.arguments || details.inputValues
+    packageObjectId: details.packageObjectId || details.address,
+    module: details.module || details.moduleName,
+    function: details.function || details.functionName,
+    typeArguments: [],
+    arguments: details.arguments || details.inputValues,
   })
 
   return providerAndSigner
 }
 
-export default useSuiWallet;
+export default useSuiWallet

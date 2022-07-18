@@ -213,7 +213,7 @@ Array [
                         }
                       />
                     </svg>
-                    Sui Wallet
+                    Sui Test Wallet
                   </button>
                 </div>
               </div>
@@ -297,7 +297,8 @@ Array [
                     rel="noopener noreferrer"
                     style={
                       Object {
-                        "color": "blue",
+                        "color": "#751ac7",
+                        "fontWeight": 400,
                         "textDecoration": "underline",
                       }
                     }

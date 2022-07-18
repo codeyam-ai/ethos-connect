@@ -5,8 +5,8 @@ import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
-import { useConnect } from 'wagmi'
-import { Chain } from '../../enums/Chain'
+// import { useConnect } from 'wagmi'
+// import { Chain } from '../../enums/Chain'
 import Sui from '../svg/Sui'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
@@ -21,22 +21,22 @@ export type SignInModalProps = {
 const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const { width } = useWindowDimensions()
 
-  const { appId, chain, walletAppUrl } = getConfiguration()
-  const eth = chain === Chain.Eth
+  const { appId, walletAppUrl } = getConfiguration()
+  // const eth = chain === Chain.Eth
 
   const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
-  const { connect, connectors, error, isLoading, pendingConnector } = eth
-    ? useConnect()
-    : {
-        connect: null,
-        connectors: [],
-        error: null,
-        isLoading: false,
-        pendingConnector: null,
-      }
+  // const { connect, connectors, error, isLoading, pendingConnector } = eth
+  //   ? useConnect()
+  //   : {
+  //       connect: null,
+  //       connectors: [],
+  //       error: null,
+  //       isLoading: false,
+  //       pendingConnector: null,
+  //     }
 
   const sendEmail = async () => {
     setSigningIn(true)
@@ -52,11 +52,11 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   }
 
   const _connectSui = async () => {
-    const connected = await connectSui();
+    const connected = await connectSui()
     if (!connected) {
-      setShowMissingMessage(true);
+      setShowMissingMessage(true)
     } else {
-      onClose && onClose();
+      onClose && onClose()
     }
   }
 
@@ -102,7 +102,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                       Sui Test Wallet
                     </button>
                   </div>
-                  {isOpen &&
+                  {/* {isOpen &&
                     connectors.map((connector: any) => (
                       <div
                         key={connector.id}
@@ -121,7 +121,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                         </button>
                       </div>
                     ))}
-                  {error && <div style={connectorWarning()}>{error.message}</div>}
+                  {error && <div style={connectorWarning()}>{error.message}</div>} */}
                   {showMissingMessage && (
                     <div style={connectorWarning()}>
                       You do not have the necessary wallet extension installed.
@@ -359,11 +359,11 @@ const walletOptionButtonStyle = () =>
     textDecoration: 'none',
   } as React.CSSProperties)
 
-const connectorSubStyle = () => ({
-  fontWeight: '300',
-  color: 'gray',
-  fontSize: 'smaller',
-})
+// const connectorSubStyle = () => ({
+//   fontWeight: '300',
+//   color: 'gray',
+//   fontSize: 'smaller',
+// })
 
 const registrationStyle = () =>
   ({
@@ -436,8 +436,9 @@ const selfCustodialSection = () =>
 
 const selfCustodialLink = () =>
   ({
-    color: 'blue',
+    color: '#751ac7',
     textDecoration: 'underline',
+    fontWeight: 400,
   } as React.CSSProperties)
 
 export default SignInModal
