@@ -2,18 +2,35 @@ import { useEffect, useState } from "react";
 import store from "store2";
 
 const useSuiWallet = () => {
-  const [account, setAccount] = useState<string|null>(null);
+  const [providerAndSigner, setProviderAndSigner] = useState<any>({})
+
+  const suiWallet = () =>  (window as any).suiWallet
+
+  const initSignerAndProvider = (account: string|null) => {
+    const signer = account ? {
+      extension: true,
+      getAddress: () => account,
+      transact: async (details: any) => suiWallet().executeMoveCall(ensureCompatible(details))
+    } : null
+  
+    const provider = account ? {
+      getSigner: signer
+    } : null
+
+    setProviderAndSigner({
+      provider,
+      signer
+    })
+  }
 
   const retrieveSuiAccount = async () => {
-    const suiWallet = (window as any).suiWallet
-
-    if (suiWallet) {
-      const hasPermissions = await suiWallet.hasPermissions()
+    if (suiWallet()) {
+      const hasPermissions = await suiWallet().hasPermissions()
       if (hasPermissions) {
-        const accounts = await suiWallet.getAccounts()
+        const accounts = await suiWallet().getAccounts()
              
         if (accounts && accounts.length > 0) {
-          setAccount(accounts[0])
+          initSignerAndProvider(accounts[0])
         }
       }
     }
@@ -26,7 +43,7 @@ const useSuiWallet = () => {
       if (event.type === 'ethos-storage-changed') {
         const suiStore = store.namespace('sui')
         const account = suiStore('account');
-        setAccount(account)
+        initSignerAndProvider(account)
       }
     }
     
@@ -39,9 +56,12 @@ const useSuiWallet = () => {
     } 
   }, []);
 
-  return {
-    account
-  }
+  const ensureCompatible = (details: any) => ({
+    ...details,
+    arguments: details.arguments || details.inputValues
+  })
+
+  return providerAndSigner
 }
 
 export default useSuiWallet;

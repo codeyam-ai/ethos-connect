@@ -38,7 +38,7 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
   const eth = ethosConfiguration.chain === Chain.Eth
 
   const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
-  const suiWallet = useSuiWallet()
+  const { provider: suiProvider, signer: suiSigner } = useSuiWallet()
 
   const _onProviderSelected = (providerAndSigner: ProviderAndSigner) => {
     setProviderAndSigner(providerAndSigner)
@@ -107,8 +107,12 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
   }
 
   useEffect(() => {
-    console.log("SUIWALLET", suiWallet)
-  }, [suiWallet])
+    console.log("SUI SIGNER", suiSigner)
+    _onProviderSelected({
+      provider: suiProvider,
+      signer: suiSigner
+    })
+  }, [suiSigner])
 
   useEffect(() => {
     initialize(ethosConfiguration)

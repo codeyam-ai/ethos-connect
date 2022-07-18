@@ -32,6 +32,7 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 }
 
 type transactProps = {
+  signer: any,
   details:
     | EthereumTransaction
     | SuiCoinTransferTransaction
@@ -45,6 +46,7 @@ type transactProps = {
 }
 
 const transact = async ({
+  signer,
   details,
   onSigned,
   onSent,
@@ -55,6 +57,11 @@ const transact = async ({
   const { walletAppUrl } = getConfiguration()
 
   window.addEventListener('message', (message) => {
+    if (signer.extension) {
+      signer.transact(details)
+      return;
+    }
+
     if (message.origin === walletAppUrl) {
       const { action, data } = message.data
 

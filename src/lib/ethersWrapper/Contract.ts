@@ -39,6 +39,7 @@ export class Contract {
               }
 
               transact({
+                signer: signerOrProvider,
                 details,
                 onSent: async (transaction: any) => {
                   const transactionWithWait = {
