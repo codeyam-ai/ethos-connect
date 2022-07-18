@@ -22,6 +22,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { Chain } from '../enums/Chain'
 import { EthereumConfiguration, EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
+import useSuiWallet from '../lib/useSuiWallet'
 
 export type ProviderAndSigner = {
   provider: ethers.providers.Web3Provider | any | undefined
@@ -37,6 +38,7 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
   const eth = ethosConfiguration.chain === Chain.Eth
 
   const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
+  const suiWallet = useSuiWallet()
 
   const _onProviderSelected = (providerAndSigner: ProviderAndSigner) => {
     setProviderAndSigner(providerAndSigner)
@@ -105,6 +107,12 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
   }
 
   useEffect(() => {
+    console.log("SUIWALLET", suiWallet)
+  }, [suiWallet])
+
+  useEffect(() => {
+    initialize(ethosConfiguration)
+
     const fetchEthosProvider = async () => {
       const ethosProvider = await getProvider()
       _onProviderSelected({
@@ -114,10 +122,6 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
     }
 
     fetchEthosProvider()
-  }, [])
-
-  useEffect(() => {
-    initialize(ethosConfiguration)
   }, [])
 
   return <>{childrenWithProviderAndSigner}</>

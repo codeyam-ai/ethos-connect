@@ -10,6 +10,7 @@ import { Chain } from '../../enums/Chain'
 import Sui from '../svg/Sui'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
+import connectSui from '../../lib/connectSui'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -23,7 +24,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const { appId, chain, walletAppUrl } = getConfiguration()
   const eth = chain === Chain.Eth
 
-  const [showEthosMessage, setShowEthosMessage] = useState<boolean>(false)
+  const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
 
@@ -47,7 +48,16 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   }
 
   const connectEthos = () => {
-    setShowEthosMessage(true)
+    setShowMissingMessage(true)
+  }
+
+  const _connectSui = async () => {
+    const connected = await connectSui();
+    if (!connected) {
+      setShowMissingMessage(true);
+    } else {
+      onClose && onClose();
+    }
   }
 
   const logo = (connectorId: string) => {
@@ -80,16 +90,16 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
               </div>
               <div style={mainContentStyle(width)}>
                 <div style={walletOptionsStyle(width)}>
-                  <div style={walletOptionStyle()} onClick={() => connectEthos()}>
+                  <div style={walletOptionStyle()} onClick={connectEthos}>
                     <button style={walletOptionButtonStyle()}>
                       {logo('ethos')}
                       Ethos
                     </button>
                   </div>
-                  <div style={walletOptionStyle()} onClick={() => connectEthos()}>
+                  <div style={walletOptionStyle()} onClick={_connectSui}>
                     <button style={walletOptionButtonStyle()}>
                       {logo('sui')}
-                      Sui Wallet
+                      Sui Test Wallet
                     </button>
                   </div>
                   {isOpen &&
@@ -112,7 +122,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                       </div>
                     ))}
                   {error && <div style={connectorWarning()}>{error.message}</div>}
-                  {showEthosMessage && (
+                  {showMissingMessage && (
                     <div style={connectorWarning()}>
                       You do not have the necessary wallet extension installed.
                     </div>
