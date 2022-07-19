@@ -58,7 +58,7 @@ const useSuiWallet = () => {
   }
 
   useEffect(() => {
-    retrieveSuiAccount()
+    setTimeout(retrieveSuiAccount, 100)
 
     const storageListener = (event: any) => {
       if (event.type === 'ethos-storage-changed') {

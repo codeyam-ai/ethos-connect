@@ -1,11 +1,11 @@
 import apiCall from './apiCall'
 
-type EthBalanceProps = {
+type GetWalletBalanceProps = {
   network: string
   address: string
 }
 
-const ethBalance = async ({ network, address }: EthBalanceProps) => {
+const getWalletBalance = async ({ network, address }: GetWalletBalanceProps) => {
   const {
     json: { balance },
   } = await apiCall({
@@ -17,4 +17,4 @@ const ethBalance = async ({ network, address }: EthBalanceProps) => {
   return balance
 }
 
-export default ethBalance
+export default getWalletBalance

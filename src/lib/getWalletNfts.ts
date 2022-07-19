@@ -2,7 +2,7 @@ import apiCall from './apiCall'
 import log from './log'
 import { Chain } from '../enums/Chain'
 
-const walletContents = async (address: string, chain: Chain) => {
+const getWalletNfts = async (address: string, chain: Chain) => {
   const {
     json: { nfts },
     status,
@@ -11,11 +11,11 @@ const walletContents = async (address: string, chain: Chain) => {
   })
 
   if (status !== 200) {
-    log('walletContents', 'Error with wallet contents', status)
+    log('walletNfts', 'Error with wallet NFTs', status)
     return
   }
 
   return nfts
 }
 
-export default walletContents
+export default getWalletNfts
