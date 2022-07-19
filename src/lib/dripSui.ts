@@ -13,7 +13,7 @@ const dripSui = async ({ address }: DripSuiProps) => {
     body: { address },
   })
 
-  return success;
+  return success
 }
 
 export default dripSui

@@ -27,5 +27,5 @@ export {
   hideWallet,
   getConfiguration,
   initialize,
-  dripSui
+  dripSui,
 }

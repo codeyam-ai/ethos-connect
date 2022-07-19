@@ -11,7 +11,7 @@ import logout from './lib/logout'
 import transact from './lib/transact'
 
 import getWalletBalance from './lib/getWalletBalance'
-import getWalletNfts from './lib/getWalletBalance'
+import getWalletNfts from './lib/getWalletNfts'
 import getWalletContents from './lib/getWalletContents'
 
 import activeUser from './lib/activeUser'
@@ -51,7 +51,7 @@ const lib = {
   showWallet,
   hideWallet,
   getProvider,
-  dripSui
+  dripSui,
 }
 
 export { components, lib, ethers }
