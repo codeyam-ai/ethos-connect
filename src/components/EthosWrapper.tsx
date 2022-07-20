@@ -23,6 +23,7 @@ import getProvider from '../lib/getProvider'
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import useSuiWallet from '../lib/useSuiWallet'
+import log from '../lib/log'
 
 export type ProviderAndSigner = {
   provider: ethers.providers.Web3Provider | any | undefined
@@ -34,14 +35,14 @@ export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElemen
 }
 
 const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: EthosWrapperProps) => {
-  console.log('EthosWrapper', ethosConfiguration)
+  log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
   // const eth = ethosConfiguration.chain === Chain.Eth
 
   const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
   const suiProviderAndSigner = useSuiWallet()
 
   const _onProviderSelected = (providerAndSigner: ProviderAndSigner) => {
-    console.log('SET PROVIDER AND SIGNER!!!!!!!', providerAndSigner)
+    log('EthosWrapper', '_onProviderSelected called with: ', providerAndSigner)
     setProviderAndSigner(providerAndSigner)
     onProviderSelected && onProviderSelected(providerAndSigner)
   }
@@ -108,16 +109,15 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
   // }
 
   useEffect(() => {
-    console.log(suiProviderAndSigner)
     if (!suiProviderAndSigner) return
 
     const { provider: suiProvider, signer: suiSigner } = suiProviderAndSigner
     if (suiProvider && !suiSigner) {
-      console.log('PROVIDER AND SIGNER1', suiProviderAndSigner)
       initialize(ethosConfiguration)
 
       const fetchEthosProvider = async () => {
         const ethosProvider = await getProvider()
+        log('EthosWrapper', 'Setting _onProviderSelected1')
         _onProviderSelected({
           provider: ethosProvider,
           signer: ethosProvider?.getSigner(),
@@ -126,7 +126,7 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
 
       fetchEthosProvider()
     } else if (suiSigner) {
-      console.log('PROVIDER AND SIGNER2', suiProviderAndSigner)
+      log('EthosWrapper', 'Setting _onProviderSelected2')
       _onProviderSelected(suiProviderAndSigner)
     }
   }, [suiProviderAndSigner])

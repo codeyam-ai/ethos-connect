@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import store from 'store2'
+import log from './log'
 
 const useSuiWallet = () => {
   const [providerAndSigner, setProviderAndSigner] = useState<any | null>(null)
@@ -7,7 +8,7 @@ const useSuiWallet = () => {
   const suiWallet = () => (window as any).suiWallet
 
   const initSignerAndProvider = (account: string | null) => {
-    console.log('INITSIGNERANDPROVIDER')
+    log('useSuiWallet', 'initSignerAndProvider', account)
     const signer = account
       ? {
           extension: true,
@@ -27,7 +28,7 @@ const useSuiWallet = () => {
       getSigner: signer,
     }
 
-    console.log('SET', {
+    log('useSuiWallet', 'SetProviderAndSigner', {
       provider,
       signer,
     })
@@ -44,15 +45,15 @@ const useSuiWallet = () => {
         const accounts = await suiWallet().getAccounts()
 
         if (accounts && accounts.length > 0) {
-          console.log('INIT SUI 1', accounts)
+          log('useSuiWallet', 'INIT SUI 1', accounts)
           initSignerAndProvider(accounts[0])
         }
       } else {
-        console.log('INIT SUI 2')
+        log('useSuiWallet', 'INIT SUI 2')
         initSignerAndProvider(null)
       }
     } else {
-      console.log('INIT SUI 3')
+      log('useSuiWallet', 'INIT SUI 3')
       initSignerAndProvider(null)
     }
   }
@@ -64,7 +65,7 @@ const useSuiWallet = () => {
       if (event.type === 'ethos-storage-changed') {
         const suiStore = store.namespace('sui')
         const account = suiStore('account')
-        console.log('INIT SUI 4', account)
+        log('useSuiWallet', 'INIT SUI 4', account)
         initSignerAndProvider(account)
       }
     }

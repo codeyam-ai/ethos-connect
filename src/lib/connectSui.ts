@@ -1,4 +1,5 @@
 import store from 'store2'
+import log from './log'
 
 const connectSui = async () => {
   if (typeof window === 'undefined') return
@@ -21,7 +22,7 @@ const connectSui = async () => {
 
     const suiStore = store.namespace('sui')
     suiStore('account', accounts[0])
-    console.log('DISPATCH ETHOS STORAGE EVENT')
+    log('connectSui', 'Dispatch event-storage-changed')
     window.dispatchEvent(new Event('ethos-storage-changed'))
   }
 
