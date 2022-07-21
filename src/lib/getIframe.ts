@@ -32,7 +32,6 @@ const getIframe = (show = false) => {
       if (queryParams.toString().length > 0) {
         fullPath += '?' + queryParams.toString()
       }
-      store.namespace('auth')('access_token', auth)
       window.history.pushState({}, '', fullPath)
     } else {
       const accessToken = store.namespace('auth')('access_token')
