@@ -62,31 +62,39 @@ const transact = async ({
 
   const { walletAppUrl } = getConfiguration()
 
-  window.addEventListener('message', (message) => {
+  const transactionEventListener = (message: any) => {
     if (message.origin === walletAppUrl) {
       const { action, data } = message.data
+      if (action !== 'transact') return;
 
-      switch (action) {
+      const { state, response } = data;
+
+      switch (state) {
         case 'signed':
-          if (onSigned) onSigned(data)
+          if (onSigned) onSigned(response)
           break
         case 'sent':
-          if (onSent) onSent(data)
+          if (onSent) onSent(response)
           break
         case 'complete':
-          if (onComplete) onComplete(data)
+          if (onComplete) onComplete(response)
+          window.removeEventListener('message', transactionEventListener)
           break
         case 'confirmed':
-          if (onConfirmed) onConfirmed(data)
+          if (onConfirmed) onConfirmed(response)
+          window.removeEventListener('message', transactionEventListener)
           break
         case 'canceled':
           if (onCanceled) onCanceled()
+          window.removeEventListener('message', transactionEventListener)
           break
         default:
           break
       }
     }
-  })
+  }
+
+  window.addEventListener('message', transactionEventListener)
 
   postMessage({
     action: 'transact',

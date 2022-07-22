@@ -21,8 +21,10 @@ const connectSui = async () => {
     if (!accounts || accounts.length === 0) return false
 
     const suiStore = store.namespace('sui')
-    suiStore('account', accounts[0])
-    log('connectSui', 'Dispatch event-storage-changed')
+    const result = suiStore('account', accounts[0])
+
+    // log('connectSui', 'Dispatch event-storage-changed', storeResult)
+
     window.dispatchEvent(new Event('ethos-storage-changed'))
   }
 
