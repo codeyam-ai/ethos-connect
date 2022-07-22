@@ -1,8 +1,10 @@
+import store from 'store2'
 import getConfiguration from './getConfiguration'
+import log from './log'
 
 const getIframe = (show = false) => {
   const { appId } = getConfiguration()
-  console.log('GET IFRAME', appId)
+  log('getIframe', 'getIframe', appId)
 
   const iframeId = 'ethos-wallet-iframe'
   let scrollY: number = 0
@@ -30,10 +32,16 @@ const getIframe = (show = false) => {
       if (queryParams.toString().length > 0) {
         fullPath += '?' + queryParams.toString()
       }
+      store.namespace('auth')('access_token', auth)
       window.history.pushState({}, '', fullPath)
+    } else {
+      const accessToken = store.namespace('auth')('access_token')
+      if (accessToken) {
+        fullWalletAppUrl += `&auth=${accessToken}`
+      }
     }
 
-    console.log('LOAD IFRAME!', fullWalletAppUrl)
+    log('getIframe', 'Load Iframe', fullWalletAppUrl)
     iframe = document.createElement('IFRAME') as HTMLIFrameElement
     iframe.src = fullWalletAppUrl
     iframe.id = iframeId

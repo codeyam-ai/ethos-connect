@@ -2,12 +2,14 @@ import apiCall from './apiCall'
 import log from './log'
 import { Chain } from '../enums/Chain'
 
-const walletContents = async (address: string, chain: Chain) => {
+const getWalletContents = async (address: string, chain: Chain) => {
   const {
-    json: { nfts },
+    json: { balance, nfts },
     status,
   } = await apiCall({
-    relativePath: `nfts/${address}?chain=${chain}`,
+    relativePath: 'wallet/contents',
+    method: 'POST',
+    body: { chain, address },
   })
 
   if (status !== 200) {
@@ -15,7 +17,7 @@ const walletContents = async (address: string, chain: Chain) => {
     return
   }
 
-  return nfts
+  return { balance, nfts }
 }
 
-export default walletContents
+export default getWalletContents

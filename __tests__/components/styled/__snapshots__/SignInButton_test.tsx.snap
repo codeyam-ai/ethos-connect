@@ -117,6 +117,7 @@ Array [
               <div
                 style={
                   Object {
+                    "borderBottom": "1px solid rgb(241 245 249)",
                     "borderRight": "1px solid rgb(241 245 249)",
                     "display": "flex",
                     "flexDirection": "column",
@@ -213,7 +214,7 @@ Array [
                         }
                       />
                     </svg>
-                    Sui Wallet
+                    Sui Test Wallet
                   </button>
                 </div>
               </div>
@@ -235,7 +236,7 @@ Array [
                     }
                   }
                 >
-                  One-Click Login Link
+                  Don't have a wallet? Sign up or log in with a link
                 </h3>
                 <div
                   style={
@@ -244,7 +245,7 @@ Array [
                     }
                   }
                 >
-                  Enter your email and we'll send you a link that will sign you in.
+                  Enter your email and we'll send you a link that will sign you up or log you in.
                 </div>
                 <form
                   onSubmit={[Function]}
@@ -271,15 +272,14 @@ Array [
                         "borderRadius": "0.5rem",
                         "color": "#FFFFFF",
                         "marginTop": "1rem",
-                        "minWidth": "10rem",
+                        "minWidth": "6rem",
                         "padding": "12px",
                         "textDecoration": "none",
-                        "width": "50%",
                       }
                     }
                     type="submit"
                   >
-                    Send Login Link
+                    Send
                   </button>
                 </form>
                 <div
@@ -297,7 +297,8 @@ Array [
                     rel="noopener noreferrer"
                     style={
                       Object {
-                        "color": "blue",
+                        "color": "#751ac7",
+                        "fontWeight": 400,
                         "textDecoration": "underline",
                       }
                     }

@@ -1,6 +1,6 @@
 {
   "name": "ethos-wallet-beta",
-  "version": "0.0.65",
+  "version": "0.0.85",
   "description": "Beta version of the Ethos Wallet NPM Package",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -63,8 +63,7 @@
   },
   "dependencies": {
     "ethers": "^5.6.8",
-    "store2": "^2.13.2",
-    "wagmi": "^0.5.5"
+    "store2": "^2.13.2"
   },
   "lint-staged": {
     "*": "yarn lint"

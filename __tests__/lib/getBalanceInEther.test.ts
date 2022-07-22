@@ -1,5 +1,5 @@
 import * as apiCall from '../../src/lib/apiCall'
-import ethBalance from '../../src/lib/ethBalance'
+import getWalletBalance from '../../src/lib/getWalletBalance'
 
 describe('register', () => {
   it('should register a new user', async () => {
@@ -11,7 +11,7 @@ describe('register', () => {
 
     const spyApiCall = jest.spyOn(apiCall, 'default').mockResolvedValueOnce(apiCallReturn)
 
-    const actualBalanceInEther = await ethBalance({ network: '1', address: '0x0' })
+    const actualBalanceInEther = await getWalletBalance({ network: '1', address: '0x0' })
 
     expect(spyApiCall).toBeCalledTimes(1)
     expect(actualBalanceInEther).toEqual(expectedBalanceInEther)
