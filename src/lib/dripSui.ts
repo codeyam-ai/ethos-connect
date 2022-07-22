@@ -8,20 +8,24 @@ type DripSuiProps = {
 const dripSui = async ({ address }: DripSuiProps) => {
   const { walletAppUrl } = getConfiguration()
 
-  const dripEventListener = (message: any) => {
-    if (message.origin === walletAppUrl) {
-      const { action, data } = message.data
-      if (action !== 'drip') return
-      console.log('DATA', data)
-      window.removeEventListener('message', dripEventListener)
+  return new Promise((resolve, _reject) => {
+    const dripEventListener = (message: any) => {
+      if (message.origin === walletAppUrl) {
+        const { action, data } = message.data
+        if (action !== 'drip') return
+        window.removeEventListener('message', dripEventListener)
+
+        console.log('DATA', data)
+        resolve(data)
+      }
     }
-  }
 
-  window.addEventListener('message', dripEventListener)
+    window.addEventListener('message', dripEventListener)
 
-  postMessage({
-    action: 'drip',
-    data: { address },
+    postMessage({
+      action: 'drip',
+      data: { address },
+    })
   })
 }
 

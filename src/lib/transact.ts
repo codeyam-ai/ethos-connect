@@ -65,9 +65,9 @@ const transact = async ({
   const transactionEventListener = (message: any) => {
     if (message.origin === walletAppUrl) {
       const { action, data } = message.data
-      if (action !== 'transact') return;
+      if (action !== 'transact') return
 
-      const { state, response } = data;
+      const { state, response } = data
 
       switch (state) {
         case 'signed':
