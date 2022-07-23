@@ -1,12 +1,13 @@
-import getAppBaseUrl from './getAppBaseUrl'
+import store from 'store2'
+import getConfiguration from './getConfiguration'
+import log from './log'
 
-type getIframeProps = {
-  appId: string
-  show?: boolean
-}
+const getIframe = (show = false) => {
+  const { appId } = getConfiguration()
+  log('getIframe', 'getIframe', appId)
 
-const getIframe = ({ appId, show = false }: getIframeProps) => {
   const iframeId = 'ethos-wallet-iframe'
+  let scrollY: number = 0
 
   let iframe = document.getElementById(iframeId) as HTMLIFrameElement
 
@@ -16,15 +17,37 @@ const getIframe = ({ appId, show = false }: getIframeProps) => {
     iframe.style.height = '0'
   }
 
-  const walletAppUrl = getAppBaseUrl()
+  const { walletAppUrl } = getConfiguration()
 
   if (!iframe) {
+    const queryParams = new URLSearchParams(window.location.search)
+    const auth = queryParams.get('auth')
+
+    let fullWalletAppUrl = walletAppUrl + `/wallet?appId=${appId}`
+    if (auth) {
+      fullWalletAppUrl += `&auth=${auth}`
+
+      queryParams.delete('auth')
+      let fullPath = location.protocol + '//' + location.host + location.pathname
+      if (queryParams.toString().length > 0) {
+        fullPath += '?' + queryParams.toString()
+      }
+      store.namespace('auth')('access_token', auth)
+      window.history.pushState({}, '', fullPath)
+    } else {
+      const accessToken = store.namespace('auth')('access_token')
+      if (accessToken) {
+        fullWalletAppUrl += `&auth=${accessToken}`
+      }
+    }
+
+    log('getIframe', 'Load Iframe', fullWalletAppUrl)
     iframe = document.createElement('IFRAME') as HTMLIFrameElement
-    iframe.src = walletAppUrl + `/wallet?appId=${appId}`
+    iframe.src = fullWalletAppUrl
     iframe.id = iframeId
     iframe.style.border = 'none'
     iframe.style.position = 'absolute'
-    iframe.style.top = '0'
+    iframe.style.top = scrollY + 'px'
     iframe.style.right = '60px'
     iframe.style.width = '0'
     iframe.style.height = '0'
@@ -37,6 +60,11 @@ const getIframe = ({ appId, show = false }: getIframeProps) => {
           close()
         }
       }
+    })
+
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY
+      iframe.style.top = scrollY + 'px'
     })
   }
 

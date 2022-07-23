@@ -7,12 +7,12 @@ const Loader = ({ width = 100, color = '#333' }: { width?: number; color?: strin
     xmlns="http://www.w3.org/2000/svg"
     x="0px"
     y="0px"
-    viewBox="0 0 100 100"
+    viewBox="0 0 54 20"
     width={width}
-    height={width}
-    enable-background="new 0 0 0 0"
+    height={width * (20 / 54)}
+    enableBackground="new 0 0 0 0"
   >
-    <circle fill={color} stroke="none" cx="6" cy="50" r="6">
+    <circle fill={color} stroke="none" cx="6" cy="10" r="6">
       <animate
         attributeName="opacity"
         dur="1.5s"
@@ -21,7 +21,7 @@ const Loader = ({ width = 100, color = '#333' }: { width?: number; color?: strin
         begin="0.1"
       />
     </circle>
-    <circle fill={color} stroke="none" cx="26" cy="50" r="6">
+    <circle fill={color} stroke="none" cx="26" cy="10" r="6">
       <animate
         attributeName="opacity"
         dur="1.5s"
@@ -30,7 +30,7 @@ const Loader = ({ width = 100, color = '#333' }: { width?: number; color?: strin
         begin="0.5"
       />
     </circle>
-    <circle fill={color} stroke="none" cx="46" cy="50" r="6">
+    <circle fill={color} stroke="none" cx="46" cy="10" r="6">
       <animate
         attributeName="opacity"
         dur="1.5s"

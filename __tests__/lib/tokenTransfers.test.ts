@@ -1,7 +1,7 @@
 import { ContractInterface } from 'ethers'
-import { TokenTransferInformation } from '../../types/TokenTransferInformation'
-import * as apiCall from '../apiCall'
-import tokenTransfers from '../tokenTransfers'
+import { TokenTransferInformation } from '../../src/types/TokenTransferInformation'
+import * as apiCall from '../../src/lib/apiCall'
+import tokenTransfers from '../../src/lib/tokenTransfers'
 
 describe('tokenTransfers', () => {
   it('should call the contracts/transfers endpoint', async () => {

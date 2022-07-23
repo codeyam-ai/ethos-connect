@@ -1,7 +1,7 @@
 import getIframe from './getIframe'
 
-const hideWallet = (appId: string) => {
-  getIframe({ appId })
+const hideWallet = () => {
+  getIframe()
 }
 
 export default hideWallet

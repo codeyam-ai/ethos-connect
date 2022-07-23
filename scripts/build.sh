@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -e
+# set -x
 
 SCRIPT_DIR=$(cd ${0%/*} && pwd -P)
 
 # Known variables
 SRC='./src'
 DST='./dist'
-name="ethos-test-react-components"
+name="ethos-wallet-beta"
 input="./${SRC}/index.ts"
 
 # Find executables

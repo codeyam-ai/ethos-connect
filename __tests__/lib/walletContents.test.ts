@@ -1,8 +1,9 @@
-import { NFT } from '../../types/NFT'
-import * as apiCall from '../apiCall'
-import walletContents from '../walletContents'
+import { Chain } from '../../src/enums/Chain'
+import { NFT } from '../../src/types/NFT'
+import * as apiCall from '../../src/lib/apiCall'
+import getWalletNfts from '../../src/lib/getWalletNfts'
 
-describe('walletContents', () => {
+describe('getWalletNfts', () => {
   it('should call the nfts/[address] endpoint', async () => {
     const walletAddress = '0x0'
 
@@ -23,10 +24,10 @@ describe('walletContents', () => {
     }
     const spyApiCall = jest.spyOn(apiCall, 'default').mockResolvedValueOnce(apiCallReturn)
 
-    const result = await walletContents(walletAddress)
+    const result = await getWalletNfts(walletAddress, Chain.Eth)
 
     expect(spyApiCall).toBeCalledTimes(1)
-    expect(spyApiCall).toBeCalledWith({ relativePath: `nfts/${walletAddress}` })
+    expect(spyApiCall).toBeCalledWith({ relativePath: `nfts/${walletAddress}?chain=${Chain.Eth}` })
     expect(result).toEqual(returnedNfts)
   })
 })

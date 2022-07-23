@@ -1,4 +1,4 @@
-import getAppBaseUrl from './getAppBaseUrl'
+import getConfiguration from './getConfiguration'
 
 type ApiCallProps = {
   relativePath: string
@@ -7,7 +7,7 @@ type ApiCallProps = {
 }
 
 const apiCall = async ({ relativePath, method = 'GET', body }: ApiCallProps) => {
-  const host = getAppBaseUrl()
+  const { walletAppUrl } = getConfiguration()
   const data = {
     method: method,
     headers: {
@@ -20,7 +20,7 @@ const apiCall = async ({ relativePath, method = 'GET', body }: ApiCallProps) => 
     data.body = JSON.stringify(body)
   }
 
-  const response = await fetch(`${host}/api/${relativePath}`, data)
+  const response = await fetch(`${walletAppUrl}/api/${relativePath}`, data)
   const json = await response.json()
   const { status } = response
   return { json, status }

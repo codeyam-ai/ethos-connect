@@ -1,5 +1,4 @@
-import apiCall from '../apiCall'
-import { appBaseUrl } from '../constants'
+import apiCall from '../../src/lib/apiCall'
 
 describe('apiCall', () => {
   let spyFetch: jest.SpyInstance
@@ -23,7 +22,7 @@ describe('apiCall', () => {
 
   it('should call an API with all parameters', async () => {
     const method = 'GET'
-    const expectedEndpointCalled = `${appBaseUrl}/api/${relativePath}`
+    const expectedEndpointCalled = `test/api/${relativePath}`
     const expectedApiCallParameters = {
       method: method,
       headers: expectedHeaders,
@@ -39,7 +38,7 @@ describe('apiCall', () => {
   })
 
   it('should call an API with all REQUIRED parameters', async () => {
-    const expectedEndpointCalled = appBaseUrl + '/api/' + relativePath
+    const expectedEndpointCalled = 'test/api/' + relativePath
     const expectedApiCallParameters = {
       method: 'GET',
       headers: expectedHeaders,

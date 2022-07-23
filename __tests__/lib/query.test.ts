@@ -1,6 +1,6 @@
 import { ContractInterface } from 'ethers'
-import * as apiCall from '../apiCall'
-import query from '../query'
+import * as apiCall from '../../src/lib/apiCall'
+import query from '../../src/lib/query'
 
 describe('query', () => {
   it('should call the contracts/query endpoint', async () => {

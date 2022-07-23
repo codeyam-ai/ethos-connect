@@ -1,17 +1,17 @@
 {
-  "name": "ethos-wallet",
-  "version": "0.0.0",
-  "description": "Alpha version of the Ethos Wallet NPM Package",
+  "name": "ethos-wallet-beta",
+  "version": "0.0.90",
+  "description": "Beta version of the Ethos Wallet NPM Package",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
-  "module": "dist/ethos-test-react-components.esm.js",
+  "module": "dist/ethos-wallet-beta.esm.js",
   "license": "MIT",
   "files": [
     "README.md",
     "dist"
   ],
   "exports": {
-    "import": "./dist/ethos-test-react-components.esm.js",
+    "import": "./dist/ethos-wallet-beta.esm.js",
     "require": "./dist/index.cjs",
     "types": "./dist/index.d.ts"
   },
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "npm run build && npm test && npm run lint",
+    "prepublishOnly": "npm run build && npm run test && npm run lint",
     "build": "./scripts/build.sh --external:react --external:react-dom",
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
     "test": "./scripts/test.sh",
@@ -54,9 +54,9 @@
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
     "prettier": "^2.6.2",
-    "prettier-plugin-tailwindcss": "^0.1.11",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-test-renderer": "^18.2.0",
     "rimraf": "^3.0.2",
     "snapshot-diff": "^0.8.1",
     "typescript": "^4.7.3"

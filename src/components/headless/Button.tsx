@@ -1,3 +1,4 @@
+import Loader from '../svg/Loader'
 import React from 'react'
 
 const Button = (props: any) => {
@@ -5,7 +6,15 @@ const Button = (props: any) => {
 
   return (
     <button onClick={onClick} {...reactProps}>
-      {isWorking ? workingComponent || <>...</> : <h4>{children}</h4>}
+      {isWorking ? (
+        workingComponent || (
+          <span className="block p-2">
+            <Loader width={30} />
+          </span>
+        )
+      ) : (
+        <>{children}</>
+      )}
     </button>
   )
 }

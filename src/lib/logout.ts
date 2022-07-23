@@ -1,9 +1,12 @@
-import getAppBaseUrl from './getAppBaseUrl'
-import getIframe from './getIframe'
+import store from 'store2'
+import getConfiguration from './getConfiguration'
 import log from './log'
+import postMessage from './postMessage'
 
-const logout = async (appId: string, wallet: any) => {
-  const walletAppUrl = getAppBaseUrl()
+const logout = async (wallet: boolean = false) => {
+  const { walletAppUrl } = getConfiguration()
+
+  store.namespace('auth')('access_token', null)
 
   return new Promise((resolve) => {
     window.addEventListener('message', (message) => {
@@ -17,14 +20,10 @@ const logout = async (appId: string, wallet: any) => {
       }
     })
 
-    const iframe = getIframe({ appId })
-    iframe?.contentWindow?.postMessage(
-      {
-        action: 'logout',
-        data: { wallet },
-      },
-      walletAppUrl
-    )
+    postMessage({
+      action: 'logout',
+      data: { wallet },
+    })
   })
 }
 
