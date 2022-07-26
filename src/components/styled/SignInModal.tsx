@@ -11,6 +11,7 @@ import Sui from '../svg/Sui'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
 import connectSui from '../../lib/connectSui'
+import event from '../../lib/event'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -45,6 +46,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
     onEmailSent && onEmailSent()
     onClose && onClose()
     setSigningIn(false)
+    event({ action: 'send_email', category: 'sign_in', label: email, value: 1})
   }
 
   const connectEthos = () => {
@@ -58,6 +60,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
     } else {
       onClose && onClose()
     }
+    event({ action: 'connect', category: 'sign_in', label: 'sui', value: connected ? 1: 0})
   }
 
   const logo = (connectorId: string) => {
