@@ -60,7 +60,7 @@ describe('SignInModal', () => {
     const testEmail = 'test@example.com'
 
     let emailProvided
-    jest.spyOn(lib, 'default').mockImplementation((email, appId) => {
+    jest.spyOn(lib, 'default').mockImplementation(({ email, provider, appId }) => {
       emailProvided = email
       expect(appId).toBe('test')
       return Promise.resolve({})

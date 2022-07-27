@@ -41,12 +41,16 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
 
   const sendEmail = async () => {
     setSigningIn(true)
-    await login(email, appId)
+    await login({ email, appId })
     setEmail('')
     onEmailSent && onEmailSent()
     onClose && onClose()
     setSigningIn(false)
     event({ action: 'send_email', category: 'sign_in', label: email, value: 1})
+  }
+
+  const loginWithGoogle = () => {
+    login({ provider: 'google', appId })
   }
 
   const connectEthos = () => {
@@ -133,12 +137,14 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                 </div>
                 <div style={registrationStyle(width)}>
                   <h3 style={registrationHeaderStyle()}>
-                    Don't have a wallet? Sign up or log in with a link
+                    Sign up or log in with Google
                   </h3>
-                  <div style={explainerStyle()}>
-                    Enter your email and we&#39;ll send you a link that will sign you up or log you
-                    in.
-                  </div>
+                  <button style={buttonStyle(width)} onClick={loginWithGoogle}>
+                    GOOGLE
+                  </button>
+                  <h3 style={registrationHeaderStyle()}>
+                    Or sign up or log in with a link
+                  </h3>
                   {signingIn ? (
                     <div style={loaderStyle()}>
                       <Loader width={50} />

@@ -2,7 +2,7 @@ import store from 'store2'
 import getConfiguration from './getConfiguration'
 import log from './log'
 
-const getIframe = (show = false) => {
+const getIframe = (show?: boolean) => {
   const { appId } = getConfiguration()
   log('getIframe', 'getIframe', appId)
 
@@ -13,8 +13,8 @@ const getIframe = (show = false) => {
 
   const close = () => {
     if (!iframe) return
-    iframe.style.width = '0'
-    iframe.style.height = '0'
+    iframe.style.width = '1px'
+    iframe.style.height = '1px'
   }
 
   const { walletAppUrl } = getConfiguration()
@@ -49,8 +49,8 @@ const getIframe = (show = false) => {
     iframe.style.position = 'absolute'
     iframe.style.top = scrollY + 'px'
     iframe.style.right = '60px'
-    iframe.style.width = '0'
-    iframe.style.height = '0'
+    iframe.style.width = '1px'
+    iframe.style.height = '1px'
     iframe.setAttribute('allow', 'payment; clipboard-read; clipboard-write')
     document.body.appendChild(iframe)
 
@@ -71,7 +71,7 @@ const getIframe = (show = false) => {
   if (show) {
     iframe.style.width = '360px'
     iframe.style.height = '600px'
-  } else {
+  } else if (show !== undefined) {
     close()
   }
 

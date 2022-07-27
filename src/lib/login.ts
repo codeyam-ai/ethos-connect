@@ -1,23 +1,49 @@
 import store from 'store2'
-import apiCall from './apiCall'
+import { User } from 'types/User'
+import getConfiguration from './getConfiguration'
+import showWallet from './showWallet'
+import postMessage from './postMessage'
 
-const login = async (email: string, appId: string) => {
+export type loginArgs = {
+  email?: string, 
+  provider?: string, 
+  appId: string
+}
+
+const login = async ({ email, provider, appId }: loginArgs) => {
+  const { walletAppUrl } = getConfiguration();
   const userStore = store.namespace('users')
 
-  const {
-    json: { user },
-  } = await apiCall({
-    relativePath: 'users/login',
-    method: 'POST',
-    body: {
-      email,
-      appId,
-      returnTo: window.location.href,
-    },
-  })
+  if (provider) {
+    location.href = `${walletAppUrl}/socialauth`;
+    return;
+  }
 
-  userStore('current', user)
-  return user
+  return new Promise<User|null>((resolve, _reject) => {
+    const loginEventListener = (message: any) => {
+      if (message.origin === walletAppUrl) {
+        const { action, data } = message.data
+        if (action !== 'login') return
+        window.removeEventListener('message', loginEventListener)
+
+        console.log('LOGIN USER DATA', data)
+        userStore('current', data)
+        resolve(data)
+      }
+    }
+
+    window.addEventListener('message', loginEventListener)
+
+    postMessage({
+      action: 'login',
+      data: {
+        email,
+        provider,
+        returnTo: window.location.href,
+        appId
+      },
+    })
+  })
 }
 
 export default login

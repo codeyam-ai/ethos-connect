@@ -234,17 +234,21 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
                   }
                 }
               >
-                Don't have a wallet? Sign up or log in with a link
+                Sign up or log in with Google
               </h3>
-              <div
+              <button
+                onClick={[Function]}
+              />
+              <h3
                 style={
                   Object {
-                    "fontSize": "smaller",
+                    "fontWeight": "500",
+                    "margin": "0",
                   }
                 }
               >
-                Enter your email and we'll send you a link that will sign you up or log you in.
-              </div>
+                Or sign up or log in with a link
+              </h3>
               <form
                 onSubmit={[Function]}
               >
@@ -548,17 +552,21 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                   }
                 }
               >
-                Don't have a wallet? Sign up or log in with a link
+                Sign up or log in with Google
               </h3>
-              <div
+              <button
+                onClick={[Function]}
+              />
+              <h3
                 style={
                   Object {
-                    "fontSize": "smaller",
+                    "fontWeight": "500",
+                    "margin": "0",
                   }
                 }
               >
-                Enter your email and we'll send you a link that will sign you up or log you in.
-              </div>
+                Or sign up or log in with a link
+              </h3>
               <form
                 onSubmit={[Function]}
               >
