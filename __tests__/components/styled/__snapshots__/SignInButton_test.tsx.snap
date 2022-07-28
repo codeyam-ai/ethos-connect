@@ -35,6 +35,7 @@ Array [
     }
   >
     <div
+      onClick={[Function]}
       style={
         Object {
           "backgroundColor": "rgb(107 114 128 / .75)",
@@ -327,7 +328,7 @@ Array [
                       Object {
                         "border": "1px solid rgb(203 213 225)",
                         "borderRadius": "0.5rem",
-                        "padding": "6px",
+                        "padding": "12px",
                         "width": "90%",
                       }
                     }
