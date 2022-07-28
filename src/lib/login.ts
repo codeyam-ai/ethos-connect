@@ -1,7 +1,6 @@
 import store from 'store2'
 import { User } from 'types/User'
 import getConfiguration from './getConfiguration'
-import showWallet from './showWallet'
 import postMessage from './postMessage'
 
 export type loginArgs = {
@@ -15,7 +14,9 @@ const login = async ({ email, provider, appId }: loginArgs) => {
   const userStore = store.namespace('users')
 
   if (provider) {
-    location.href = `${walletAppUrl}/socialauth`;
+    const returnTo = location.href;
+    const fullUrl = `${walletAppUrl}/auth?appId=${appId}&returnTo=${returnTo}`
+    location.href = `${walletAppUrl}/socialauth?redirectTo=${encodeURIComponent(fullUrl)}`;
     return;
   }
 

@@ -3,6 +3,7 @@ import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
+import Google from '../svg/Google'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
 // import { useConnect } from 'wagmi'
@@ -136,12 +137,16 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                   )}
                 </div>
                 <div style={registrationStyle(width)}>
-                  <h3 style={registrationHeaderStyle()}>
-                    Sign up or log in with Google
-                  </h3>
-                  <button style={buttonStyle(width)} onClick={loginWithGoogle}>
-                    GOOGLE
-                  </button>
+                  <div>
+                    <h3 style={registrationHeaderStyle()}>
+                      Sign up or log in with Google
+                    </h3>
+                    <div style={socialLoginButtonsStyle()} onClick={loginWithGoogle}>
+                      <div style={socialLoginButtonStyle()}>
+                        <Google width={36} />
+                      </div>
+                    </div>
+                  </div>
                   <h3 style={registrationHeaderStyle()}>
                     Or sign up or log in with a link
                   </h3>
@@ -378,6 +383,16 @@ const walletOptionButtonStyle = () =>
 //   fontSize: 'smaller',
 // })
 
+const socialLoginButtonsStyle = () => ({
+  padding: '12px 0',
+  display: 'flex',
+  gap: '6px'
+})
+
+const socialLoginButtonStyle = () => ({
+  cursor: 'pointer'
+})
+
 const registrationStyle = (width: number) => {
   const styles = {
     padding: '18px',
@@ -400,16 +415,16 @@ const registrationHeaderStyle = () =>
     margin: '0',
   } as React.CSSProperties)
 
-const explainerStyle = () =>
-  ({
-    fontSize: 'smaller',
-  } as React.CSSProperties)
+// const explainerStyle = () =>
+//   ({
+//     fontSize: 'smaller',
+//   } as React.CSSProperties)
 
 const inputStyle = () =>
   ({
     border: '1px solid rgb(203 213 225)',
     borderRadius: '0.5rem',
-    padding: '12px',
+    padding: '6px',
     width: '90%',
   } as React.CSSProperties)
 
@@ -418,7 +433,7 @@ const buttonStyle = (width: number) => {
     marginTop: '0.5rem',
     border: '1px solid rgb(203 213 225)',
     borderRadius: '0.5rem',
-    padding: '12px',
+    padding: '6px',
     backgroundColor: '#761AC7',
     color: '#FFFFFF',
     textDecoration: 'none',
