@@ -3,6 +3,7 @@ import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
+import Google from '../svg/Google'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
 // import { useConnect } from 'wagmi'
@@ -26,6 +27,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const [isLocal, setIsLocal] = useState(false);
+  const [showGoogleSignIn, setShowGoogleSignIn] = useState(false);
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef(null);
@@ -41,7 +43,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   }
 
   const sendEmail = async () => {
-    await login(email, appId)
+    await login({ email, appId })
     setEmail('')
     onEmailSent && onEmailSent()
     onClose && onClose()
@@ -55,6 +57,10 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
 
   const onCaptchaExpire = () => {
     console.log('captcha expired');
+  }
+
+  const loginWithGoogle = () => {
+    login({ provider: 'google', appId })
   }
 
   const connectEthos = () => {
@@ -120,7 +126,8 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
       }
 
       <div style={dialogStyle(isOpen)} role="dialog">
-        <div style={backdropStyle()} />
+        <div style={backdropStyle()} onClick={() => console.log('clicked')} />
+
         <div style={modalOuterWrapperStyle()}>
           <div style={modalInnerWrapperStyle(width)}>
             <div style={dialogPanelStyle(width)}>
@@ -146,25 +153,25 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                       </button>
                     </div>
                     {/* {isOpen &&
-                      connectors.map((connector: any) => (
-                        <div
-                          key={connector.id}
-                          style={walletOptionStyle()}
-                          onClick={() => connect!({ connector })}
-                        >
-                          <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
-                            {logo(connector.id)}
-                            {connector.name}
-                            {!connector.ready && (
-                              <span style={connectorSubStyle()}>(unsupported)</span>
-                            )}
-                            {isLoading && pendingConnector?.id === connector.id && (
-                              <span style={connectorSubStyle()}>(connecting)</span>
-                            )}
-                          </button>
-                        </div>
-                      ))}
-                    {error && <div style={connectorWarning()}>{error.message}</div>} */}
+                    connectors.map((connector: any) => (
+                      <div
+                        key={connector.id}
+                        style={walletOptionStyle()}
+                        onClick={() => connect!({ connector })}
+                      >
+                        <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
+                          {logo(connector.id)}
+                          {connector.name}
+                          {!connector.ready && (
+                            <span style={connectorSubStyle()}>(unsupported)</span>
+                          )}
+                          {isLoading && pendingConnector?.id === connector.id && (
+                            <span style={connectorSubStyle()}>(connecting)</span>
+                          )}
+                        </button>
+                      </div>
+                    ))}
+                  {error && <div style={connectorWarning()}>{error.message}</div>} */}
                     {showMissingMessage && (
                       <div style={connectorWarning()}>
                         You do not have the necessary wallet extension installed.
@@ -172,20 +179,30 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                     )}
                   </div>
                   <div style={registrationStyle(width)}>
+                    {
+                      showGoogleSignIn && (
+                        <div>
+                          <h3 style={registrationHeaderStyle()}>
+                            Sign up or log in with Google
+                          </h3>
+                          <div style={socialLoginButtonsStyle()} onClick={loginWithGoogle}>
+                            <div style={socialLoginButtonStyle()}>
+                              <Google width={36} />
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    }
                     <h3 style={registrationHeaderStyle()}>
-                      Don't have a wallet? Sign up or log in with a link
+                      Or sign up or log in with a link
                     </h3>
-                    <div style={explainerStyle()}>
-                      Enter your email and we&#39;ll send you a link that will sign you up or log you
-                      in.
-                    </div>
                     {signingIn ? (
                       <div style={loaderStyle()}>
                         <Loader width={50} />
                       </div>
                     ) : (
                       <>
-                        <form onSubmit={onSubmit}>
+                        <form onSubmit={sendEmail}>
                           <input
                             style={inputStyle()}
                             type="email"
@@ -413,6 +430,16 @@ const walletOptionButtonStyle = () =>
 //   fontSize: 'smaller',
 // })
 
+const socialLoginButtonsStyle = () => ({
+  padding: '12px 0',
+  display: 'flex',
+  gap: '6px'
+})
+
+const socialLoginButtonStyle = () => ({
+  cursor: 'pointer'
+})
+
 const registrationStyle = (width: number) => {
   const styles = {
     padding: '18px',
@@ -453,7 +480,7 @@ const buttonStyle = (width: number) => {
     marginTop: '0.5rem',
     border: '1px solid rgb(203 213 225)',
     borderRadius: '0.5rem',
-    padding: '12px',
+    padding: '6px',
     backgroundColor: '#761AC7',
     color: '#FFFFFF',
     textDecoration: 'none',

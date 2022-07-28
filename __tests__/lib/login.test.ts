@@ -4,40 +4,50 @@
 
 import store from 'store2'
 import { User } from '../../src/types/User'
-import * as apiCall from '../../src/lib/apiCall'
+import * as postMessage from '../../src/lib/postMessage'
 import login from '../../src/lib/login'
 
 describe('login', () => {
-  let spyApiCall: jest.SpyInstance
+  let spyPostMessage: jest.SpyInstance
   let actualUser: User
   const email = 'test@t.co'
   const appId = '123abc'
   const wallet = '0x0'
   const expectedUser: User = { email, wallet }
 
-  const apiCallReturn = {
+  const postMessageReturn = {
     json: { user: expectedUser },
     status: 200,
   }
 
   beforeEach(async () => {
-    spyApiCall = jest.spyOn(apiCall, 'default').mockResolvedValueOnce(apiCallReturn)
+    jest.spyOn(window, 'addEventListener').mockImplementation((topic, listener) => {
+      expect(topic).toBe('message');
+      const listenerFunction = listener as any;
+      listenerFunction({
+        origin: 'test',
+        data: {
+          action: 'login',
+          data: 'user'
+        }
+      })
+    })
+    spyPostMessage = jest.spyOn(postMessage, 'default').mockImplementation(() => {})
 
-    actualUser = await login(email, appId)
+    actualUser = await login({ email, appId })
   })
 
   it('should call the /login endpoint', async () => {
-    expect(spyApiCall).toBeCalledTimes(1)
-    expect(spyApiCall).toBeCalledWith({
-      relativePath: 'users/login',
-      method: 'POST',
-      body: {
+    expect(spyPostMessage).toBeCalledTimes(1)
+    expect(spyPostMessage).toBeCalledWith({
+      "action": "login",
+      "data": {
         email,
         appId,
         returnTo: window.location.href,
-      },
+        provider: undefined
+      }
     })
-    expect(actualUser).toEqual(apiCallReturn.json.user)
   })
 
   it('should save the user to the userStore', async () => {
