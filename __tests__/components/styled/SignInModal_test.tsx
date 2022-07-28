@@ -89,27 +89,14 @@ describe('SignInModal', () => {
     expect(onClose.mock.calls.length).toBe(1)
   })
 
-  // describe('Ethereum', () => {
-  //   beforeEach(() => {
-  //     jest.spyOn(getConfiguration, 'default').mockImplementation(() => ({
-  //       walletAppUrl: 'test',
-  //       appId: 'test',
-  //       network: 'test',
-  //       chain: Chain.Eth,
-  //     }))
+  it('should not render hCaptcha because testing is performed on localhost', () => {
+    const signInModal = create(
+      <SignInModal isOpen={true} onEmailSent={() => null} onClose={() => null} />
+    )
 
-  //     jest.spyOn(wagmi as any, 'useConnect').mockReturnValue({
-  //       connectors: [{ id: 'metaMask' }, { id: 'walletConnect' }],
-  //     })
-  //   })
+    const root = signInModal.root
+    const hCaptcha = root.findAllByProps({ size: 'invisible' })
 
-  //   it('renders the wagmi connector buttons', () => {
-  //     const signInModal = create(<SignInModal isOpen={true} />)
-
-  //     const root = signInModal.root
-  //     expect(root.findByType(Metamask)).toBeDefined()
-  //     expect(root.findByType(WalletConnect)).toBeDefined()
-  //     expect(signInModal.toJSON()).toMatchSnapshot()
-  //   })
-  // })
+    expect(hCaptcha.length).toBe(0);
+  });
 })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
@@ -12,6 +12,8 @@ import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
 import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { hCaptchaSiteKey } from '../../lib/constants';
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -20,33 +22,39 @@ export type SignInModalProps = {
 }
 
 const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
-  const { width } = useWindowDimensions()
-
-  const { appId, walletAppUrl } = getConfiguration()
-  // const eth = chain === Chain.Eth
-
   const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
+  const [isLocal, setIsLocal] = useState(false);
+  const { width } = useWindowDimensions()
+  const { appId, walletAppUrl } = getConfiguration()
+  const captchaRef = useRef(null);
 
-  // const { connect, connectors, error, isLoading, pendingConnector } = eth
-  //   ? useConnect()
-  //   : {
-  //       connect: null,
-  //       connectors: [],
-  //       error: null,
-  //       isLoading: false,
-  //       pendingConnector: null,
-  //     }
+  const onSubmit = async () => {
+    setSigningIn(true)
+    if (!isLocal && captchaRef && captchaRef.current) {
+      // @ts-ignore
+      captchaRef.current.execute();
+    } else {
+      sendEmail();
+    }
+  }
 
   const sendEmail = async () => {
-    setSigningIn(true)
     await login(email, appId)
     setEmail('')
     onEmailSent && onEmailSent()
     onClose && onClose()
     setSigningIn(false)
-    event({ action: 'send_email', category: 'sign_in', label: email, value: 1})
+    event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
+  }
+
+  const onCaptchaError = (error: any) => {
+    console.log('captcha error:', error);
+  }
+
+  const onCaptchaExpire = () => {
+    console.log('captcha expired');
   }
 
   const connectEthos = () => {
@@ -60,7 +68,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
     } else {
       onClose && onClose()
     }
-    event({ action: 'connect', category: 'sign_in', label: 'sui', value: connected ? 1: 0})
+    event({ action: 'connect', category: 'sign_in', label: 'sui', value: connected ? 1 : 0 })
   }
 
   const logo = (connectorId: string) => {
@@ -77,106 +85,139 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
     }
   }
 
-  return (
-    <div style={dialogStyle(isOpen)} role="dialog">
-      <div style={backdropStyle()} onClick={() => console.log('clicked')} />
+  useEffect(() => {
+    const _isLocal = window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1');
+    setIsLocal(_isLocal);
+  }, []);
 
-      <div style={modalOuterWrapperStyle()}>
-        <div style={modalInnerWrapperStyle(width)}>
-          <div style={dialogPanelStyle(width)}>
-            <div>
-              <div style={headerStyle()}>
-                <h3 style={titleStyle()}>Sign In</h3>
-                <div style={closeStyle()} onClick={onClose}>
-                  &#x2715;
+  return (
+    <>
+      {
+        // Captcha does not work on localhost
+        !isLocal && (
+          <div style={{ display: 'none' }}>
+            {/* invisible hCaptcha required notice */}
+            This site is protected by hCaptcha and its
+            <a href="https://www.hcaptcha.com/privacy">Privacy Policy</a> and
+            <a href="https://www.hcaptcha.com/terms">Terms of Service</a> apply.
+            {/* 
+              Test the captcha locally by following this guide: https://docs.hcaptcha.com/#local-development 
+              Then go to http://test.mydomain.com:3000/
+              I don't think this works well with nextjs - better to test with the 2048 game.
+            */}
+            <HCaptcha
+              sitekey={hCaptchaSiteKey}
+              // size="invisible"
+              onVerify={sendEmail}
+              onError={onCaptchaError}
+              onExpire={onCaptchaExpire}
+              ref={captchaRef}
+              // Option for dark theme as well
+              theme='light'
+            />
+          </div>
+        )
+      }
+
+      <div style={dialogStyle(isOpen)} role="dialog">
+        <div style={backdropStyle()} />
+        <div style={modalOuterWrapperStyle()}>
+          <div style={modalInnerWrapperStyle(width)}>
+            <div style={dialogPanelStyle(width)}>
+              <div>
+                <div style={headerStyle()}>
+                  <h3 style={titleStyle()}>Sign In</h3>
+                  <div style={closeStyle()} onClick={onClose}>
+                    &#x2715;
+                  </div>
                 </div>
-              </div>
-              <div style={mainContentStyle(width)}>
-                <div style={walletOptionsStyle(width)}>
-                  <div style={walletOptionStyle()} onClick={connectEthos}>
-                    <button style={walletOptionButtonStyle()}>
-                      {logo('ethos')}
-                      Ethos
-                    </button>
-                  </div>
-                  <div style={walletOptionStyle()} onClick={_connectSui}>
-                    <button style={walletOptionButtonStyle()}>
-                      {logo('sui')}
-                      Sui Test Wallet
-                    </button>
-                  </div>
-                  {/* {isOpen &&
-                    connectors.map((connector: any) => (
-                      <div
-                        key={connector.id}
-                        style={walletOptionStyle()}
-                        onClick={() => connect!({ connector })}
-                      >
-                        <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
-                          {logo(connector.id)}
-                          {connector.name}
-                          {!connector.ready && (
-                            <span style={connectorSubStyle()}>(unsupported)</span>
-                          )}
-                          {isLoading && pendingConnector?.id === connector.id && (
-                            <span style={connectorSubStyle()}>(connecting)</span>
-                          )}
-                        </button>
-                      </div>
-                    ))}
-                  {error && <div style={connectorWarning()}>{error.message}</div>} */}
-                  {showMissingMessage && (
-                    <div style={connectorWarning()}>
-                      You do not have the necessary wallet extension installed.
+                <div style={mainContentStyle(width)}>
+                  <div style={walletOptionsStyle(width)}>
+                    <div style={walletOptionStyle()} onClick={connectEthos}>
+                      <button style={walletOptionButtonStyle()}>
+                        {logo('ethos')}
+                        Ethos
+                      </button>
                     </div>
-                  )}
-                </div>
-                <div style={registrationStyle(width)}>
-                  <h3 style={registrationHeaderStyle()}>
-                    Don't have a wallet? Sign up or log in with a link
-                  </h3>
-                  <div style={explainerStyle()}>
-                    Enter your email and we&#39;ll send you a link that will sign you up or log you
-                    in.
-                  </div>
-                  {signingIn ? (
-                    <div style={loaderStyle()}>
-                      <Loader width={50} />
+                    <div style={walletOptionStyle()} onClick={_connectSui}>
+                      <button style={walletOptionButtonStyle()}>
+                        {logo('sui')}
+                        Sui Test Wallet
+                      </button>
                     </div>
-                  ) : (
-                    <>
-                      <form onSubmit={sendEmail}>
-                        <input
-                          style={inputStyle()}
-                          type="email"
-                          placeholder="Email address"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <button style={buttonStyle(width)} type="submit">
-                          Send
-                        </button>
-                      </form>
-                      <div style={selfCustodialSection()}>
-                        Advanced:&nbsp;
-                        <a
-                          href={`${walletAppUrl}/self-custodial`}
-                          style={selfCustodialLink()}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                    {/* {isOpen &&
+                      connectors.map((connector: any) => (
+                        <div
+                          key={connector.id}
+                          style={walletOptionStyle()}
+                          onClick={() => connect!({ connector })}
                         >
-                          Create A Self-Custodial Wallet
-                        </a>
+                          <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
+                            {logo(connector.id)}
+                            {connector.name}
+                            {!connector.ready && (
+                              <span style={connectorSubStyle()}>(unsupported)</span>
+                            )}
+                            {isLoading && pendingConnector?.id === connector.id && (
+                              <span style={connectorSubStyle()}>(connecting)</span>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    {error && <div style={connectorWarning()}>{error.message}</div>} */}
+                    {showMissingMessage && (
+                      <div style={connectorWarning()}>
+                        You do not have the necessary wallet extension installed.
                       </div>
-                    </>
-                  )}
+                    )}
+                  </div>
+                  <div style={registrationStyle(width)}>
+                    <h3 style={registrationHeaderStyle()}>
+                      Don't have a wallet? Sign up or log in with a link
+                    </h3>
+                    <div style={explainerStyle()}>
+                      Enter your email and we&#39;ll send you a link that will sign you up or log you
+                      in.
+                    </div>
+                    {signingIn ? (
+                      <div style={loaderStyle()}>
+                        <Loader width={50} />
+                      </div>
+                    ) : (
+                      <>
+                        <form onSubmit={onSubmit}>
+                          <input
+                            style={inputStyle()}
+                            type="email"
+                            placeholder="Email address"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
+                          <button style={buttonStyle(width)} type="submit">
+                            Send
+                          </button>
+                        </form>
+                        <div style={selfCustodialSection()}>
+                          Advanced:&nbsp;
+                          <a
+                            href={`${walletAppUrl}/self-custodial`}
+                            style={selfCustodialLink()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Create A Self-Custodial Wallet
+                          </a>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -189,11 +230,11 @@ Add media queries using `modalInnerWrapperStyle` as an example
 */
 
 const dialogStyle = (isOpen: boolean) =>
-  ({
-    display: isOpen ? 'block' : 'none',
-    position: 'relative',
-    zIndex: '10',
-  } as React.CSSProperties)
+({
+  display: isOpen ? 'block' : 'none',
+  position: 'relative',
+  zIndex: '10',
+} as React.CSSProperties)
 
 // const mainWrapper = (isOpen: boolean) =>
 //   // flex justify-center items-center
@@ -204,27 +245,27 @@ const dialogStyle = (isOpen: boolean) =>
 //   } as React.CSSProperties)
 
 const backdropStyle = () =>
-  // fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
-  ({
-    position: 'fixed',
-    top: '0px',
-    right: '0px',
-    bottom: '0px',
-    left: '0px',
-    backgroundColor: 'rgb(107 114 128 / .75)',
-  } as React.CSSProperties)
+// fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
+({
+  position: 'fixed',
+  top: '0px',
+  right: '0px',
+  bottom: '0px',
+  left: '0px',
+  backgroundColor: 'rgb(107 114 128 / .75)',
+} as React.CSSProperties)
 
 const modalOuterWrapperStyle = () =>
-  // fixed z-10 inset-0 overflow-y-auto
-  ({
-    position: 'fixed',
-    zIndex: '99',
-    top: '0px',
-    right: '0px',
-    bottom: '0px',
-    left: '0px',
-    overflowY: 'auto',
-  } as React.CSSProperties)
+// fixed z-10 inset-0 overflow-y-auto
+({
+  position: 'fixed',
+  zIndex: '99',
+  top: '0px',
+  right: '0px',
+  bottom: '0px',
+  left: '0px',
+  overflowY: 'auto',
+} as React.CSSProperties)
 
 const modalInnerWrapperStyle = (width: number): React.CSSProperties => {
   // flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0
@@ -270,15 +311,15 @@ const dialogPanelStyle = (width: number) => {
 }
 
 const closeStyle = () =>
-  ({
-    backgroundColor: '#F9FAFB',
-    borderRadius: '100%',
-    width: '24px',
-    height: '24px',
-    textAlign: 'center',
-    color: '#A0AEBA',
-    cursor: 'pointer',
-  } as React.CSSProperties)
+({
+  backgroundColor: '#F9FAFB',
+  borderRadius: '100%',
+  width: '24px',
+  height: '24px',
+  textAlign: 'center',
+  color: '#A0AEBA',
+  cursor: 'pointer',
+} as React.CSSProperties)
 
 // const modalStyle = (isOpen: boolean) =>
 //   ({
@@ -300,19 +341,19 @@ const closeStyle = () =>
 //   } as React.CSSProperties)
 
 const headerStyle = () =>
-  ({
-    borderBottom: '1px solid rgb(241 245 249)',
-    padding: '12px',
-    display: 'flex',
-    justifyContent: 'space-between',
-  } as React.CSSProperties)
+({
+  borderBottom: '1px solid rgb(241 245 249)',
+  padding: '12px',
+  display: 'flex',
+  justifyContent: 'space-between',
+} as React.CSSProperties)
 
 const titleStyle = () =>
-  ({
-    fontSize: '1rem',
-    fontWeight: '500',
-    margin: '0',
-  } as React.CSSProperties)
+({
+  fontSize: '1rem',
+  fontWeight: '500',
+  margin: '0',
+} as React.CSSProperties)
 
 const mainContentStyle = (width: number) => {
   const styles = {
@@ -347,24 +388,24 @@ const walletOptionsStyle = (width: number) => {
 }
 
 const walletOptionStyle = () =>
-  ({
-    padding: '12px',
-    backgroundColor: '#F9FAFB',
-    borderRadius: '0.5rem',
-    fontWeight: '500',
-    cursor: 'pointer',
-  } as React.CSSProperties)
+({
+  padding: '12px',
+  backgroundColor: '#F9FAFB',
+  borderRadius: '0.5rem',
+  fontWeight: '500',
+  cursor: 'pointer',
+} as React.CSSProperties)
 
 const walletOptionButtonStyle = () =>
-  ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'start',
-    gap: '0.5rem',
-    border: 'none',
-    background: 'none',
-    textDecoration: 'none',
-  } as React.CSSProperties)
+({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'start',
+  gap: '0.5rem',
+  border: 'none',
+  background: 'none',
+  textDecoration: 'none',
+} as React.CSSProperties)
 
 // const connectorSubStyle = () => ({
 //   fontWeight: '300',
@@ -389,23 +430,23 @@ const registrationStyle = (width: number) => {
 }
 
 const registrationHeaderStyle = () =>
-  ({
-    fontWeight: '500',
-    margin: '0',
-  } as React.CSSProperties)
+({
+  fontWeight: '500',
+  margin: '0',
+} as React.CSSProperties)
 
 const explainerStyle = () =>
-  ({
-    fontSize: 'smaller',
-  } as React.CSSProperties)
+({
+  fontSize: 'smaller',
+} as React.CSSProperties)
 
 const inputStyle = () =>
-  ({
-    border: '1px solid rgb(203 213 225)',
-    borderRadius: '0.5rem',
-    padding: '12px',
-    width: '90%',
-  } as React.CSSProperties)
+({
+  border: '1px solid rgb(203 213 225)',
+  borderRadius: '0.5rem',
+  padding: '12px',
+  width: '90%',
+} as React.CSSProperties)
 
 const buttonStyle = (width: number) => {
   const styles = {
@@ -428,31 +469,31 @@ const buttonStyle = (width: number) => {
 }
 
 const loaderStyle = () =>
-  ({
-    display: 'flex',
-    justifyContent: 'center',
-    padding: '45px 0',
-  } as React.CSSProperties)
+({
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '45px 0',
+} as React.CSSProperties)
 
 const connectorWarning = () =>
-  ({
-    fontSize: 'small',
-    textAlign: 'center',
-    paddingTop: '6px',
-  } as React.CSSProperties)
+({
+  fontSize: 'small',
+  textAlign: 'center',
+  paddingTop: '6px',
+} as React.CSSProperties)
 
 const selfCustodialSection = () =>
-  ({
-    paddingTop: '6px',
-    fontSize: 'small',
-    paddingLeft: '3px',
-  } as React.CSSProperties)
+({
+  paddingTop: '6px',
+  fontSize: 'small',
+  paddingLeft: '3px',
+} as React.CSSProperties)
 
 const selfCustodialLink = () =>
-  ({
-    color: '#751ac7',
-    textDecoration: 'underline',
-    fontWeight: 400,
-  } as React.CSSProperties)
+({
+  color: '#751ac7',
+  textDecoration: 'underline',
+  fontWeight: 400,
+} as React.CSSProperties)
 
 export default SignInModal

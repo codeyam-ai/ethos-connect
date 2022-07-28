@@ -3,6 +3,28 @@
 exports[`SignInButton renders correctly 1`] = `
 Array [
   <div
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    This site is protected by hCaptcha and its
+    <a
+      href="https://www.hcaptcha.com/privacy"
+    >
+      Privacy Policy
+    </a>
+     and
+    <a
+      href="https://www.hcaptcha.com/terms"
+    >
+      Terms of Service
+    </a>
+     apply.
+    <div />
+  </div>,
+  <div
     role="dialog"
     style={
       Object {
@@ -13,7 +35,6 @@ Array [
     }
   >
     <div
-      onClick={[Function]}
       style={
         Object {
           "backgroundColor": "rgb(107 114 128 / .75)",
