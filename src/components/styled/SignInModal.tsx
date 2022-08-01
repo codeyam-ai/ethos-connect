@@ -5,6 +5,7 @@ import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
 import Google from '../svg/Google'
 import Github from '../svg/Github'
+import Email from '../svg/Email'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
 // import { useConnect } from 'wagmi'
@@ -16,8 +17,8 @@ import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { hCaptchaSiteKey } from '../../lib/constants';
-// import establishMobileConnection from '../../lib/establishMobileConnection'
-// import qrcode from 'qrcode-generator'
+import establishMobileConnection from '../../lib/establishMobileConnection'
+import generateQRCode from '../../lib/generateQRCode'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -34,7 +35,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef(null);
-  // const [qrCodeImage, setQrCodeImage] = useState<any|undefined>();
+  const [qrCodeUrl, setQrCodeUrl] = useState<string|null>(null);
 
   const onSubmit = async () => {
     setSigningIn(true)
@@ -71,15 +72,11 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
     setShowMissingMessage(true)
   }
 
-  // const connectEthosMobile = async () => {
-  //   const { connectionUrl } = await establishMobileConnection()
-  //   const typeNumber = 4;
-  //   const errorCorrectionLevel = 'L';
-  //   const qr = qrcode(typeNumber, errorCorrectionLevel);
-  //   qr.addData(connectionUrl);
-  //   qr.make();
-  //   setQrCodeImage(qr.createImgTag())
-  // }
+  const connectEthosMobile = async () => {
+    const { connectionUrl } = await establishMobileConnection()
+    const _qrCodeUrl = await generateQRCode(connectionUrl)
+    setQrCodeUrl(_qrCodeUrl)
+  }
 
   const _connectSui = async () => {
     const connected = await connectSui()
@@ -100,6 +97,8 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
         return <Ethos width={17} />
       case 'sui':
         return <Sui width={15} />
+      case 'email':
+        return <Email width={21} />
       default:
         return <WalletConnect />
     }
@@ -154,18 +153,24 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
                 </div>
                 <div style={mainContentStyle(width)}>
                   <div style={walletOptionsStyle(width)}>
+                    <div style={walletOptionStyle(qrCodeUrl === null)} onClick={() => setQrCodeUrl(null)}>
+                      <button style={walletOptionButtonStyle()}>
+                        {logo('email')}
+                        Email or Social Login
+                      </button>
+                    </div>
                     <div style={walletOptionStyle()} onClick={connectEthos}>
                       <button style={walletOptionButtonStyle()}>
                         {logo('ethos')}
                         Ethos Wallet
                       </button>
                     </div>
-                    {/* <div style={walletOptionStyle()} onClick={connectEthosMobile}>
+                    <div style={walletOptionStyle(qrCodeUrl !== null)} onClick={connectEthosMobile}>
                       <button style={walletOptionButtonStyle()}>
                         {logo('ethos')}
                         Ethos Wallet Mobile
                       </button>
-                    </div> */}
+                    </div>
                     <div style={walletOptionStyle()} onClick={_connectSui}>
                       <button style={walletOptionButtonStyle()}>
                         {logo('sui')}
@@ -199,13 +204,13 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
                     )}
                   </div>
                   <div style={registrationStyle(width)}>
-                    {false ? (
+                    {qrCodeUrl ? (
                       <div>
                         <h3 style={registrationHeaderStyle()}>
                           Scan the QR code with your mobile device.
                         </h3>
                         <div>
-                          {/* {qrCodeImage} */}
+                          <img src={qrCodeUrl} />
                         </div>
                       </div>
                     ) : (
@@ -442,10 +447,10 @@ const walletOptionsStyle = (width: number) => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
-const walletOptionStyle = () =>
+const walletOptionStyle = (selected=false) =>
 ({
   padding: '12px',
-  backgroundColor: '#F9FAFB',
+  backgroundColor: selected ? '#F3E8FE' : '#F9FAFB',
   borderRadius: '0.5rem',
   fontWeight: '500',
   cursor: 'pointer',
