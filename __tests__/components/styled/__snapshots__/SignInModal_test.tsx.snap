@@ -8,22 +8,7 @@ Array [
         "display": "none",
       }
     }
-  >
-    This site is protected by hCaptcha and its
-    <a
-      href="https://www.hcaptcha.com/privacy"
-    >
-      Privacy Policy
-    </a>
-     and
-    <a
-      href="https://www.hcaptcha.com/terms"
-    >
-      Terms of Service
-    </a>
-     apply.
-    <div />
-  </div>,
+  />,
   <div
     role="dialog"
     style={
@@ -47,6 +32,7 @@ Array [
         }
       }
     />
+    <div />
     <div
       style={
         Object {
@@ -437,6 +423,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
       }
     }
   />
+  <div />
   <div
     style={
       Object {

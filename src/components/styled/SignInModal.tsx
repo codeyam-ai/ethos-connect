@@ -8,15 +8,13 @@ import Github from '../svg/Github'
 import Email from '../svg/Email'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
-// import { useConnect } from 'wagmi'
-// import { Chain } from '../../enums/Chain'
 import Sui from '../svg/Sui'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
 import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
-import HCaptcha from '@hcaptcha/react-hcaptcha';
-import { hCaptchaSiteKey } from '../../lib/constants';
+import ReCAPTCHA from "react-google-recaptcha";
+import { captchaSiteKey } from '../../lib/constants';
 import establishMobileConnection from '../../lib/establishMobileConnection'
 import generateQRCode from '../../lib/generateQRCode'
 
@@ -27,7 +25,7 @@ export type SignInModalProps = {
   onEmailSent?: () => void
 }
 
-const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInModalProps) => {
   const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
@@ -35,11 +33,11 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef(null);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string|null>(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
 
   const onSubmit = async () => {
     setSigningIn(true)
-    if (!isLocal && captchaRef && captchaRef.current) {
+    if (captchaRef && captchaRef.current) {
       // @ts-ignore
       captchaRef.current.execute();
     } else {
@@ -54,14 +52,6 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
     onClose && onClose()
     setSigningIn(false)
     event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
-  }
-
-  const onCaptchaError = (error: any) => {
-    console.log('captcha error:', error);
-  }
-
-  const onCaptchaExpire = () => {
-    console.log('captcha expired');
   }
 
   const loginWithSocial = (provider: string) => {
@@ -115,33 +105,21 @@ const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInMod
         // Captcha does not work on localhost
         !isLocal && (
           <div style={{ display: 'none' }}>
-            {/* invisible hCaptcha required notice */}
-            This site is protected by hCaptcha and its
-            <a href="https://www.hcaptcha.com/privacy">Privacy Policy</a> and
-            <a href="https://www.hcaptcha.com/terms">Terms of Service</a> apply.
-            {/* 
-              Test the captcha locally by following this guide: https://docs.hcaptcha.com/#local-development 
-              Then go to http://test.mydomain.com:3000/
-              I don't think this works well with nextjs - better to test with the 2048 game.
-            */}
-            <HCaptcha
-              sitekey={hCaptchaSiteKey}
-              // size="invisible"
-              onVerify={sendEmail}
-              onError={onCaptchaError}
-              onExpire={onCaptchaExpire}
-              ref={captchaRef}
-              // Option for dark theme as well
-              theme='light'
-            />
+            {/* Manage captcha on https://www.google.com/recaptcha/admin */}
+
           </div>
         )
       }
-
       <div style={dialogStyle(isOpen)} role="dialog">
         <div style={backdropStyle()} onClick={() => console.log('clicked')} />
+        <ReCAPTCHA
+          sitekey={captchaSiteKey}
+          ref={captchaRef}
+          size='invisible'
+          onChange={sendEmail}
+        />
 
-        <div style={modalOuterWrapperStyle()}>        
+        <div style={modalOuterWrapperStyle()}>
           <div style={modalInnerWrapperStyle(width)}>
             <div style={dialogPanelStyle(width)}>
               <div>
@@ -447,7 +425,7 @@ const walletOptionsStyle = (width: number) => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
-const walletOptionStyle = (selected=false) =>
+const walletOptionStyle = (selected = false) =>
 ({
   padding: '12px',
   backgroundColor: selected ? '#F3E8FE' : '#F9FAFB',

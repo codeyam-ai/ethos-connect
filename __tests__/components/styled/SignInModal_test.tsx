@@ -56,7 +56,7 @@ describe('SignInModal', () => {
     expect(warningCount(root)).toBe(1)
   })
 
-  it('sends an email if you click the send email button', async () => {
+  it('sends an email if you click the send email button and the captcha is passed', async () => {
     const testEmail = 'test@example.com'
 
     let emailProvided
@@ -75,12 +75,15 @@ describe('SignInModal', () => {
     const root = signInModal.root
     const emailInput = root.findByProps({ type: 'email' })
     const emailForm = emailInput.parent
+    const captcha = root.findByProps({ size: 'invisible' })
 
     act(() => {
       emailInput.props.onChange({ target: { value: testEmail } })
     })
 
     await act(async () => {
+      // Pass captcha
+      captcha.props.onChange();
       emailForm.props.onSubmit()
     })
 
@@ -89,14 +92,14 @@ describe('SignInModal', () => {
     expect(onClose.mock.calls.length).toBe(1)
   })
 
-  it('should not render hCaptcha because testing is performed on localhost', () => {
+  it('should render captcha as invisible', () => {
     const signInModal = create(
       <SignInModal isOpen={true} onEmailSent={() => null} onClose={() => null} />
     )
 
     const root = signInModal.root
-    const hCaptcha = root.findAllByProps({ size: 'invisible' })
+    const captcha = root.findByProps({ size: 'invisible' })
 
-    expect(hCaptcha.length).toBe(0);
+    expect(captcha).toBeTruthy();
   });
 })
