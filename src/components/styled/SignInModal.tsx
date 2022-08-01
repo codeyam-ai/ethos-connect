@@ -202,7 +202,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                       </div>
                     ) : (
                       <>
-                        <form onSubmit={sendEmail}>
+                        <form onSubmit={onSubmit}>
                           <input
                             style={inputStyle()}
                             type="email"
