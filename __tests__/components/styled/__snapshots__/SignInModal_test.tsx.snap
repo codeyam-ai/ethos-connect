@@ -190,7 +190,7 @@ Array [
                         fill="#1e293b"
                       />
                     </svg>
-                    Ethos
+                    Ethos Wallet
                   </button>
                 </div>
                 <div
@@ -496,7 +496,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                       fill="#1e293b"
                     />
                   </svg>
-                  Ethos
+                  Ethos Wallet
                 </button>
               </div>
               <div

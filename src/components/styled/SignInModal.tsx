@@ -15,6 +15,8 @@ import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { hCaptchaSiteKey } from '../../lib/constants';
+import establishMobileConnection from '../../lib/establishMobileConnection'
+import qrcode from 'qrcode-generator'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -27,20 +29,22 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const [isLocal, setIsLocal] = useState(false);
-  const [showGoogleSignIn, setShowGoogleSignIn] = useState(false);
+  // const [showGoogleSignIn, setShowGoogleSignIn] = useState(false);
+  const [showGoogleSignIn] = useState(false);
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef(null);
+  const [qrCodeImage, setQrCodeImage] = useState<any|undefined>();
 
-  const onSubmit = async () => {
-    setSigningIn(true)
-    if (!isLocal && captchaRef && captchaRef.current) {
-      // @ts-ignore
-      captchaRef.current.execute();
-    } else {
-      sendEmail();
-    }
-  }
+  // const onSubmit = async () => {
+  //   setSigningIn(true)
+  //   if (!isLocal && captchaRef && captchaRef.current) {
+  //     // @ts-ignore
+  //     captchaRef.current.execute();
+  //   } else {
+  //     sendEmail();
+  //   }
+  // }
 
   const sendEmail = async () => {
     await login({ email, appId })
@@ -66,6 +70,16 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
   const connectEthos = () => {
     setShowMissingMessage(true)
   }
+
+  // const connectEthosMobile = async () => {
+  //   const { connectionUrl } = await establishMobileConnection()
+  //   const typeNumber = 4;
+  //   const errorCorrectionLevel = 'L';
+  //   const qr = qrcode(typeNumber, errorCorrectionLevel);
+  //   qr.addData(connectionUrl);
+  //   qr.make();
+  //   setQrCodeImage(qr.createImgTag())
+  // }
 
   const _connectSui = async () => {
     const connected = await connectSui()
@@ -143,9 +157,15 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                     <div style={walletOptionStyle()} onClick={connectEthos}>
                       <button style={walletOptionButtonStyle()}>
                         {logo('ethos')}
-                        Ethos
+                        Ethos Wallet
                       </button>
                     </div>
+                    {/* <div style={walletOptionStyle()} onClick={connectEthosMobile}>
+                      <button style={walletOptionButtonStyle()}>
+                        {logo('ethos')}
+                        Ethos Wallet Mobile
+                      </button>
+                    </div> */}
                     <div style={walletOptionStyle()} onClick={_connectSui}>
                       <button style={walletOptionButtonStyle()}>
                         {logo('sui')}
@@ -179,52 +199,63 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                     )}
                   </div>
                   <div style={registrationStyle(width)}>
-                    {
-                      showGoogleSignIn && (
+                    {qrCodeImage ? (
+                      <div>
+                        <h3 style={registrationHeaderStyle()}>
+                          Scan the QR code with your mobile device.
+                        </h3>
                         <div>
-                          <h3 style={registrationHeaderStyle()}>
-                            Sign up or log in with Google
-                          </h3>
-                          <div style={socialLoginButtonsStyle()} onClick={loginWithGoogle}>
-                            <div style={socialLoginButtonStyle()}>
-                              <Google width={36} />
-                            </div>
-                          </div>
+                          {qrCodeImage}
                         </div>
-                      )
-                    }
-                    <h3 style={registrationHeaderStyle()}>
-                      Or sign up or log in with a link
-                    </h3>
-                    {signingIn ? (
-                      <div style={loaderStyle()}>
-                        <Loader width={50} />
                       </div>
                     ) : (
                       <>
-                        <form onSubmit={sendEmail}>
-                          <input
-                            style={inputStyle()}
-                            type="email"
-                            placeholder="Email address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                          />
-                          <button style={buttonStyle(width)} type="submit">
-                            Send
-                          </button>
-                        </form>
-                        <div style={selfCustodialSection()}>
-                          Advanced:&nbsp;
-                          <a
-                            href={`${walletAppUrl}/self-custodial`}
-                            style={selfCustodialLink()}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Create A Self-Custodial Wallet
-                          </a>
-                        </div>
+                        {showGoogleSignIn && (
+                          <div>
+                            <h3 style={registrationHeaderStyle()}>
+                              Sign up or log in with Google
+                            </h3>
+                            <div style={socialLoginButtonsStyle()} onClick={loginWithGoogle}>
+                              <div style={socialLoginButtonStyle()}>
+                                <Google width={36} />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        <h3 style={registrationHeaderStyle()}>
+                          Or sign up or log in with a link
+                        </h3>
+                        {signingIn ? (
+                          <div style={loaderStyle()}>
+                            <Loader width={50} />
+                          </div>
+                        ) : (
+                          <>
+                            <form onSubmit={sendEmail}>
+                              <input
+                                style={inputStyle()}
+                                type="email"
+                                placeholder="Email address"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                              <button style={buttonStyle(width)} type="submit">
+                                 Send
+                              </button>
+                            </form>
+                            <div style={selfCustodialSection()}>
+                              Advanced:&nbsp;
+                              <a
+                                href={`${walletAppUrl}/self-custodial`}
+                                style={selfCustodialLink()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Create A Self-Custodial Wallet
+                              </a>
+                            </div>
+                          </>
+                        )}
                       </>
                     )}
                   </div>
@@ -462,10 +493,10 @@ const registrationHeaderStyle = () =>
   margin: '0',
 } as React.CSSProperties)
 
-const explainerStyle = () =>
-({
-  fontSize: 'smaller',
-} as React.CSSProperties)
+// const explainerStyle = () =>
+// ({
+//   fontSize: 'smaller',
+// } as React.CSSProperties)
 
 const inputStyle = () =>
 ({

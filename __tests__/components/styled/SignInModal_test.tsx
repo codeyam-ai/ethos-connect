@@ -49,9 +49,9 @@ describe('SignInModal', () => {
     const root = signInModal.root
     expect(warningCount(root)).toBe(0)
 
-    const ethosWalletButton = root.findByType(Ethos)
+    const ethosWalletButton = root.findAllByType(Ethos)
     act(() => {
-      ethosWalletButton.parent.parent.props.onClick()
+      ethosWalletButton[0].parent.parent.props.onClick()
     })
     expect(warningCount(root)).toBe(1)
   })
