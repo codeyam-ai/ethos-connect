@@ -153,6 +153,45 @@ Array [
                   onClick={[Function]}
                   style={
                     Object {
+                      "backgroundColor": "#F3E8FE",
+                      "borderRadius": "0.5rem",
+                      "cursor": "pointer",
+                      "fontWeight": "500",
+                      "padding": "12px",
+                    }
+                  }
+                >
+                  <button
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "background": "none",
+                        "border": "none",
+                        "display": "flex",
+                        "gap": "0.5rem",
+                        "justifyContent": "start",
+                        "textDecoration": "none",
+                      }
+                    }
+                  >
+                    <svg
+                      height={21}
+                      version="1.1"
+                      viewBox="0 0 1024 1024"
+                      width={21}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M512 16C238.064 16 16 238.064 16 512s222.064 496 496 496 496-222.064 496-496S785.936 16 512 16zM307.488 346.672l409.008 0c5.184 0 10.064 1.232 14.464 3.296l-196.688 138.064c-17.104 17.12-27.696 17.12-44.8 0l-196.608-137.984C297.328 347.936 302.24 346.672 307.488 346.672zM750.816 652.192c0 18.96-15.36 34.336-34.304 34.336L307.488 686.528c-18.944 0-34.304-15.376-34.304-34.336L273.184 391.296c0-1.728 0.256-3.376 0.512-5.024l201.92 143.312c20.096 20.112 52.688 20.112 72.784 0l201.92-143.312c0.24 1.648 0.512 3.296 0.512 5.024L750.832 652.192z"
+                      />
+                    </svg>
+                    Email or Social Login
+                  </button>
+                </div>
+                <div
+                  onClick={[Function]}
+                  style={
+                    Object {
                       "backgroundColor": "#F9FAFB",
                       "borderRadius": "0.5rem",
                       "cursor": "pointer",
@@ -192,6 +231,51 @@ Array [
                       />
                     </svg>
                     Ethos Wallet
+                  </button>
+                </div>
+                <div
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "backgroundColor": "#F9FAFB",
+                      "borderRadius": "0.5rem",
+                      "cursor": "pointer",
+                      "fontWeight": "500",
+                      "padding": "12px",
+                    }
+                  }
+                >
+                  <button
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "background": "none",
+                        "border": "none",
+                        "display": "flex",
+                        "gap": "0.5rem",
+                        "justifyContent": "start",
+                        "textDecoration": "none",
+                      }
+                    }
+                  >
+                    <svg
+                      fill="none"
+                      height={23.51063829787234}
+                      viewBox="0 0 47 65"
+                      width={17}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6.00471 1H40.0029C42.7644 1 45.0029 3.23858 45.0029 6V44.8425C45.0029 47.604 42.7643 49.8425 40.0029 49.8425H6.0047C3.24328 49.8425 1.0047 47.604 1.0047 44.8425V6C1.0047 3.23858 3.24329 1 6.00471 1Z"
+                        stroke="#1e293b"
+                        strokeWidth="2"
+                      />
+                      <path
+                        d="M6.68764 3.64648L30.6631 14.8026C32.0736 15.4589 32.9756 16.8735 32.9756 18.4292V58.6799C32.9756 61.5743 29.9966 63.5105 27.3515 62.3353L3.37601 51.683C1.93126 51.0411 1.00013 49.6085 1.00013 48.0276V7.27309C1.00013 4.34854 4.03609 2.41268 6.68764 3.64648Z"
+                        fill="#1e293b"
+                      />
+                    </svg>
+                    Ethos Wallet Mobile
                   </button>
                 </div>
                 <div
