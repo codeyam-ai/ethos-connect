@@ -15,8 +15,8 @@ const login = async ({ email, provider, appId }: loginArgs) => {
 
   if (provider) {
     const returnTo = location.href;
-    const fullUrl = `${walletAppUrl}/auth?appId=${appId}&returnTo=${returnTo}`
-    location.href = `${walletAppUrl}/socialauth?redirectTo=${encodeURIComponent(fullUrl)}`;
+    const fullUrl = `${walletAppUrl}/auth?appId=${appId}&returnTo=${encodeURIComponent(returnTo)}`
+    location.href = `${walletAppUrl}/socialauth?provider=${provider}&redirectTo=${encodeURIComponent(fullUrl)}`;
     return;
   }
 

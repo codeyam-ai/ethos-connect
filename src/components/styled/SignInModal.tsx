@@ -4,6 +4,7 @@ import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
 import Metamask from '../svg/Metamask'
 import Google from '../svg/Google'
+import Github from '../svg/Github'
 import Loader from '../svg/Loader'
 import getConfiguration from '../../lib/getConfiguration'
 // import { useConnect } from 'wagmi'
@@ -15,36 +16,35 @@ import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { hCaptchaSiteKey } from '../../lib/constants';
-import establishMobileConnection from '../../lib/establishMobileConnection'
-import qrcode from 'qrcode-generator'
+// import establishMobileConnection from '../../lib/establishMobileConnection'
+// import qrcode from 'qrcode-generator'
 
 export type SignInModalProps = {
   isOpen: boolean
+  socialLogin?: string[]
   onClose?: () => void
   onEmailSent?: () => void
 }
 
-const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, socialLogin=[], onEmailSent }: SignInModalProps) => {
   const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const [isLocal, setIsLocal] = useState(false);
-  // const [showGoogleSignIn, setShowGoogleSignIn] = useState(false);
-  const [showGoogleSignIn] = useState(false);
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef(null);
-  const [qrCodeImage, setQrCodeImage] = useState<any|undefined>();
+  // const [qrCodeImage, setQrCodeImage] = useState<any|undefined>();
 
-  // const onSubmit = async () => {
-  //   setSigningIn(true)
-  //   if (!isLocal && captchaRef && captchaRef.current) {
-  //     // @ts-ignore
-  //     captchaRef.current.execute();
-  //   } else {
-  //     sendEmail();
-  //   }
-  // }
+  const onSubmit = async () => {
+    setSigningIn(true)
+    if (!isLocal && captchaRef && captchaRef.current) {
+      // @ts-ignore
+      captchaRef.current.execute();
+    } else {
+      sendEmail();
+    }
+  }
 
   const sendEmail = async () => {
     await login({ email, appId })
@@ -63,8 +63,8 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
     console.log('captcha expired');
   }
 
-  const loginWithGoogle = () => {
-    login({ provider: 'google', appId })
+  const loginWithSocial = (provider: string) => {
+    login({ provider, appId })
   }
 
   const connectEthos = () => {
@@ -142,7 +142,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
       <div style={dialogStyle(isOpen)} role="dialog">
         <div style={backdropStyle()} onClick={() => console.log('clicked')} />
 
-        <div style={modalOuterWrapperStyle()}>
+        <div style={modalOuterWrapperStyle()}>        
           <div style={modalInnerWrapperStyle(width)}>
             <div style={dialogPanelStyle(width)}>
               <div>
@@ -199,26 +199,33 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                     )}
                   </div>
                   <div style={registrationStyle(width)}>
-                    {qrCodeImage ? (
+                    {false ? (
                       <div>
                         <h3 style={registrationHeaderStyle()}>
                           Scan the QR code with your mobile device.
                         </h3>
                         <div>
-                          {qrCodeImage}
+                          {/* {qrCodeImage} */}
                         </div>
                       </div>
                     ) : (
                       <>
-                        {showGoogleSignIn && (
+                        {(socialLogin || []).length > 0 && (
                           <div>
                             <h3 style={registrationHeaderStyle()}>
-                              Sign up or log in with Google
+                              Sign up or log in with:
                             </h3>
-                            <div style={socialLoginButtonsStyle()} onClick={loginWithGoogle}>
-                              <div style={socialLoginButtonStyle()}>
-                                <Google width={36} />
-                              </div>
+                            <div style={socialLoginButtonsStyle()}>
+                              {socialLogin.indexOf('google') > -1 && (
+                                <div style={socialLoginButtonStyle()} onClick={() => loginWithSocial('google')}>
+                                  <Google width={36} />
+                                </div>
+                              )}
+                              {socialLogin.indexOf('github') > -1 && (
+                                <div style={socialLoginButtonStyle()} onClick={() => loginWithSocial('github')}>
+                                  <Github width={36} />
+                                </div>
+                              )}
                             </div>
                           </div>
                         )}
@@ -231,7 +238,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                           </div>
                         ) : (
                           <>
-                            <form onSubmit={sendEmail}>
+                            <form onSubmit={onSubmit}>
                               <input
                                 style={inputStyle()}
                                 type="email"
@@ -240,7 +247,7 @@ const SignInModal = ({ isOpen, onClose, onEmailSent }: SignInModalProps) => {
                                 onChange={(e) => setEmail(e.target.value)}
                               />
                               <button style={buttonStyle(width)} type="submit">
-                                 Send
+                                Send
                               </button>
                             </form>
                             <div style={selfCustodialSection()}>
