@@ -1,8 +1,11 @@
 import apiCall from './apiCall'
 import log from './log'
-import { Chain } from '../enums/Chain'
+import { NFT } from '../types/NFT'
+import getConfiguration from './getConfiguration'
 
-const getWalletNfts = async (address: string, chain: Chain) => {
+const getWalletNfts = async (address: string): Promise<NFT[]> => {
+  const { chain } = getConfiguration();
+
   const {
     json: { nfts },
     status,
@@ -12,7 +15,7 @@ const getWalletNfts = async (address: string, chain: Chain) => {
 
   if (status !== 200) {
     log('walletNfts', 'Error with wallet NFTs', status)
-    return
+    return []
   }
 
   return nfts

@@ -62,8 +62,9 @@ describe('EthosWrapper', () => {
       chain: Chain.Sui,
       network: 'sui'
     }
-    
+
     // Mock useSuiWallet so config will get initialized
+    // @ts-ignore
     useSuiWallet.default = jest.fn().mockReturnValueOnce({ provider: 'any', signer: null })
     const initializeSpy = jest.spyOn(initialize, 'default')
 

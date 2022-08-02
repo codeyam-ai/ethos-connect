@@ -18,6 +18,7 @@ describe('getWalletBalance', () => {
             network: 'sui',
             walletAppUrl: 'http:localhost'
         }
+        // @ts-ignore
         getConfiguration.default = jest.fn().mockReturnValueOnce(config)
         const spyApiCall = jest.spyOn(apiCall, 'default').mockResolvedValueOnce(apiCallReturn)
 
