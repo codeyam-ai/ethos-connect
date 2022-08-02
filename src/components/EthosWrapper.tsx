@@ -24,6 +24,7 @@ import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import useSuiWallet from '../lib/useSuiWallet'
 import log from '../lib/log'
+import listenForMobileConnection from '../lib/listenForMobileConnection'
 
 export type ProviderAndSigner = {
   provider: ethers.providers.Web3Provider | any | undefined
@@ -107,6 +108,12 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
 
   //   return <WagmiConfig client={client}>{childrenWithProviderAndSigner}</WagmiConfig>
   // }
+
+  useEffect(() => {
+    listenForMobileConnection().then(
+      (mobileProviderAndSigner: any) => _onProviderSelected(mobileProviderAndSigner)
+    )
+  }, [])
 
   useEffect(() => {
     if (!suiProviderAndSigner) return

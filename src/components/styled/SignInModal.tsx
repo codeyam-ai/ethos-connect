@@ -15,8 +15,9 @@ import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
 import ReCAPTCHA from "react-google-recaptcha";
 import { captchaSiteKey } from '../../lib/constants';
-import establishMobileConnection from '../../lib/establishMobileConnection'
 import generateQRCode from '../../lib/generateQRCode'
+import listenForMobileConnection from '../../lib/listenForMobileConnection'
+import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -63,9 +64,11 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
   }
 
   const connectEthosMobile = async () => {
-    const { connectionUrl } = await establishMobileConnection()
+    const { connectionUrl } = await getMobileConnectionUrl();
     const _qrCodeUrl = await generateQRCode(connectionUrl)
     setQrCodeUrl(_qrCodeUrl)
+    await listenForMobileConnection();
+    onClose && onClose();
   }
 
   const _connectSui = async () => {
@@ -184,9 +187,12 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
                   <div style={registrationStyle(width)}>
                     {qrCodeUrl ? (
                       <div>
-                        <h3 style={registrationHeaderStyle()}>
-                          Scan the QR code with your mobile device.
+                        <h3 style={centeredRegistrationHeaderStyle()}>
+                          Connect Mobile Wallet
                         </h3>
+                        <p style={subheaderStyle()}>
+                         Scan the QR code with a mobile device.
+                        </p>
                         <div>
                           <img src={qrCodeUrl} />
                         </div>
@@ -483,10 +489,19 @@ const registrationHeaderStyle = () =>
   margin: '0',
 } as React.CSSProperties)
 
-// const explainerStyle = () =>
-// ({
-//   fontSize: 'smaller',
-// } as React.CSSProperties)
+const centeredRegistrationHeaderStyle = () =>
+({
+  fontWeight: '500',
+  margin: '0',
+  textAlign: 'center'
+} as React.CSSProperties)
+
+const subheaderStyle = () =>
+({
+  margin: '6px 0',
+  fontSize: 'smaller',
+  textAlign: 'center'
+} as React.CSSProperties)
 
 const inputStyle = () =>
 ({
