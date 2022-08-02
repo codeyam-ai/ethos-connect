@@ -1,9 +1,6 @@
 import EthosWrapper from './components/EthosWrapper'
 
-import Button from './components/headless/Button'
-
 import SignInButton from './components/styled/SignInButton'
-import SignInModal from './components/styled/SignInModal'
 
 import initialize from './lib/initialize'
 import login from './lib/login'
@@ -24,20 +21,7 @@ import getProvider from './lib/getProvider'
 
 import dripSui from './lib/dripSui'
 
-import * as ethers from './lib/ethersWrapper/ethersWrapper'
-
-const headless = {
-  Button,
-}
-
-const styled = {
-  SignInButton,
-  SignInModal,
-}
-
-const components = { EthosWrapper, headless, styled }
-
-const lib = {
+const ethos = {
   initialize,
   login,
   logout,
@@ -54,4 +38,4 @@ const lib = {
   dripSui,
 }
 
-export { components, lib, ethers }
+export { EthosWrapper, SignInButton, ethos }
