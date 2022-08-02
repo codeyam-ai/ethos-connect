@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import login from '../../lib/login'
 import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'

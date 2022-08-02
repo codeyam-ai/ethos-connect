@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react'
 import store from 'store2'
 import log from './log'
 
-const useSuiWallet = () => {
+export type SuiProviderAndSigner = {
+  provider: any | null
+  signer: any | null
+}
+
+const useSuiWallet = (): SuiProviderAndSigner => {
   const [providerAndSigner, setProviderAndSigner] = useState<any | null>(null)
 
   const suiWallet = () => (window as any).suiWallet

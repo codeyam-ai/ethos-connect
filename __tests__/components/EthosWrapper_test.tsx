@@ -4,6 +4,9 @@ import { create, act } from 'react-test-renderer'
 import EthosWrapper from '../../src/components/EthosWrapper'
 import * as getProvider from '../../src/lib/getProvider'
 import { Chain } from '../../src/enums/Chain'
+import { EthosConfiguration } from '../../src/types/EthosConfiguration'
+import * as initialize from '../../src/lib/initialize';
+import * as useSuiWallet from '../../src/lib/useSuiWallet';
 
 // import * as wagmi from 'wagmi'
 
@@ -49,6 +52,31 @@ describe('EthosWrapper', () => {
     // expect(ethosWrapper.toJSON()).toMatchSnapshot()
     expect(true).toBe(true)
   })
+
+  it('should initialize default configuration if no optional values are given', async () => {
+    let ethosWrapper: any;
+    const initialEthosConfiguration: EthosConfiguration = { appId: 'test-id' }
+    const expectedEthosConfiguration: EthosConfiguration = {
+      appId: 'test-id',
+      walletAppUrl: 'https://ethoswallet.xyz/',
+      chain: Chain.Sui,
+      network: 'sui'
+    }
+    
+    // Mock useSuiWallet so config will get initialized
+    useSuiWallet.default = jest.fn().mockReturnValueOnce({ provider: 'any', signer: null })
+    const initializeSpy = jest.spyOn(initialize, 'default')
+
+    await act(async () => {
+      ethosWrapper = create(
+        <EthosWrapper ethosConfiguration={initialEthosConfiguration} onProviderSelected={onProviderSelected}>
+          test
+        </EthosWrapper>
+      )
+    })
+
+    expect(initializeSpy).toBeCalledWith(expectedEthosConfiguration)
+  });
 
   // describe('Eth', () => {
   //   const testWagmi = wagmi as any

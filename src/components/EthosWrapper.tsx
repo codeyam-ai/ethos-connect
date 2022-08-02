@@ -25,6 +25,7 @@ import initialize from '../lib/initialize'
 import useSuiWallet from '../lib/useSuiWallet'
 import log from '../lib/log'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
+import { Chain } from '../enums/Chain'
 
 export type ProviderAndSigner = {
   provider: ethers.providers.Web3Provider | any | undefined
@@ -36,8 +37,12 @@ export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElemen
 }
 
 const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: EthosWrapperProps) => {
+  // Set defaults
+  if (!ethosConfiguration.chain) ethosConfiguration.chain = Chain.Sui;
+  if (!ethosConfiguration.network) ethosConfiguration.network = 'sui';
+  if (!ethosConfiguration.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz/';
+
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
-  // const eth = ethosConfiguration.chain === Chain.Eth
 
   const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
   const suiProviderAndSigner = useSuiWallet()
@@ -55,60 +60,6 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
     return child
   })
 
-  // if (eth) {
-  //   const ethConfiguration = ethosConfiguration as EthereumConfiguration
-  //   const provider = useProvider()
-  //   const { address } = useAccount()
-  //   const { data: signer } = useSigner()
-  //   const {
-  //     chains,
-  //     provider: chainsProvider,
-  //     webSocketProvider,
-  //   } = configureChains(defaultChains, [
-  //     alchemyProvider({ alchemyId: ethConfiguration.alchemyId }),
-  //     publicProvider(),
-  //   ])
-
-  //   const client = createClient({
-  //     autoConnect: true,
-  //     connectors: [
-  //       new MetaMaskConnector({ chains }),
-  //       // new CoinbaseWalletConnector({
-  //       //   chains,
-  //       //   options: {
-  //       //     appName: 'wagmi',
-  //       //   },
-  //       // }),
-  //       new WalletConnectConnector({
-  //         chains,
-  //         options: {
-  //           qrcode: true,
-  //         },
-  //       }),
-  //       // new InjectedConnector({
-  //       //   chains,
-  //       //   options: {
-  //       //     name: 'Injected',
-  //       //     shimDisconnect: true,
-  //       //   },
-  //       // }),
-  //     ],
-  //     provider: chainsProvider,
-  //     webSocketProvider,
-  //   })
-
-  //   useEffect(() => {
-  //     if (!address) {
-  //       _onProviderSelected({ provider, signer: null })
-  //     } else if (signer) {
-  //       const fullProvider = new Provider(provider, signer)
-  //       _onProviderSelected({ provider: fullProvider, signer })
-  //     }
-  //   }, [])
-
-  //   return <WagmiConfig client={client}>{childrenWithProviderAndSigner}</WagmiConfig>
-  // }
-
   useEffect(() => {
     listenForMobileConnection().then(
       (mobileProviderAndSigner: any) => _onProviderSelected(mobileProviderAndSigner)
@@ -121,7 +72,6 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
     const { provider: suiProvider, signer: suiSigner } = suiProviderAndSigner
     if (suiProvider && !suiSigner) {
       initialize(ethosConfiguration)
-
       const fetchEthosProvider = async () => {
         const ethosProvider = await getProvider()
         log('EthosWrapper', 'Setting _onProviderSelected1')

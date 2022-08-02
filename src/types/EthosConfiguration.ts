@@ -1,9 +1,9 @@
-import { Chain } from 'enums/Chain'
+import { Chain } from '../enums/Chain'
 export interface EthosConfiguration {
   appId: string
-  walletAppUrl: string
-  chain: Chain
-  network: string | number
+  walletAppUrl?: string
+  chain?: Chain
+  network?: string | number
 }
 
 export interface SuiConfiguration extends EthosConfiguration {}

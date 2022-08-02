@@ -32,7 +32,7 @@ export class Contract {
             return new Promise<void>((resolve, _reject) => {
               const details: EthereumTransaction = {
                 address: addressOrName,
-                network,
+                network: network || 'sui',
                 abi: contractInterface,
                 functionName: contractFunctionName,
                 inputValues,

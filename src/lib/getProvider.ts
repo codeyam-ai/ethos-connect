@@ -31,7 +31,7 @@ const getProvider = async (network?: Networkish): Promise<ethers.providers.Web3P
           return user.email
         case 'getAddress':
           return async () => {
-            const networkString = networkToChain((network || defaultNetwork).toString())
+            const networkString = networkToChain((network || defaultNetwork || 'sui').toString())
             return user.accounts.find((account: any) => account.chain === networkString)?.address
           }
         default:
