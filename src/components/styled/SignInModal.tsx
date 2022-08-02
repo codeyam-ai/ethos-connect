@@ -30,7 +30,6 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
   const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
-  const [isLocal, setIsLocal] = useState(false);
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef(null);
@@ -97,22 +96,8 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
     }
   }
 
-  useEffect(() => {
-    const _isLocal = window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1');
-    setIsLocal(_isLocal);
-  }, []);
-
   return (
     <>
-      {
-        // Captcha does not work on localhost
-        !isLocal && (
-          <div style={{ display: 'none' }}>
-            {/* Manage captcha on https://www.google.com/recaptcha/admin */}
-
-          </div>
-        )
-      }
       <div style={dialogStyle(isOpen)} role="dialog">
         <div style={backdropStyle()} onClick={() => console.log('clicked')} />
         <ReCAPTCHA

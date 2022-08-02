@@ -3,13 +3,6 @@
 exports[`SignInButton renders correctly 1`] = `
 Array [
   <div
-    style={
-      Object {
-        "display": "none",
-      }
-    }
-  />,
-  <div
     role="dialog"
     style={
       Object {
