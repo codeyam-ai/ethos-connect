@@ -1,27 +1,32 @@
 import getConfiguration from './getConfiguration'
-import postMessage from './postMessage'
 
-const establishMobileConnection = async (): Promise<any> => {
+const listenForMobileConnection = async (): Promise<any> => {
   const { walletAppUrl } = getConfiguration()
 
   return new Promise((resolve, _reject) => {
     const connectionEventListener = (message: any) => {
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data
+        if (action) console.log("MESSAGE", action, data)
         if (action !== 'connect') return
+        if (!data.address) return;
         window.removeEventListener('message', connectionEventListener)
 
-        console.log('DATA', data)
-        resolve(data)
+        const signer = {
+          getAddress: () => data.address
+        }
+
+        const provider = {
+          getSigner: signer,
+        }
+
+        console.log({ provider, signer })
+        resolve({ provider, signer })
       }
     }
 
     window.addEventListener('message', connectionEventListener)
-
-    postMessage({
-      action: 'connect'
-    })
   })
 }
 
-export default establishMobileConnection
+export default listenForMobileConnection
