@@ -1,12 +1,8 @@
 import apiCall from './apiCall'
+import getConfiguration from './getConfiguration'
 
-type GetWalletBalanceProps = {
-  address: string
-  network: string
-  chain: string
-}
-
-const getWalletBalance = async ({ address, network, chain }: GetWalletBalanceProps) => {
+const getWalletBalance = async (address: string) => {
+  const { network, chain } = getConfiguration();
   const {
     json: { balance },
   } = await apiCall({
