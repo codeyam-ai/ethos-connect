@@ -13,7 +13,7 @@ describe('EthosWrapper', () => {
 
   let receivedProvider
   let receivedSigner
-  let onProviderSelected
+  let onWalletConnected
 
   beforeEach(() => {
     jest.spyOn(getProvider as any, 'default').mockImplementation((network) => {
@@ -23,7 +23,7 @@ describe('EthosWrapper', () => {
       })
     })
 
-    onProviderSelected = jest.fn(({ provider: p, signer: s }) => {
+    onWalletConnected = jest.fn(({ provider: p, signer: s }) => {
       receivedProvider = p
       receivedSigner = s
     })
@@ -38,13 +38,13 @@ describe('EthosWrapper', () => {
     let ethosWrapper
     await act(async () => {
       ethosWrapper = create(
-        <EthosWrapper ethosConfiguration={{}} onProviderSelected={onProviderSelected}>
+        <EthosWrapper ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
           test
         </EthosWrapper>
       )
     })
 
-    // expect(onProviderSelected.mock.calls.length).toBe(1)
+    // expect(onWalletConnected.mock.calls.length).toBe(1)
     // expect(receivedProvider.getSigner()).toBe(signer)
     // expect(receivedSigner).toBe(signer)
     // expect(ethosWrapper.toJSON()).toMatchSnapshot()
@@ -68,7 +68,7 @@ describe('EthosWrapper', () => {
 
     await act(async () => {
       ethosWrapper = create(
-        <EthosWrapper ethosConfiguration={initialEthosConfiguration} onProviderSelected={onProviderSelected}>
+        <EthosWrapper ethosConfiguration={initialEthosConfiguration} onWalletConnected={onWalletConnected}>
           test
         </EthosWrapper>
       )

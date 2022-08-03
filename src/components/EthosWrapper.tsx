@@ -14,10 +14,10 @@ export type ProviderAndSigner = {
 }
 export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElement> {
   ethosConfiguration: EthosConfiguration
-  onProviderSelected: ({ provider, signer }: ProviderAndSigner) => void
+  onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void
 }
 
-const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: EthosWrapperProps) => {
+const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: EthosWrapperProps) => {
   // Set defaults
   if (!ethosConfiguration.chain) ethosConfiguration.chain = Chain.Sui;
   if (!ethosConfiguration.network) ethosConfiguration.network = 'sui';
@@ -31,7 +31,7 @@ const EthosWrapper = ({ ethosConfiguration, onProviderSelected, children }: Etho
   const _onProviderSelected = (providerAndSigner: ProviderAndSigner) => {
     log('EthosWrapper', '_onProviderSelected called with: ', providerAndSigner)
     setProviderAndSigner(providerAndSigner)
-    onProviderSelected && onProviderSelected(providerAndSigner)
+    onWalletConnected && onWalletConnected(providerAndSigner)
   }
 
   const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
