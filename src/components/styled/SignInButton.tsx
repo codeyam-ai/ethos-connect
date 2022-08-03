@@ -22,7 +22,7 @@ const SignInButton = (props: SignInButtonProps) => {
 
   return (
     <>
-      <SignInModal socialLogin={socialLogin} isOpen={isOpen} onEmailSent={onEmailSent} onClose={() => setIsOpen(false)} />
+      <SignInModal socialLogin={socialLogin} isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <Button onClick={_onClick} {...reactProps}>
         {children || <>Sign In</>}
       </Button>
