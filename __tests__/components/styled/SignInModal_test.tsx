@@ -59,11 +59,9 @@ describe('SignInModal', () => {
       expect(appId).toBe('test')
       return Promise.resolve({})
     })
-    const onEmailSent = jest.fn()
-    const onClose = jest.fn()
 
     const signInModal = create(
-      <SignInModal isOpen={true} onEmailSent={onEmailSent} onClose={onClose} />
+      <SignInModal isOpen={true} onClose={() => null} />
     )
 
     const root = signInModal.root
@@ -82,13 +80,11 @@ describe('SignInModal', () => {
     })
 
     expect(emailProvided).toBe(testEmail)
-    expect(onEmailSent.mock.calls.length).toBe(1)
-    expect(onClose.mock.calls.length).toBe(1)
   })
 
   it('should render captcha as invisible', () => {
     const signInModal = create(
-      <SignInModal isOpen={true} onEmailSent={() => null} onClose={() => null} />
+      <SignInModal isOpen={true} onClose={() => null} />
     )
 
     const root = signInModal.root
