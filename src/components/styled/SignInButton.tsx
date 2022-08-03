@@ -4,20 +4,17 @@ import SignInModal from './SignInModal'
 
 export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   socialLogin?: string[]
-  onClick?: () => void
   onLoaded?: () => void
 }
 
 const SignInButton = (props: SignInButtonProps) => {
-  const { children, socialLogin, onClick, ...reactProps } = props
+  const { children, socialLogin, ...reactProps } = props
 
   const [isOpen, setIsOpen] = React.useState(false)
 
-  const _onClick = () => {
+  const onClick = () => {
     setIsOpen(true)
     document.getElementsByTagName("html").item(0)?.setAttribute("style", "overflow: hidden;")
-
-    onClick && onClick()
   }
 
   const onClose = () => {
@@ -28,7 +25,7 @@ const SignInButton = (props: SignInButtonProps) => {
   return (
     <>
       <SignInModal socialLogin={socialLogin} isOpen={isOpen} onClose={onClose} />
-      <Button onClick={_onClick} {...reactProps}>
+      <Button onClick={onClick} {...reactProps}>
         {children || <>Sign In</>}
       </Button>
     </>
