@@ -16,13 +16,19 @@ const SignInButton = (props: SignInButtonProps) => {
 
   const _onClick = () => {
     setIsOpen(true)
+    document.getElementsByTagName("html").item(0)?.setAttribute("style", "overflow: hidden;")
 
     onClick && onClick()
   }
 
+  const onClose = () => {
+    document.getElementsByTagName("html").item(0)?.setAttribute("style", "")
+    setIsOpen(false)
+  }
+
   return (
     <>
-      <SignInModal socialLogin={socialLogin} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <SignInModal socialLogin={socialLogin} isOpen={isOpen} onClose={onClose} />
       <Button onClick={_onClick} {...reactProps}>
         {children || <>Sign In</>}
       </Button>
