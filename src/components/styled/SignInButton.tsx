@@ -6,11 +6,10 @@ export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElemen
   socialLogin?: string[]
   onClick?: () => void
   onLoaded?: () => void
-  onEmailSent?: () => void
 }
 
 const SignInButton = (props: SignInButtonProps) => {
-  const { children, socialLogin, onClick, onEmailSent, ...reactProps } = props
+  const { children, socialLogin, onClick, ...reactProps } = props
 
   const [isOpen, setIsOpen] = React.useState(false)
 
