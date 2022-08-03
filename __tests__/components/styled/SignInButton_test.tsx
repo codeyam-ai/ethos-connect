@@ -25,12 +25,4 @@ describe('SignInButton', () => {
     expect(root.findAllByProps({ isOpen: true }).length).toBe(1)
     expect(onClick.mock.calls.length).toBe(1)
   })
-
-  it('passes along onEmailSent to the signInModal', () => {
-    const onEmailSent = jest.fn()
-    const signInButton = create(<SignInButton onEmailSent={onEmailSent} />)
-    const root = signInButton.root
-    const modal = root.findByType(SignInModal)
-    expect(modal.props.onEmailSent).toBe(onEmailSent)
-  })
 })
