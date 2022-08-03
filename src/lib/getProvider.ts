@@ -1,27 +1,16 @@
-import { Networkish } from '@ethersproject/networks'
-import { ethers } from 'ethers'
 import activeUser from './activeUser'
 import getConfiguration from './getConfiguration'
-// import log from './log'
 import networkToChain from './networkToChain'
 
-const getProvider = async (network?: Networkish): Promise<ethers.providers.Web3Provider> => {
-  // const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-  // const addresses = (await provider?.listAccounts()) || []
-  // if (addresses.length > 0) {
-  //   return provider
-  // }
+const getProvider = async (network?: string | number): Promise<any> => {
 
-  const { walletAppUrl, network: defaultNetwork } = getConfiguration()
+  const { network: defaultNetwork } = getConfiguration()
 
-  const rpcProvider =
-    defaultNetwork === 'sui'
-      ? Object()
-      : new ethers.providers.JsonRpcProvider(walletAppUrl + '/api/rpc', defaultNetwork)
+  const rpcProvider = Object()
 
   const user: any = await activeUser()
 
-  const signer = defaultNetwork === 'sui' ? Object() : rpcProvider.getSigner()
+  const signer = Object()
   const proxySigner = new Proxy(signer, {
     get: (target: any, prop: any, receiver: any) => {
       switch (prop) {

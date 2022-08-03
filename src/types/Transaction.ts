@@ -3,13 +3,6 @@ export interface EthosTransaction {
   network: string | number
 }
 
-export interface EthereumTransaction extends EthosTransaction {
-  abi: any
-  functionName: string
-  inputValues?: any
-  gasLimit?: number
-}
-
 export interface SuiTransaction extends EthosTransaction {
   gasBudget?: number
 }

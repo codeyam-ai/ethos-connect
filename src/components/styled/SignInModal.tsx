@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react'
 import login from '../../lib/login'
-import WalletConnect from '../svg/WalletConnect'
 import Ethos from '../svg/Ethos'
-import Metamask from '../svg/Metamask'
 import Google from '../svg/Google'
 import Github from '../svg/Github'
 import Email from '../svg/Email'
 import Loader from '../svg/Loader'
-import getConfiguration from '../../lib/getConfiguration'
 import Sui from '../svg/Sui'
+import FallbackLogo from '../svg/FallbackLogo'
+import getConfiguration from '../../lib/getConfiguration'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 import { Breakpoints } from '../../enums/Breakpoints'
 import connectSui from '../../lib/connectSui'
@@ -82,9 +81,6 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
 
   const logo = (connectorId: string) => {
     switch (connectorId) {
-      case 'metaMask':
-        return <Metamask />
-      // case 'Coinbase Wallet':
       case 'ethos':
         return <Ethos width={17} />
       case 'sui':
@@ -92,7 +88,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
       case 'email':
         return <Email width={21} />
       default:
-        return <WalletConnect />
+        return <FallbackLogo width={17} />
     }
   }
 
@@ -143,26 +139,6 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [], onEmailSent }: SignInM
                         Sui Test Wallet
                       </button>
                     </div>
-                    {/* {isOpen &&
-                    connectors.map((connector: any) => (
-                      <div
-                        key={connector.id}
-                        style={walletOptionStyle()}
-                        onClick={() => connect!({ connector })}
-                      >
-                        <button disabled={!connector.ready} style={walletOptionButtonStyle()}>
-                          {logo(connector.id)}
-                          {connector.name}
-                          {!connector.ready && (
-                            <span style={connectorSubStyle()}>(unsupported)</span>
-                          )}
-                          {isLoading && pendingConnector?.id === connector.id && (
-                            <span style={connectorSubStyle()}>(connecting)</span>
-                          )}
-                        </button>
-                      </div>
-                    ))}
-                  {error && <div style={connectorWarning()}>{error.message}</div>} */}
                     {showMissingMessage && (
                       <div style={connectorWarning()}>
                         You do not have the necessary wallet extension installed.
@@ -350,25 +326,6 @@ const closeStyle = () =>
   cursor: 'pointer',
 } as React.CSSProperties)
 
-// const modalStyle = (isOpen: boolean) =>
-//   ({
-//     textAlign: 'left',
-//     border: '1px solid rgb(203 213 225)',
-//     borderRadius: '0.5rem',
-//     transitionProperty: 'opacity',
-//     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-//     transitionDuration: '250ms',
-//     opacity: isOpen ? 1 : 0,
-//     position: 'absolute',
-//     left: isOpen ? '50%' : '-9999px',
-//     top: '40%',
-//     transform: 'translate(-50%, -50%)',
-//     backgroundColor: 'white',
-//     width: '660px',
-//     fontWeight: '400',
-//     zIndex: '99',
-//   } as React.CSSProperties)
-
 const headerStyle = () =>
 ({
   borderBottom: '1px solid rgb(241 245 249)',
@@ -435,12 +392,6 @@ const walletOptionButtonStyle = () =>
   background: 'none',
   textDecoration: 'none',
 } as React.CSSProperties)
-
-// const connectorSubStyle = () => ({
-//   fontWeight: '300',
-//   color: 'gray',
-//   fontSize: 'smaller',
-// })
 
 const socialLoginButtonsStyle = () => ({
   padding: '12px 0',

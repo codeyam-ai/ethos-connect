@@ -1,5 +1,4 @@
 import {
-  EthereumTransaction,
   SuiCoinTransferTransaction,
   SuiObjectTransferTransaction,
   SuiFunctionTransaction,
@@ -34,7 +33,6 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 type transactProps = {
   signer: any
   details:
-    | EthereumTransaction
     | SuiCoinTransferTransaction
     | SuiObjectTransferTransaction
     | SuiFunctionTransaction

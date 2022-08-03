@@ -1,25 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
-// import {
-//   WagmiConfig,
-//   createClient,
-//   defaultChains,
-//   configureChains,
-//   useAccount,
-//   useProvider,
-//   useSigner,
-// } from 'wagmi'
-// import { Provider } from '../lib/ethersWrapper/Provider'
 import getProvider from '../lib/getProvider'
 
-// import { alchemyProvider } from 'wagmi/providers/alchemy'
-// import { publicProvider } from 'wagmi/providers/public'
-
-// import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-// import { InjectedConnector } from 'wagmi/connectors/injected'
-// import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-// import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-// import { Chain } from '../enums/Chain'
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import useSuiWallet from '../lib/useSuiWallet'
@@ -28,7 +9,7 @@ import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { Chain } from '../enums/Chain'
 
 export type ProviderAndSigner = {
-  provider: ethers.providers.Web3Provider | any | undefined
+  provider: any | undefined
   signer: any
 }
 export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElement> {

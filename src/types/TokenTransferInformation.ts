@@ -1,6 +1,4 @@
-import { ethers } from 'ethers'
-
 export type TokenTransferInformation = {
-  orderedTransfers: ethers.Event[]
+  orderedTransfers: any[]
   currentTokenIds: string[]
 }

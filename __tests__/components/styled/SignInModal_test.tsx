@@ -3,13 +3,8 @@ import { create, act } from 'react-test-renderer'
 
 import SignInModal from '../../../src/components/styled/SignInModal'
 import Ethos from '../../../src/components/svg/Ethos'
+import FallbackLogo from '../../../src/components/svg/FallbackLogo'
 import * as lib from '../../../src/lib/login'
-import * as getConfiguration from '../../../src/lib/getConfiguration'
-import { Chain } from '../../../src/enums/Chain'
-
-// import * as wagmi from 'wagmi'
-import Metamask from '../../../src/components/svg/Metamask'
-import WalletConnect from '../../../src/components/svg/WalletConnect'
 
 const modalExists = (root: any) => {
   const modal = root.findByProps({ role: 'dialog' })
@@ -32,8 +27,7 @@ describe('SignInModal', () => {
     const root = signInModal.root
     expect(modalExists(root)).toBeTruthy()
 
-    expect(root.findAllByType(Metamask).length).toBe(0)
-    expect(root.findAllByType(WalletConnect).length).toBe(0)
+    expect(root.findAllByType(FallbackLogo).length).toBe(0)
 
     expect(signInModal.toJSON()).toMatchSnapshot()
   })

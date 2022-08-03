@@ -1,5 +1,4 @@
-import { ethers } from 'ethers'
 
-export interface EthosProvider extends ethers.providers.BaseProvider {
+export interface EthosProvider {
   getSigner: () => any
 }

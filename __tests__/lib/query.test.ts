@@ -1,4 +1,3 @@
-import { ContractInterface } from 'ethers'
 import * as apiCall from '../../src/lib/apiCall'
 import query from '../../src/lib/query'
 
@@ -6,7 +5,7 @@ describe('query', () => {
   it('should call the contracts/query endpoint', async () => {
     const network = 'mainnet'
     const contractAddress = '0x0'
-    const contractABI: ContractInterface = ''
+    const contractABI = ''
     const functionName = 'testFunction'
     const inputValues = [1, 2, 3]
 

@@ -1,4 +1,3 @@
-import { ContractInterface } from 'ethers'
 import { TokenTransferInformation } from '../../src/types/TokenTransferInformation'
 import * as apiCall from '../../src/lib/apiCall'
 import tokenTransfers from '../../src/lib/tokenTransfers'
@@ -8,7 +7,7 @@ describe('tokenTransfers', () => {
     const network = 'mainnet'
     const walletAddress = '0x0'
     const contractAddress = '0x1'
-    const contractABI: ContractInterface = ''
+    const contractABI = ''
 
     const transferInfo: TokenTransferInformation = {
       orderedTransfers: [],

@@ -1,10 +1,3 @@
-# To Do
-
-- Add types for wrapped ethers
-- Remove duplicate types between NPM and wallet (like UnpopulatedTransaction)
-- naming of `unpopulatedTransaction: PopulatedTransaction` in `interceptTransaction.ts` and `transact.ts` is very confusing. PopulatedTransaction is an ethers type but it's not what we call a PopulatedTranaction in `wallet`. Fix this.
-- Have RPC return correct address when ethers calls `eth_accounts` (currently hard coded)
-
 # Setting up local development
 
 From the root directory of this project:
