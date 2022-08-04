@@ -14,7 +14,6 @@ const SignInButton = (props: SignInButtonProps) => {
 
   const _onClick = (e: any) => {
     setIsOpen(true)
-    console.log('isOpen :>> ', isOpen);
     document.getElementsByTagName("html").item(0)?.setAttribute("style", "overflow: hidden;")
     onClick && onClick(e)
   }
@@ -24,8 +23,6 @@ const SignInButton = (props: SignInButtonProps) => {
     setIsOpen(false)
   }
 
-  console.log('sign in button rendering');
-  
   return (
     <>
       <SignInModal socialLogin={socialLogin} isOpen={isOpen} onClose={onClose} />
