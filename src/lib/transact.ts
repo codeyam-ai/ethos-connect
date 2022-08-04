@@ -52,6 +52,7 @@ const transact = async ({
   onConfirmed,
   onCanceled,
 }: transactProps) => {
+  console.log("TRANSACT", signer, details)
   if (signer.extension) {
     const response = signer.transact(details)
     onComplete && onComplete(response)
@@ -94,6 +95,7 @@ const transact = async ({
 
   window.addEventListener('message', transactionEventListener)
 
+  console.log("POST TRANSACTION", details)
   postMessage({
     action: 'transact',
     data: { details },
