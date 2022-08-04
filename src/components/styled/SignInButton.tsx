@@ -8,13 +8,15 @@ export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElemen
 }
 
 const SignInButton = (props: SignInButtonProps) => {
-  const { children, socialLogin, ...reactProps } = props
+  const { children, socialLogin, onClick, ...reactProps } = props
 
   const [isOpen, setIsOpen] = React.useState(false)
 
-  const onClick = () => {
+  const _onClick = (e: any) => {
     setIsOpen(true)
+    console.log('isOpen :>> ', isOpen);
     document.getElementsByTagName("html").item(0)?.setAttribute("style", "overflow: hidden;")
+    onClick && onClick(e)
   }
 
   const onClose = () => {
@@ -22,10 +24,12 @@ const SignInButton = (props: SignInButtonProps) => {
     setIsOpen(false)
   }
 
+  console.log('sign in button rendering');
+  
   return (
     <>
       <SignInModal socialLogin={socialLogin} isOpen={isOpen} onClose={onClose} />
-      <Button onClick={onClick} {...reactProps}>
+      <Button onClick={_onClick} {...reactProps}>
         {children || <>Sign In</>}
       </Button>
     </>
