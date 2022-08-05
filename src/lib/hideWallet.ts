@@ -1,7 +1,7 @@
 import getIframe from './getIframe'
 
 const hideWallet = () => {
-  getIframe()
+  getIframe(false)
 }
 
 export default hideWallet
