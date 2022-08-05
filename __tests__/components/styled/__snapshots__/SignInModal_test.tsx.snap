@@ -305,6 +305,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
               Object {
                 "display": "flex",
                 "flexDirection": "column",
+                "flexGrow": "1",
                 "gap": "12px",
                 "padding": "24px",
               }
@@ -318,7 +319,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
                 }
               }
             >
-              Or sign up or log in with a link
+              Sign up or log in with a link
             </h3>
             <form
               onSubmit={[Function]}
@@ -693,6 +694,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
               Object {
                 "display": "flex",
                 "flexDirection": "column",
+                "flexGrow": "1",
                 "gap": "12px",
                 "padding": "24px",
               }
@@ -706,7 +708,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                 }
               }
             >
-              Or sign up or log in with a link
+              Sign up or log in with a link
             </h3>
             <form
               onSubmit={[Function]}

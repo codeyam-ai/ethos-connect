@@ -307,6 +307,7 @@ Array [
                 Object {
                   "display": "flex",
                   "flexDirection": "column",
+                  "flexGrow": "1",
                   "gap": "12px",
                   "padding": "24px",
                 }
@@ -320,7 +321,7 @@ Array [
                   }
                 }
               >
-                Or sign up or log in with a link
+                Sign up or log in with a link
               </h3>
               <form
                 onSubmit={[Function]}

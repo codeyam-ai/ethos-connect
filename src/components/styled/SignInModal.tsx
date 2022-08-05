@@ -170,7 +170,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                       </div>
                       <div style={registrationStyle(width)}>
                         {qrCodeUrl ? (
-                          <div>
+                          <div style={qrCodeStyle()}>
                             <h3 style={centeredRegistrationHeaderStyle()}>
                               Connect Mobile Wallet
                             </h3>
@@ -203,7 +203,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                               </div>
                             )}
                             <h3 style={registrationHeaderStyle()}>
-                              Or sign up or log in with a link
+                              Sign up or log in with a link
                             </h3>
                             {signingIn ? (
                               <div style={loaderStyle()}>
@@ -446,6 +446,7 @@ const registrationStyle = (width: number) => {
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
+    flexGrow: '1'
   }
   const sm = {
     padding: '24px',
@@ -455,6 +456,13 @@ const registrationStyle = (width: number) => {
     ? (styles as React.CSSProperties)
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
+
+const qrCodeStyle = () => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+} as React.CSSProperties)
 
 const registrationHeaderStyle = () =>
 ({
