@@ -25,6 +25,7 @@ const listenForMobileConnection = async (): Promise<any> => {
       }
     }
 
+    window.removeEventListener('message', connectionEventListener)
     window.addEventListener('message', connectionEventListener)
   })
 }

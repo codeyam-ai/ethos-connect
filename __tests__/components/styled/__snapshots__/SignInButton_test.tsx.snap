@@ -87,7 +87,7 @@ Array [
                 }
               }
             >
-              Sign In
+              Sign Up Or Log In
             </h3>
             <div
               onClick={[Function]}
@@ -369,7 +369,7 @@ Array [
               >
                 Advanced: 
                 <a
-                  href="test/self-custodial"
+                  href="test/extensions"
                   rel="noopener noreferrer"
                   style={
                     Object {
@@ -380,7 +380,22 @@ Array [
                   }
                   target="_blank"
                 >
-                  Create A Self-Custodial Wallet
+                  Chrome Extension
+                </a>
+                 or 
+                <a
+                  href="test/mobile"
+                  rel="noopener noreferrer"
+                  style={
+                    Object {
+                      "color": "#751ac7",
+                      "fontWeight": 400,
+                      "textDecoration": "underline",
+                    }
+                  }
+                  target="_blank"
+                >
+                  Mobile App
                 </a>
               </div>
             </div>

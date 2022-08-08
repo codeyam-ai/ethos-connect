@@ -131,7 +131,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                 ) : (
                   <>
                     <div style={headerStyle()}>
-                      <h3 style={titleStyle()}>Sign In</h3>
+                      <h3 style={titleStyle()}>Sign Up Or Log In</h3>
                       <div style={closeStyle()} onClick={onClose}>
                         &#x2715;
                       </div>
@@ -226,12 +226,21 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                                 <div style={selfCustodialSection()}>
                                   Advanced:&nbsp;
                                   <a
-                                    href={`${walletAppUrl}/self-custodial`}
+                                    href={`${walletAppUrl}/extensions`}
                                     style={selfCustodialLink()}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                   >
-                                    Create A Self-Custodial Wallet
+                                    Chrome Extension
+                                  </a>
+                                  &nbsp;or&nbsp;
+                                  <a
+                                    href={`${walletAppUrl}/mobile`}
+                                    style={selfCustodialLink()}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Mobile App
                                   </a>
                                 </div>
                               </>
