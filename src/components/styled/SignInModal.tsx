@@ -32,14 +32,18 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const [emailSent, setEmailSent] = useState(false);
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
-  const captchaRef = useRef(null);
+  const captchaRef = useRef<any|null>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
 
   const onSubmit = async () => {
     setSigningIn(true)
-    if (captchaRef && captchaRef.current) {
-      // @ts-ignore
-      captchaRef.current.execute();
+    if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
+      try {
+        await captchaRef.current.execute(); 
+      } catch (e) {
+        console.log("CAPTCHA ERROR", e);
+        sendEmail();
+      }
     } else {
       sendEmail();
     }
