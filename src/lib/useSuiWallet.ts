@@ -5,6 +5,7 @@ import log from './log'
 export type SuiProviderAndSigner = {
   provider: any | null
   signer: any | null
+  contents: any | null
 }
 
 const useSuiWallet = (): SuiProviderAndSigner => {
@@ -36,10 +37,12 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     log('useSuiWallet', 'SetProviderAndSigner', {
       provider,
       signer,
+      null
     })
     setProviderAndSigner({
       provider,
       signer,
+      null
     })
   }
 

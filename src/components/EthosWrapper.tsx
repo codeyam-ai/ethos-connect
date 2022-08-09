@@ -7,10 +7,12 @@ import useSuiWallet from '../lib/useSuiWallet'
 import log from '../lib/log'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { Chain } from '../enums/Chain'
+import ProviderAndSignerContext from './ProviderAndSignerContext'
 
 export type ProviderAndSigner = {
-  provider: any | undefined
-  signer: any
+  provider: any | null
+  signer: any | null
+  contents: any | null
 }
 export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElement> {
   ethosConfiguration: EthosConfiguration
@@ -25,7 +27,11 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
 
-  const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
+  const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner>({
+    provider: null,
+    signer: null,
+    contents: null
+  })
   const suiProviderAndSigner = useSuiWallet()
 
   const _onProviderSelected = useCallback((providerAndSigner: ProviderAndSigner) => {
@@ -52,6 +58,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
         _onProviderSelected({
           provider: ethosProvider,
           signer: ethosProvider?.getSigner(),
+          contents: null
         })
       }
 
@@ -68,8 +75,12 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     }
     return child
   })
-
-  return <>{childrenWithProviderAndSigner}</>
+  
+  return (
+    <ProviderAndSignerContext.Provider value={providerAndSigner}>
+      {childrenWithProviderAndSigner}
+    </ProviderAndSignerContext.Provider>
+  ) 
 }
 
 export default EthosWrapper
