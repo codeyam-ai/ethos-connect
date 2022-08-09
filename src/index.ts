@@ -5,6 +5,7 @@ import SignInButton from './components/styled/SignInButton'
 import initialize from './lib/initialize'
 import login from './lib/login'
 import logout from './lib/logout'
+import sign from './lib/sign'
 import transact from './lib/transact'
 
 import getWalletBalance from './lib/getWalletBalance'
@@ -25,6 +26,7 @@ const ethos = {
   initialize,
   login,
   logout,
+  sign,
   transact,
   getWalletBalance,
   getWalletNfts,

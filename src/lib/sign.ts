@@ -3,11 +3,11 @@ import getIframe from './getIframe'
 import postMessage from './postMessage'
 
 type signProps = {
-  signer: any
   signData: any
+  onComplete: (response: any) => void
 }
 
-const sign = async ({ signData }: signProps) => {
+const sign = async ({ signData, onComplete }: signProps) => {
   const { walletAppUrl } = getConfiguration()
 
   const signEventListener = (message: any) => {
@@ -19,7 +19,7 @@ const sign = async ({ signData }: signProps) => {
 
       switch (state) {
         case 'complete':
-          console.log("RESPONSE", response)
+          onComplete && onComplete(response)
           window.removeEventListener('message', signEventListener)
           break
         default:
@@ -30,10 +30,9 @@ const sign = async ({ signData }: signProps) => {
 
   window.addEventListener('message', signEventListener)
 
-  console.log("SIGN", signData)
   postMessage({
     action: 'sign',
-    signData
+    data: { signData }
   })
 
   getIframe(true)
