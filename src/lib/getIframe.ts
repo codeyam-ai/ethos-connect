@@ -51,6 +51,7 @@ const getIframe = (show?: boolean) => {
     iframe.style.right = '60px'
     iframe.style.width = '1px'
     iframe.style.height = '1px'
+    iframe.style.zIndex = '99';
     iframe.setAttribute('allow', 'payment; clipboard-read; clipboard-write')
     document.body.appendChild(iframe)
 

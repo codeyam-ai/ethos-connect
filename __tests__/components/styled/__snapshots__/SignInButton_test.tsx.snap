@@ -87,7 +87,7 @@ Array [
                 }
               }
             >
-              Sign Up Or Log In
+              Sign Up or Log In
             </h3>
             <div
               onClick={[Function]}

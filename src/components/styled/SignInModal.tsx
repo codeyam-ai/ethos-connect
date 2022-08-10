@@ -34,6 +34,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef<any|null>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
+  const [walletOption, setWalletOption] = useState<string>("email")
 
   const onSubmit = async () => {
     setSigningIn(true)
@@ -62,10 +63,14 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }
 
   const connectEthos = () => {
+    setShowMissingMessage(false)
+    setWalletOption('ethos')
     setShowMissingMessage(true)
   }
 
   const connectEthosMobile = async () => {
+    setShowMissingMessage(false)
+    setWalletOption('ethosMobile')
     const { connectionUrl } = await getMobileConnectionUrl();
     const _qrCodeUrl = await generateQRCode(connectionUrl)
     setQrCodeUrl(_qrCodeUrl)
@@ -74,6 +79,8 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }
 
   const _connectSui = async () => {
+    setShowMissingMessage(false)
+    setWalletOption('sui')
     const connected = await connectSui()
     if (!connected) {
       setShowMissingMessage(true)
@@ -81,6 +88,12 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
       onClose && onClose()
     }
     event({ action: 'connect', category: 'sign_in', label: 'sui', value: connected ? 1 : 0 })
+  }
+
+  const connectEmail = () => {
+    setShowMissingMessage(false)
+    setQrCodeUrl(null)
+    setWalletOption('email')
   }
 
   const logo = (connectorId: string) => {
@@ -135,32 +148,32 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                 ) : (
                   <>
                     <div style={headerStyle()}>
-                      <h3 style={titleStyle()}>Sign Up Or Log In</h3>
+                      <h3 style={titleStyle()}>Sign Up or Log In</h3>
                       <div style={closeStyle()} onClick={onClose}>
                         &#x2715;
                       </div>
                     </div>
                     <div style={mainContentStyle(width)}>
                       <div style={walletOptionsStyle(width)}>
-                        <div style={walletOptionStyle(qrCodeUrl === null)} onClick={() => setQrCodeUrl(null)}>
+                        <div style={walletOptionStyle(walletOption === 'email')} onClick={connectEmail}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('email')}
                             Email or Social Login
                           </button>
                         </div>
-                        <div style={walletOptionStyle()} onClick={connectEthos}>
+                        <div style={walletOptionStyle(walletOption === 'ethos')} onClick={connectEthos}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('ethos')}
                             Ethos Wallet
                           </button>
                         </div>
-                        <div style={walletOptionStyle(qrCodeUrl !== null)} onClick={connectEthosMobile}>
+                        <div style={walletOptionStyle(walletOption === 'ethosMobile')} onClick={connectEthosMobile}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('ethos')}
                             Ethos Wallet Mobile
                           </button>
                         </div>
-                        <div style={walletOptionStyle()} onClick={_connectSui}>
+                        <div style={walletOptionStyle(walletOption === 'sui')} onClick={_connectSui}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('sui')}
                             Sui Test Wallet

@@ -86,7 +86,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
               }
             }
           >
-            Sign Up Or Log In
+            Sign Up or Log In
           </h3>
           <div
             style={
@@ -490,7 +490,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
               }
             }
           >
-            Sign Up Or Log In
+            Sign Up or Log In
           </h3>
           <div
             style={
