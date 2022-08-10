@@ -69,6 +69,28 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     }
   }, [suiProviderAndSigner, _onProviderSelected])
 
+  useEffect(() => {
+    const listener = async (message: any) => {
+      if (message.origin === ethosConfiguration.walletAppUrl) {
+        const { action, data } = message.data
+        if (action === 'account') {
+          const { account } = data;
+          const address = providerAndSigner.signer.getAddress();
+          if (address === account.address) {
+            setProviderAndSigner({
+              ...providerAndSigner,
+              contents: account.contents
+            })
+          }
+          
+        }
+      }
+    }
+    window.addEventListener('account', listener)
+
+    return () => window.removeEventListener('account', listener)
+  }, [])
+
   const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, { ...providerAndSigner })
