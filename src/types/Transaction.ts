@@ -22,5 +22,6 @@ export interface SuiObjectTransferTransaction extends SuiTransferTransaction {
 export interface SuiFunctionTransaction extends SuiTransaction {
   moduleName?: string
   functionName?: string
-  inputValues?: any
+  inputValues?: any,
+  typeArguments?: string[]
 }
