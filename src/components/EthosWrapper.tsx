@@ -7,10 +7,12 @@ import useSuiWallet from '../lib/useSuiWallet'
 import log from '../lib/log'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { Chain } from '../enums/Chain'
+import ProviderAndSignerContext from './ProviderAndSignerContext'
 
 export type ProviderAndSigner = {
-  provider: any | undefined
-  signer: any
+  provider: any | null
+  signer: any | null
+  contents: any | null
 }
 export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElement> {
   ethosConfiguration: EthosConfiguration
@@ -25,7 +27,11 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
 
-  const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner | null>(null)
+  const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner>({
+    provider: null,
+    signer: null,
+    contents: null
+  })
   const suiProviderAndSigner = useSuiWallet()
 
   const _onProviderSelected = useCallback((providerAndSigner: ProviderAndSigner) => {
@@ -52,6 +58,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
         _onProviderSelected({
           provider: ethosProvider,
           signer: ethosProvider?.getSigner(),
+          contents: null
         })
       }
 
@@ -62,14 +69,40 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     }
   }, [suiProviderAndSigner, _onProviderSelected])
 
+  useEffect(() => {
+    const listener = async (message: any) => {
+      if (message.origin === ethosConfiguration.walletAppUrl) {
+        const { action, data } = message.data
+        if (action === 'account') {
+          const { account } = data;
+          const address = await providerAndSigner.signer?.getAddress();
+          if (account && address && address === account.address) {
+            setProviderAndSigner({
+              ...providerAndSigner,
+              contents: account.contents
+            })
+          }
+          
+        }
+      }
+    }
+    window.addEventListener('message', listener)
+
+    return () => window.removeEventListener('account', listener)
+  }, [providerAndSigner])
+
   const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, { ...providerAndSigner })
     }
     return child
   })
-
-  return <>{childrenWithProviderAndSigner}</>
+  
+  return (
+    <ProviderAndSignerContext.Provider value={providerAndSigner}>
+      {childrenWithProviderAndSigner}
+    </ProviderAndSignerContext.Provider>
+  ) 
 }
 
 export default EthosWrapper

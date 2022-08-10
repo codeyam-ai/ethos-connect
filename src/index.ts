@@ -22,6 +22,8 @@ import getProvider from './lib/getProvider'
 
 import dripSui from './lib/dripSui'
 
+import useProviderAndSigner from './hooks/useProviderAndSigner'
+
 const ethos = {
   initialize,
   login,
@@ -38,6 +40,7 @@ const ethos = {
   hideWallet,
   getProvider,
   dripSui,
+  useProviderAndSigner
 }
 
 export { EthosWrapper, SignInButton, ethos }
