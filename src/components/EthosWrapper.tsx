@@ -75,8 +75,8 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
         const { action, data } = message.data
         if (action === 'account') {
           const { account } = data;
-          const address = providerAndSigner.signer.getAddress();
-          if (address === account.address) {
+          const address = await providerAndSigner.signer?.getAddress();
+          if (account && address && address === account.address) {
             setProviderAndSigner({
               ...providerAndSigner,
               contents: account.contents
@@ -86,10 +86,10 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
         }
       }
     }
-    window.addEventListener('account', listener)
+    window.addEventListener('message', listener)
 
     return () => window.removeEventListener('account', listener)
-  }, [])
+  }, [providerAndSigner])
 
   const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {

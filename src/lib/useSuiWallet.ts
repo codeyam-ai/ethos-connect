@@ -36,13 +36,12 @@ const useSuiWallet = (): SuiProviderAndSigner => {
 
     log('useSuiWallet', 'SetProviderAndSigner', {
       provider,
-      signer,
-      null
+      signer
     })
     setProviderAndSigner({
       provider,
       signer,
-      null
+      context: null
     })
   }
 
