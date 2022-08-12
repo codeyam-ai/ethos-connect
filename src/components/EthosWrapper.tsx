@@ -42,7 +42,10 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
   useEffect(() => {
     listenForMobileConnection().then(
-      (mobileProviderAndSigner: any) => _onProviderSelected(mobileProviderAndSigner)
+      (mobileProviderAndSigner: any) => {
+        log('EthosWrapper', 'Setting _onProviderSelected1')
+        _onProviderSelected(mobileProviderAndSigner)
+      }
     )
   }, [])
 
@@ -54,7 +57,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
       initialize(ethosConfiguration)
       const fetchEthosProvider = async () => {
         const ethosProvider = await getProvider()
-        log('EthosWrapper', 'Setting _onProviderSelected1')
+        log('EthosWrapper', 'Setting _onProviderSelected2')
         _onProviderSelected({
           provider: ethosProvider,
           signer: ethosProvider?.getSigner(),
@@ -64,7 +67,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
       fetchEthosProvider()
     } else if (suiSigner) {
-      log('EthosWrapper', 'Setting _onProviderSelected2')
+      log('EthosWrapper', 'Setting _onProviderSelected3')
       _onProviderSelected(suiProviderAndSigner)
     }
   }, [suiProviderAndSigner, _onProviderSelected])
@@ -77,7 +80,8 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
           const { account } = data;
           const address = await providerAndSigner.signer?.getAddress();
           if (account && address && address === account.address) {
-            setProviderAndSigner({
+            log('EthosWrapper', 'Setting _onProviderSelected4')
+            _onProviderSelected({
               ...providerAndSigner,
               contents: account.contents
             })
