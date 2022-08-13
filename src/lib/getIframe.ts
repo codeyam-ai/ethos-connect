@@ -71,6 +71,7 @@ const getIframe = (show?: boolean) => {
             
             const messageStore = store.namespace('iframeMessages')
             const messages = messageStore('messages') || []
+            console.log("POSTING PENDING!!!", messages)
             for (const message of messages) {
               postIFrameMessage(message)
             }
