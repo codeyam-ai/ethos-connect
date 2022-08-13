@@ -45,8 +45,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
   const _onProviderSelected = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
     if (signerFound.current) return;
-    log('EthosWrapper', '_onProviderSelected called with: ', type, providerAndSigner)
-
+    
     if (type) {
       methodsChecked.current[type] = true;
     }
@@ -100,10 +99,12 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   useEffect(() => {
     if (!account) return;
     
-    setProviderAndSigner({
-      ...providerAndSigner,
-      contents: account.contents
-    })
+    setProviderAndSigner(
+      (prev: ProviderAndSigner) => ({
+        ...prev,
+        contents: account.contents
+      })
+    )
   }, [account])
 
   const childrenWithProviderAndSigner = React.Children.map(children, (child) => {

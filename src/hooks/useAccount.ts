@@ -20,6 +20,7 @@ const useAccount = (providerAndSigner: any) => {
           const { action, data } = message.data
           if (action === 'account') {
             const { account } = data;
+            console.log("ACOCUNT UPDATE RECEIVED", account)
             if (account && address && address === account.address) {
               setAccount(account)
             }
@@ -30,7 +31,6 @@ const useAccount = (providerAndSigner: any) => {
   
       const message = { action: 'account', data: { address } }
       getIframe()
-      console.log("POSTING ACCOUNT MESSAGE", address)
       postIFrameMessage(message)
     }    
 

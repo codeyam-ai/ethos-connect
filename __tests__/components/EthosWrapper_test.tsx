@@ -6,10 +6,12 @@ import * as getProvider from '../../src/lib/getProvider'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import * as initialize from '../../src/lib/initialize';
-import * as useSuiWallet from '../../src/lib/useSuiWallet';
+import * as useSuiWallet from '../../src/hooks/useSuiWallet';
 
 describe('EthosWrapper', () => {
-  const signer = {}
+  const signer = {
+    getAddress: () => "ADDRESS"
+  }
 
   let receivedProvider
   let receivedSigner
@@ -44,10 +46,10 @@ describe('EthosWrapper', () => {
       )
     })
 
-    // expect(onWalletConnected.mock.calls.length).toBe(1)
-    // expect(receivedProvider.getSigner()).toBe(signer)
-    // expect(receivedSigner).toBe(signer)
-    // expect(ethosWrapper.toJSON()).toMatchSnapshot()
+    expect(onWalletConnected.mock.calls.length).toBe(1)
+    expect(receivedProvider.getSigner()).toBe(signer)
+    expect(receivedSigner).toBe(signer)
+    expect(ethosWrapper.toJSON()).toMatchSnapshot()
     expect(true).toBe(true)
   })
 

@@ -66,12 +66,10 @@ const getIframe = (show?: boolean) => {
             close()
             break;
           case 'ready':
-            console.log("readyToReceiveMessages!")
             iframe.setAttribute('readyToReceiveMessages', 'true')
             
             const messageStore = store.namespace('iframeMessages')
             const messages = messageStore('messages') || []
-            console.log("POSTING PENDING!!!", messages)
             for (const message of messages) {
               postIFrameMessage(message)
             }
