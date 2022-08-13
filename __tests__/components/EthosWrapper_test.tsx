@@ -63,9 +63,9 @@ describe('EthosWrapper', () => {
       network: 'sui'
     }
 
-    // Mock useSuiWallet so config will get initialized
-    // @ts-ignore
-    useSuiWallet.default = jest.fn().mockReturnValueOnce({ provider: 'any', signer: null })
+    // jest.spyOn(useSuiWallet as any, 'default').mockReturnValueOnce(() => {
+    //   return Promise.resolve({ provider: 'any', signer: null })
+    // })
     const initializeSpy = jest.spyOn(initialize, 'default')
 
     await act(async () => {

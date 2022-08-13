@@ -27,7 +27,6 @@ const login = async ({ email, provider, appId }: loginArgs) => {
         if (action !== 'login') return
         window.removeEventListener('message', loginEventListener)
 
-        console.log('LOGIN USER DATA', data)
         userStore('current', data)
         resolve(data)
       }
