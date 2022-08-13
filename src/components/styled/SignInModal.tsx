@@ -18,6 +18,7 @@ import { captchaSiteKey } from '../../lib/constants';
 import generateQRCode from '../../lib/generateQRCode'
 import listenForMobileConnection from '../../lib/listenForMobileConnection'
 import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
+import log from '../../lib/log'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -74,8 +75,10 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     const { connectionUrl } = await getMobileConnectionUrl();
     const _qrCodeUrl = await generateQRCode(connectionUrl)
     setQrCodeUrl(_qrCodeUrl)
-    await listenForMobileConnection();
-    onClose && onClose();
+    listenForMobileConnection(() => {
+      log("mobile", "Listening to mobile connection from SignInModal")
+      onClose && onClose();
+    });
   }
 
   const _connectSui = async () => {

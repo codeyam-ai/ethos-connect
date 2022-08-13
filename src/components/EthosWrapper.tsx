@@ -66,9 +66,11 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   }, [])
 
   useEffect(() => {
-    listenForMobileConnection().then(
+    log("mobile", "listening to mobile connection from EthosWrapper")
+    listenForMobileConnection(
       (mobileProviderAndSigner: any) => {
         log('EthosWrapper', 'Setting _onProviderSelected1')
+        log("mobile", "Setting provider and signer", mobileProviderAndSigner)
         _onProviderSelected(mobileProviderAndSigner, 'mobile')
       }
     )
