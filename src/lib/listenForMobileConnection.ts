@@ -8,7 +8,9 @@ const listenForMobileConnection = async (): Promise<any> => {
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data
         if (action !== 'connect') return
-        if (!data.address) return;
+        if (!data.address) {
+          resolve({ provider: {} })
+        };
         window.removeEventListener('message', connectionEventListener)
 
         const signer = {
