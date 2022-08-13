@@ -6,7 +6,7 @@ import {
 import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 const confirmBlockNumber = async (address: string, blockNumber: string) => {
   return new Promise(async (resolve) => {
@@ -96,7 +96,7 @@ const transact = async ({
   window.addEventListener('message', transactionEventListener)
 
   console.log("POST TRANSACTION", details)
-  postMessage({
+  postIFrameMessage({
     action: 'transact',
     data: { details },
   })

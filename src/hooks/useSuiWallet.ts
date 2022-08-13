@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import store from 'store2'
-import log from './log'
+import log from '../lib/log'
 
 export type SuiProviderAndSigner = {
   provider: any | null
@@ -41,7 +41,7 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     setProviderAndSigner({
       provider,
       signer,
-      context: null
+      contents: null
     })
   }
 
@@ -91,7 +91,7 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     packageObjectId: details.packageObjectId || details.address,
     module: details.module || details.moduleName,
     function: details.function || details.functionName,
-    typeArguments: [],
+    typeArguments: details.typeArguments || [],
     arguments: details.arguments || details.inputValues,
   })
 

@@ -3,11 +3,12 @@ import getProvider from '../lib/getProvider'
 
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
-import useSuiWallet from '../lib/useSuiWallet'
+import useSuiWallet from '../hooks/useSuiWallet'
 import log from '../lib/log'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'
+import useAccount from '../hooks/useAccount'
 
 export type ProviderAndSigner = {
   provider: any | null
@@ -25,6 +26,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   if (!ethosConfiguration.network) ethosConfiguration.network = 'sui';
   if (!ethosConfiguration.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz/';
 
+  const signerFound = useRef<boolean>(false)
   const methodsChecked = useRef<any>({
     'ethos': false,
     'mobile': false,
@@ -39,16 +41,30 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     contents: null
   })
   const suiProviderAndSigner = useSuiWallet()
+  const account = useAccount(providerAndSigner)
 
-  const _onProviderSelected = useCallback((providerAndSigner: ProviderAndSigner, type: string) => {
+  const _onProviderSelected = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
+    if (signerFound.current) return;
     log('EthosWrapper', '_onProviderSelected called with: ', type, providerAndSigner)
 
-    methodsChecked.current[type] = true;
-    if (Object.values(methodsChecked.current).includes(false)) return;
+    if (type) {
+      methodsChecked.current[type] = true;
+    }
+    
+    const allMethodsChecked = !Object.values(methodsChecked.current).includes(false)
+    if (!providerAndSigner.signer && !allMethodsChecked) return;
+    
+    if (providerAndSigner.signer) {
+      signerFound.current = true;
+    }
 
     setProviderAndSigner(providerAndSigner)
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, []);
+
+  useEffect(() => {
+    initialize(ethosConfiguration)
+  }, [])
 
   useEffect(() => {
     listenForMobileConnection().then(
@@ -66,8 +82,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     _onProviderSelected(suiProviderAndSigner, 'extension')
   }, [suiProviderAndSigner, _onProviderSelected])
 
-  useEffect(() => {
-    initialize(ethosConfiguration)
+  useEffect(() => { 
     const fetchEthosProvider = async () => {
       const ethosProvider = await getProvider()
       log('EthosWrapper', 'Setting _onProviderSelected3')
@@ -83,26 +98,13 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   }, [])
 
   useEffect(() => {
-    const listener = async (message: any) => {
-      if (message.origin === ethosConfiguration.walletAppUrl) {
-        const { action, data } = message.data
-        if (action === 'account') {
-          const { account } = data;
-          const address = await providerAndSigner.signer?.getAddress();
-          if (account && address && address === account.address) {
-            log('EthosWrapper', 'Setting _onProviderSelected4')
-            _onProviderSelected({
-              ...providerAndSigner,
-              contents: account.contents
-            }, 'ethos')
-          }
-        }
-      }
-    }
-    window.addEventListener('message', listener)
-
-    return () => window.removeEventListener('account', listener)
-  }, [providerAndSigner])
+    if (!account) return;
+    
+    setProviderAndSigner({
+      ...providerAndSigner,
+      contents: account.contents
+    })
+  }, [account])
 
   const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {

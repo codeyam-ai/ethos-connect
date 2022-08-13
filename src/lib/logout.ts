@@ -1,7 +1,7 @@
 import store from 'store2'
 import getConfiguration from './getConfiguration'
 import log from './log'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 const logout = async (wallet: boolean = false) => {
   const { walletAppUrl } = getConfiguration()
@@ -20,7 +20,7 @@ const logout = async (wallet: boolean = false) => {
       }
     })
 
-    postMessage({
+    postIFrameMessage({
       action: 'logout',
       data: { wallet },
     })

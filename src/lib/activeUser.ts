@@ -1,7 +1,7 @@
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 import log from './log'
-// import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 const activeUser = () => {
   log('activeUser', 'Calling Active User')
@@ -21,12 +21,10 @@ const activeUser = () => {
     }
     window.addEventListener('message', listener)
 
-    // Compiler isn't handling postMessage
     const message = { action: 'activeUser' }
-    const iframe = getIframe()
+    getIframe()
     log('activeUser", "Post message to the iframe', message)
-    iframe?.contentWindow?.postMessage(message, '*')
-    // postMessage(message)
+    postIFrameMessage(message)
   }
 
   return new Promise(resolver)

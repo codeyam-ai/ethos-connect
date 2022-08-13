@@ -4,7 +4,7 @@
 
 import store from 'store2'
 import { User } from '../../src/types/User'
-import * as postMessage from '../../src/lib/postMessage'
+import * as postIFrameMessage from '../../src/lib/postIFrameMessage'
 import login from '../../src/lib/login'
 
 describe('login', () => {
@@ -15,7 +15,7 @@ describe('login', () => {
   const wallet = '0x0'
   const expectedUser: User = { email, wallet }
 
-  const postMessageReturn = {
+  const postIFrameMessageReturn = {
     json: { user: expectedUser },
     status: 200,
   }
@@ -32,7 +32,7 @@ describe('login', () => {
         }
       })
     })
-    spyPostMessage = jest.spyOn(postMessage, 'default').mockImplementation(() => {})
+    spyPostMessage = jest.spyOn(postIFrameMessage, 'default').mockImplementation(() => {})
 
     actualUser = await login({ email, appId })
   })
