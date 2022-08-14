@@ -10,12 +10,12 @@ const listenForMobileConnection = async (onConnect: (providerAndSigner: Provider
       const { action, data } = message.data
       if (action !== 'connect') return
 
-      window.removeEventListener('message', connectionEventListener)
-
       if (!data.address) {
         onConnect({ provider: {}, signer: null, contents: null })
         return;
       };
+
+      window.removeEventListener('message', connectionEventListener)
       
       const signer = {
         getAddress: () => data.address
