@@ -20,7 +20,7 @@ const useConnect = () => {
   })
   const suiProviderAndSigner = useSuiWallet()
 
-  const selectProviderAndSigner = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
+  const checkProviderAndSigner = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
     if (signerFound.current) return;
     
     if (type) {
@@ -52,30 +52,34 @@ const useConnect = () => {
       (mobileProviderAndSigner: any) => {
         log('EthosWrapper', 'Setting _onProviderSelected1')
         log("mobile", "Setting provider and signer", mobileProviderAndSigner)
-        selectProviderAndSigner(mobileProviderAndSigner, 'mobile')
+        checkProviderAndSigner(mobileProviderAndSigner, 'mobile')
       }
     )
-  }, [selectProviderAndSigner])
+  }, [checkProviderAndSigner])
 
   useEffect(() => {
     if (!suiProviderAndSigner) return
 
-    selectProviderAndSigner(suiProviderAndSigner, 'extension')
-  }, [suiProviderAndSigner, selectProviderAndSigner])
+    checkProviderAndSigner(suiProviderAndSigner, 'extension')
+  }, [suiProviderAndSigner, checkProviderAndSigner])
 
   useEffect(() => { 
     const fetchEthosProvider = async () => {
-      const ethosProvider = await getProvider()
-      selectProviderAndSigner({
-        provider: ethosProvider,
-        signer: ethosProvider?.getSigner(),
-        contents: null
-      }, 
-      'ethos'
-    )}
-
+      const provider = await getProvider()
+      const signer = provider?.getSigner()
+      const contents = null;
+      checkProviderAndSigner(
+        {
+          provider,
+          signer,
+          contents
+        }, 
+        'ethos'
+      )
+    }
+    
     fetchEthosProvider()
-  }, [selectProviderAndSigner])
+  }, [checkProviderAndSigner])
 
   return { providerAndSigner, updateProviderAndSigner };
 }

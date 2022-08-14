@@ -1,4 +1,4 @@
-import { ProviderAndSigner } from 'components/EthosWrapper'
+import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import getConfiguration from './getConfiguration'
 import log from './log'
 
