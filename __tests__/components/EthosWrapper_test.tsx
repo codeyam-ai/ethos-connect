@@ -6,7 +6,6 @@ import * as getProvider from '../../src/lib/getProvider'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import * as initialize from '../../src/lib/initialize';
-import * as useSuiWallet from '../../src/hooks/useSuiWallet';
 
 describe('EthosWrapper', () => {
   const signer = {
@@ -46,11 +45,22 @@ describe('EthosWrapper', () => {
       )
     })
 
+    expect(ethosWrapper.toJSON()).toMatchSnapshot()
+  })
+
+  it('renders calls the onWalletConnected callback', async () => {
+    let ethosWrapper
+    await act(async () => {
+      ethosWrapper = create(
+        <EthosWrapper ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
+          test
+        </EthosWrapper>
+      )
+    })
+
     expect(onWalletConnected.mock.calls.length).toBe(1)
     expect(receivedProvider.getSigner()).toBe(signer)
     expect(receivedSigner).toBe(signer)
-    expect(ethosWrapper.toJSON()).toMatchSnapshot()
-    expect(true).toBe(true)
   })
 
   it('should initialize default configuration if no optional values are given', async () => {
@@ -63,9 +73,6 @@ describe('EthosWrapper', () => {
       network: 'sui'
     }
 
-    // jest.spyOn(useSuiWallet as any, 'default').mockReturnValueOnce(() => {
-    //   return Promise.resolve({ provider: 'any', signer: null })
-    // })
     const initializeSpy = jest.spyOn(initialize, 'default')
 
     await act(async () => {
