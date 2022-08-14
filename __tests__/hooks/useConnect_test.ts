@@ -11,49 +11,71 @@ const nullProviderAndSigner = {
   contents: null
 }
 
-const provider = {
+const emptyProvider = {
   getSigner: () => null
 }
 
 const providerNoSigner = {
   ...nullProviderAndSigner,
-  provider
+  provider: emptyProvider
+}
+
+const signer = {
+  getAddress: Promise.resolve("ADDRESS")
+}
+
+const providerWithSigner = {
+  getSigner: () => signer
+}
+
+const providerAndSigner = {
+  ...nullProviderAndSigner,
+  provider: providerWithSigner,
+  signer
 }
 
 describe('useConnect', () => {
-  it("should not set the provider until all methods have been checked", async () => {
+  let resolveProvider, onMobileConnect;
+
+  beforeEach(() => {
+    resolveProvider = null;
+    onMobileConnect = null;
+
     jest.spyOn(useSuiWallet, 'default').mockReturnValue(providerNoSigner)
 
-    let resolveProvider;
-    const providerPromise = new Promise((resolve, reject) => {
+    jest.spyOn(getProvider, 'default').mockReturnValue(new Promise((resolve, reject) => {
       resolveProvider = resolve;
-    });
-    jest.spyOn(getProvider, 'default').mockReturnValue(providerPromise)
+    }));
 
-    let onMobileConnect;
     jest.spyOn(listenForMobileConnection, 'default').mockImplementation(async (onConnect: any) => {
-      console.log("ONCONNECT", onConnect)
       onMobileConnect = onConnect;
     })
-
+  })
+  
+  it("should not set the provider until all methods have been checked", async () => {
     const { result } = renderHook(() => useConnect())
+
     expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
 
-    resolveProvider(provider)
-    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
-
-    const mobileConnectNoSigner = {
-      ...nullProviderAndSigner,
-      provider
-    }
     await act(async () => {
-      onMobileConnect(mobileConnectNoSigner)
+      resolveProvider(emptyProvider)
     })
-    
-    expect(result.current.providerAndSigner).toStrictEqual(mobileConnectNoSigner)
+    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
+
+    await act(async () => {
+      onMobileConnect(providerNoSigner)
+    })
+    expect(result.current.providerAndSigner).toStrictEqual(providerNoSigner)
   })
 
-  it.todo("should set the provider once a provider with a signer is found")
+  it("should set the provider once a provider with a signer is found", async () => {
+    const { result } = renderHook(() => useConnect())
+    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
+    await act(async () => {
+      resolveProvider(providerWithSigner)
+    })
+    expect(result.current.providerAndSigner).toStrictEqual(providerAndSigner)
+  })
 
   it.todo("should update the provider externally")
 })
