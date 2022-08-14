@@ -34,6 +34,17 @@ const providerAndSigner = {
   signer
 }
 
+const contents = {
+  balance: 300,
+  nfts: []
+}
+
+const providerAndSignerAndContents = {
+  provider: providerWithSigner,
+  signer,
+  contents
+}
+
 describe('useConnect', () => {
   let resolveProvider, onMobileConnect;
 
@@ -77,5 +88,17 @@ describe('useConnect', () => {
     expect(result.current.providerAndSigner).toStrictEqual(providerAndSigner)
   })
 
-  it.todo("should update the provider externally")
+  it("should update the provider externally", async () => {
+    const { result } = renderHook(() => useConnect())
+    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
+    await act(async () => {
+      resolveProvider(providerWithSigner)
+    })
+    expect(result.current.providerAndSigner).toStrictEqual(providerAndSigner)
+
+    await act(async () => {
+      result.current.updateProviderAndSigner({ contents })
+    })
+    expect(result.current.providerAndSigner).toStrictEqual(providerAndSignerAndContents)
+  })
 })
