@@ -1,6 +1,6 @@
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 type signProps = {
   signData: any
@@ -30,7 +30,7 @@ const sign = async ({ signData, onComplete }: signProps) => {
 
   window.addEventListener('message', signEventListener)
 
-  postMessage({
+  postIFrameMessage({
     action: 'sign',
     data: { signData }
   })

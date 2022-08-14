@@ -1,6 +1,6 @@
 {
   "name": "ethos-wallet-beta",
-  "version": "0.0.130",
+  "version": "0.0.138",
   "description": "Beta version of the Ethos Wallet NPM Package",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -46,6 +46,7 @@
     "@swc/jest": "^0.2.21",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^28.1.0",
     "@types/qrcode": "^1.4.2",
     "@types/react": "^17.0.43",

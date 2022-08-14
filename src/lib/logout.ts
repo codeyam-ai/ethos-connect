@@ -1,7 +1,7 @@
 import store from 'store2'
 import getConfiguration from './getConfiguration'
 import log from './log'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 const logout = async (wallet: boolean = false) => {
   const { walletAppUrl } = getConfiguration()
@@ -9,7 +9,7 @@ const logout = async (wallet: boolean = false) => {
   store.namespace('auth')('access_token', null)
 
   return new Promise((resolve) => {
-    window.addEventListener('message', (message) => {
+    const listener = (message: any) => {
       log('logout', 'Message origin: ', message.origin, walletAppUrl, message)
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data
@@ -18,9 +18,12 @@ const logout = async (wallet: boolean = false) => {
           resolve(data?.user)
         }
       }
-    })
+    }
 
-    postMessage({
+    window.removeEventListener("message", listener)
+    window.addEventListener('message', listener)
+
+    postIFrameMessage({
       action: 'logout',
       data: { wallet },
     })

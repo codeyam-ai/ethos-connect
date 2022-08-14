@@ -18,6 +18,7 @@ import { captchaSiteKey } from '../../lib/constants';
 import generateQRCode from '../../lib/generateQRCode'
 import listenForMobileConnection from '../../lib/listenForMobileConnection'
 import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
+import log from '../../lib/log'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -26,7 +27,7 @@ export type SignInModalProps = {
 }
 
 const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) => {
-  const [showMissingMessage, setShowMissingMessage] = useState<boolean>(false)
+  const [missingMessage, setMissingMessage] = useState<any|null>(null)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const [emailSent, setEmailSent] = useState(false);
@@ -63,27 +64,47 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }
 
   const connectEthos = () => {
-    setShowMissingMessage(false)
+    setMissingMessage(null)
     setWalletOption('ethos')
-    setShowMissingMessage(true)
+    setMissingMessage(<>
+      Please apply for the <a
+        href={`${walletAppUrl}/extensions`}
+        style={selfCustodialLink()}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        waitlist
+      </a>.
+    </>)
   }
 
   const connectEthosMobile = async () => {
-    setShowMissingMessage(false)
+    setMissingMessage(null)
     setWalletOption('ethosMobile')
     const { connectionUrl } = await getMobileConnectionUrl();
     const _qrCodeUrl = await generateQRCode(connectionUrl)
     setQrCodeUrl(_qrCodeUrl)
-    await listenForMobileConnection();
-    onClose && onClose();
+    listenForMobileConnection(() => {
+      log("mobile", "Listening to mobile connection from SignInModal")
+      onClose && onClose();
+    });
   }
 
   const _connectSui = async () => {
-    setShowMissingMessage(false)
+    setMissingMessage(null)
     setWalletOption('sui')
     const connected = await connectSui()
     if (!connected) {
-      setShowMissingMessage(true)
+      setMissingMessage(<>
+        Please install the <a
+          href="https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
+          style={selfCustodialLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          chrome extension
+        </a>.
+      </>)
     } else {
       onClose && onClose()
     }
@@ -91,7 +112,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }
 
   const connectEmail = () => {
-    setShowMissingMessage(false)
+    setMissingMessage(null)
     setQrCodeUrl(null)
     setWalletOption('email')
   }
@@ -176,12 +197,12 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                         <div style={walletOptionStyle(walletOption === 'sui')} onClick={_connectSui}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('sui')}
-                            Sui Test Wallet
+                            Sui Wallet
                           </button>
                         </div>
-                        {showMissingMessage && (
+                        {missingMessage && (
                           <div style={connectorWarning()}>
-                            You do not have the necessary wallet extension installed.
+                            {missingMessage}
                           </div>
                         )}
                       </div>

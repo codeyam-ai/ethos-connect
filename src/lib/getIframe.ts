@@ -1,6 +1,7 @@
 import store from 'store2'
 import getConfiguration from './getConfiguration'
 import log from './log'
+import postIFrameMessage from './postIFrameMessage'
 
 const getIframe = (show?: boolean) => {
   const { appId } = getConfiguration()
@@ -57,8 +58,24 @@ const getIframe = (show?: boolean) => {
 
     window.addEventListener('message', (message) => {
       if (message.origin === walletAppUrl) {
-        if (message.data.close) {
-          close()
+
+        const { action } = message.data;
+
+        switch (action) {
+          case 'close':
+            close()
+            break;
+          case 'ready':
+            iframe.setAttribute('readyToReceiveMessages', 'true')
+            
+            const messageStore = store.namespace('iframeMessages')
+            const messages = messageStore('messages') || []
+            for (const message of messages) {
+              postIFrameMessage(message)
+            }
+            messageStore('messages', null)
+
+            break;
         }
       }
     })

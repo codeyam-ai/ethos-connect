@@ -1,5 +1,5 @@
 import getConfiguration from './getConfiguration'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 type DripSuiProps = {
   address: string
@@ -22,7 +22,7 @@ const dripSui = async ({ address }: DripSuiProps) => {
 
     window.addEventListener('message', dripEventListener)
 
-    postMessage({
+    postIFrameMessage({
       action: 'drip',
       data: { address },
     })

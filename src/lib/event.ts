@@ -1,4 +1,4 @@
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 type EventProps = {
   action: string,
@@ -8,7 +8,7 @@ type EventProps = {
 }
 
 const event = async (eventProps: EventProps) => { 
-  postMessage({
+  postIFrameMessage({
     action: 'event',
     data: eventProps,
   })

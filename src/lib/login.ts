@@ -1,7 +1,7 @@
 import store from 'store2'
 import { User } from 'types/User'
 import getConfiguration from './getConfiguration'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 export type loginArgs = {
   email?: string, 
@@ -27,7 +27,6 @@ const login = async ({ email, provider, appId }: loginArgs) => {
         if (action !== 'login') return
         window.removeEventListener('message', loginEventListener)
 
-        console.log('LOGIN USER DATA', data)
         userStore('current', data)
         resolve(data)
       }
@@ -35,7 +34,7 @@ const login = async ({ email, provider, appId }: loginArgs) => {
 
     window.addEventListener('message', loginEventListener)
 
-    postMessage({
+    postIFrameMessage({
       action: 'login',
       data: {
         email,

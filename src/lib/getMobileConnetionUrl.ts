@@ -1,5 +1,5 @@
 import getConfiguration from './getConfiguration'
-import postMessage from './postMessage'
+import postIFrameMessage from './postIFrameMessage'
 
 const getMobileConnectionUrl = async (): Promise<any> => {
   const { walletAppUrl } = getConfiguration()
@@ -16,7 +16,7 @@ const getMobileConnectionUrl = async (): Promise<any> => {
 
     window.addEventListener('message', connectionEventListener)
 
-    postMessage({
+    postIFrameMessage({
       action: 'connect'
     })
   })
