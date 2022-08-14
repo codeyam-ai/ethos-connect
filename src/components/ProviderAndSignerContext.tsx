@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ProviderAndSigner } from './EthosWrapper';
+import { ProviderAndSigner } from '../types/ProviderAndSigner';
 
 const defaultProviderAndSigner: ProviderAndSigner|null = {
   provider: null,
