@@ -103,7 +103,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
           rel="noopener noreferrer"
         >
           chrome extension
-        </a>.
+        </a> and reload this page once installed.
       </>)
     } else {
       onClose && onClose()
@@ -197,7 +197,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                         <div style={walletOptionStyle(walletOption === 'sui')} onClick={_connectSui}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('sui')}
-                            Sui Wallet
+                            Sui Test Wallet
                           </button>
                         </div>
                         {missingMessage && (
