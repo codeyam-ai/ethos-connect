@@ -35,7 +35,7 @@ describe('SignInModal', () => {
   it('shows a warning if you click the Ethos wallet button', () => {
     const warningCount = (root: any) =>
       root.findAllByProps({
-        children: 'You do not have the necessary wallet extension installed.',
+        className: 'missing-message',
       }).length
 
     const signInModal = create(<SignInModal isOpen={true} />)

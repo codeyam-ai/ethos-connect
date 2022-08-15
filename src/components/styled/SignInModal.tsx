@@ -66,7 +66,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const connectEthos = () => {
     setMissingMessage(null)
     setWalletOption('ethos')
-    setMissingMessage(<>
+    setMissingMessage(<div className='missing-message'>
       Please apply for the <a
         href={`${walletAppUrl}/extensions`}
         style={selfCustodialLink()}
@@ -75,7 +75,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
       >
         waitlist
       </a>.
-    </>)
+    </div>)
   }
 
   const connectEthosMobile = async () => {
@@ -95,7 +95,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     setWalletOption('sui')
     const connected = await connectSui()
     if (!connected) {
-      setMissingMessage(<>
+      setMissingMessage(<div className='missing-message'>
         Please install the <a
           href="https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
           style={selfCustodialLink()}
@@ -104,7 +104,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
         >
           chrome extension
         </a> and reload this page once installed.
-      </>)
+      </div>)
     } else {
       onClose && onClose()
     }

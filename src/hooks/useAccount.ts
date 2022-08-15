@@ -20,7 +20,6 @@ const useAccount = (providerAndSigner: any) => {
           const { action, data } = message.data
           if (action === 'account') {
             const { account } = data;
-            console.log("ACOCUNT UPDATE RECEIVED", account)
             if (account && address && address === account.address) {
               setAccount(account)
             }
