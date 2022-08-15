@@ -21,6 +21,7 @@ const useConnect = () => {
   const suiProviderAndSigner = useSuiWallet()
 
   const checkProviderAndSigner = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
+    log("useConnect", "trying to set providerAndSigner", type, providerAndSigner, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
     
     if (type) {
