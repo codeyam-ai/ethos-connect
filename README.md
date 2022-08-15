@@ -24,7 +24,29 @@ yarn link react-dom
 yarn dev
 ```
 
-If something messes up, you can reset all your linked packages by running (mac only):
+## To reset local
+
+### To reset your UI (consumer of the NPM package)
+
+```
+yarn unlink ethos-wallet-beta
+yarn unlink react
+yarn unlink react-dom
+yarn add ethos-wallet-beta react react-dom
+```
+
+### To reset and unlink in the NPM package repo
+
+```
+yarn unlink
+cd node_modules/react
+yarn unlink
+cd ../../node_modules/react-dom
+yarn unlink
+cd ../..
+```
+
+You can also reset all your linked packages by running (mac only):
 
 ```
 rm -rf cd ~/.config/yarn/*
@@ -34,15 +56,6 @@ Or, for windows powershell:
 
 ```
 Remove-Item C:\Users\<USERNAME>\AppData\Local\Yarn\Data\link\* -Recurse -Force
-```
-
-To reset your UI back to normal, simply run:
-
-```
-yarn unlink ethos-wallet-beta
-yarn unlink react
-yarn unlink react-dom
-yarn add ethos-wallet-beta react react-dom
 ```
 
 ## hCaptcha
