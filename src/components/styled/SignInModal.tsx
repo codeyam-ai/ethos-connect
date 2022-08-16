@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import Ethos from '../svg/Ethos'
 import Google from '../svg/Google'
@@ -27,6 +27,7 @@ export type SignInModalProps = {
 }
 
 const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) => {
+  const [loading, setLoading] = useState(true);
   const [missingMessage, setMissingMessage] = useState<any|null>(null)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
@@ -130,6 +131,14 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     }
   }
 
+  useEffect(() => {
+    setLoading(false)
+  }, []);
+
+  if (loading) {
+    return <></>
+  }
+  
   return (
     <>
       <div style={dialogStyle(isOpen)} role="dialog">
