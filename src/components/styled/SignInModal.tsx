@@ -28,13 +28,13 @@ export type SignInModalProps = {
 
 const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) => {
   const [loading, setLoading] = useState(true);
-  const [missingMessage, setMissingMessage] = useState<any|null>(null)
+  const [missingMessage, setMissingMessage] = useState<any | null>(null)
   const [signingIn, setSigningIn] = useState(false)
   const [email, setEmail] = useState('')
   const [emailSent, setEmailSent] = useState(false);
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
-  const captchaRef = useRef<any|null>(null);
+  const captchaRef = useRef<any | null>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [walletOption, setWalletOption] = useState<string>("email")
 
@@ -42,7 +42,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     setSigningIn(true)
     if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
       try {
-        await captchaRef.current.execute(); 
+        await captchaRef.current.execute();
       } catch (e) {
         console.log("CAPTCHA ERROR", e);
         sendEmail();
@@ -135,20 +135,20 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     setLoading(false)
   }, []);
 
-  if (loading) {
-    return <></>
-  }
-  
   return (
     <>
       <div style={dialogStyle(isOpen)} role="dialog">
         <div style={backdropStyle()} onClick={() => console.log('clicked')} />
-        <ReCAPTCHA
-          sitekey={captchaSiteKey}
-          ref={captchaRef}
-          size='invisible'
-          onChange={sendEmail}
-        />
+        {
+          !loading && (
+            <ReCAPTCHA
+              sitekey={captchaSiteKey}
+              ref={captchaRef}
+              size='invisible'
+              onChange={sendEmail}
+            />
+          )
+        }
 
         <div style={modalOuterWrapperStyle()}>
           <div style={modalInnerWrapperStyle(width)}>

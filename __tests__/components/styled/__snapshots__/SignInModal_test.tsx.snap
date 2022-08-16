@@ -24,7 +24,6 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
       }
     }
   />
-  <div />
   <div
     style={
       Object {
