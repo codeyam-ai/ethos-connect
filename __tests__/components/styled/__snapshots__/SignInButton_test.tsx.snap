@@ -25,7 +25,6 @@ Array [
         }
       }
     />
-    <div />
     <div
       style={
         Object {
@@ -298,7 +297,7 @@ Array [
                       }
                     />
                   </svg>
-                  Sui Test Wallet
+                  Sui Wallet
                 </button>
               </div>
             </div>

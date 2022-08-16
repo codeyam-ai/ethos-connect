@@ -1,5 +1,6 @@
 import React from 'react'
-import { create, act } from 'react-test-renderer'
+import { create, act, ReactTestInstance } from 'react-test-renderer'
+import { waitFor } from '@testing-library/react'
 
 import SignInModal from '../../../src/components/styled/SignInModal'
 import Ethos from '../../../src/components/svg/Ethos'
@@ -35,7 +36,7 @@ describe('SignInModal', () => {
   it('shows a warning if you click the Ethos wallet button', () => {
     const warningCount = (root: any) =>
       root.findAllByProps({
-        children: 'You do not have the necessary wallet extension installed.',
+        id: 'ethos-extension-missing-message',
       }).length
 
     const signInModal = create(<SignInModal isOpen={true} />)
@@ -45,7 +46,7 @@ describe('SignInModal', () => {
 
     const ethosWalletButton = root.findAllByType(Ethos)
     act(() => {
-      ethosWalletButton[0].parent.parent.props.onClick()
+      ethosWalletButton[0]?.parent?.parent?.props.onClick()
     })
     expect(warningCount(root)).toBe(1)
   })
@@ -67,7 +68,10 @@ describe('SignInModal', () => {
     const root = signInModal.root
     const emailInput = root.findByProps({ type: 'email' })
     const emailForm = emailInput.parent
-    const captcha = root.findByProps({ size: 'invisible' })
+    let captcha: ReactTestInstance
+    await waitFor(() => {
+      captcha = root.findByProps({ size: 'invisible' })
+    });
 
     act(() => {
       emailInput.props.onChange({ target: { value: testEmail } })
@@ -76,20 +80,22 @@ describe('SignInModal', () => {
     await act(async () => {
       // Pass captcha
       captcha.props.onChange();
-      emailForm.props.onSubmit()
+      emailForm?.props.onSubmit()
     })
 
     expect(emailProvided).toBe(testEmail)
   })
 
-  it('should render captcha as invisible', () => {
+  it('should render captcha as invisible', async () => {
     const signInModal = create(
       <SignInModal isOpen={true} onClose={() => null} />
     )
 
     const root = signInModal.root
-    const captcha = root.findByProps({ size: 'invisible' })
-
-    expect(captcha).toBeTruthy();
+    let captcha: ReactTestInstance
+    await waitFor(() => {
+      captcha = root.findByProps({ size: 'invisible' })
+      expect(captcha).toBeTruthy();
+    });
   });
 })
