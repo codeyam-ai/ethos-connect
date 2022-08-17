@@ -7,6 +7,7 @@ import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
 import getIframe from './getIframe'
 import postIFrameMessage from './postIFrameMessage'
+import log from './log'
 
 const confirmBlockNumber = async (address: string, blockNumber: string) => {
   return new Promise(async (resolve) => {
@@ -30,7 +31,7 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
   })
 }
 
-type transactProps = {
+type transactArgs = {
   signer: any
   details:
     | SuiCoinTransferTransaction
@@ -51,8 +52,8 @@ const transact = async ({
   onComplete,
   onConfirmed,
   onCanceled,
-}: transactProps) => {
-  console.log("TRANSACT", signer, details)
+}: transactArgs) => {
+  log("transact", "Starting transaction", signer, details)
   if (signer.extension) {
     const response = signer.transact(details)
     onComplete && onComplete(response)
@@ -95,7 +96,7 @@ const transact = async ({
 
   window.addEventListener('message', transactionEventListener)
 
-  console.log("POST TRANSACTION", details)
+  log("transact", "Posting transaction", signer, details)
   postIFrameMessage({
     action: 'transact',
     data: { details },

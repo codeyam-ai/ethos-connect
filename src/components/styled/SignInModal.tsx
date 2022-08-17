@@ -67,7 +67,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const connectEthos = () => {
     setMissingMessage(null)
     setWalletOption('ethos')
-    setMissingMessage(<div id='ethos-extension-missing-message'>
+    setMissingMessage(<div className='missing-message'>
       Please apply for the <a
         href={`${walletAppUrl}/extensions`}
         style={selfCustodialLink()}
@@ -96,7 +96,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     setWalletOption('sui')
     const connected = await connectSui()
     if (!connected) {
-      setMissingMessage(<>
+      setMissingMessage(<div className='missing-message'>
         Please install the <a
           href="https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
           style={selfCustodialLink()}
@@ -104,8 +104,8 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
           rel="noopener noreferrer"
         >
           chrome extension
-        </a>.
-      </>)
+        </a> and reload this page once installed.
+      </div>)
     } else {
       onClose && onClose()
     }
@@ -206,7 +206,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                         <div style={walletOptionStyle(walletOption === 'sui')} onClick={_connectSui}>
                           <button style={walletOptionButtonStyle()}>
                             {logo('sui')}
-                            Sui Wallet
+                            Sui Test Wallet
                           </button>
                         </div>
                         {missingMessage && (

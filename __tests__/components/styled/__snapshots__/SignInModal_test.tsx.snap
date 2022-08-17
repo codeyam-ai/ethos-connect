@@ -295,7 +295,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
                     }
                   />
                 </svg>
-                Sui Wallet
+                Sui Test Wallet
               </button>
             </div>
           </div>
@@ -699,7 +699,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                     }
                   />
                 </svg>
-                Sui Wallet
+                Sui Test Wallet
               </button>
             </div>
           </div>

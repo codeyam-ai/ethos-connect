@@ -21,6 +21,7 @@ const useConnect = () => {
   const suiProviderAndSigner = useSuiWallet()
 
   const checkProviderAndSigner = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
+    log("useConnect", "trying to set providerAndSigner", type, providerAndSigner, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
     
     if (type) {
@@ -34,10 +35,12 @@ const useConnect = () => {
       signerFound.current = true;
     }
 
+    log("useConnect", "final setting providerAndSigner", providerAndSigner)
     setProviderAndSigner(providerAndSigner)
   }, []);
 
   const updateProviderAndSigner = useCallback((updates) => {
+    log("useConnect", "updateProviderAndSigner", updates)
     setProviderAndSigner(
       (prev: ProviderAndSigner) => ({
         ...prev,
@@ -50,7 +53,7 @@ const useConnect = () => {
     log("mobile", "listening to mobile connection from EthosWrapper")
     listenForMobileConnection(
       (mobileProviderAndSigner: any) => {
-        log('EthosWrapper', 'Setting _onProviderSelected1')
+        log('useConnect', 'Setting providerAndSigner mobile', mobileProviderAndSigner)
         log("mobile", "Setting provider and signer", mobileProviderAndSigner)
         checkProviderAndSigner(mobileProviderAndSigner, 'mobile')
       }
@@ -60,6 +63,7 @@ const useConnect = () => {
   useEffect(() => {
     if (!suiProviderAndSigner) return
 
+    log('useConnect', 'Setting providerAndSigner extension', suiProviderAndSigner)
     checkProviderAndSigner(suiProviderAndSigner, 'extension')
   }, [suiProviderAndSigner, checkProviderAndSigner])
 
@@ -68,6 +72,7 @@ const useConnect = () => {
       const provider = await getProvider()
       const signer = provider?.getSigner()
       const contents = null;
+      log('useConnect', 'Setting providerAndSigner ethos', provider, signer, contents)
       checkProviderAndSigner(
         {
           provider,

@@ -7,6 +7,7 @@ import login from './lib/login'
 import logout from './lib/logout'
 import sign from './lib/sign'
 import transact from './lib/transact'
+import transfer from './lib/transfer'
 
 import getWalletBalance from './lib/getWalletBalance'
 import getWalletNfts from './lib/getWalletNfts'
@@ -30,6 +31,7 @@ const ethos = {
   logout,
   sign,
   transact,
+  transfer,
   getWalletBalance,
   getWalletNfts,
   getWalletContents,

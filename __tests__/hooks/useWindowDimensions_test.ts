@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 import useWindowDimensions from "../../src/hooks/useWindowDimensions";
 
 describe('useWindowDimensions hook', () => {
@@ -10,8 +10,10 @@ describe('useWindowDimensions hook', () => {
         global.innerWidth = expectedWidth
         global.innerHeight = expectedHeight
 
-        global.dispatchEvent(new Event('resize'));
-
+        act(() => {
+          global.dispatchEvent(new Event('resize'));
+        })
+        
         expect(result.current.width).toBe(expectedWidth)
         expect(result.current.height).toBe(expectedHeight)
     });
