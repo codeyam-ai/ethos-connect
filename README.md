@@ -58,11 +58,6 @@ Or, for windows powershell:
 Remove-Item C:\Users\<USERNAME>\AppData\Local\Yarn\Data\link\* -Recurse -Force
 ```
 
-## hCaptcha
-Test the captcha locally by following this guide: https://docs.hcaptcha.com/#local-development
-Then go to http://test.mydomain.com:3000/
-I don't think this works well with nextjs - better to test with the 2048 game.
-
 # Publishing
 
 When you're ready to publish your changes, update the `package.json` file with a new version number following [Semantic Versioning guidelines](https://zellwk.com/blog/semantic-versioning/). Then run:

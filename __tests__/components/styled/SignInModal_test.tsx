@@ -46,7 +46,7 @@ describe('SignInModal', () => {
 
     const ethosWalletButton = root.findAllByType(Ethos)
     act(() => {
-      ethosWalletButton[0]?.parent?.parent?.props.onClick()
+      ethosWalletButton[1]?.parent?.parent?.props.onClick()
     })
     expect(warningCount(root)).toBe(1)
   })

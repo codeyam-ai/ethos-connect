@@ -8,9 +8,9 @@ import Loader from '../svg/Loader'
 import Sui from '../svg/Sui'
 import FallbackLogo from '../svg/FallbackLogo'
 import CheckMark from '../svg/CheckMark'
+import NoticeIcon from '../svg/NoticeIcon'
 import getConfiguration from '../../lib/getConfiguration'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
-import { Breakpoints } from '../../enums/Breakpoints'
 import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
 import ReCAPTCHA from "react-google-recaptcha";
@@ -19,6 +19,7 @@ import generateQRCode from '../../lib/generateQRCode'
 import listenForMobileConnection from '../../lib/listenForMobileConnection'
 import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
 import log from '../../lib/log'
+import * as styles from './signInModalStyles';
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -35,7 +36,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const { width } = useWindowDimensions()
   const { appId, walletAppUrl } = getConfiguration()
   const captchaRef = useRef<any | null>(null);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined);
   const [walletOption, setWalletOption] = useState<string>("email")
 
   const onSubmit = async () => {
@@ -67,15 +68,19 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const connectEthos = () => {
     setMissingMessage(null)
     setWalletOption('ethos')
-    setMissingMessage(<div className='missing-message'>
-      Please apply for the <a
-        href={`${walletAppUrl}/extensions`}
-        style={selfCustodialLink()}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        waitlist
-      </a>.
+    setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
+      <NoticeIcon />
+      <span>
+        <a
+          href={`${walletAppUrl}/extensions`}
+          style={styles.selfCustodialLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Join the waitlist
+        </a>
+        &nbsp;for early access to the Ethos Wallet extension.
+      </span>
     </div>)
   }
 
@@ -96,15 +101,20 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     setWalletOption('sui')
     const connected = await connectSui()
     if (!connected) {
-      setMissingMessage(<div className='missing-message'>
-        Please install the <a
-          href="https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
-          style={selfCustodialLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          chrome extension
-        </a> and reload this page once installed.
+      setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
+        <NoticeIcon />
+        <span>
+          Install the&nbsp;
+          <a
+            href={`https://docs.sui.io/explore/wallet-browser`}
+            style={styles.selfCustodialLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Sui Wallet extension
+          </a>
+          &nbsp;to connect.
+        </span>
       </div>)
     } else {
       onClose && onClose()
@@ -114,16 +124,16 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
 
   const connectEmail = () => {
     setMissingMessage(null)
-    setQrCodeUrl(null)
+    setQrCodeUrl(undefined)
     setWalletOption('email')
   }
 
   const logo = (connectorId: string) => {
     switch (connectorId) {
       case 'ethos':
-        return <Ethos width={17} />
+        return <Ethos width={17} color='#5B5D5F' />
       case 'sui':
-        return <Sui width={15} />
+        return <Sui width={15} color='#5B5D5F' />
       case 'email':
         return <Email width={21} />
       default:
@@ -137,8 +147,8 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
 
   return (
     <>
-      <div style={dialogStyle(isOpen)} role="dialog">
-        <div style={backdropStyle()} onClick={() => console.log('clicked')} />
+      <div style={styles.dialog(isOpen)} role="dialog">
+        <div style={styles.backdrop()} onClick={() => console.log('clicked')} />
         {
           !loading && (
             <ReCAPTCHA
@@ -150,20 +160,20 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
           )
         }
 
-        <div style={modalOuterWrapperStyle()}>
-          <div style={modalInnerWrapperStyle(width)}>
-            <div style={dialogPanelStyle(width, emailSent)}>
+        <div style={styles.modalOuterWrapper()}>
+          <div style={styles.modalInnerWrapper(width)}>
+            <div style={styles.dialogPanel(width)}>
               {
                 emailSent ? (
                   <div style={{ textAlign: 'center', margin: '24px' }}>
-                    <div style={checkMarkCircleStyle()}>
+                    <div style={styles.checkMarkCircleStyle()}>
                       <CheckMark color='#16a34a' />
                     </div>
                     <br />
-                    <h3 style={registrationHeaderStyle()}>
+                    <h3 style={styles.registrationHeaderStyle()}>
                       Check your email
                     </h3>
-                    <div style={secondaryTextStyle()}>
+                    <div style={styles.secondaryText()}>
                       <p style={{ padding: '12px' }}>
                         An email has been sent to you with a link to login.
                       </p>
@@ -177,128 +187,216 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                   </div>
                 ) : (
                   <>
-                    <div style={headerStyle()}>
-                      <h3 style={titleStyle()}>Sign Up or Log In</h3>
-                      <div style={closeStyle()} onClick={onClose}>
+                    <div style={{ height: '36px' }}>
+                      <span style={styles.closeStyle()} onClick={onClose}>
                         &#x2715;
-                      </div>
+                      </span>
                     </div>
-                    <div style={mainContentStyle(width)}>
-                      <div style={walletOptionsStyle(width)}>
-                        <div style={walletOptionStyle(walletOption === 'email')} onClick={connectEmail}>
-                          <button style={walletOptionButtonStyle()}>
-                            {logo('email')}
-                            Email or Social Login
-                          </button>
-                        </div>
-                        <div style={walletOptionStyle(walletOption === 'ethos')} onClick={connectEthos}>
-                          <button style={walletOptionButtonStyle()}>
-                            {logo('ethos')}
+                    <div style={styles.modalContent(width)}>
+                      <span style={styles.secondaryHeaderText()}>
+                        Sign in to
+                      </span>
+                      <h2>
+                        <span style={{ display: 'inline-flex' }}>
+                          <Ethos width={20} />
+                          <span style={styles.ethosWalletTitleText()}>
                             Ethos Wallet
-                          </button>
+                          </span>
+                        </span>
+                      </h2>
+                      {signingIn ? (
+                        <div style={styles.loaderStyle()}>
+                          <Loader width={50} />
                         </div>
-                        <div style={walletOptionStyle(walletOption === 'ethosMobile')} onClick={connectEthosMobile}>
-                          <button style={walletOptionButtonStyle()}>
-                            {logo('ethos')}
-                            Ethos Wallet Mobile
-                          </button>
-                        </div>
-                        <div style={walletOptionStyle(walletOption === 'sui')} onClick={_connectSui}>
-                          <button style={walletOptionButtonStyle()}>
-                            {logo('sui')}
-                            Sui Test Wallet
-                          </button>
-                        </div>
-                        {missingMessage && (
-                          <div style={connectorWarning()}>
-                            {missingMessage}
+                      ) : (
+                        <>
+                          <div style={{ marginTop: '16px' }}>
+                            <span style={styles.signInOptionSubtitleText()}>
+                              Sign in with your email
+                            </span>
                           </div>
-                        )}
-                      </div>
-                      <div style={registrationStyle(width)}>
-                        {qrCodeUrl ? (
-                          <div style={qrCodeStyle()}>
-                            <h3 style={centeredRegistrationHeaderStyle()}>
-                              Connect Mobile Wallet
-                            </h3>
-                            <p style={subheaderStyle()}>
-                              Scan the QR code with a mobile device.
-                            </p>
-                            <div>
-                              <img src={qrCodeUrl} />
+                          <form onSubmit={onSubmit}>
+                            <input
+                              style={styles.emailInput()}
+                              type="email"
+                              placeholder="Email address"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <button style={styles.signInButton(width)} type="submit">
+                              Sign In
+                            </button>
+                          </form>
+                          <div style={{ margin: '16px 0 16px 0' }}>
+                            <span style={styles.secondaryHeaderText()}>
+                              or
+                            </span>
+                          </div>
+                          <span style={styles.signInOptionSubtitleText()}>
+                            Connect an existing wallet
+                          </span>
+                          {missingMessage && (
+                            <div style={styles.connectorWarning()}>
+                              {missingMessage}
                             </div>
+                          )}
+                          <div style={styles.walletOptionContainer(width)}>
+                            <button
+                              style={styles.walletOptionButton(width)}
+                              onClick={connectEthos}
+                            >
+                              <span style={{ display: 'inline-flex' }}>
+                                {logo('ethos')}
+                                <span style={styles.walletOptionText()}>
+                                  Ethos Wallet
+                                </span>
+                              </span>
+                            </button>
+                            <button
+                              style={styles.walletOptionButton(width)}
+                              onClick={_connectSui}
+                            >
+                              <span style={{ display: 'inline-flex' }}>
+                                {logo('sui')}
+                                <span style={styles.walletOptionText()}>
+                                  Sui Wallet
+                                </span>
+                              </span>
+                            </button>
                           </div>
-                        ) : (
-                          <>
-                            {(socialLogin || []).length > 0 && (
-                              <div>
-                                <h3 style={registrationHeaderStyle()}>
-                                  Sign up or log in with:
-                                </h3>
-                                <div style={socialLoginButtonsStyle()}>
-                                  {socialLogin.indexOf('google') > -1 && (
-                                    <div style={socialLoginButtonStyle()} onClick={() => loginWithSocial('google')}>
-                                      <Google width={36} />
-                                    </div>
-                                  )}
-                                  {socialLogin.indexOf('github') > -1 && (
-                                    <div style={socialLoginButtonStyle()} onClick={() => loginWithSocial('github')}>
-                                      <Github width={36} />
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            )}
-                            <h3 style={registrationHeaderStyle()}>
-                              Sign up or log in with a link
-                            </h3>
-                            {signingIn ? (
-                              <div style={loaderStyle()}>
-                                <Loader width={50} />
-                              </div>
-                            ) : (
-                              <>
-                                <form onSubmit={onSubmit}>
-                                  <input
-                                    style={inputStyle()}
-                                    type="email"
-                                    placeholder="Email address"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                  />
-                                  <button style={buttonStyle(width)} type="submit">
-                                    Send
-                                  </button>
-                                </form>
-                                <div style={selfCustodialSection()}>
-                                  Advanced:&nbsp;
-                                  <a
-                                    href={`${walletAppUrl}/extensions`}
-                                    style={selfCustodialLink()}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Chrome Extension
-                                  </a>
-                                  &nbsp;or&nbsp;
-                                  <a
-                                    href={`${walletAppUrl}/mobile`}
-                                    style={selfCustodialLink()}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Mobile App
-                                  </a>
-                                </div>
-                              </>
-                            )}
-                          </>
-                        )}
-                      </div>
+                          {/* <button style={styles.learnMoreButton(width)}>
+                            Learn more →
+                          </button> */}
+                        </>
+                      )
+                      }
                     </div>
                   </>
                 )
               }
+              {false && (
+                <>
+                  <div style={styles.headerStyle()}>
+                    <h3 style={styles.titleStyle()}>Sign Up or Log In!!!</h3>
+                    <div style={styles.closeStyle()} onClick={onClose}>
+                      &#x2715;
+                    </div>
+                  </div>
+                  <div style={styles.mainContentStyle(width)}>
+                    <div style={styles.walletOptionsStyle(width)}>
+                      <div style={styles.walletOptionStyle(walletOption === 'email')} onClick={connectEmail}>
+                        <button style={styles.walletOptionButtonStyle()}>
+                          {logo('email')}
+                          Email or Social Login
+                        </button>
+                      </div>
+                      <div style={styles.walletOptionStyle(walletOption === 'ethos')} onClick={connectEthos}>
+                        <button style={styles.walletOptionButtonStyle()}>
+                          {logo('ethos')}
+                          Ethos Wallet
+                        </button>
+                      </div>
+                      <div style={styles.walletOptionStyle(walletOption === 'ethosMobile')} onClick={connectEthosMobile}>
+                        <button style={styles.walletOptionButtonStyle()}>
+                          {logo('ethos')}
+                          Ethos Wallet Mobile
+                        </button>
+                      </div>
+                      <div style={styles.walletOptionStyle(walletOption === 'sui')} onClick={_connectSui}>
+                        <button style={styles.walletOptionButtonStyle()}>
+                          {logo('sui')}
+                          Sui Test Wallet
+                        </button>
+                      </div>
+                      {missingMessage && (
+                        <div style={styles.connectorWarning()}>
+                          {missingMessage}
+                        </div>
+                      )}
+                    </div>
+                    <div style={styles.registrationStyle(width)}>
+                      {qrCodeUrl ? (
+                        <div style={styles.qrCodeStyle()}>
+                          <h3 style={styles.centeredRegistrationHeaderStyle()}>
+                            Connect Mobile Wallet
+                          </h3>
+                          <p style={styles.subheaderStyle()}>
+                            Scan the QR code with a mobile device.
+                          </p>
+                          <div>
+                            <img src={qrCodeUrl} />
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          {(socialLogin || []).length > 0 && (
+                            <div>
+                              <h3 style={styles.registrationHeaderStyle()}>
+                                Sign up or log in with:
+                              </h3>
+                              <div style={styles.socialLoginButtonsStyle()}>
+                                {socialLogin.indexOf('google') > -1 && (
+                                  <div style={styles.socialLoginButtonStyle()} onClick={() => loginWithSocial('google')}>
+                                    <Google width={36} />
+                                  </div>
+                                )}
+                                {socialLogin.indexOf('github') > -1 && (
+                                  <div style={styles.socialLoginButtonStyle()} onClick={() => loginWithSocial('github')}>
+                                    <Github width={36} />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                          <h3 style={styles.registrationHeaderStyle()}>
+                            Sign up or log in with a link
+                          </h3>
+                          {signingIn ? (
+                            <div style={styles.loaderStyle()}>
+                              <Loader width={50} />
+                            </div>
+                          ) : (
+                            <>
+                              {/* <form onSubmit={onSubmit}>
+                                <input
+                                  style={styles.emailInput()}
+                                  type="email"
+                                  placeholder="Email address"
+                                  value={email}
+                                  onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <button style={styles.signInButton(width)} type="submit">
+                                  Send
+                                </button>
+                              </form> */}
+                              <div style={styles.selfCustodialSection()}>
+                                Advanced:&nbsp;
+                                <a
+                                  href={`${walletAppUrl}/extensions`}
+                                  style={styles.selfCustodialLink()}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  Chrome Extension
+                                </a>
+                                &nbsp;or&nbsp;
+                                <a
+                                  href={`${walletAppUrl}/mobile`}
+                                  style={styles.selfCustodialLink()}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  Mobile App
+                                </a>
+                              </div>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div >
@@ -306,294 +404,5 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     </>
   )
 }
-
-/*
-How to convert tailwind to inline CSS:
-Paste the tailwind styless into https://tailwind-to-css.vercel.app/
-Set aside the media queries
-Paste that output into https://staxmanade.com/CssToReact/
-Add media queries using `modalInnerWrapperStyle` as an example
-*/
-
-const secondaryTextStyle = () => (
-  {
-    color: "#6B7280",
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem"
-  } as React.CSSProperties
-)
-
-const dialogStyle = (isOpen: boolean) =>
-({
-  display: isOpen ? 'block' : 'none',
-  position: 'relative',
-  zIndex: '10',
-} as React.CSSProperties)
-
-const backdropStyle = () =>
-// fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
-({
-  position: 'fixed',
-  top: '0px',
-  right: '0px',
-  bottom: '0px',
-  left: '0px',
-  backgroundColor: 'rgb(107 114 128 / .75)',
-} as React.CSSProperties)
-
-const modalOuterWrapperStyle = () =>
-// fixed z-10 inset-0 overflow-y-auto
-({
-  position: 'fixed',
-  zIndex: '99',
-  top: '0px',
-  right: '0px',
-  bottom: '0px',
-  left: '0px',
-  overflowY: 'auto',
-} as React.CSSProperties)
-
-const modalInnerWrapperStyle = (width: number): React.CSSProperties => {
-  // flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0
-  const styles = {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    minHeight: '100%',
-    padding: '1rem' /* 16px */,
-    textAlign: 'center',
-  }
-  const sm = {
-    padding: '0',
-    alignItems: 'center',
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
-
-const dialogPanelStyle = (width: number, emailSent: boolean) => {
-  // relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6
-  const styles = {
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundColor: '#ffffff',
-    transitionProperty: 'all',
-    textAlign: 'left',
-    borderRadius: '0.5rem',
-    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-  }
-  const sm = {
-    marginTop: '2rem',
-    marginBottom: '2rem',
-    width: '100%',
-    maxWidth: emailSent ? '28rem' : '40rem',
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
-
-const closeStyle = () =>
-({
-  backgroundColor: '#F9FAFB',
-  borderRadius: '100%',
-  width: '24px',
-  height: '24px',
-  textAlign: 'center',
-  color: '#A0AEBA',
-  cursor: 'pointer',
-} as React.CSSProperties)
-
-const headerStyle = () =>
-({
-  borderBottom: '1px solid rgb(241 245 249)',
-  padding: '12px',
-  display: 'flex',
-  justifyContent: 'space-between',
-} as React.CSSProperties)
-
-const titleStyle = () =>
-({
-  fontSize: '1rem',
-  fontWeight: '500',
-  margin: '0',
-} as React.CSSProperties)
-
-const mainContentStyle = (width: number) => {
-  const styles = {
-    justifyContent: 'space-between',
-  }
-  const sm = {
-    display: 'flex',
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
-
-const checkMarkCircleStyle = () => (
-  {
-    display: "flex",
-    margin: "auto",
-    backgroundColor: "#D1FAE5",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "3rem",
-    height: "3rem",
-    borderRadius: "9999px"
-  } as React.CSSProperties)
-
-const walletOptionsStyle = (width: number) => {
-  const styles = {
-    padding: '18px',
-    gap: '6px',
-    display: 'flex',
-    flexDirection: 'column',
-    borderBottom: '1px solid rgb(241 245 249)',
-  }
-  const sm = {
-    width: '300px',
-    padding: '24px 12px',
-    borderRight: '1px solid rgb(241 245 249)',
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
-
-const walletOptionStyle = (selected = false) =>
-({
-  padding: '12px',
-  backgroundColor: selected ? '#F3E8FE' : '#F9FAFB',
-  borderRadius: '0.5rem',
-  fontWeight: '500',
-  cursor: 'pointer',
-} as React.CSSProperties)
-
-const walletOptionButtonStyle = () =>
-({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'start',
-  gap: '0.5rem',
-  border: 'none',
-  background: 'none',
-  textDecoration: 'none',
-} as React.CSSProperties)
-
-const socialLoginButtonsStyle = () => ({
-  padding: '12px 0',
-  display: 'flex',
-  gap: '6px'
-})
-
-const socialLoginButtonStyle = () => ({
-  cursor: 'pointer'
-})
-
-const registrationStyle = (width: number) => {
-  const styles = {
-    padding: '18px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-    flexGrow: '1'
-  }
-  const sm = {
-    padding: '24px',
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
-
-const qrCodeStyle = () => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center'
-} as React.CSSProperties)
-
-const registrationHeaderStyle = () =>
-({
-  fontWeight: '500',
-  margin: '0',
-} as React.CSSProperties)
-
-const centeredRegistrationHeaderStyle = () =>
-({
-  fontWeight: '500',
-  margin: '0',
-  textAlign: 'center'
-} as React.CSSProperties)
-
-const subheaderStyle = () =>
-({
-  margin: '6px 0',
-  fontSize: 'smaller',
-  textAlign: 'center'
-} as React.CSSProperties)
-
-const inputStyle = () =>
-({
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  padding: '12px',
-  width: '90%',
-} as React.CSSProperties)
-
-const buttonStyle = (width: number) => {
-  const styles = {
-    marginTop: '0.5rem',
-    border: '1px solid rgb(203 213 225)',
-    borderRadius: '0.5rem',
-    padding: '6px',
-    backgroundColor: '#761AC7',
-    color: '#FFFFFF',
-    textDecoration: 'none',
-    minWidth: '6rem',
-  }
-  const sm = {
-    marginTop: '1rem',
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
-
-const loaderStyle = () =>
-({
-  display: 'flex',
-  justifyContent: 'center',
-  padding: '45px 0',
-} as React.CSSProperties)
-
-const connectorWarning = () =>
-({
-  fontSize: 'small',
-  textAlign: 'center',
-  paddingTop: '6px',
-} as React.CSSProperties)
-
-const selfCustodialSection = () =>
-({
-  paddingTop: '6px',
-  fontSize: 'small',
-  paddingLeft: '3px',
-} as React.CSSProperties)
-
-const selfCustodialLink = () =>
-({
-  color: '#751ac7',
-  textDecoration: 'underline',
-  fontWeight: 400,
-} as React.CSSProperties)
 
 export default SignInModal
