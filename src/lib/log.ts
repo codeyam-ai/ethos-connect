@@ -5,6 +5,7 @@ const allowLog = (label: string) => {
   const allowed = logStore('allowed') || []
   if (allowed.includes(label)) return
   logStore('allowed', [...allowed, label])
+  return `Logging enabled for ${label}. Call ethos.clearAllowLog() to turn off this logging.`
 }
 
 const clearAllowLog = () => {
