@@ -109,7 +109,13 @@ Array [
             >
               Sign in to
             </span>
-            <h2>
+            <h2
+              style={
+                Object {
+                  "margin": "0",
+                }
+              }
+            >
               <span
                 style={
                   Object {
@@ -176,6 +182,7 @@ Array [
                   Object {
                     "border": "1px solid rgb(203 213 225)",
                     "borderRadius": "0.5rem",
+                    "boxSizing": "border-box",
                     "marginTop": "12px",
                     "padding": "12px",
                     "width": "100%",
@@ -264,6 +271,7 @@ Array [
                     "justifyContent": "center",
                     "order": "0",
                     "padding": "12px 20px",
+                    "textDecoration": "none",
                     "width": "100%",
                   }
                 }
@@ -271,6 +279,7 @@ Array [
                 <span
                   style={
                     Object {
+                      "alignItems": "center",
                       "display": "inline-flex",
                     }
                   }
@@ -323,6 +332,7 @@ Array [
                     "justifyContent": "center",
                     "order": "0",
                     "padding": "12px 20px",
+                    "textDecoration": "none",
                     "width": "100%",
                   }
                 }
@@ -330,6 +340,7 @@ Array [
                 <span
                   style={
                     Object {
+                      "alignItems": "center",
                       "display": "inline-flex",
                     }
                   }

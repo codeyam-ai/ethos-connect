@@ -107,7 +107,13 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
           >
             Sign in to
           </span>
-          <h2>
+          <h2
+            style={
+              Object {
+                "margin": "0",
+              }
+            }
+          >
             <span
               style={
                 Object {
@@ -174,6 +180,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
                 Object {
                   "border": "1px solid rgb(203 213 225)",
                   "borderRadius": "0.5rem",
+                  "boxSizing": "border-box",
                   "marginTop": "12px",
                   "padding": "12px",
                   "width": "100%",
@@ -262,6 +269,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
                   "justifyContent": "center",
                   "order": "0",
                   "padding": "12px 20px",
+                  "textDecoration": "none",
                   "width": "100%",
                 }
               }
@@ -269,6 +277,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
               <span
                 style={
                   Object {
+                    "alignItems": "center",
                     "display": "inline-flex",
                   }
                 }
@@ -321,6 +330,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
                   "justifyContent": "center",
                   "order": "0",
                   "padding": "12px 20px",
+                  "textDecoration": "none",
                   "width": "100%",
                 }
               }
@@ -328,6 +338,7 @@ exports[`SignInModal renders a hidden modal if isOpen is false 1`] = `
               <span
                 style={
                   Object {
+                    "alignItems": "center",
                     "display": "inline-flex",
                   }
                 }
@@ -477,7 +488,13 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
           >
             Sign in to
           </span>
-          <h2>
+          <h2
+            style={
+              Object {
+                "margin": "0",
+              }
+            }
+          >
             <span
               style={
                 Object {
@@ -544,6 +561,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                 Object {
                   "border": "1px solid rgb(203 213 225)",
                   "borderRadius": "0.5rem",
+                  "boxSizing": "border-box",
                   "marginTop": "12px",
                   "padding": "12px",
                   "width": "100%",
@@ -632,6 +650,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                   "justifyContent": "center",
                   "order": "0",
                   "padding": "12px 20px",
+                  "textDecoration": "none",
                   "width": "100%",
                 }
               }
@@ -639,6 +658,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
               <span
                 style={
                   Object {
+                    "alignItems": "center",
                     "display": "inline-flex",
                   }
                 }
@@ -691,6 +711,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
                   "justifyContent": "center",
                   "order": "0",
                   "padding": "12px 20px",
+                  "textDecoration": "none",
                   "width": "100%",
                 }
               }
@@ -698,6 +719,7 @@ exports[`SignInModal renders a visible modal if isOpen is true 1`] = `
               <span
                 style={
                   Object {
+                    "alignItems": "center",
                     "display": "inline-flex",
                   }
                 }
