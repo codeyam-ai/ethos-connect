@@ -70,7 +70,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     setWalletOption('ethos')
     setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
       <NoticeIcon />
-      <span>
+      <span style={{ maxWidth: "220px" }}>
         <a
           href={`${walletAppUrl}/extensions`}
           style={styles.selfCustodialLink()}
@@ -103,7 +103,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     if (!connected) {
       setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
         <NoticeIcon />
-        <span>
+        <span style={{ maxWidth: "220px" }}>
           Install the&nbsp;
           <a
             href={`https://docs.sui.io/explore/wallet-browser`}
