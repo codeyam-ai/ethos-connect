@@ -196,7 +196,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                       <span style={styles.secondaryHeaderText()}>
                         Sign in to
                       </span>
-                      <h2>
+                      <h2 style={{ margin: '0' }}>
                         <span style={{ display: 'inline-flex' }}>
                           <Ethos width={20} />
                           <span style={styles.ethosWalletTitleText()}>
@@ -245,7 +245,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                               style={styles.walletOptionButton(width)}
                               onClick={connectEthos}
                             >
-                              <span style={{ display: 'inline-flex' }}>
+                              <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                                 {logo('ethos')}
                                 <span style={styles.walletOptionText()}>
                                   Ethos Wallet
@@ -256,7 +256,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                               style={styles.walletOptionButton(width)}
                               onClick={_connectSui}
                             >
-                              <span style={{ display: 'inline-flex' }}>
+                              <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                                 {logo('sui')}
                                 <span style={styles.walletOptionText()}>
                                   Sui Wallet

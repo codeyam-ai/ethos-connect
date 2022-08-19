@@ -299,6 +299,7 @@ export const subheaderStyle = () =>
 
 export const emailInput = () =>
 ({
+  boxSizing: 'border-box',
   border: '1px solid rgb(203 213 225)',
   borderRadius: '0.5rem',
   padding: '12px',
@@ -347,6 +348,7 @@ export const walletOptionContainer = (width: number) => {
 
 export const walletOptionButton = (width: number) => {
   const styles = {
+    textDecoration: "none",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "row",
