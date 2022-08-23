@@ -20,6 +20,7 @@ import listenForMobileConnection from '../../lib/listenForMobileConnection'
 import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
 import log from '../../lib/log'
 import * as styles from './signInModalStyles';
+import FontProvider from './FontProvider'
 
 export type SignInModalProps = {
   isOpen: boolean
@@ -146,7 +147,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }, []);
 
   return (
-    <>
+    <FontProvider>
       <div style={styles.dialog(isOpen)} role="dialog">
         <div style={styles.backdrop()} onClick={() => console.log('clicked')} />
         {
@@ -401,7 +402,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
           </div>
         </div >
       </div >
-    </>
+    </FontProvider>
   )
 }
 
