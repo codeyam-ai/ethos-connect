@@ -195,7 +195,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                     </div>
                     <div style={styles.modalContent(width)}>
                       <span style={styles.secondaryHeaderText()}>
-                        Sign in to
+                        Sign in with
                       </span>
                       <h2 style={{ margin: '0' }}>
                         <span style={{ display: 'inline-flex' }}>

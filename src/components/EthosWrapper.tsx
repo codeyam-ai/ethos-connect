@@ -21,12 +21,12 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
 
-  const { providerAndSigner, updateProviderAndSigner } = useConnect()
-  const account = useAccount(providerAndSigner)
-
   useEffect(() => {
     initialize(ethosConfiguration)
   }, [])
+  
+  const { providerAndSigner, updateProviderAndSigner } = useConnect()
+  const account = useAccount(providerAndSigner)
 
   useEffect(() => {
     if (!providerAndSigner?.provider) return;
