@@ -3,8 +3,7 @@ import { ProviderAndSigner } from '../types/ProviderAndSigner';
 
 const defaultProviderAndSigner: ProviderAndSigner|null = {
   provider: null,
-  signer: null,
-  contents: null
+  signer: null
 }
 
 const ProviderAndSignerContext = createContext(defaultProviderAndSigner);

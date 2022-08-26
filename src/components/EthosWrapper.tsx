@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, Children, isValidElement, cloneElement } from 'react'
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import log from '../lib/log'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'
+import ContentsContext from './ContentsContext'
 import useAccount from '../hooks/useAccount'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
@@ -25,8 +26,8 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     initialize(ethosConfiguration)
   }, [])
   
-  const { providerAndSigner, updateProviderAndSigner } = useConnect()
-  const account = useAccount(providerAndSigner)
+  const providerAndSigner = useConnect()
+  const { contents } = useAccount(providerAndSigner.signer)
 
   useEffect(() => {
     if (!providerAndSigner?.provider) return;
@@ -34,23 +35,18 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [providerAndSigner])
 
-  useEffect(() => {
-    if (!account) return;
-    
-    log('EthosWrapper', 'account changed, updating providerAndSigner', account)
-    updateProviderAndSigner({ contents: account.contents })
-  }, [account])
-
-  const childrenWithProviderAndSigner = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { ...providerAndSigner })
+  const childrenWithProviderAndSigner = useMemo(() => Children.map(children, (child) => {
+    if (isValidElement(child)) {
+      return cloneElement(child, { ...providerAndSigner })
     }
     return child
-  })
+  }), [providerAndSigner]);
   
   return (
     <ProviderAndSignerContext.Provider value={providerAndSigner}>
-      {childrenWithProviderAndSigner}
+      <ContentsContext.Provider value={contents}>
+        {childrenWithProviderAndSigner}
+      </ContentsContext.Provider>
     </ProviderAndSignerContext.Provider>
   ) 
 }

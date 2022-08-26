@@ -11,7 +11,7 @@ const listenForMobileConnection = async (onConnect: (providerAndSigner: Provider
       if (action !== 'connect') return
 
       if (!data.address) {
-        onConnect({ provider: {}, signer: null, contents: null })
+        onConnect({ provider: {}, signer: null })
         return;
       };
 
@@ -26,7 +26,7 @@ const listenForMobileConnection = async (onConnect: (providerAndSigner: Provider
       }
 
       log('mobile', 'Mobile connection established', provider, signer)
-      onConnect({ provider, signer, contents: null })
+      onConnect({ provider, signer })
     }
   }
 

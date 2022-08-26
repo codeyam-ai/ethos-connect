@@ -3,17 +3,17 @@ import getIframe from '../lib/getIframe'
 import getConfiguration from '../lib/getConfiguration'
 import postIFrameMessage from '../lib/postIFrameMessage'
 
-const useAccount = (providerAndSigner: any) => {
-  const [account, setAccount] = useState<any|null>(null)
+const useAccount = (signer: any) => {
+  const [account, setAccount] = useState<any|null>({})
 
   useEffect(() => {
-    if (!providerAndSigner.signer) return;
+    if (!signer) return;
     const { walletAppUrl } = getConfiguration()
 
     let listener: any;
 
     const initAccount = async () => {
-      const address = await providerAndSigner.signer?.getAddress();
+      const address = await signer?.getAddress();
 
       listener = async (message: any) => {
         if (message.origin === walletAppUrl) {
@@ -39,7 +39,7 @@ const useAccount = (providerAndSigner: any) => {
         window.removeEventListener('account', listener)
       }
     }
-  }, [providerAndSigner])
+  }, [signer])
 
   return account;
 }

@@ -7,8 +7,7 @@ import * as listenForMobileConnection from '../../src/lib/listenForMobileConnect
 
 const nullProviderAndSigner = {
   provider: null,
-  signer: null,
-  contents: null
+  signer: null
 }
 
 const emptyProvider = {
@@ -34,17 +33,6 @@ const providerAndSigner = {
   signer
 }
 
-const contents = {
-  balance: 300,
-  nfts: []
-}
-
-const providerAndSignerAndContents = {
-  provider: providerWithSigner,
-  signer,
-  contents
-}
-
 describe('useConnect', () => {
   let resolveProvider, onMobileConnect;
 
@@ -66,39 +54,25 @@ describe('useConnect', () => {
   it("should not set the provider until all methods have been checked", async () => {
     const { result } = renderHook(() => useConnect())
 
-    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
+    expect(result.current).toStrictEqual(nullProviderAndSigner)
 
     await act(async () => {
       resolveProvider(emptyProvider)
     })
-    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
+    expect(result.current).toStrictEqual(nullProviderAndSigner)
 
     await act(async () => {
       onMobileConnect(providerNoSigner)
     })
-    expect(result.current.providerAndSigner).toStrictEqual(providerNoSigner)
+    expect(result.current).toStrictEqual(providerNoSigner)
   })
 
   it("should set the provider once a provider with a signer is found", async () => {
     const { result } = renderHook(() => useConnect())
-    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
+    expect(result.current).toStrictEqual(nullProviderAndSigner)
     await act(async () => {
       resolveProvider(providerWithSigner)
     })
-    expect(result.current.providerAndSigner).toStrictEqual(providerAndSigner)
-  })
-
-  it("should update the provider externally", async () => {
-    const { result } = renderHook(() => useConnect())
-    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
-    await act(async () => {
-      resolveProvider(providerWithSigner)
-    })
-    expect(result.current.providerAndSigner).toStrictEqual(providerAndSigner)
-
-    await act(async () => {
-      result.current.updateProviderAndSigner({ contents })
-    })
-    expect(result.current.providerAndSigner).toStrictEqual(providerAndSignerAndContents)
+    expect(result.current).toStrictEqual(providerAndSigner)
   })
 })
