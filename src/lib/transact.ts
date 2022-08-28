@@ -2,6 +2,8 @@ import {
   SuiCoinTransferTransaction,
   SuiObjectTransferTransaction,
   SuiFunctionTransaction,
+  SuiSignedTransaction,
+  BulkSuiTransaction
 } from 'types/Transaction'
 import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
@@ -38,6 +40,8 @@ type transactArgs = {
     | SuiCoinTransferTransaction
     | SuiObjectTransferTransaction
     | SuiFunctionTransaction
+    | SuiSignedTransaction
+    | BulkSuiTransaction
   onPopulated?: ({ id, data }: { id?: string, data: any }) => void
   onSigned?: ({ id, data }: { id?: string, data: any }) => void
   onSent?: ({ id, data }: { id?: string, data: any }) => void
