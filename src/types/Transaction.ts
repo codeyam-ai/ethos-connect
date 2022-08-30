@@ -1,6 +1,8 @@
 export interface EthosTransaction {
-  address: string
+  id?: string
   network: string | number
+  address?: string
+  signOnly?: boolean
 }
 
 export interface SuiTransaction extends EthosTransaction {
@@ -25,3 +27,11 @@ export interface SuiFunctionTransaction extends SuiTransaction {
   inputValues?: any,
   typeArguments?: string[]
 }
+
+export interface SuiSignedTransaction extends EthosTransaction {
+  signedInfo?: any
+}
+
+export interface BulkSuiTransaction extends EthosTransaction {
+  transactions: EthosTransaction[]
+} 

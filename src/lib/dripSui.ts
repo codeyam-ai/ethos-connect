@@ -15,7 +15,6 @@ const dripSui = async ({ address }: DripSuiProps) => {
         if (action !== 'drip') return
         window.removeEventListener('message', dripEventListener)
 
-        console.log('DATA', data)
         resolve(data)
       }
     }

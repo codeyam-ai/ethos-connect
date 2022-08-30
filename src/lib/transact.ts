@@ -2,6 +2,8 @@ import {
   SuiCoinTransferTransaction,
   SuiObjectTransferTransaction,
   SuiFunctionTransaction,
+  SuiSignedTransaction,
+  BulkSuiTransaction
 } from 'types/Transaction'
 import apiCall from './apiCall'
 import getConfiguration from './getConfiguration'
@@ -32,21 +34,27 @@ const confirmBlockNumber = async (address: string, blockNumber: string) => {
 }
 
 type transactArgs = {
+  id?: string
   signer: any
   details:
     | SuiCoinTransferTransaction
     | SuiObjectTransferTransaction
     | SuiFunctionTransaction
-  onSigned?: (data: any) => void
-  onSent?: (data: any) => void
-  onComplete?: (data: any) => void
-  onConfirmed?: (data: any) => void
-  onCanceled?: () => void
+    | SuiSignedTransaction
+    | BulkSuiTransaction
+  onPopulated?: ({ id, data }: { id?: string, data: any }) => void
+  onSigned?: ({ id, data }: { id?: string, data: any }) => void
+  onSent?: ({ id, data }: { id?: string, data: any }) => void
+  onComplete?: ({ id, data }: { id?: string, data: any }) => void
+  onConfirmed?: ({ id, data }: { id?: string, data: any }) => void
+  onCanceled?: ({ id }: { id?: string }) => void
 }
 
 const transact = async ({
+  id,
   signer,
   details,
+  onPopulated,
   onSigned,
   onSent,
   onComplete,
@@ -64,28 +72,31 @@ const transact = async ({
 
   const transactionEventListener = (message: any) => {
     if (message.origin === walletAppUrl) {
-      const { action, data } = message.data
+      const { id, action, data } = message.data
       if (action !== 'transact') return
 
       const { state, response } = data
 
       switch (state) {
+        case 'populated':
+          if (onPopulated) onPopulated({ id, data: response })
+          break
         case 'signed':
-          if (onSigned) onSigned(response)
+          if (onSigned) onSigned({ id, data: response })
           break
         case 'sent':
-          if (onSent) onSent(response)
+          if (onSent) onSent({ id, data: response })
           break
         case 'complete':
-          if (onComplete) onComplete(response)
+          if (onComplete) onComplete({ id, data: response })
           window.removeEventListener('message', transactionEventListener)
           break
         case 'confirmed':
-          if (onConfirmed) onConfirmed(response)
+          if (onConfirmed) onConfirmed({ id, data: response })
           window.removeEventListener('message', transactionEventListener)
           break
         case 'canceled':
-          if (onCanceled) onCanceled()
+          if (onCanceled) onCanceled({ id })
           window.removeEventListener('message', transactionEventListener)
           break
         default:
@@ -98,6 +109,7 @@ const transact = async ({
 
   log("transact", "Posting transaction", signer, details)
   postIFrameMessage({
+    id,
     action: 'transact',
     data: { details },
   })

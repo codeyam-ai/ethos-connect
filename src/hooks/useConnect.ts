@@ -15,8 +15,7 @@ const useConnect = () => {
 
   const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner>({
     provider: null,
-    signer: null,
-    contents: null
+    signer: null
   })
   const suiProviderAndSigner = useSuiWallet()
 
@@ -39,15 +38,15 @@ const useConnect = () => {
     setProviderAndSigner(providerAndSigner)
   }, []);
 
-  const updateProviderAndSigner = useCallback((updates) => {
-    log("useConnect", "updateProviderAndSigner", updates)
-    setProviderAndSigner(
-      (prev: ProviderAndSigner) => ({
-        ...prev,
-        ...updates
-      })
-    )
-  }, [])
+  // const updateProviderAndSigner = useCallback((updates) => {
+  //   log("useConnect", "updateProviderAndSigner", updates)
+  //   setProviderAndSigner(
+  //     (prev: ProviderAndSigner) => ({
+  //       ...prev,
+  //       ...updates
+  //     })
+  //   )
+  // }, [])
 
   useEffect(() => {
     log("mobile", "listening to mobile connection from EthosWrapper")
@@ -71,13 +70,11 @@ const useConnect = () => {
     const fetchEthosProvider = async () => {
       const provider = await getProvider()
       const signer = provider?.getSigner()
-      const contents = null;
-      log('useConnect', 'Setting providerAndSigner ethos', provider, signer, contents)
+      log('useConnect', 'Setting providerAndSigner ethos', provider, signer)
       checkProviderAndSigner(
         {
           provider,
-          signer,
-          contents
+          signer
         }, 
         'ethos'
       )
@@ -86,7 +83,7 @@ const useConnect = () => {
     fetchEthosProvider()
   }, [checkProviderAndSigner])
 
-  return { providerAndSigner, updateProviderAndSigner };
+  return providerAndSigner;
 }
 
 export default useConnect;
