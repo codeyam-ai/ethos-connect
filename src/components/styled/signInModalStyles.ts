@@ -241,6 +241,7 @@ export const walletOptionButtonStyle = () =>
   border: 'none',
   background: 'none',
   textDecoration: 'none',
+  cursor: 'pointer'
 } as React.CSSProperties)
 
 export const socialLoginButtonsStyle = () => ({
@@ -317,7 +318,8 @@ export const signInButton = (width: number) => {
     color: '#FFFFFF',
     textDecoration: 'none',
     width: '100%',
-    fontWeight: '600'
+    fontWeight: '600',
+    cursor: 'pointer'
   }
   const sm = {
     marginTop: '.75rem',
