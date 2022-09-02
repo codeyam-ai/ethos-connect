@@ -98,9 +98,12 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }
 
   const _connectSui = async () => {
+    console.log("HI1")
     setMissingMessage(null)
+    console.log("HI2")
     setWalletOption('sui')
     const connected = await connectSui()
+    console.log("HI SUI", connected)
     if (!connected) {
       setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
         <NoticeIcon />

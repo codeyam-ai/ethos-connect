@@ -45,7 +45,7 @@ type transactArgs = {
   onPopulated?: ({ id, data }: { id?: string, data: any }) => void
   onSigned?: ({ id, data }: { id?: string, data: any }) => void
   onSent?: ({ id, data }: { id?: string, data: any }) => void
-  onComplete?: ({ id, data }: { id?: string, data: any }) => void
+  onCompleted?: ({ id, data }: { id?: string, data: any }) => void
   onConfirmed?: ({ id, data }: { id?: string, data: any }) => void
   onCanceled?: ({ id }: { id?: string }) => void
 }
@@ -57,14 +57,15 @@ const transact = async ({
   onPopulated,
   onSigned,
   onSent,
-  onComplete,
+  onCompleted,
   onConfirmed,
   onCanceled,
 }: transactArgs) => {
   log("transact", "Starting transaction", signer, details)
   if (signer.extension) {
-    const response = signer.transact(details)
-    onComplete && onComplete(response)
+    const response = await signer.transact(details)
+    console.log("TRAANSCT RESOPINSE", response)
+    onCompleted && onCompleted({ data: response })
     return
   }
 
@@ -88,7 +89,7 @@ const transact = async ({
           if (onSent) onSent({ id, data: response })
           break
         case 'complete':
-          if (onComplete) onComplete({ id, data: response })
+          if (onCompleted) onCompleted({ id, data: response })
           window.removeEventListener('message', transactionEventListener)
           break
         case 'confirmed':
