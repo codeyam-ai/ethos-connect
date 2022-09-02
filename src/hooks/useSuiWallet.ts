@@ -17,6 +17,7 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     const signer = account
       ? {
           extension: true,
+          capabilities: {},
           getAddress: () => account,
           transact: async (details: any) => {
             try {

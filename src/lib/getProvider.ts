@@ -16,6 +16,11 @@ const getProvider = async (network?: string | number): Promise<any> => {
       switch (prop) {
         case 'ethos':
           return true
+        case 'capabilities':
+          return {
+            sign: true,
+            bulk: true
+          }
         case 'email':
           return user.email
         case 'getAddress':
