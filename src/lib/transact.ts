@@ -64,7 +64,6 @@ const transact = async ({
   log("transact", "Starting transaction", signer, details)
   if (signer.extension) {
     const response = await signer.transact(details)
-    console.log("TRAANSCT RESOPINSE", response)
     onCompleted && onCompleted({ data: response })
     return
   }
