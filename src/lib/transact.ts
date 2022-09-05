@@ -51,7 +51,7 @@ type transactArgs = {
 }
 
 const transact = async ({
-  id,
+  id: transactionId,
   signer,
   details,
   onPopulated,
@@ -74,6 +74,7 @@ const transact = async ({
     if (message.origin === walletAppUrl) {
       const { id, action, data } = message.data
       if (action !== 'transact') return
+      if (id && id != transactionId) return;
 
       const { state, response } = data
 
@@ -109,7 +110,7 @@ const transact = async ({
 
   log("transact", "Posting transaction", signer, details)
   postIFrameMessage({
-    id,
+    id: transactionId,
     action: 'transact',
     data: { details },
   })
