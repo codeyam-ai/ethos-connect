@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, Children, isValidElement, cloneElement } from 'react'
+import React, { useEffect, useMemo, useRef, useState, Children, isValidElement, cloneElement } from 'react'
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import log from '../lib/log'
@@ -26,6 +26,8 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     initialize(ethosConfiguration)
   }, [])
   
+  const [href, setHref] = useState<string|undefined>()
+  const hrefRef = useRef<string|undefined>();
   const providerAndSigner = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
 
@@ -35,12 +37,25 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [providerAndSigner])
 
+  useEffect(() => {
+    const checkLocation = () => {
+      const newHref = window.location.href;
+      if (newHref !== hrefRef.current) {
+        setHref(newHref);
+        hrefRef.current = newHref;
+      }
+    }
+
+    const checkId = setInterval(checkLocation, 100);
+    return () => clearInterval(checkId);
+  }, []);
+
   const childrenWithProviderAndSigner = useMemo(() => Children.map(children, (child) => {
     if (isValidElement(child)) {
       return cloneElement(child, { ...providerAndSigner })
     }
     return child
-  }), [providerAndSigner]);
+  }), [providerAndSigner, href]);
   
   return (
     <ProviderAndSignerContext.Provider value={providerAndSigner}>
