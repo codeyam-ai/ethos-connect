@@ -26,8 +26,6 @@ import dripSui from './lib/dripSui'
 import useProviderAndSigner from './hooks/useProviderAndSigner'
 import useContents from './hooks/useContents'
 
-import sui from './lib/sui';
-
 const ethos = {
   initialize,
   login,
@@ -46,8 +44,7 @@ const ethos = {
   getProvider,
   dripSui,
   useProviderAndSigner,
-  useContents,
-  sui
+  useContents
 }
 
 export { EthosWrapper, SignInButton, ethos }
