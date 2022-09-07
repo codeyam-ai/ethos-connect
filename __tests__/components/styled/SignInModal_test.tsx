@@ -33,7 +33,7 @@ describe('SignInModal', () => {
     expect(signInModal.toJSON()).toMatchSnapshot()
   })
 
-  it('shows a warning if you click the Ethos wallet button', () => {
+  it('shows a warning if you click the Ethos wallet button and it is not installed', async () => {
     const warningCount = (root: any) =>
       root.findAllByProps({
         className: 'missing-message',
@@ -45,7 +45,7 @@ describe('SignInModal', () => {
     expect(warningCount(root)).toBe(0)
 
     const ethosWalletButton = root.findAllByType(Ethos)
-    act(() => {
+    await act(async () => {
       ethosWalletButton[1]?.parent?.parent?.props.onClick()
     })
     expect(warningCount(root)).toBe(1)
