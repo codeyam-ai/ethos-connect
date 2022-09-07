@@ -66,23 +66,29 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     login({ provider, appId })
   }
 
-  const connectEthos = () => {
+  const connectEthos = async () => {
     setMissingMessage(null)
     setWalletOption('ethos')
-    setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
-      <NoticeIcon />
-      <span style={{ maxWidth: "220px" }}>
-        <a
-          href={`${walletAppUrl}/extensions`}
-          style={styles.selfCustodialLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Join the waitlist
-        </a>
-        &nbsp;for early access to the Ethos Wallet extension.
-      </span>
-    </div>)
+    const connected = await connectSui('ethosWallet')
+    if (!connected) {
+      setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
+        <NoticeIcon />
+        <span style={{ maxWidth: "220px" }}>
+          <a
+            href={`${walletAppUrl}/extensions`}
+            style={styles.selfCustodialLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join the waitlist
+          </a>
+          &nbsp;for early access to the Ethos Wallet extension.
+        </span>
+      </div>)
+    } else {
+      onClose && onClose()
+    }
+    event({ action: 'connect', category: 'sign_in', label: 'ethos', value: connected ? 1 : 0 })
   }
 
   const connectEthosMobile = async () => {
@@ -100,7 +106,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const _connectSui = async () => {
     setMissingMessage(null)
     setWalletOption('sui')
-    const connected = await connectSui()
+    const connected = await connectSui('suiWallet')
     if (!connected) {
       setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
         <NoticeIcon />
