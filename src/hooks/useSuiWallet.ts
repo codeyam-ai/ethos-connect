@@ -42,8 +42,9 @@ const useSuiWallet = (): SuiProviderAndSigner => {
             try {
               const response = await wallet.executeMoveCall(ensureCompatible(details))
               return response
-            } catch (e) {
-              console.log('Error with sui transaction', e)
+            } catch (error) {
+              console.log('Error with sui transaction', error)
+              return { error }
             }
           },
         }
