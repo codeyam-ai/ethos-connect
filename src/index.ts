@@ -1,6 +1,7 @@
 import EthosWrapper from './components/EthosWrapper'
 
 import SignInButton from './components/styled/SignInButton'
+import { showSignInModal, hideSignInModal } from './components/styled/SignInModal';
 
 import initialize from './lib/initialize'
 import login from './lib/login'
@@ -44,7 +45,9 @@ const ethos = {
   getProvider,
   dripSui,
   useProviderAndSigner,
-  useContents
+  useContents,
+  showSignInModal,
+  hideSignInModal
 }
 
 export { EthosWrapper, SignInButton, ethos }

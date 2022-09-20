@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState, Children, isValidElement, cloneElement } from 'react'
+import React, { useEffect, useMemo, useRef, useState, Children, isValidElement, cloneElement, ReactNode } from 'react'
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import log from '../lib/log'
@@ -9,9 +9,10 @@ import useAccount from '../hooks/useAccount'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
 
-export interface EthosWrapperProps extends React.HTMLAttributes<HTMLButtonElement> {
+export interface EthosWrapperProps {
   ethosConfiguration: EthosConfiguration
   onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void
+  children: ReactNode
 }
 
 const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: EthosWrapperProps) => {

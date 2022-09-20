@@ -90,7 +90,7 @@ const transact = async ({
           case 'sent':
             if (onSent) onSent({ id, data: response })
             break
-          case 'complete':
+          case 'completed':
             if (onCompleted) onCompleted({ id, data: response })
             window.removeEventListener('message', transactionEventListener)
             resolve(response);
