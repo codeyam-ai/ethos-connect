@@ -407,14 +407,14 @@ export const connectorWarning = () =>
   paddingTop: '6px',
 } as React.CSSProperties)
 
-export const selfCustodialSection = () =>
+export const browserExtensionSection = () =>
 ({
   paddingTop: '6px',
   fontSize: 'small',
   paddingLeft: '3px',
 } as React.CSSProperties)
 
-export const selfCustodialLink = () =>
+export const browserExtensionLink = () =>
 ({
   color: '#751ac7',
   textDecoration: 'underline',

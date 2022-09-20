@@ -1,11 +1,11 @@
 import store from 'store2'
 import log from './log'
 
-const connectSui = async () => {
+const connectSui = async (walletIdentifier: string) => {
   if (typeof window === 'undefined') return
 
-  const suiWallet = (window as any).suiWallet
-
+  const suiWallet = (window as any)[walletIdentifier]
+  
   if (!suiWallet) {
     return false
   }

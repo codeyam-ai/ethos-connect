@@ -10,7 +10,25 @@ export type SuiProviderAndSigner = {
 const useSuiWallet = (): SuiProviderAndSigner => {
   const [providerAndSigner, setProviderAndSigner] = useState<any | null>(null)
 
-  const suiWallet = () => (window as any).suiWallet
+  const suiWallet = async () => {
+    let wallet;
+    const w = (window as any)
+    if (w.ethosWallet) {
+      const hasPermissions = await w.ethosWallet.hasPermissions();
+      if (hasPermissions) {
+        return w.ethosWallet;
+      } else {
+        wallet = w.ethosWallet;
+      }
+    } else if (w.suiWallet) {
+      const hasPermissions = await w.suiWallet.hasPermissions();
+      if (hasPermissions) {
+        return w.suiWallet;
+      }
+    }
+
+    return wallet;
+  }
 
   const initSignerAndProvider = (account: string | null) => {
     log('useSuiWallet', 'initSignerAndProvider', account)
@@ -20,11 +38,13 @@ const useSuiWallet = (): SuiProviderAndSigner => {
           capabilities: {},
           getAddress: () => account,
           transact: async (details: any) => {
+            const wallet = await suiWallet();
             try {
-              const response = await suiWallet().executeMoveCall(ensureCompatible(details))
+              const response = await wallet.executeMoveCall(ensureCompatible(details))
               return response
-            } catch (e) {
-              console.log('Error with sui transaction', e)
+            } catch (error) {
+              console.log('Error with sui transaction', error)
+              return { error }
             }
           },
         }
@@ -45,10 +65,11 @@ const useSuiWallet = (): SuiProviderAndSigner => {
   }
 
   const retrieveSuiAccount = async () => {
-    if (suiWallet()) {
-      const hasPermissions = await suiWallet().hasPermissions()
+    const wallet = await suiWallet()
+    if (wallet) {
+      const hasPermissions = await wallet.hasPermissions()
       if (hasPermissions) {
-        const accounts = await suiWallet().getAccounts()
+        const accounts = await wallet.getAccounts()
 
         if (accounts && accounts.length > 0) {
           log('useSuiWallet', 'INIT SUI 1', accounts)

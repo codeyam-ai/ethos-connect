@@ -51,7 +51,7 @@ type transactArgs = {
 }
 
 const transact = async ({
-  id,
+  id: transactionId,
   signer,
   details,
   onPopulated,
@@ -62,59 +62,65 @@ const transact = async ({
   onCanceled,
 }: transactArgs) => {
   log("transact", "Starting transaction", signer, details)
+  
   if (signer.extension) {
     const response = await signer.transact(details)
     onCompleted && onCompleted({ data: response })
-    return
+    return response;
   }
 
-  const { walletAppUrl } = getConfiguration()
+  return new Promise((resolve, reject) => {
+    const { walletAppUrl } = getConfiguration()
 
-  const transactionEventListener = (message: any) => {
-    if (message.origin === walletAppUrl) {
-      const { id, action, data } = message.data
-      if (action !== 'transact') return
+    const transactionEventListener = (message: any) => {
+      if (message.origin === walletAppUrl) {
+        const { id, action, data } = message.data
+        if (action !== 'transact') return
+        if (id && id != transactionId) return;
 
-      const { state, response } = data
+        const { state, response } = data
 
-      switch (state) {
-        case 'populated':
-          if (onPopulated) onPopulated({ id, data: response })
-          break
-        case 'signed':
-          if (onSigned) onSigned({ id, data: response })
-          break
-        case 'sent':
-          if (onSent) onSent({ id, data: response })
-          break
-        case 'complete':
-          if (onCompleted) onCompleted({ id, data: response })
-          window.removeEventListener('message', transactionEventListener)
-          break
-        case 'confirmed':
-          if (onConfirmed) onConfirmed({ id, data: response })
-          window.removeEventListener('message', transactionEventListener)
-          break
-        case 'canceled':
-          if (onCanceled) onCanceled({ id })
-          window.removeEventListener('message', transactionEventListener)
-          break
-        default:
-          break
+        switch (state) {
+          case 'populated':
+            if (onPopulated) onPopulated({ id, data: response })
+            break
+          case 'signed':
+            if (onSigned) onSigned({ id, data: response })
+            break
+          case 'sent':
+            if (onSent) onSent({ id, data: response })
+            break
+          case 'completed':
+            if (onCompleted) onCompleted({ id, data: response })
+            window.removeEventListener('message', transactionEventListener)
+            resolve(response);
+            break
+          case 'confirmed':
+            if (onConfirmed) onConfirmed({ id, data: response })
+            window.removeEventListener('message', transactionEventListener)
+            break
+          case 'canceled':
+            if (onCanceled) onCanceled({ id })
+            window.removeEventListener('message', transactionEventListener)
+            reject({ error: "User rejected transaction."})
+            break
+          default:
+            break
+        }
       }
     }
-  }
 
-  window.addEventListener('message', transactionEventListener)
+    window.addEventListener('message', transactionEventListener)
 
-  log("transact", "Posting transaction", signer, details)
-  postIFrameMessage({
-    id,
-    action: 'transact',
-    data: { details },
+    log("transact", "Posting transaction", signer, details)
+    postIFrameMessage({
+      id: transactionId,
+      action: 'transact',
+      data: { details },
+    })
+
+    getIframe(true)
   })
-
-  getIframe(true)
 }
 
 export default transact

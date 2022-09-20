@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    ethosInternal: any;
+  }
+}
+
 import React, { useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import Ethos from '../svg/Ethos'
@@ -28,7 +34,16 @@ export type SignInModalProps = {
   onClose?: () => void
 }
 
+export function showSignInModal() {
+  window.ethosInternal.showSignInModal();
+}
+
+export function hideSignInModal() {
+  window.ethosInternal.hideSignInModal();
+}
+
 const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) => {
+  const [isOpenAll, setIsOpenAll] = useState(isOpen);
   const [loading, setLoading] = useState(true);
   const [missingMessage, setMissingMessage] = useState<any | null>(null)
   const [signingIn, setSigningIn] = useState(false)
@@ -39,6 +54,18 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const captchaRef = useRef<any | null>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined);
   const [walletOption, setWalletOption] = useState<string>("email")
+
+  useEffect(() => {
+    window.ethosInternal ||= {};
+
+    window.ethosInternal.showSignInModal = () => {
+      setIsOpenAll(true);
+    }
+
+    window.ethosInternal.hideSignInModal = () => {
+      setIsOpenAll(false);
+    }
+  }, [])
 
   const onSubmit = async () => {
     setSigningIn(true)
@@ -66,23 +93,29 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     login({ provider, appId })
   }
 
-  const connectEthos = () => {
+  const connectEthos = async () => {
     setMissingMessage(null)
     setWalletOption('ethos')
-    setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
-      <NoticeIcon />
-      <span style={{ maxWidth: "220px" }}>
-        <a
-          href={`${walletAppUrl}/extensions`}
-          style={styles.selfCustodialLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Join the waitlist
-        </a>
-        &nbsp;for early access to the Ethos Wallet extension.
-      </span>
-    </div>)
+    const connected = await connectSui('ethosWallet')
+    if (!connected) {
+      setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
+        <NoticeIcon />
+        <span style={{ maxWidth: "220px" }}>
+          Install the&nbsp;
+          <a
+            href={`https://docs.sui.io/explore/wallet-browser`}
+            style={styles.browserExtensionLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ethos chrome extension
+          </a>
+        </span>
+      </div>)
+    } else {
+      onClose && onClose()
+    }
+    event({ action: 'connect', category: 'sign_in', label: 'ethos', value: connected ? 1 : 0 })
   }
 
   const connectEthosMobile = async () => {
@@ -100,7 +133,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const _connectSui = async () => {
     setMissingMessage(null)
     setWalletOption('sui')
-    const connected = await connectSui()
+    const connected = await connectSui('suiWallet')
     if (!connected) {
       setMissingMessage(<div className='missing-message' style={styles.missingMessage()}>
         <NoticeIcon />
@@ -108,7 +141,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
           Install the&nbsp;
           <a
             href={`https://docs.sui.io/explore/wallet-browser`}
-            style={styles.selfCustodialLink()}
+            style={styles.browserExtensionLink()}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -148,7 +181,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
 
   return (
     <FontProvider>
-      <div style={styles.dialog(isOpen)} role="dialog">
+      <div style={styles.dialog(isOpenAll)} role="dialog">
         <div style={styles.backdrop()} onClick={() => console.log('clicked')} />
         {
           !loading && (
@@ -370,11 +403,11 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                                   Send
                                 </button>
                               </form> */}
-                              <div style={styles.selfCustodialSection()}>
+                              <div style={styles.browserExtensionSection()}>
                                 Advanced:&nbsp;
                                 <a
                                   href={`${walletAppUrl}/extensions`}
-                                  style={styles.selfCustodialLink()}
+                                  style={styles.browserExtensionLink()}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
@@ -383,7 +416,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                                 &nbsp;or&nbsp;
                                 <a
                                   href={`${walletAppUrl}/mobile`}
-                                  style={styles.selfCustodialLink()}
+                                  style={styles.browserExtensionLink()}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
