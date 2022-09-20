@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import Ethos from '../svg/Ethos'
 import Google from '../svg/Google'
@@ -55,6 +55,11 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined);
   const [walletOption, setWalletOption] = useState<string>("email")
 
+  const _onClose = useCallback(() => {
+    setIsOpenAll(false);
+    onClose && onClose();
+  }, []);
+
   useEffect(() => {
     window.ethosInternal ||= {};
 
@@ -63,9 +68,11 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
     }
 
     window.ethosInternal.hideSignInModal = () => {
-      setIsOpenAll(false);
+      _onClose();
     }
-  }, [])
+
+    setIsOpenAll(isOpen);
+  }, [isOpen, setIsOpenAll, _onClose])
 
   const onSubmit = async () => {
     setSigningIn(true)
@@ -222,7 +229,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                 ) : (
                   <>
                     <div style={{ height: '36px' }}>
-                      <span style={styles.closeStyle()} onClick={onClose}>
+                      <span style={styles.closeStyle()} onClick={_onClose}>
                         &#x2715;
                       </span>
                     </div>
