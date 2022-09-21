@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import store from 'store2'
 import log from '../lib/log'
 
+import type { AutomaticTransactionPermission } from '../lib/requestAutomatedTransactionPermission'
+
 export type SuiProviderAndSigner = {
   provider: any | null
   signer: any | null
@@ -35,8 +37,18 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     const signer = account
       ? {
           extension: true,
-          capabilities: {},
+          capabilities: {
+            requestAutomatedTransactionPermission: true
+          },
           getAddress: () => account,
+          hasPermissions: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.hasPermissions(...args);
+          },
+          requestPermissions: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.requestPermissions(...args);
+          },
           transact: async (details: any) => {
             const wallet = await suiWallet();
             try {
@@ -47,6 +59,19 @@ const useSuiWallet = (): SuiProviderAndSigner => {
               return { error }
             }
           },
+          executeSerializedMoveCall: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.executeSerializedMoveCall(...args);
+          },
+          requestAutomatedTransactionPermission: async (permission: AutomaticTransactionPermission) => {
+            const wallet = await suiWallet();
+            try {
+              return wallet.requestAutomatedTransactionPermission(permission)
+            } catch (error) {
+              console.log('Error with sui permission request', error)
+              return { error }
+            }
+          }
         }
       : null
 

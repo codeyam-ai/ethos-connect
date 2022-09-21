@@ -86,6 +86,7 @@ Array [
               }
             >
               <span
+                onClick={[Function]}
                 style={
                   Object {
                     "backgroundColor": "#F9FAFB",
@@ -485,6 +486,7 @@ Array [
               }
             >
               <span
+                onClick={[Function]}
                 style={
                   Object {
                     "backgroundColor": "#F9FAFB",
