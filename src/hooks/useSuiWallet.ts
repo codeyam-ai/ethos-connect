@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import store from 'store2'
 import log from '../lib/log'
 
+import type { Preapproval } from '../lib/requestPreapproval'
+
 export type SuiProviderAndSigner = {
   provider: any | null
   signer: any | null
@@ -20,7 +22,9 @@ const useSuiWallet = (): SuiProviderAndSigner => {
       } else {
         wallet = w.ethosWallet;
       }
-    } else if (w.suiWallet) {
+    } 
+    
+    if (w.suiWallet) {
       const hasPermissions = await w.suiWallet.hasPermissions();
       if (hasPermissions) {
         return w.suiWallet;
@@ -35,8 +39,19 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     const signer = account
       ? {
           extension: true,
-          capabilities: {},
           getAddress: () => account,
+          disconnect: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.disconnect(...args);
+          },
+          hasPermissions: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.hasPermissions(...args);
+          },
+          requestPermissions: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.requestPermissions(...args);
+          },
           transact: async (details: any) => {
             const wallet = await suiWallet();
             try {
@@ -47,6 +62,19 @@ const useSuiWallet = (): SuiProviderAndSigner => {
               return { error }
             }
           },
+          executeSerializedMoveCall: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.executeSerializedMoveCall(...args);
+          },
+          requestPreapproval: async (preapproval: Preapproval) => {
+            const wallet = await suiWallet();
+            try {
+              return wallet.requestPreapproval(preapproval)
+            } catch (error) {
+              console.log('Error with sui preapproval request', error)
+              return { error }
+            }
+          }
         }
       : null
 

@@ -1,6 +1,7 @@
 import login from './login.js'
 import logout from './logout.js'
 import transact from './transact.js'
+import requestPreapproval from './requestPreapproval.js'
 import activeUser from './activeUser.js'
 import tokenTransfers from './tokenTransfers.js'
 import query from './query.js'
@@ -17,6 +18,7 @@ export {
   login,
   logout,
   transact,
+  requestPreapproval,
   getWalletBalance,
   getWalletNfts,
   getWalletContents,

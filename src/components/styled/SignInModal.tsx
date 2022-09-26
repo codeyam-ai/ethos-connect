@@ -110,7 +110,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
         <span style={{ maxWidth: "220px" }}>
           Install the&nbsp;
           <a
-            href={`https://docs.sui.io/explore/wallet-browser`}
+            href={`https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli?hl=en&authuser=1`}
             style={styles.browserExtensionLink()}
             target="_blank"
             rel="noopener noreferrer"
@@ -147,7 +147,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
         <span style={{ maxWidth: "220px" }}>
           Install the&nbsp;
           <a
-            href={`https://docs.sui.io/explore/wallet-browser`}
+            href={`https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil`}
             style={styles.browserExtensionLink()}
             target="_blank"
             rel="noopener noreferrer"
