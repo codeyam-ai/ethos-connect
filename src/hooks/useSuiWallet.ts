@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import store from 'store2'
 import log from '../lib/log'
 
-import type { AutomaticTransactionPermission } from '../lib/requestAutomatedTransactionPermission'
+import type { Preapproval } from '../lib/requestPreapproval'
 
 export type SuiProviderAndSigner = {
   provider: any | null
@@ -66,12 +66,12 @@ const useSuiWallet = (): SuiProviderAndSigner => {
             const wallet = await suiWallet();
             return wallet.executeSerializedMoveCall(...args);
           },
-          requestAutomatedTransactionPermission: async (permission: AutomaticTransactionPermission) => {
+          requestPreapproval: async (preapproval: Preapproval) => {
             const wallet = await suiWallet();
             try {
-              return wallet.requestAutomatedTransactionPermission(permission)
+              return wallet.requestPreapproval(preapproval)
             } catch (error) {
-              console.log('Error with sui permission request', error)
+              console.log('Error with sui preapproval request', error)
               return { error }
             }
           }

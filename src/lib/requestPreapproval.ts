@@ -3,7 +3,7 @@ import getConfiguration from './getConfiguration';
 import getIframe from './getIframe';
 import postIFrameMessage from './postIFrameMessage';
 
-export interface AutomaticTransactionPermission {
+export interface Preapproval {
   module: string,
   function: string,
   objectId: ObjectId,
@@ -13,18 +13,18 @@ export interface AutomaticTransactionPermission {
   maxTransactionCount: number;
 }
 
-export type requestAutomatedTransactionPermissionArgs = {
+export type PreapprovalArgs = {
   signer: any,
-  permission: AutomaticTransactionPermission
+  preapproval: Preapproval
 }
 
-const requestAutomatedTransactionPermission = async ({ signer, permission }: requestAutomatedTransactionPermissionArgs) => {
+const requestPreapproval = async ({ signer, preapproval }: PreapprovalArgs) => {
   if (signer.extension) {
-    if (!signer.requestAutomatedTransactionPermission) {
-      throw("Signer does not support `requestAutomatedTransactionPermission`")
+    if (!signer.requestPreapproval) {
+      throw("Signer does not support `requestPreapproval`")
     }
 
-    return signer.requestAutomatedTransactionPermission(permission)
+    return signer.requestPreapproval(preapproval)
   } else {
     return new Promise((resolve) => {
       const { walletAppUrl } = getConfiguration()
@@ -32,7 +32,7 @@ const requestAutomatedTransactionPermission = async ({ signer, permission }: req
       const permissionEventListener = (message: any) => {
         if (message.origin === walletAppUrl) {
           const { action, data } = message.data
-          if (action !== 'request-automated-transaction-permission') return
+          if (action !== 'request-preapproval') return
           
           const { state, response } = data
   
@@ -45,8 +45,8 @@ const requestAutomatedTransactionPermission = async ({ signer, permission }: req
       window.addEventListener('message', permissionEventListener)
   
       postIFrameMessage({
-        action: 'request-automated-transaction-permission',
-        data: { permission },
+        action: 'request-preapproval',
+        data: { preapproval },
       })
   
       getIframe(true)
@@ -56,4 +56,4 @@ const requestAutomatedTransactionPermission = async ({ signer, permission }: req
   
 }
 
-export default requestAutomatedTransactionPermission;
+export default requestPreapproval;

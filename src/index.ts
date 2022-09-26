@@ -8,7 +8,7 @@ import login from './lib/login'
 import logout from './lib/logout'
 import sign from './lib/sign'
 import transact from './lib/transact'
-import requestAutomatedTransactionPermission from './lib/requestAutomatedTransactionPermission'
+import requestPreapproval from './lib/requestPreapproval'
 import transfer from './lib/transfer'
 
 import getWalletBalance from './lib/getWalletBalance'
@@ -35,7 +35,7 @@ const ethos = {
   sign,
   transact,
   transfer,
-  requestAutomatedTransactionPermission,
+  requestPreapproval,
   getWalletBalance,
   getWalletNfts,
   getWalletContents,
