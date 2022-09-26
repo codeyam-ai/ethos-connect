@@ -18,7 +18,6 @@ const listenForMobileConnection = async (onConnect: (providerAndSigner: Provider
       window.removeEventListener('message', connectionEventListener)
       
       const signer = {
-        capabilities: {},
         getAddress: () => data.address
       }
 

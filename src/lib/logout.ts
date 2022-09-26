@@ -3,7 +3,17 @@ import getConfiguration from './getConfiguration'
 import log from './log'
 import postIFrameMessage from './postIFrameMessage'
 
-const logout = async (wallet: boolean = false) => {
+const logout = async (signer: any, wallet: boolean = false) => {
+  if (signer?.extension) {
+    if (signer.disconnect) {
+      await signer.disconnect();
+    } else {
+      console.log("Signer does not support the ability to disconnect from the client interface.")
+    }
+   
+    return;
+  }
+
   const { walletAppUrl } = getConfiguration()
 
   store.namespace('auth')('access_token', null)

@@ -22,7 +22,9 @@ const useSuiWallet = (): SuiProviderAndSigner => {
       } else {
         wallet = w.ethosWallet;
       }
-    } else if (w.suiWallet) {
+    } 
+    
+    if (w.suiWallet) {
       const hasPermissions = await w.suiWallet.hasPermissions();
       if (hasPermissions) {
         return w.suiWallet;
@@ -37,10 +39,11 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     const signer = account
       ? {
           extension: true,
-          capabilities: {
-            requestAutomatedTransactionPermission: true
-          },
           getAddress: () => account,
+          disconnect: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.disconnect(...args);
+          },
           hasPermissions: async (...args: any[]) => {
             const wallet = await suiWallet();
             return wallet.hasPermissions(...args);
