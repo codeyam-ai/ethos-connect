@@ -10,3 +10,8 @@ beforeEach(() => {
     chain: 'test',
   }))
 })
+
+jest.mock('@mysten/sui.js', () => ({
+  JsonRpcProvider: function () {
+  }
+}));

@@ -1,7 +1,9 @@
+import { JsonRpcProvider } from '@mysten/sui.js'
 import { act, renderHook } from '@testing-library/react-hooks'
 import useConnect from '../../src/hooks/useConnect'
 
 import * as useSuiWallet from '../../src/hooks/useSuiWallet' 
+import { suiFullNode } from '../../src/lib/constants'
 import * as getProvider from '../../src/lib/getProvider'
 import * as listenForMobileConnection from '../../src/lib/listenForMobileConnection'
 
