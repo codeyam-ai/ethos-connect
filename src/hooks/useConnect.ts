@@ -36,10 +36,8 @@ const useConnect = () => {
       signerFound.current = true;
     }
 
-    if (!providerAndSigner.provider) {
-      providerAndSigner.provider = new JsonRpcProvider(suiFullNode);
-    }
-
+    providerAndSigner.provider = new JsonRpcProvider(suiFullNode);
+    
     log("useConnect", "final setting providerAndSigner", providerAndSigner)
     setProviderAndSigner(providerAndSigner)
   }, []);

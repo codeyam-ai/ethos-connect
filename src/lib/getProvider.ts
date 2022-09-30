@@ -1,5 +1,6 @@
 import { JsonRpcProvider } from '@mysten/sui.js'
 import activeUser from './activeUser'
+import { suiFullNode } from './constants'
 import getConfiguration from './getConfiguration'
 import networkToChain from './networkToChain'
 
