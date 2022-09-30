@@ -4,7 +4,7 @@ import { Chain } from '../enums/Chain'
 
 const getWalletContents = async (address: string, chain: Chain) => {
   const {
-    json: { balance, nfts },
+    json: { balance, coins, nfts },
     status,
   } = await apiCall({
     relativePath: 'wallet/contents',
@@ -17,7 +17,7 @@ const getWalletContents = async (address: string, chain: Chain) => {
     return
   }
 
-  return { balance, nfts }
+  return { balance, coins, nfts }
 }
 
 export default getWalletContents

@@ -62,6 +62,10 @@ const useSuiWallet = (): SuiProviderAndSigner => {
               return { error }
             }
           },
+          signMessage: async (...args: any[]) => {
+            const wallet = await suiWallet();
+            return wallet.signMessage(...args);
+          },
           executeSerializedMoveCall: async (...args: any[]) => {
             const wallet = await suiWallet();
             return wallet.executeSerializedMoveCall(...args);

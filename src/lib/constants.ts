@@ -4,3 +4,4 @@ export const appBaseUrl =
     : 'https://ethoswallet.onrender.com'
 
 export const captchaSiteKey = '6LcXUDshAAAAAPTZ3E7xi3-335IA9rncYVoey_ls';
+export const suiFullNode = 'https://fullnode.devnet.sui.io:443';

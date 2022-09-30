@@ -110,7 +110,7 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
         <span style={{ maxWidth: "220px" }}>
           Install the&nbsp;
           <a
-            href={`https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli?hl=en&authuser=1`}
+            href={`https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli`}
             style={styles.browserExtensionLink()}
             target="_blank"
             rel="noopener noreferrer"
