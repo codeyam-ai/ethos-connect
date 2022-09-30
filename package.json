@@ -1,6 +1,6 @@
 {
   "name": "ethos-wallet-beta",
-  "version": "0.0.160",
+  "version": "0.0.161",
   "description": "Beta version of the Ethos Wallet NPM Package",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
