@@ -68,7 +68,7 @@ describe('EthosWrapper', () => {
     const initialEthosConfiguration: EthosConfiguration = { appId: 'test-id' }
     const expectedEthosConfiguration: EthosConfiguration = {
       appId: 'test-id',
-      walletAppUrl: 'https://ethoswallet.xyz/',
+      walletAppUrl: 'https://ethoswallet.xyz',
       chain: Chain.Sui,
       network: 'sui'
     }
