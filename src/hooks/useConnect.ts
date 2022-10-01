@@ -11,7 +11,7 @@ const useConnect = () => {
   const signerFound = useRef<boolean>(false)
   const methodsChecked = useRef<any>({
     'ethos': false,
-    'mobile': false,
+    // 'mobile': false,
     'extension': false
   })
 
@@ -36,7 +36,7 @@ const useConnect = () => {
       signerFound.current = true;
     }
 
-    if (providerAndSigner.provider) {
+    if (allMethodsChecked || providerAndSigner.provider) {
       providerAndSigner.provider = new JsonRpcProvider(suiFullNode);
       providerAndSigner.provider.getSigner = () => providerAndSigner.signer;
     }

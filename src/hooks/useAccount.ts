@@ -1,4 +1,4 @@
-import { getWalletContents } from '../lib';
+import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useState } from 'react'
 // import getIframe from '../lib/getIframe'
 // import getConfiguration from '../lib/getConfiguration'
