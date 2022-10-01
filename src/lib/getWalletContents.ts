@@ -1,6 +1,12 @@
 import fetchSui from "./fetchSui";
 
-const getWalletContents = async ({ address }: { address: string }) => {
+export type WalletContents = {
+  balance: number,
+  coins: any[],
+  nfts: any[]
+}
+
+const getWalletContents = async ({ address }: { address: string }): Promise<WalletContents> => {
   let objectInfos = [];
   try {
     objectInfos = await fetchSui(
