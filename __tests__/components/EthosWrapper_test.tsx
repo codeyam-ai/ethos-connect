@@ -3,6 +3,7 @@ import { create, act } from 'react-test-renderer'
 
 import EthosWrapper from '../../src/components/EthosWrapper'
 import * as getProvider from '../../src/lib/getProvider'
+import * as getWalletContents from '../../src/lib/getWalletContents'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import * as initialize from '../../src/lib/initialize';
@@ -27,6 +28,12 @@ describe('EthosWrapper', () => {
     onWalletConnected = jest.fn(({ provider: p, signer: s }) => {
       receivedProvider = p
       receivedSigner = s
+    });
+
+    jest.spyOn(getWalletContents as any, 'default').mockReturnValue({
+      balance: 0,
+      coins: [],
+      nfts: []
     })
   })
 

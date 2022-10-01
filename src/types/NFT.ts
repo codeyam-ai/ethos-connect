@@ -1,6 +1,6 @@
 export type NFT = {
   name: string
-  tokenId: number
+  tokenId?: number
   imageUri: string
   previewUri?: string
   chain: string

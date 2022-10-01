@@ -1,17 +1,8 @@
-import apiCall from './apiCall'
-import getConfiguration from './getConfiguration'
+import getWalletContents from "./getWalletContents";
 
 const getWalletBalance = async (address: string) => {
-  const { network, chain } = getConfiguration();
-  const {
-    json: { balance },
-  } = await apiCall({
-    relativePath: 'wallet/balance',
-    method: 'POST',
-    body: { network, address, chain },
-  })
-
-  return balance
+  const { balance } = await getWalletContents(address);
+  return balance;
 }
 
-export default getWalletBalance
+export default getWalletBalance;
