@@ -19,7 +19,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   // Set defaults
   if (!ethosConfiguration.chain) ethosConfiguration.chain = Chain.Sui;
   if (!ethosConfiguration.network) ethosConfiguration.network = 'sui';
-  if (!ethosConfiguration.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz/';
+  if (!ethosConfiguration.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz';
 
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
 
