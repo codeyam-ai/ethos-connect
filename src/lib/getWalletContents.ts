@@ -6,16 +6,25 @@ export type WalletContents = {
   nfts: any[]
 }
 
-const getWalletContents = async ({ address }: { address: string }): Promise<WalletContents> => {
-  let objectInfos = [];
-  try {
-    objectInfos = await fetchSui(
-      'sui_getObjectsOwnedByAddress',
-      [ address ]
-    )
-    // objectInfos = await provider.getObjectsOwnedByAddress(address);
-  } catch (e) {
-    console.log("Error getting Sui objects owned by adddress", e);
+const getWalletContents = async (address: string): Promise<WalletContents> => {
+  let objectInfos: any[] = [];
+
+  if (address) {
+    try {
+      const response = await fetchSui(
+        'sui_getObjectsOwnedByAddress',
+        [ address ]
+      )
+  
+      if (response.error) {
+        console.log("Error getting wallet contenst", response.error);
+      } else {
+        objectInfos = response;
+      }
+      // objectInfos = await provider.getObjectsOwnedByAddress(address);
+    } catch (e) {
+      console.log("Error getting Sui objects owned by adddress", e);
+    }
   }
 
   if (objectInfos.length === 0) {
@@ -25,7 +34,7 @@ const getWalletContents = async ({ address }: { address: string }): Promise<Wall
       nfts: []
     }
   }
-  
+
   const objectIds = objectInfos.map((o: any) => o.objectId);
   // const objects = await provider.getObjectBatch(objectIds)
   const objects = [];

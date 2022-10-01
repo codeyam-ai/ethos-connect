@@ -17,7 +17,7 @@ const useAccount = (signer: any) => {
 
     const initAccount = async () => {
       const address = await signer?.getAddress();
-      const contents = await getWalletContents({ address });
+      const contents = await getWalletContents(address);
       setAccount({
         address,
         contents
