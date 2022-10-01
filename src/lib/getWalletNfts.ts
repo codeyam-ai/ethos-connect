@@ -1,24 +1,8 @@
-import apiCall from './apiCall'
-import log from './log'
-import { NFT } from '../types/NFT'
-import getConfiguration from './getConfiguration'
+import getWalletContents from "./getWalletContents";
 
-const getWalletNfts = async (address: string): Promise<NFT[]> => {
-  const { chain } = getConfiguration();
-
-  const {
-    json: { nfts },
-    status,
-  } = await apiCall({
-    relativePath: `nfts/${address}?chain=${chain}`,
-  })
-
-  if (status !== 200) {
-    log('walletNfts', 'Error with wallet NFTs', status)
-    return []
-  }
-
-  return nfts
+const getWalletBalance = async (address: string): Promise<any[]> => {
+  const { nfts } = await getWalletContents({ address });
+  return nfts;
 }
 
-export default getWalletNfts
+export default getWalletBalance;
