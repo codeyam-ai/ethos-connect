@@ -20,7 +20,7 @@ const getWalletContents = async ({ address }: { address: string }) => {
     }
   }
   
-  const objectIds = objectInfos.map(o => o.objectId);
+  const objectIds = objectInfos.map((o: any) => o.objectId);
   // const objects = await provider.getObjectBatch(objectIds)
   const objects = [];
   for (const objectId of objectIds) {
