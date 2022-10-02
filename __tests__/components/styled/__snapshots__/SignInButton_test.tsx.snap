@@ -20,22 +20,23 @@ Array [
       role="dialog"
       style={
         Object {
-          "display": "none",
           "position": "relative",
-          "zIndex": "10",
+          "visibility": "hidden",
+          "zIndex": "100",
         }
       }
     >
       <div
-        onClick={[Function]}
         style={
           Object {
-            "backgroundColor": "rgb(107 114 128 / .75)",
+            "backgroundColor": "rgb(107 114 128)",
             "bottom": "0px",
             "left": "0px",
+            "opacity": "0",
             "position": "fixed",
             "right": "0px",
             "top": "0px",
+            "transition": "all 300ms ease-in-out",
           }
         }
       />
@@ -44,15 +45,19 @@ Array [
           Object {
             "bottom": "0px",
             "left": "0px",
+            "opacity": "0",
             "overflowY": "auto",
             "position": "fixed",
             "right": "0px",
+            "scale": ".95",
             "top": "0px",
+            "transition": "all 300ms ease-in-out",
             "zIndex": "99",
           }
         }
       >
         <div
+          id="ethos-close-on-click"
           style={
             Object {
               "alignItems": "center",

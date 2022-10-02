@@ -33,6 +33,7 @@
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
     "test": "./scripts/test.sh",
     "test:watch": "./scripts/test.sh --watch",
+    "test:snapshot": "npx jest --update-snapshot",
     "lint": "./scripts/lint.sh",
     "playground": "yarn workspace playground-react dev",
     "clean": "rimraf ./dist"

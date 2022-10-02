@@ -9,7 +9,7 @@ import * as lib from '../../../src/lib/login'
 
 const modalExists = (root: any) => {
   const modal = root.findByProps({ role: 'dialog' })
-  return modal.props.style.display === 'block'
+  return modal.props.style.visibility !== 'hidden'
 }
 
 describe('SignInModal', () => {

@@ -57,12 +57,12 @@ end FONTS
 
 export const dialog = (isOpen: boolean) =>
 ({
-  display: isOpen ? 'block' : 'none',
+  visibility: isOpen ? '' : 'hidden',
   position: 'relative',
-  zIndex: '10',
+  zIndex: '100'
 } as React.CSSProperties)
 
-export const backdrop = () =>
+export const backdrop = (isOpen: boolean) =>
 // fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity
 ({
   position: 'fixed',
@@ -70,7 +70,9 @@ export const backdrop = () =>
   right: '0px',
   bottom: '0px',
   left: '0px',
-  backgroundColor: 'rgb(107 114 128 / .75)',
+  backgroundColor: 'rgb(107 114 128)',
+  opacity: isOpen ? '.75' : '0',
+  transition: 'all 300ms ease-in-out',
 } as React.CSSProperties)
 
 export const missingMessage = () =>
@@ -97,7 +99,7 @@ export const modalContent = (width: number): React.CSSProperties => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
-export const modalOuterWrapper = () =>
+export const modalOuterWrapper = (isOpen: boolean) =>
 // fixed z-10 inset-0 overflow-y-auto
 ({
   position: 'fixed',
@@ -107,6 +109,10 @@ export const modalOuterWrapper = () =>
   bottom: '0px',
   left: '0px',
   overflowY: 'auto',
+  opacity: isOpen ? '1' : '0',
+  scale: isOpen ? '1' : '.95',
+  transition: 'all 300ms ease-in-out'
+
 } as React.CSSProperties)
 
 export const modalInnerWrapper = (width: number): React.CSSProperties => {
