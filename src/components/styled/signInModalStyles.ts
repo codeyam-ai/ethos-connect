@@ -144,6 +144,7 @@ export const dialogPanel = (width: number) => {
     transitionProperty: 'all',
     borderRadius: '0.5rem',
     boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+    paddingBottom: '32px'
   }
   const sm = {
     width: '100%',
@@ -339,7 +340,6 @@ export const signInButton = (width: number) => {
 export const walletOptionContainer = (width: number) => {
   const styles = {
     marginTop: '12px',
-    marginBottom: '32px',
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",

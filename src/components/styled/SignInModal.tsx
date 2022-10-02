@@ -33,6 +33,8 @@ export type SignInModalProps = {
   isOpen: boolean
   socialLogin?: string[]
   onClose?: () => void
+  hideEmailSignIn?: boolean
+  hideWalletSignIn?: boolean
 }
 
 export function showSignInModal() {
@@ -43,7 +45,13 @@ export function hideSignInModal() {
   window.ethosInternal.hideSignInModal()
 }
 
-const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) => {
+const SignInModal = ({
+  isOpen,
+  onClose,
+  socialLogin = [],
+  hideEmailSignIn,
+  hideWalletSignIn,
+}: SignInModalProps) => {
   const [isOpenAll, setIsOpenAll] = useState(isOpen)
   const [loading, setLoading] = useState(true)
   const [missingMessage, setMissingMessage] = useState<any | null>(null)
@@ -191,6 +199,9 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
   }, [isOpen, setIsOpenAll, _onClose])
 
   useEffect(() => {
+    if (hideEmailSignIn && hideWalletSignIn) {
+      throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
+    }
     setLoading(false)
   }, [])
 
@@ -250,49 +261,65 @@ const SignInModal = ({ isOpen, onClose, socialLogin = [] }: SignInModalProps) =>
                       </div>
                     ) : (
                       <>
-                        <div style={{ marginTop: '16px' }}>
-                          <span style={styles.signInOptionSubtitleText()}>
-                            Sign in with your email
-                          </span>
-                        </div>
-                        <form onSubmit={onSubmit}>
-                          <input
-                            style={styles.emailInput()}
-                            type="email"
-                            placeholder="Email address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                          />
-                          <button style={styles.signInButton(width)} type="submit">
-                            Sign In
-                          </button>
-                        </form>
-                        <div style={{ margin: '16px 0 16px 0' }}>
-                          <span style={styles.secondaryHeaderText()}>or</span>
-                        </div>
-                        <span style={styles.signInOptionSubtitleText()}>
-                          Connect an existing wallet
-                        </span>
-                        {missingMessage && (
-                          <div style={styles.connectorWarning()}>{missingMessage}</div>
+                        {!hideEmailSignIn && (
+                          <div role="email-sign-in">
+                            <div style={{ marginTop: '16px' }}>
+                              <span style={styles.signInOptionSubtitleText()}>
+                                Sign in with your email
+                              </span>
+                            </div>
+                            <form onSubmit={onSubmit}>
+                              <input
+                                style={styles.emailInput()}
+                                type="email"
+                                placeholder="Email address"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                              <button style={styles.signInButton(width)} type="submit">
+                                Sign In
+                              </button>
+                            </form>
+                            {
+                              // Don't show "or" unless wallet sign in is also available
+                              !hideWalletSignIn && (
+                                <div style={{ margin: '16px 0 16px 0' }}>
+                                  <span style={styles.secondaryHeaderText()}>or</span>
+                                </div>
+                              )
+                            }
+                          </div>
                         )}
-                        <div style={styles.walletOptionContainer(width)}>
-                          <button style={styles.walletOptionButton(width)} onClick={connectEthos}>
-                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                              {logo('ethos')}
-                              <span style={styles.walletOptionText()}>Ethos Wallet</span>
+                        {!hideWalletSignIn && (
+                          <div role="wallet-sign-in">
+                            <span style={styles.signInOptionSubtitleText()}>
+                              Connect an existing wallet
                             </span>
-                          </button>
-                          <button style={styles.walletOptionButton(width)} onClick={_connectSui}>
-                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                              {logo('sui')}
-                              <span style={styles.walletOptionText()}>Sui Wallet</span>
-                            </span>
-                          </button>
-                        </div>
-                        {/* <button style={styles.learnMoreButton(width)}>
-                            Learn more →
-                          </button> */}
+                            {missingMessage && (
+                              <div style={styles.connectorWarning()}>{missingMessage}</div>
+                            )}
+                            <div style={styles.walletOptionContainer(width)}>
+                              <button
+                                style={styles.walletOptionButton(width)}
+                                onClick={connectEthos}
+                              >
+                                <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                  {logo('ethos')}
+                                  <span style={styles.walletOptionText()}>Ethos Wallet</span>
+                                </span>
+                              </button>
+                              <button
+                                style={styles.walletOptionButton(width)}
+                                onClick={_connectSui}
+                              >
+                                <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                  {logo('sui')}
+                                  <span style={styles.walletOptionText()}>Sui Wallet</span>
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
