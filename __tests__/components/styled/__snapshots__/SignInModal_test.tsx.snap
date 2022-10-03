@@ -20,22 +20,23 @@ Array [
       role="dialog"
       style={
         Object {
-          "display": "none",
           "position": "relative",
-          "zIndex": "10",
+          "visibility": "hidden",
+          "zIndex": "100",
         }
       }
     >
       <div
-        onClick={[Function]}
         style={
           Object {
-            "backgroundColor": "rgb(107 114 128 / .75)",
+            "backgroundColor": "rgb(107 114 128)",
             "bottom": "0px",
             "left": "0px",
+            "opacity": "0",
             "position": "fixed",
             "right": "0px",
             "top": "0px",
+            "transition": "all 300ms ease-in-out",
           }
         }
       />
@@ -44,15 +45,19 @@ Array [
           Object {
             "bottom": "0px",
             "left": "0px",
+            "opacity": "0",
             "overflowY": "auto",
             "position": "fixed",
             "right": "0px",
+            "scale": ".95",
             "top": "0px",
+            "transition": "all 300ms ease-in-out",
             "zIndex": "99",
           }
         }
       >
         <div
+          id="ethos-close-on-click"
           style={
             Object {
               "alignItems": "center",
@@ -72,6 +77,7 @@ Array [
                 "boxShadow": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                 "maxWidth": "400px",
                 "overflow": "hidden",
+                "paddingBottom": "32px",
                 "position": "relative",
                 "transitionProperty": "all",
                 "width": "100%",
@@ -169,11 +175,87 @@ Array [
                 </span>
               </h2>
               <div
-                style={
-                  Object {
-                    "marginTop": "16px",
+                role="email-sign-in"
+              >
+                <div
+                  style={
+                    Object {
+                      "marginTop": "16px",
+                    }
                   }
-                }
+                >
+                  <span
+                    style={
+                      Object {
+                        "fontSize": "14px",
+                        "fontWeight": "600",
+                      }
+                    }
+                  >
+                    Sign in with your email
+                  </span>
+                </div>
+                <form
+                  onSubmit={[Function]}
+                >
+                  <input
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    style={
+                      Object {
+                        "border": "1px solid rgb(203 213 225)",
+                        "borderRadius": "0.5rem",
+                        "boxSizing": "border-box",
+                        "marginTop": "12px",
+                        "padding": "12px",
+                        "width": "100%",
+                      }
+                    }
+                    type="email"
+                    value=""
+                  />
+                  <button
+                    style={
+                      Object {
+                        "backgroundColor": "#761AC7",
+                        "border": "1px solid rgb(203 213 225)",
+                        "borderRadius": "0.5rem",
+                        "color": "#FFFFFF",
+                        "cursor": "pointer",
+                        "fontWeight": "600",
+                        "marginTop": ".75rem",
+                        "padding": "12px 20px 12px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
+                      }
+                    }
+                    type="submit"
+                  >
+                    Sign In
+                  </button>
+                </form>
+                <div
+                  style={
+                    Object {
+                      "margin": "16px 0 16px 0",
+                    }
+                  }
+                >
+                  <span
+                    style={
+                      Object {
+                        "color": "#999999",
+                        "fontSize": "12px",
+                        "lineHeight": "24px",
+                      }
+                    }
+                  >
+                    or
+                  </span>
+                </div>
+              </div>
+              <div
+                role="wallet-sign-in"
               >
                 <span
                   style={
@@ -183,212 +265,143 @@ Array [
                     }
                   }
                 >
-                  Sign in with your email
+                  Connect an existing wallet
                 </span>
-              </div>
-              <form
-                onSubmit={[Function]}
-              >
-                <input
-                  onChange={[Function]}
-                  placeholder="Email address"
+                <div
                   style={
                     Object {
-                      "border": "1px solid rgb(203 213 225)",
-                      "borderRadius": "0.5rem",
-                      "boxSizing": "border-box",
-                      "marginTop": "12px",
-                      "padding": "12px",
-                      "width": "100%",
-                    }
-                  }
-                  type="email"
-                  value=""
-                />
-                <button
-                  style={
-                    Object {
-                      "backgroundColor": "#761AC7",
-                      "border": "1px solid rgb(203 213 225)",
-                      "borderRadius": "0.5rem",
-                      "color": "#FFFFFF",
-                      "cursor": "pointer",
-                      "fontWeight": "600",
-                      "marginTop": ".75rem",
-                      "padding": "12px 20px 12px 20px",
-                      "textDecoration": "none",
-                      "width": "100%",
-                    }
-                  }
-                  type="submit"
-                >
-                  Sign In
-                </button>
-              </form>
-              <div
-                style={
-                  Object {
-                    "margin": "16px 0 16px 0",
-                  }
-                }
-              >
-                <span
-                  style={
-                    Object {
-                      "color": "#999999",
-                      "fontSize": "12px",
-                      "lineHeight": "24px",
-                    }
-                  }
-                >
-                  or
-                </span>
-              </div>
-              <span
-                style={
-                  Object {
-                    "fontSize": "14px",
-                    "fontWeight": "600",
-                  }
-                }
-              >
-                Connect an existing wallet
-              </span>
-              <div
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "display": "flex",
-                    "flexDirection": "column",
-                    "gap": "8px",
-                    "marginBottom": "32px",
-                    "marginTop": "12px",
-                    "padding": "0px",
-                  }
-                }
-              >
-                <button
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "background": "#FFFFFF",
-                      "border": "1px solid #E9EBED",
-                      "borderRadius": "8px",
-                      "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
-                      "boxSizing": "border-box",
+                      "alignItems": "flex-start",
                       "display": "flex",
-                      "flex": "none",
-                      "flexDirection": "row",
-                      "flexGrow": "0",
-                      "gap": "10px",
-                      "height": "48px",
-                      "justifyContent": "center",
-                      "order": "0",
-                      "padding": "12px 20px",
-                      "textDecoration": "none",
-                      "width": "100%",
+                      "flexDirection": "column",
+                      "gap": "8px",
+                      "marginTop": "12px",
+                      "padding": "0px",
                     }
                   }
                 >
-                  <span
+                  <button
+                    onClick={[Function]}
                     style={
                       Object {
                         "alignItems": "center",
-                        "display": "inline-flex",
+                        "background": "#FFFFFF",
+                        "border": "1px solid #E9EBED",
+                        "borderRadius": "8px",
+                        "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
+                        "boxSizing": "border-box",
+                        "display": "flex",
+                        "flex": "none",
+                        "flexDirection": "row",
+                        "flexGrow": "0",
+                        "gap": "10px",
+                        "height": "48px",
+                        "justifyContent": "center",
+                        "order": "0",
+                        "padding": "12px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
                       }
                     }
                   >
-                    <svg
-                      fill="none"
-                      height={23.51063829787234}
-                      viewBox="0 0 47 65"
-                      width={17}
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6.00471 1H40.0029C42.7644 1 45.0029 3.23858 45.0029 6V44.8425C45.0029 47.604 42.7643 49.8425 40.0029 49.8425H6.0047C3.24328 49.8425 1.0047 47.604 1.0047 44.8425V6C1.0047 3.23858 3.24329 1 6.00471 1Z"
-                        stroke="#5B5D5F"
-                        strokeWidth="2"
-                      />
-                      <path
-                        d="M6.68764 3.64648L30.6631 14.8026C32.0736 15.4589 32.9756 16.8735 32.9756 18.4292V58.6799C32.9756 61.5743 29.9966 63.5105 27.3515 62.3353L3.37601 51.683C1.93126 51.0411 1.00013 49.6085 1.00013 48.0276V7.27309C1.00013 4.34854 4.03609 2.41268 6.68764 3.64648Z"
-                        fill="#5B5D5F"
-                      />
-                    </svg>
                     <span
                       style={
                         Object {
-                          "color": "#5B5D5F",
-                          "marginLeft": "10px",
+                          "alignItems": "center",
+                          "display": "inline-flex",
                         }
                       }
                     >
-                      Ethos Wallet
-                    </span>
-                  </span>
-                </button>
-                <button
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "background": "#FFFFFF",
-                      "border": "1px solid #E9EBED",
-                      "borderRadius": "8px",
-                      "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
-                      "boxSizing": "border-box",
-                      "display": "flex",
-                      "flex": "none",
-                      "flexDirection": "row",
-                      "flexGrow": "0",
-                      "gap": "10px",
-                      "height": "48px",
-                      "justifyContent": "center",
-                      "order": "0",
-                      "padding": "12px 20px",
-                      "textDecoration": "none",
-                      "width": "100%",
-                    }
-                  }
-                >
-                  <span
-                    style={
-                      Object {
-                        "alignItems": "center",
-                        "display": "inline-flex",
-                      }
-                    }
-                  >
-                    <svg
-                      height={21.42857142857143}
-                      id="SuiSvg"
-                      viewBox="-1 0 28 40"
-                      width={15}
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.8611,33.0541a13.6477,13.6477,0,0,0,23.7778,0,13.89,13.89,0,0,0,0-13.8909L15.1824.8368a1.6444,1.6444,0,0,0-2.8648,0L1.8611,19.1632A13.89,13.89,0,0,0,1.8611,33.0541ZM10.8044,9.5555,13.0338,5.648a.8222.8222,0,0,1,1.4324,0L23.043,20.68a10.8426,10.8426,0,0,1,.8873,8.8828,9.4254,9.4254,0,0,0-.4388-1.4586c-1.1847-3.0254-3.8634-5.36-7.9633-6.9393-2.8187-1.0819-4.618-2.6731-5.3491-4.73C9.2375,13.7848,10.221,10.8942,10.8044,9.5555ZM7.0028,16.2184,4.457,20.68a10.8569,10.8569,0,0,0,0,10.8582,10.6776,10.6776,0,0,0,16.1566,2.935,7.5061,7.5061,0,0,0,.0667-5.2913c-.87-2.1858-2.9646-3.9308-6.2252-5.1876-3.6857-1.4147-6.08-3.6233-7.1157-6.5625A9.297,9.297,0,0,1,7.0028,16.2184Z"
+                      <svg
+                        fill="none"
+                        height={23.51063829787234}
+                        viewBox="0 0 47 65"
+                        width={17}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6.00471 1H40.0029C42.7644 1 45.0029 3.23858 45.0029 6V44.8425C45.0029 47.604 42.7643 49.8425 40.0029 49.8425H6.0047C3.24328 49.8425 1.0047 47.604 1.0047 44.8425V6C1.0047 3.23858 3.24329 1 6.00471 1Z"
+                          stroke="#5B5D5F"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M6.68764 3.64648L30.6631 14.8026C32.0736 15.4589 32.9756 16.8735 32.9756 18.4292V58.6799C32.9756 61.5743 29.9966 63.5105 27.3515 62.3353L3.37601 51.683C1.93126 51.0411 1.00013 49.6085 1.00013 48.0276V7.27309C1.00013 4.34854 4.03609 2.41268 6.68764 3.64648Z"
+                          fill="#5B5D5F"
+                        />
+                      </svg>
+                      <span
                         style={
                           Object {
-                            "fill": "#5B5D5F",
-                            "fillRule": "evenodd",
+                            "color": "#5B5D5F",
+                            "marginLeft": "10px",
                           }
                         }
-                      />
-                    </svg>
+                      >
+                        Ethos Wallet
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "background": "#FFFFFF",
+                        "border": "1px solid #E9EBED",
+                        "borderRadius": "8px",
+                        "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
+                        "boxSizing": "border-box",
+                        "display": "flex",
+                        "flex": "none",
+                        "flexDirection": "row",
+                        "flexGrow": "0",
+                        "gap": "10px",
+                        "height": "48px",
+                        "justifyContent": "center",
+                        "order": "0",
+                        "padding": "12px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
+                      }
+                    }
+                  >
                     <span
                       style={
                         Object {
-                          "color": "#5B5D5F",
-                          "marginLeft": "10px",
+                          "alignItems": "center",
+                          "display": "inline-flex",
                         }
                       }
                     >
-                      Sui Wallet
+                      <svg
+                        height={21.42857142857143}
+                        id="SuiSvg"
+                        viewBox="-1 0 28 40"
+                        width={15}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1.8611,33.0541a13.6477,13.6477,0,0,0,23.7778,0,13.89,13.89,0,0,0,0-13.8909L15.1824.8368a1.6444,1.6444,0,0,0-2.8648,0L1.8611,19.1632A13.89,13.89,0,0,0,1.8611,33.0541ZM10.8044,9.5555,13.0338,5.648a.8222.8222,0,0,1,1.4324,0L23.043,20.68a10.8426,10.8426,0,0,1,.8873,8.8828,9.4254,9.4254,0,0,0-.4388-1.4586c-1.1847-3.0254-3.8634-5.36-7.9633-6.9393-2.8187-1.0819-4.618-2.6731-5.3491-4.73C9.2375,13.7848,10.221,10.8942,10.8044,9.5555ZM7.0028,16.2184,4.457,20.68a10.8569,10.8569,0,0,0,0,10.8582,10.6776,10.6776,0,0,0,16.1566,2.935,7.5061,7.5061,0,0,0,.0667-5.2913c-.87-2.1858-2.9646-3.9308-6.2252-5.1876-3.6857-1.4147-6.08-3.6233-7.1157-6.5625A9.297,9.297,0,0,1,7.0028,16.2184Z"
+                          style={
+                            Object {
+                              "fill": "#5B5D5F",
+                              "fillRule": "evenodd",
+                            }
+                          }
+                        />
+                      </svg>
+                      <span
+                        style={
+                          Object {
+                            "color": "#5B5D5F",
+                            "marginLeft": "10px",
+                          }
+                        }
+                      >
+                        Sui Wallet
+                      </span>
                     </span>
-                  </span>
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -419,22 +432,23 @@ Array [
       role="dialog"
       style={
         Object {
-          "display": "block",
           "position": "relative",
-          "zIndex": "10",
+          "visibility": "",
+          "zIndex": "100",
         }
       }
     >
       <div
-        onClick={[Function]}
         style={
           Object {
-            "backgroundColor": "rgb(107 114 128 / .75)",
+            "backgroundColor": "rgb(107 114 128)",
             "bottom": "0px",
             "left": "0px",
+            "opacity": ".75",
             "position": "fixed",
             "right": "0px",
             "top": "0px",
+            "transition": "all 300ms ease-in-out",
           }
         }
       />
@@ -444,15 +458,19 @@ Array [
           Object {
             "bottom": "0px",
             "left": "0px",
+            "opacity": "1",
             "overflowY": "auto",
             "position": "fixed",
             "right": "0px",
+            "scale": "1",
             "top": "0px",
+            "transition": "all 300ms ease-in-out",
             "zIndex": "99",
           }
         }
       >
         <div
+          id="ethos-close-on-click"
           style={
             Object {
               "alignItems": "center",
@@ -472,6 +490,7 @@ Array [
                 "boxShadow": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                 "maxWidth": "400px",
                 "overflow": "hidden",
+                "paddingBottom": "32px",
                 "position": "relative",
                 "transitionProperty": "all",
                 "width": "100%",
@@ -569,11 +588,87 @@ Array [
                 </span>
               </h2>
               <div
-                style={
-                  Object {
-                    "marginTop": "16px",
+                role="email-sign-in"
+              >
+                <div
+                  style={
+                    Object {
+                      "marginTop": "16px",
+                    }
                   }
-                }
+                >
+                  <span
+                    style={
+                      Object {
+                        "fontSize": "14px",
+                        "fontWeight": "600",
+                      }
+                    }
+                  >
+                    Sign in with your email
+                  </span>
+                </div>
+                <form
+                  onSubmit={[Function]}
+                >
+                  <input
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    style={
+                      Object {
+                        "border": "1px solid rgb(203 213 225)",
+                        "borderRadius": "0.5rem",
+                        "boxSizing": "border-box",
+                        "marginTop": "12px",
+                        "padding": "12px",
+                        "width": "100%",
+                      }
+                    }
+                    type="email"
+                    value=""
+                  />
+                  <button
+                    style={
+                      Object {
+                        "backgroundColor": "#761AC7",
+                        "border": "1px solid rgb(203 213 225)",
+                        "borderRadius": "0.5rem",
+                        "color": "#FFFFFF",
+                        "cursor": "pointer",
+                        "fontWeight": "600",
+                        "marginTop": ".75rem",
+                        "padding": "12px 20px 12px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
+                      }
+                    }
+                    type="submit"
+                  >
+                    Sign In
+                  </button>
+                </form>
+                <div
+                  style={
+                    Object {
+                      "margin": "16px 0 16px 0",
+                    }
+                  }
+                >
+                  <span
+                    style={
+                      Object {
+                        "color": "#999999",
+                        "fontSize": "12px",
+                        "lineHeight": "24px",
+                      }
+                    }
+                  >
+                    or
+                  </span>
+                </div>
+              </div>
+              <div
+                role="wallet-sign-in"
               >
                 <span
                   style={
@@ -583,212 +678,143 @@ Array [
                     }
                   }
                 >
-                  Sign in with your email
+                  Connect an existing wallet
                 </span>
-              </div>
-              <form
-                onSubmit={[Function]}
-              >
-                <input
-                  onChange={[Function]}
-                  placeholder="Email address"
+                <div
                   style={
                     Object {
-                      "border": "1px solid rgb(203 213 225)",
-                      "borderRadius": "0.5rem",
-                      "boxSizing": "border-box",
-                      "marginTop": "12px",
-                      "padding": "12px",
-                      "width": "100%",
-                    }
-                  }
-                  type="email"
-                  value=""
-                />
-                <button
-                  style={
-                    Object {
-                      "backgroundColor": "#761AC7",
-                      "border": "1px solid rgb(203 213 225)",
-                      "borderRadius": "0.5rem",
-                      "color": "#FFFFFF",
-                      "cursor": "pointer",
-                      "fontWeight": "600",
-                      "marginTop": ".75rem",
-                      "padding": "12px 20px 12px 20px",
-                      "textDecoration": "none",
-                      "width": "100%",
-                    }
-                  }
-                  type="submit"
-                >
-                  Sign In
-                </button>
-              </form>
-              <div
-                style={
-                  Object {
-                    "margin": "16px 0 16px 0",
-                  }
-                }
-              >
-                <span
-                  style={
-                    Object {
-                      "color": "#999999",
-                      "fontSize": "12px",
-                      "lineHeight": "24px",
-                    }
-                  }
-                >
-                  or
-                </span>
-              </div>
-              <span
-                style={
-                  Object {
-                    "fontSize": "14px",
-                    "fontWeight": "600",
-                  }
-                }
-              >
-                Connect an existing wallet
-              </span>
-              <div
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "display": "flex",
-                    "flexDirection": "column",
-                    "gap": "8px",
-                    "marginBottom": "32px",
-                    "marginTop": "12px",
-                    "padding": "0px",
-                  }
-                }
-              >
-                <button
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "background": "#FFFFFF",
-                      "border": "1px solid #E9EBED",
-                      "borderRadius": "8px",
-                      "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
-                      "boxSizing": "border-box",
+                      "alignItems": "flex-start",
                       "display": "flex",
-                      "flex": "none",
-                      "flexDirection": "row",
-                      "flexGrow": "0",
-                      "gap": "10px",
-                      "height": "48px",
-                      "justifyContent": "center",
-                      "order": "0",
-                      "padding": "12px 20px",
-                      "textDecoration": "none",
-                      "width": "100%",
+                      "flexDirection": "column",
+                      "gap": "8px",
+                      "marginTop": "12px",
+                      "padding": "0px",
                     }
                   }
                 >
-                  <span
+                  <button
+                    onClick={[Function]}
                     style={
                       Object {
                         "alignItems": "center",
-                        "display": "inline-flex",
+                        "background": "#FFFFFF",
+                        "border": "1px solid #E9EBED",
+                        "borderRadius": "8px",
+                        "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
+                        "boxSizing": "border-box",
+                        "display": "flex",
+                        "flex": "none",
+                        "flexDirection": "row",
+                        "flexGrow": "0",
+                        "gap": "10px",
+                        "height": "48px",
+                        "justifyContent": "center",
+                        "order": "0",
+                        "padding": "12px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
                       }
                     }
                   >
-                    <svg
-                      fill="none"
-                      height={23.51063829787234}
-                      viewBox="0 0 47 65"
-                      width={17}
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6.00471 1H40.0029C42.7644 1 45.0029 3.23858 45.0029 6V44.8425C45.0029 47.604 42.7643 49.8425 40.0029 49.8425H6.0047C3.24328 49.8425 1.0047 47.604 1.0047 44.8425V6C1.0047 3.23858 3.24329 1 6.00471 1Z"
-                        stroke="#5B5D5F"
-                        strokeWidth="2"
-                      />
-                      <path
-                        d="M6.68764 3.64648L30.6631 14.8026C32.0736 15.4589 32.9756 16.8735 32.9756 18.4292V58.6799C32.9756 61.5743 29.9966 63.5105 27.3515 62.3353L3.37601 51.683C1.93126 51.0411 1.00013 49.6085 1.00013 48.0276V7.27309C1.00013 4.34854 4.03609 2.41268 6.68764 3.64648Z"
-                        fill="#5B5D5F"
-                      />
-                    </svg>
                     <span
                       style={
                         Object {
-                          "color": "#5B5D5F",
-                          "marginLeft": "10px",
+                          "alignItems": "center",
+                          "display": "inline-flex",
                         }
                       }
                     >
-                      Ethos Wallet
-                    </span>
-                  </span>
-                </button>
-                <button
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "background": "#FFFFFF",
-                      "border": "1px solid #E9EBED",
-                      "borderRadius": "8px",
-                      "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
-                      "boxSizing": "border-box",
-                      "display": "flex",
-                      "flex": "none",
-                      "flexDirection": "row",
-                      "flexGrow": "0",
-                      "gap": "10px",
-                      "height": "48px",
-                      "justifyContent": "center",
-                      "order": "0",
-                      "padding": "12px 20px",
-                      "textDecoration": "none",
-                      "width": "100%",
-                    }
-                  }
-                >
-                  <span
-                    style={
-                      Object {
-                        "alignItems": "center",
-                        "display": "inline-flex",
-                      }
-                    }
-                  >
-                    <svg
-                      height={21.42857142857143}
-                      id="SuiSvg"
-                      viewBox="-1 0 28 40"
-                      width={15}
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.8611,33.0541a13.6477,13.6477,0,0,0,23.7778,0,13.89,13.89,0,0,0,0-13.8909L15.1824.8368a1.6444,1.6444,0,0,0-2.8648,0L1.8611,19.1632A13.89,13.89,0,0,0,1.8611,33.0541ZM10.8044,9.5555,13.0338,5.648a.8222.8222,0,0,1,1.4324,0L23.043,20.68a10.8426,10.8426,0,0,1,.8873,8.8828,9.4254,9.4254,0,0,0-.4388-1.4586c-1.1847-3.0254-3.8634-5.36-7.9633-6.9393-2.8187-1.0819-4.618-2.6731-5.3491-4.73C9.2375,13.7848,10.221,10.8942,10.8044,9.5555ZM7.0028,16.2184,4.457,20.68a10.8569,10.8569,0,0,0,0,10.8582,10.6776,10.6776,0,0,0,16.1566,2.935,7.5061,7.5061,0,0,0,.0667-5.2913c-.87-2.1858-2.9646-3.9308-6.2252-5.1876-3.6857-1.4147-6.08-3.6233-7.1157-6.5625A9.297,9.297,0,0,1,7.0028,16.2184Z"
+                      <svg
+                        fill="none"
+                        height={23.51063829787234}
+                        viewBox="0 0 47 65"
+                        width={17}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6.00471 1H40.0029C42.7644 1 45.0029 3.23858 45.0029 6V44.8425C45.0029 47.604 42.7643 49.8425 40.0029 49.8425H6.0047C3.24328 49.8425 1.0047 47.604 1.0047 44.8425V6C1.0047 3.23858 3.24329 1 6.00471 1Z"
+                          stroke="#5B5D5F"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M6.68764 3.64648L30.6631 14.8026C32.0736 15.4589 32.9756 16.8735 32.9756 18.4292V58.6799C32.9756 61.5743 29.9966 63.5105 27.3515 62.3353L3.37601 51.683C1.93126 51.0411 1.00013 49.6085 1.00013 48.0276V7.27309C1.00013 4.34854 4.03609 2.41268 6.68764 3.64648Z"
+                          fill="#5B5D5F"
+                        />
+                      </svg>
+                      <span
                         style={
                           Object {
-                            "fill": "#5B5D5F",
-                            "fillRule": "evenodd",
+                            "color": "#5B5D5F",
+                            "marginLeft": "10px",
                           }
                         }
-                      />
-                    </svg>
+                      >
+                        Ethos Wallet
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "background": "#FFFFFF",
+                        "border": "1px solid #E9EBED",
+                        "borderRadius": "8px",
+                        "boxShadow": "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
+                        "boxSizing": "border-box",
+                        "display": "flex",
+                        "flex": "none",
+                        "flexDirection": "row",
+                        "flexGrow": "0",
+                        "gap": "10px",
+                        "height": "48px",
+                        "justifyContent": "center",
+                        "order": "0",
+                        "padding": "12px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
+                      }
+                    }
+                  >
                     <span
                       style={
                         Object {
-                          "color": "#5B5D5F",
-                          "marginLeft": "10px",
+                          "alignItems": "center",
+                          "display": "inline-flex",
                         }
                       }
                     >
-                      Sui Wallet
+                      <svg
+                        height={21.42857142857143}
+                        id="SuiSvg"
+                        viewBox="-1 0 28 40"
+                        width={15}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1.8611,33.0541a13.6477,13.6477,0,0,0,23.7778,0,13.89,13.89,0,0,0,0-13.8909L15.1824.8368a1.6444,1.6444,0,0,0-2.8648,0L1.8611,19.1632A13.89,13.89,0,0,0,1.8611,33.0541ZM10.8044,9.5555,13.0338,5.648a.8222.8222,0,0,1,1.4324,0L23.043,20.68a10.8426,10.8426,0,0,1,.8873,8.8828,9.4254,9.4254,0,0,0-.4388-1.4586c-1.1847-3.0254-3.8634-5.36-7.9633-6.9393-2.8187-1.0819-4.618-2.6731-5.3491-4.73C9.2375,13.7848,10.221,10.8942,10.8044,9.5555ZM7.0028,16.2184,4.457,20.68a10.8569,10.8569,0,0,0,0,10.8582,10.6776,10.6776,0,0,0,16.1566,2.935,7.5061,7.5061,0,0,0,.0667-5.2913c-.87-2.1858-2.9646-3.9308-6.2252-5.1876-3.6857-1.4147-6.08-3.6233-7.1157-6.5625A9.297,9.297,0,0,1,7.0028,16.2184Z"
+                          style={
+                            Object {
+                              "fill": "#5B5D5F",
+                              "fillRule": "evenodd",
+                            }
+                          }
+                        />
+                      </svg>
+                      <span
+                        style={
+                          Object {
+                            "color": "#5B5D5F",
+                            "marginLeft": "10px",
+                          }
+                        }
+                      >
+                        Sui Wallet
+                      </span>
                     </span>
-                  </span>
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

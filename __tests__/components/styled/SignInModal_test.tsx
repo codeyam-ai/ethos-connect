@@ -9,7 +9,15 @@ import * as lib from '../../../src/lib/login'
 
 const modalExists = (root: any) => {
   const modal = root.findByProps({ role: 'dialog' })
-  return modal.props.style.display === 'block'
+  return modal.props.style.visibility !== 'hidden'
+}
+
+const expectElementWithRoleToExist = (root: any, role: string, shouldExist: boolean): void => {
+  if (shouldExist) {
+    expect(root.findByProps({ role })).toBeTruthy()
+  } else {
+    expect(() => root.findByProps({ role })).toThrow()
+  }
 }
 
 describe('SignInModal', () => {
@@ -31,6 +39,34 @@ describe('SignInModal', () => {
     expect(root.findAllByType(FallbackLogo).length).toBe(0)
 
     expect(signInModal.toJSON()).toMatchSnapshot()
+  })
+
+  it('renders email and wallet sign in if hideEmailSignIn is not true', () => {
+    const signInModal = create(<SignInModal isOpen={true} />)
+
+    const root = signInModal.root
+    expectElementWithRoleToExist(root, 'email-sign-in', true)
+    expectElementWithRoleToExist(root, 'wallet-sign-in', true)
+  })
+  
+  it('does NOT render email if hideEmailSignIn is true', () => {
+    const signInModal = create(<SignInModal isOpen={true} hideEmailSignIn={true} />)
+    
+    const root = signInModal.root
+    expectElementWithRoleToExist(root, 'email-sign-in', false)
+  })
+  
+  it('does NOT render wallet if hideWalletSignIn is true', () => {
+    const signInModal = create(<SignInModal isOpen={true} hideWalletSignIn={true} />)
+    
+    const root = signInModal.root
+    expectElementWithRoleToExist(root, 'wallet-sign-in', false)
+  })
+  
+  it('should throw if hideWalletSignIn and hideWalletSignIn are both true', () => {
+    // Hide console error in test
+    console.error = jest.fn();
+    expect(() => create(<SignInModal isOpen={true} hideEmailSignIn={true} hideWalletSignIn={true} />)).toThrow()
   })
 
   it('shows a warning if you click the Ethos wallet button and it is not installed', async () => {
