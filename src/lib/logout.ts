@@ -4,6 +4,7 @@ import log from './log'
 import postIFrameMessage from './postIFrameMessage'
 
 const logout = async (signer: any, wallet: boolean = false) => {
+  log('logout', `-- Is Extension: ${signer?.extension} --`, `-- Disconnect: ${!!signer?.disconnect} --`, "signer", signer)
   if (signer?.extension) {
     if (signer.disconnect) {
       await signer.disconnect();

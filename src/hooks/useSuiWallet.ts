@@ -42,7 +42,12 @@ const useSuiWallet = (): SuiProviderAndSigner => {
           getAddress: () => account,
           disconnect: async (...args: any[]) => {
             const wallet = await suiWallet();
-            return wallet.disconnect(...args);
+            log('useSuiWallet', 'disconnect', wallet.disconnect, wallet)
+            if (wallet.disconnect) {
+              return wallet.disconnect(...args);
+            } else {
+              console.log("Signer does not support the ability to disconnect from the client interface.")
+            }
           },
           hasPermissions: async (...args: any[]) => {
             const wallet = await suiWallet();

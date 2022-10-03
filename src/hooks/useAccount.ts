@@ -42,11 +42,14 @@ const useAccount = (signer: any) => {
     }    
 
     initAccount();
+    const interval = setInterval(initAccount, 3000);
     // return () => {
     //   if (listener) {
     //     window.removeEventListener('account', listener)
     //   }
     // }
+
+    return () => clearInterval(interval);
   }, [signer])
 
   return account;
