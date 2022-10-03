@@ -52,6 +52,6 @@ const ethos = {
   hideSignInModal
 }
 
-console.log('LOCAL 🥳🔮👹');
+// console.log('LOCAL 🥳🔮👹');
 
 export { EthosWrapper, SignInButton, ethos }
