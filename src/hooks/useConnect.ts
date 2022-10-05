@@ -19,7 +19,24 @@ const useConnect = () => {
     provider: null,
     signer: null
   })
-  const suiProviderAndSigner = useSuiWallet()
+  const { 
+    providerAndSigner: suiProviderAndSigner, 
+    setProviderAndSigner: setSuiProviderAndSigner 
+  } = useSuiWallet();
+  const [logoutCount, setLogoutCount] = useState(0);
+
+  const logout = useCallback(() => {
+    signerFound.current = false;
+    setProviderAndSigner({
+      provider: null,
+      signer: null
+    });
+    setSuiProviderAndSigner(null);
+    for (const key of Object.keys(methodsChecked.current)) {
+      methodsChecked.current[key] = false;
+    }
+    setLogoutCount(prev => prev + 1);
+  }, [])
 
   const checkProviderAndSigner = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, providerAndSigner, signerFound.current, methodsChecked.current)
@@ -43,7 +60,7 @@ const useConnect = () => {
     
     log("useConnect", "final setting providerAndSigner", providerAndSigner)
     setProviderAndSigner(providerAndSigner)
-  }, []);
+  }, [logoutCount]);
 
   // const updateProviderAndSigner = useCallback((updates) => {
   //   log("useConnect", "updateProviderAndSigner", updates)
@@ -90,7 +107,7 @@ const useConnect = () => {
     fetchEthosProvider()
   }, [checkProviderAndSigner])
 
-  return providerAndSigner;
+  return { providerAndSigner, logout };
 }
 
 export default useConnect;

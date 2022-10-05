@@ -29,12 +29,17 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   
   const [href, setHref] = useState<string|undefined>()
   const hrefRef = useRef<string|undefined>();
-  const providerAndSigner = useConnect()
+  const { providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
 
   useEffect(() => {
     if (!providerAndSigner?.provider) return;
     log('EthosWrapper', 'calling onWalletConnected', providerAndSigner)
+
+    if (providerAndSigner.signer) {
+      providerAndSigner.signer.onlogout = logout;
+    }
+
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [providerAndSigner])
 

@@ -34,6 +34,8 @@ const providerAndSigner = {
   signer
 }
 
+const setProviderAndSigner = jest.fn()
+
 describe('useConnect', () => {
   let resolveProvider, onMobileConnect;
 
@@ -41,7 +43,7 @@ describe('useConnect', () => {
     resolveProvider = null;
     onMobileConnect = null;
 
-    jest.spyOn(useSuiWallet, 'default').mockReturnValue(providerNoSigner)
+    jest.spyOn(useSuiWallet, 'default').mockReturnValue({ providerAndSigner: providerNoSigner, setProviderAndSigner })
 
     jest.spyOn(getProvider, 'default').mockReturnValue(new Promise((resolve, reject) => {
       resolveProvider = resolve;
@@ -55,7 +57,7 @@ describe('useConnect', () => {
   it("should not set the provider until all methods have been checked", async () => {
     const { result } = renderHook(() => useConnect())
 
-    expect(result.current).toStrictEqual(nullProviderAndSigner)
+    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
 
     await act(async () => {
       resolveProvider(emptyProvider)
@@ -65,12 +67,12 @@ describe('useConnect', () => {
     await act(async () => {
       onMobileConnect(providerNoSigner)
     })
-    expect(result.current).toStrictEqual(providerNoSigner)
+    expect(result.current.providerAndSigner).toStrictEqual(providerNoSigner)
   })
 
   it("should set the provider once a provider with a signer is found", async () => {
     const { result } = renderHook(() => useConnect())
-    expect(result.current).toStrictEqual(nullProviderAndSigner)
+    expect(result.current.providerAndSigner).toStrictEqual(nullProviderAndSigner)
     await act(async () => {
       resolveProvider(providerWithSigner)
     })

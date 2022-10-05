@@ -9,7 +9,7 @@ export type SuiProviderAndSigner = {
   signer: any | null
 }
 
-const useSuiWallet = (): SuiProviderAndSigner => {
+const useSuiWallet = (): { providerAndSigner: SuiProviderAndSigner, setProviderAndSigner: (providerAndSigner: SuiProviderAndSigner | null) => void } => {
   const [providerAndSigner, setProviderAndSigner] = useState<any | null>(null)
 
   const suiWallet = async () => {
@@ -152,7 +152,7 @@ const useSuiWallet = (): SuiProviderAndSigner => {
     arguments: details.arguments || details.inputValues,
   })
 
-  return providerAndSigner
+  return { providerAndSigner, setProviderAndSigner }
 }
 
 export default useSuiWallet

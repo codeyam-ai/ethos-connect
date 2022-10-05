@@ -4,7 +4,8 @@ import log from './log'
 import postIFrameMessage from './postIFrameMessage'
 
 const logout = async (signer: any, wallet: boolean = false) => {
-  log('logout', `-- Is Extension: ${signer?.extension} --`, `-- Disconnect: ${!!signer?.disconnect} --`, "signer", signer)
+  log('logout', `-- Is Extension: ${signer?.extension} --`, `-- Disconnect: ${!!signer?.disconnect} --`, `-- Logout: ${!!signer?.onlogout} --`, "signer", signer)
+    
   if (signer?.extension) {
     if (signer.disconnect) {
       await signer.disconnect();
@@ -12,6 +13,8 @@ const logout = async (signer: any, wallet: boolean = false) => {
       console.log("Signer does not support the ability to disconnect from the client interface.")
     }
    
+    signer.onlogout && signer.onlogout();
+
     return;
   }
 
@@ -26,6 +29,8 @@ const logout = async (signer: any, wallet: boolean = false) => {
         const { action, data } = message.data
         log('logout', 'message2', action, data)
         if (action === 'user') {
+          signer.onlogout && signer.onlogout();
+
           resolve(data?.user)
         }
       }
