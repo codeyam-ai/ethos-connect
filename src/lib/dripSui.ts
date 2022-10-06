@@ -19,7 +19,6 @@ const dripSui = async ({ address }: DripSuiProps) => {
     }
   );
   
-  console.log("RESPONSE", response)
   return response.ok
 }
 
