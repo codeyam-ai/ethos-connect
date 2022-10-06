@@ -1,31 +1,26 @@
-import getConfiguration from './getConfiguration'
-import postIFrameMessage from './postIFrameMessage'
-
 type DripSuiProps = {
   address: string
 }
 
 const dripSui = async ({ address }: DripSuiProps) => {
-  const { walletAppUrl } = getConfiguration()
-
-  return new Promise((resolve, _reject) => {
-    const dripEventListener = (message: any) => {
-      if (message.origin === walletAppUrl) {
-        const { action, data } = message.data
-        if (action !== 'drip') return
-        window.removeEventListener('message', dripEventListener)
-
-        resolve(data)
-      }
+  const response = await fetch(
+    'https://faucet.devnet.sui.io:443/gas',
+    { 
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "FixedAmountRequest": {
+          "recipient": address
+        }
+      })
     }
-
-    window.addEventListener('message', dripEventListener)
-
-    postIFrameMessage({
-      action: 'drip',
-      data: { address },
-    })
-  })
+  );
+  
+  console.log("RESPONSE", response)
+  return response.ok
 }
 
 export default dripSui
