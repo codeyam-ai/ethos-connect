@@ -25,8 +25,9 @@ const useSuiWallet = (): { providerAndSigner: SuiProviderAndSigner, setProviderA
     } 
     
     if (w.suiWallet) {
+      const suiStore = store.namespace('sui')
       const hasPermissions = await w.suiWallet.hasPermissions();
-      if (hasPermissions) {
+      if (!suiStore('disconnected') && hasPermissions) {
         return w.suiWallet;
       }
     }

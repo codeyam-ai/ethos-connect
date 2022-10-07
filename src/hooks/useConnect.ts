@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import store from 'store2'
 import log from '../lib/log'
 import useSuiWallet from './useSuiWallet' 
 import getProvider from '../lib/getProvider'
@@ -26,6 +27,9 @@ const useConnect = () => {
   const [logoutCount, setLogoutCount] = useState(0);
 
   const logout = useCallback(() => {
+    const suiStore = store.namespace('sui')
+    suiStore('disconnected', true);
+
     signerFound.current = false;
     setProviderAndSigner({
       provider: null,
