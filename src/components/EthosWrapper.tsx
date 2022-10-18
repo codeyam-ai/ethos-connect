@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState, Children, isValidElement, cloneElement, ReactNode } from 'react'
+import React, { 
+  useEffect, 
+  ReactNode 
+} from 'react'
+import { WalletProvider } from "@mysten/wallet-adapter-react";
+import { WalletStandardAdapterProvider } from "@mysten/wallet-adapter-all-wallets";
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import log from '../lib/log'
@@ -15,6 +20,12 @@ export interface EthosWrapperProps {
   children: ReactNode
 }
 
+const SuiWrapper = ({ children }: { children: ReactNode }) => (
+  <WalletProvider adapters={[new WalletStandardAdapterProvider()]}>
+    {children}
+  </WalletProvider>
+)
+
 const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: EthosWrapperProps) => {
   // Set defaults
   if (!ethosConfiguration.chain) ethosConfiguration.chain = Chain.Sui;
@@ -22,13 +33,11 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   if (!ethosConfiguration.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz';
 
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
-
+  
   useEffect(() => {
     initialize(ethosConfiguration)
   }, [])
   
-  const [href, setHref] = useState<string|undefined>()
-  const hrefRef = useRef<string|undefined>();
   const { providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
 
@@ -42,33 +51,15 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
 
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [providerAndSigner])
-
-  useEffect(() => {
-    const checkLocation = () => {
-      const newHref = window.location.href;
-      if (newHref !== hrefRef.current) {
-        setHref(newHref);
-        hrefRef.current = newHref;
-      }
-    }
-
-    const checkId = setInterval(checkLocation, 100);
-    return () => clearInterval(checkId);
-  }, []);
-
-  const childrenWithProviderAndSigner = useMemo(() => Children.map(children, (child) => {
-    if (isValidElement(child)) {
-      return cloneElement(child, { ...providerAndSigner })
-    }
-    return child
-  }), [providerAndSigner, href]);
   
   return (
-    <ProviderAndSignerContext.Provider value={providerAndSigner}>
-      <ContentsContext.Provider value={contents}>
-        {childrenWithProviderAndSigner}
-      </ContentsContext.Provider>
-    </ProviderAndSignerContext.Provider>
+    <SuiWrapper>
+      <ProviderAndSignerContext.Provider value={providerAndSigner}>
+        <ContentsContext.Provider value={contents}>
+          {children}
+        </ContentsContext.Provider>
+      </ProviderAndSignerContext.Provider>
+    </SuiWrapper>
   ) 
 }
 
