@@ -20,8 +20,8 @@ const getEthosSigner = async (): Promise<any> => {
 
   const signAndExecuteTransaction = (details: SignableTransaction) => {
     return new Promise((resolve, reject) => {
-      const transactionEventListener = ({ state, data }: HostedInteractionResponse) => {
-        if (state.approved) {
+      const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
+        if (approved) {
           resolve(data);
         } else {
           reject({ error: "User rejected transaction."})

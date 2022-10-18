@@ -7,12 +7,12 @@ export type HostedInteractionArgs = {
   id?: string | number,
   action: string,
   data: any,
-  onResponse: (response: any) => void,
+  onResponse: (response: HostedInteractionResponse) => void,
   showWallet?: boolean
 }
 
 export type HostedInteractionResponse = {
-  state?: string,
+  approved: boolean,
   data?: any
 }
 
@@ -21,10 +21,9 @@ const hostedInteraction = ({ id, action, data, onResponse, showWallet=false }: H
 
   const iframeListener = (message: any) => {
     if (message.origin === walletAppUrl) {
-      const { id: responseId, action: responseAction, data: responseData } = message.data
+      const { approved, action: responseAction, data: responseData } = message.data
       if (responseAction !== action) return
-      if (responseId && responseId != id) return;
-      onResponse(responseData);
+      onResponse({ approved, data: responseData });
       window.removeEventListener('message', iframeListener);
     }
   }
