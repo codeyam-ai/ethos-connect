@@ -12,15 +12,7 @@ describe('getWalletNfts', () => {
 
     it('should get NFTs for given wallet, getting config', async () => {
         const expectedNfts: NFT[] = [
-            {
-                name: 'example',
-                tokenId: 0,
-                imageUri: 'example.com/0',
-                chain: 'sui',
-                collection: {
-                    name: 'example collection',
-                },
-            },
+            ,
         ]
         
         spyApiCall.mockResolvedValueOnce({ balance: 0, coins: [], nfts: expectedNfts })

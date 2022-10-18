@@ -1,6 +1,6 @@
 import { SignableTransaction } from '@mysten/sui.js'
-import { Chain } from 'enums/Chain'
-import { SignerType } from 'types/Signer'
+import { Chain } from '../enums/Chain'
+import { SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 

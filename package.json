@@ -1,7 +1,7 @@
 {
-  "name": "ethos-wallet-beta",
-  "version": "0.0.170",
-  "description": "Beta version of the Ethos Wallet NPM Package",
+  "name": "ethos-wallet",
+  "version": "0.0.1",
+  "description": "Build on Sui with ease with the Ethos Wallet APIs. Support all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
   "module": "dist/ethos-wallet-beta.esm.js",

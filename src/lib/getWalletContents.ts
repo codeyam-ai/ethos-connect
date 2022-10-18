@@ -1,8 +1,8 @@
 import fetchSui from "./fetchSui";
 
 export type WalletContents = {
-  balance: number,
-  coins: any[],
+  suiBalance: number,
+  tokens: {[key: string]: any},
   nfts: any[]
 }
 
@@ -29,9 +29,9 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 
   if (objectInfos.length === 0) {
     return {
-      balance: 0,
-      coins: [],
-      nfts: []
+        suiBalance: 0,
+        tokens: [],
+        nfts: []
     }
   }
 
@@ -48,8 +48,9 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
     objects.push(object);
   }
  
+  let suiBalance = 0;
   const nfts = [];
-  const coins = [];
+  const tokens: {[key: string]: any}= {};
   // const modules = {};
   for (const object of objects) {
     try {
@@ -57,7 +58,11 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 
       if (!data) continue;
       
-      if (data?.type === '0x2::devnet_nft::DevNetNFT') {
+      const typeComponents = (data?.type || "").split('::');
+      console.log("TYPE COMPONENTS", typeComponents)
+      const type = typeComponents[2];
+
+      if (type === 'DevNetNFT') {
         let { url } = data.fields;
         if (url.indexOf('ipfs') === 0) {  
           url = `https://ipfs.io/ipfs/${url.substring(5)}`;
@@ -78,25 +83,19 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
             'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
           }
         });
-      } else if (data?.type?.startsWith('0x2::coin::Coin')) {
-        coins.push({
-          address: reference?.objectId,
+      } else if (type === 'SUI') {
+        suiBalance += data.fields.balance
+        tokens[type].balance += data.fields.balance
+        tokens[type].coins.push({
+          objectId: reference?.objectId,
           type: data.type,
           balance: data.fields.balance
         })
       } else {
-        // console.dir(data, { depth: null })
-        const objectParts = data?.type.split('::')
-        // if (!modules[objectParts[0]]) {
-        //   const mod = await fetchSui('sui_getNormalizedMoveModule', [objectParts[0], objectParts[1]], process.env.SHINAMI_GATEWAY)
-        //   modules[objectParts[0]] = mod
-        // }
-        
         const { name, description, url, image_url, image, ...remaining } = data.fields || {}
-        // console.log("NEW", data.fields)
         nfts.push({
           type: data?.type,
-          package: objectParts[0],
+          package: typeComponents[0],
           chain: 'Sui',
           address: reference?.objectId,
           name: name,
@@ -105,7 +104,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
           previewUri: url || image_url || image,
           thumbnailUri: url || image_url || image,
           extraFields: remaining,
-          module: objectParts[1],
+          module: typeComponents[1],
           links: {
             'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
           }
@@ -116,13 +115,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
     }
   } 
 
-  const balance = coins.filter(
-    (coin) => coin.type === '0x2::coin::Coin<0x2::sui::SUI>'
-  ).reduce(
-    (total, coin) => total + parseFloat(coin.balance), 
-    0
-  );
-  return { balance, coins, nfts }
+  return { suiBalance, tokens, nfts }
 }
 
 export default getWalletContents;

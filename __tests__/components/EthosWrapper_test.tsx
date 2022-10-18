@@ -2,11 +2,11 @@ import React from 'react'
 import { create, act } from 'react-test-renderer'
 
 import EthosWrapper from '../../src/components/EthosWrapper'
-import * as getProvider from '../../src/lib/getProvider'
 import * as getWalletContents from '../../src/lib/getWalletContents'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import * as initialize from '../../src/lib/initialize';
+import * as getEthosSigner from '../../src/lib/getEthosSigner'
 
 describe('EthosWrapper', () => {
   const signer = {
@@ -18,10 +18,9 @@ describe('EthosWrapper', () => {
   let onWalletConnected
 
   beforeEach(() => {
-    jest.spyOn(getProvider as any, 'default').mockImplementation((network) => {
+    jest.spyOn(getEthosSigner as any, 'default').mockImplementation(() => {
       return Promise.resolve({
-        network,
-        getSigner: () => signer,
+        signer
       })
     })
 

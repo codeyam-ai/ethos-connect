@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useWallet } from "@mysten/wallet-adapter-react";
-import { Signer, SignerType } from 'types/Signer';
+import { Signer, SignerType } from '../types/Signer';
 
 const useSuiWallet = (): { signer: Signer | null, setSigner: (signer: Signer | null) => void } => {
   const { connected, getAccounts, signAndExecuteTransaction } = useWallet();
