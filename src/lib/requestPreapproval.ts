@@ -1,17 +1,9 @@
-import type { ObjectId } from '@mysten/sui.js';
+
 // import getConfiguration from './getConfiguration';
 // import getIframe from './getIframe';
 // import postIFrameMessage from './postIFrameMessage';
 
-export interface Preapproval {
-  module: string,
-  function: string,
-  objectId: ObjectId,
-  description: string,
-  totalGasLimit: number;
-  perTransactionGasLimit: number;
-  maxTransactionCount: number;
-}
+import { Preapproval } from "types/Preapproval";
 
 export type PreapprovalArgs = {
   signer: any,

@@ -67,7 +67,8 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.11.0",
+    "@mysten/sui.js": "^0.13.0",
+    "@mysten/wallet-adapter-react": "^4.0.0",
     "@superstate/react": "^0.1.0",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",

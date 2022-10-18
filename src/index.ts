@@ -21,7 +21,7 @@ import query from './lib/query'
 
 import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
-import getProvider from './lib/getProvider'
+import getProvider from './lib/getEthosSigner'
 
 import dripSui from './lib/dripSui'
 
