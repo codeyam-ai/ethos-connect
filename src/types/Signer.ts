@@ -14,6 +14,6 @@ export type Signer = {
   getAccounts: () => Promise<string[]>,
   getAddress: () => Promise<string>,
   signAndExecuteTransaction: (transaction: SignableTransaction) => Promise<SuiTransactionResponse>,
-  transact: (transaction: SignableTransaction) => Promise<SuiTransactionResponse>,
-  requestPreapproval: (preApproval: Preapproval) => Promise<boolean>
+  requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
+  sign: (message: any) => Promise<boolean>
 }

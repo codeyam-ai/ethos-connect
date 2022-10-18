@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import store from 'store2'
 import log from '../lib/log'
 import useSuiWallet from './useSuiWallet' 
-import getProvider from '../lib/getEthosSigner'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { JsonRpcProvider } from '@mysten/sui.js';
 import { suiFullNode } from '../lib/constants'
 import { Signer } from 'types/Signer'
+import getEthosSigner from '../lib/getEthosSigner'
 
 const useConnect = () => {
   const signerFound = useRef<boolean>(false)
@@ -82,13 +82,12 @@ const useConnect = () => {
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {
-      const provider = await getProvider()
-      const signer = provider?.getSigner()
-      log('useConnect', 'Setting providerAndSigner ethos', provider, signer)
+      const signer = await getEthosSigner()
+      log('useConnect', 'Setting providerAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }
     
-    fetchEthosProvider()
+    fetchEthosSigner()
   }, [checkSigner])
 
   return { providerAndSigner, logout };

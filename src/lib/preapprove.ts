@@ -10,7 +10,7 @@ export type PreapprovalArgs = {
   preapproval: Preapproval
 }
 
-const requestPreapproval = async ({ signer, preapproval }: PreapprovalArgs) => {
+const preapprove = async ({ signer, preapproval }: PreapprovalArgs) => {
   if (signer.extension) {
     if (!signer.requestPreapproval) {
       console.log("Signer does not support `requestPreapproval`");
@@ -52,4 +52,4 @@ const requestPreapproval = async ({ signer, preapproval }: PreapprovalArgs) => {
   
 }
 
-export default requestPreapproval;
+export default preapprove;
