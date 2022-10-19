@@ -68,8 +68,10 @@
   },
   "dependencies": {
     "@mysten/sui.js": "^0.13.0",
+    "@mysten/wallet-adapter-all-wallets": "^0.2.1",
     "@mysten/wallet-adapter-react": "^4.0.0",
     "@superstate/react": "^0.1.0",
+    "encoding": "^0.1.13",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",
     "store2": "^2.13.2"

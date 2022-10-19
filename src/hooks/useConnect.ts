@@ -21,11 +21,12 @@ const useConnect = () => {
     provider: null,
     signer: null
   })
+  console.log("USECONNECT!!!!")
   const { 
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
-
+  
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
     const suiStore = store.namespace('sui')

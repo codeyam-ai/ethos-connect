@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react'
-import { useWallet } from "@mysten/wallet-adapter-react";
 import { Signer, SignerType } from '../types/Signer';
+import useSuiWalletConnect from './useSuiWalletConnect';
 
 const useSuiWallet = (): { signer: Signer | null, setSigner: (signer: Signer | null) => void } => {
-  const { connected, getAccounts, signAndExecuteTransaction } = useWallet();
-  
+  const { connected, getAccounts, signAndExecuteTransaction } = useSuiWalletConnect()
+
   const requestPreapproval = useCallback(async () => {
     if (!connected) return false;
 

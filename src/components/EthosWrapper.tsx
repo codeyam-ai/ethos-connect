@@ -2,8 +2,6 @@ import React, {
   useEffect, 
   ReactNode 
 } from 'react'
-import { WalletProvider } from "@mysten/wallet-adapter-react";
-import { WalletStandardAdapterProvider } from "@mysten/wallet-adapter-all-wallets";
 import { EthosConfiguration } from 'types/EthosConfiguration'
 import initialize from '../lib/initialize'
 import log from '../lib/log'
@@ -19,12 +17,6 @@ export interface EthosWrapperProps {
   onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void
   children: ReactNode
 }
-
-const SuiWrapper = ({ children }: { children: ReactNode }) => (
-  <WalletProvider adapters={[new WalletStandardAdapterProvider()]}>
-    {children}
-  </WalletProvider>
-)
 
 const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: EthosWrapperProps) => {
   // Set defaults
@@ -53,13 +45,11 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   }, [providerAndSigner])
   
   return (
-    <SuiWrapper>
-      <ProviderAndSignerContext.Provider value={providerAndSigner}>
+    <ProviderAndSignerContext.Provider value={providerAndSigner}>
         <ContentsContext.Provider value={contents}>
-          {children}
+            {children}
         </ContentsContext.Provider>
-      </ProviderAndSignerContext.Provider>
-    </SuiWrapper>
+    </ProviderAndSignerContext.Provider>
   ) 
 }
 
