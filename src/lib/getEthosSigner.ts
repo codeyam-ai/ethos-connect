@@ -37,13 +37,12 @@ const getEthosSigner = async (): Promise<any> => {
     });
   }
 
-  return {
+  return user ? {
     type: SignerType.ETHOS_HOSTED,
     getAccounts,
     getAddress,
     signAndExecuteTransaction 
-    
-  }
+  } : null
    
 }
 
