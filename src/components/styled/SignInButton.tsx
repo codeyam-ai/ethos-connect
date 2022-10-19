@@ -3,14 +3,14 @@ import Button from '../headless/Button'
 import SignInModal from './SignInModal'
 
 export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  socialLogin?: string[]
+//   socialLogin?: string[]
   onLoaded?: () => void
   hideEmailSignIn?: boolean
   hideWalletSignIn?: boolean
 }
 
 const SignInButton = (props: SignInButtonProps) => {
-  const { children, socialLogin, hideEmailSignIn, hideWalletSignIn, onClick, ...reactProps } = props
+  const { children, hideEmailSignIn, hideWalletSignIn, onClick, ...reactProps } = props
 
   const [isOpen, setIsOpen] = React.useState(false)
 
@@ -28,7 +28,7 @@ const SignInButton = (props: SignInButtonProps) => {
   return (
     <>
       <SignInModal
-        socialLogin={socialLogin}
+        // socialLogin={socialLogin}
         isOpen={isOpen}
         hideEmailSignIn={hideEmailSignIn}
         hideWalletSignIn={hideWalletSignIn}

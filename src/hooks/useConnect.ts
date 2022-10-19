@@ -23,6 +23,7 @@ const useConnect = () => {
   })
   const { 
     wallets,
+    selectWallet,
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
@@ -91,7 +92,7 @@ const useConnect = () => {
     fetchEthosSigner()
   }, [checkSigner])
 
-  return { wallets, providerAndSigner, logout };
+  return { wallets, selectWallet, providerAndSigner, logout };
 }
 
 export default useConnect;

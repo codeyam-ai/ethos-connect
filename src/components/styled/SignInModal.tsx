@@ -7,24 +7,24 @@ declare global {
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import Ethos from '../svg/Ethos'
-import Google from '../svg/Google'
-import Github from '../svg/Github'
-import Email from '../svg/Email'
+// import Google from '../svg/Google'
+// import Github from '../svg/Github'
+// import Email from '../svg/Email'
 import Loader from '../svg/Loader'
-import Sui from '../svg/Sui'
-import FallbackLogo from '../svg/FallbackLogo'
+// import Sui from '../svg/Sui'
+// import FallbackLogo from '../svg/FallbackLogo'
 import CheckMark from '../svg/CheckMark'
-import NoticeIcon from '../svg/NoticeIcon'
+// import NoticeIcon from '../svg/NoticeIcon'
 import getConfiguration from '../../lib/getConfiguration'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
-import connectSui from '../../lib/connectSui'
+// import connectSui from '../../lib/connectSui'
 import event from '../../lib/event'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { captchaSiteKey } from '../../lib/constants'
-import generateQRCode from '../../lib/generateQRCode'
-import listenForMobileConnection from '../../lib/listenForMobileConnection'
-import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
-import log from '../../lib/log'
+// import generateQRCode from '../../lib/generateQRCode'
+// import listenForMobileConnection from '../../lib/listenForMobileConnection'
+// import getMobileConnectionUrl from '../../lib/getMobileConnetionUrl'
+// import log from '../../lib/log'
 import * as styles from './signInModalStyles'
 import FontProvider from './FontProvider'
 import useHandleElementWithIdClicked from '../../lib/useHandleElementWithIdClicked'
@@ -32,7 +32,7 @@ import WalletContext from '../WalletContext'
 
 export type SignInModalProps = {
     isOpen: boolean
-    socialLogin?: string[]
+    // socialLogin?: string[]
     onClose?: () => void
     hideEmailSignIn?: boolean
     hideWalletSignIn?: boolean
@@ -49,22 +49,22 @@ export function hideSignInModal() {
 const SignInModal = ({
     isOpen,
     onClose,
-    socialLogin = [],
+    // socialLogin = [],
     hideEmailSignIn,
     hideWalletSignIn,
 }: SignInModalProps) => {
-    const wallets = useContext(WalletContext);
+    const { wallets, selectWallet } = useContext(WalletContext);
     const [isOpenAll, setIsOpenAll] = useState(isOpen)
     const [loading, setLoading] = useState(true)
-    const [missingMessage, setMissingMessage] = useState<any | null>(null)
+    // const [missingMessage, setMissingMessage] = useState<any | null>(null)
     const [signingIn, setSigningIn] = useState(false)
     const [email, setEmail] = useState('')
     const [emailSent, setEmailSent] = useState(false)
     const { width } = useWindowDimensions()
-    const { appId, walletAppUrl } = getConfiguration()
+    const { appId } = getConfiguration()
     const captchaRef = useRef<any | null>(null)
-    const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined)
-    const [walletOption, setWalletOption] = useState<string>('email')
+    // const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined)
+    // const [walletOption, setWalletOption] = useState<string>('email')
     const closeOnClickId = 'ethos-close-on-click'
 
     const _onClose = useCallback(() => {
@@ -96,124 +96,64 @@ const SignInModal = ({
         event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
     }
 
-  const loginWithSocial = (provider: string) => {
-    login({ provider, appId })
-  }
+    // const loginWithSocial = (provider: string) => {
+    //     login({ provider, appId })
+    // }
 
-  const connectEthos = async () => {
-    setMissingMessage(null)
-    setWalletOption('ethos')
-    const connected = await connectSui('ethosWallet')
-    if (!connected) {
-      setMissingMessage(
-        <div className="missing-message" style={styles.missingMessage()}>
-          <NoticeIcon />
-          <span style={{ maxWidth: '220px' }}>
-            Install the&nbsp;
-            <a
-              href={`https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli`}
-              style={styles.browserExtensionLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ethos chrome extension
-            </a>
-          </span>
-        </div>
-      )
-    } else {
-      onClose && onClose()
-    }
-    event({ action: 'connect', category: 'sign_in', label: 'ethos', value: connected ? 1 : 0 })
-  }
+    const _connectExtension = useCallback((e) => {
+        if (!selectWallet) return;
 
-  const connectEthosMobile = async () => {
-    setMissingMessage(null)
-    setWalletOption('ethosMobile')
-    const { connectionUrl } = await getMobileConnectionUrl()
-    const _qrCodeUrl = await generateQRCode(connectionUrl)
-    setQrCodeUrl(_qrCodeUrl)
-    listenForMobileConnection(() => {
-      log('mobile', 'Listening to mobile connection from SignInModal')
-      onClose && onClose()
-    })
-  }
+        const name = e.target.dataset.name;
+        selectWallet(name);
+    }, []);
 
-  const _connectSui = async () => {
-    setMissingMessage(null)
-    setWalletOption('sui')
-    const connected = await connectSui('suiWallet')
-    if (!connected) {
-      setMissingMessage(
-        <div className="missing-message" style={styles.missingMessage()}>
-          <NoticeIcon />
-          <span style={{ maxWidth: '220px' }}>
-            Install the&nbsp;
-            <a
-              href={`https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil`}
-              style={styles.browserExtensionLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Sui Wallet extension
-            </a>
-            &nbsp;to connect.
-          </span>
-        </div>
-      )
-    } else {
-      onClose && onClose()
-    }
-    event({ action: 'connect', category: 'sign_in', label: 'sui', value: connected ? 1 : 0 })
-  }
+    // const connectEmail = () => {
+    //     setMissingMessage(null)
+    //     setQrCodeUrl(undefined)
+    //     setWalletOption('email')
+    // }
 
-  const connectEmail = () => {
-    setMissingMessage(null)
-    setQrCodeUrl(undefined)
-    setWalletOption('email')
-  }
-
-    const logo = (connectorId: string) => {
-        switch (connectorId) {
-            case 'ethos':
-                return <Ethos width={17} color="#5B5D5F" />
-            case 'sui':
-                return <Sui width={15} color="#5B5D5F" />
-            case 'email':
-                return <Email width={21} />
-            default:
-                return <FallbackLogo width={17} />
-        }
-    }
+    // const logo = (connectorId: string) => {
+    //     switch (connectorId) {
+    //         case 'ethos':
+    //             return <Ethos width={17} color="#5B5D5F" />
+    //         case 'sui':
+    //             return <Sui width={15} color="#5B5D5F" />
+    //         case 'email':
+    //             return <Email width={21} />
+    //         default:
+    //             return <FallbackLogo width={17} />
+    //     }
+    // }
 
     const icon = (src?: string) => {
         if (!src || src.startsWith("chrome-extension")) return <></>;
 
         return (
-            <img src={src} height={45} width={45} />
+            <img src={src} height={30} width={30} />
         )
     }
 
-  useEffect(() => {
-    window.ethosInternal ||= {}
+    useEffect(() => {
+        window.ethosInternal ||= {}
 
-    window.ethosInternal.showSignInModal = () => {
-      setIsOpenAll(true)
-    }
+        window.ethosInternal.showSignInModal = () => {
+            setIsOpenAll(true)
+        }
 
-    window.ethosInternal.hideSignInModal = () => {
-      _onClose()
-    }
+        window.ethosInternal.hideSignInModal = () => {
+            _onClose()
+        }
 
-    setIsOpenAll(isOpen)
-  }, [isOpen, setIsOpenAll, _onClose])
+        setIsOpenAll(isOpen)
+    }, [isOpen, setIsOpenAll, _onClose])
 
-  useEffect(() => {
-    if (hideEmailSignIn && hideWalletSignIn) {
-      throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
-    }
-    setLoading(false)
-  }, [])
+    useEffect(() => {
+        if (hideEmailSignIn && hideWalletSignIn) {
+        throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
+        }
+        setLoading(false)
+    }, [])
 
   return (
     <FontProvider>
@@ -305,15 +245,13 @@ const SignInModal = ({
                             <span style={styles.signInOptionSubtitleText()}>
                               Connect an existing wallet
                             </span>
-                            {missingMessage && (
-                              <div style={styles.connectorWarning()}>{missingMessage}</div>
-                            )}
                             <div style={styles.walletOptionContainer(width)}>
                                 {wallets?.map(
                                     (wallet) => (
                                         <button
                                             style={styles.walletOptionButton(width)}
-                                            onClick={connectEthos}
+                                            data-name={wallet.name}
+                                            onClick={_connectExtension}
                                         >
                                             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                                             {icon(wallet.icon)}
@@ -327,145 +265,6 @@ const SignInModal = ({
                         )}
                       </>
                     )}
-                  </div>
-                </>
-              )}
-              {false && (
-                <>
-                  <div style={styles.headerStyle()}>
-                    <h3 style={styles.titleStyle()}>Sign Up or Log In!!!</h3>
-                    <div style={styles.closeStyle()} onClick={onClose}>
-                      &#x2715;
-                    </div>
-                  </div>
-                  <div style={styles.mainContentStyle(width)}>
-                    <div style={styles.walletOptionsStyle(width)}>
-                      <div
-                        style={styles.walletOptionStyle(walletOption === 'email')}
-                        onClick={connectEmail}
-                      >
-                        <button style={styles.walletOptionButtonStyle()}>
-                          {logo('email')}
-                          Email or Social Login
-                        </button>
-                      </div>
-                      <div
-                        style={styles.walletOptionStyle(walletOption === 'ethos')}
-                        onClick={connectEthos}
-                      >
-                        <button style={styles.walletOptionButtonStyle()}>
-                          {logo('ethos')}
-                          Ethos Wallet
-                        </button>
-                      </div>
-                      <div
-                        style={styles.walletOptionStyle(walletOption === 'ethosMobile')}
-                        onClick={connectEthosMobile}
-                      >
-                        <button style={styles.walletOptionButtonStyle()}>
-                          {logo('ethos')}
-                          Ethos Wallet Mobile
-                        </button>
-                      </div>
-                      <div
-                        style={styles.walletOptionStyle(walletOption === 'sui')}
-                        onClick={_connectSui}
-                      >
-                        <button style={styles.walletOptionButtonStyle()}>
-                          {logo('sui')}
-                          Sui Test Wallet
-                        </button>
-                      </div>
-                      {missingMessage && (
-                        <div style={styles.connectorWarning()}>{missingMessage}</div>
-                      )}
-                    </div>
-                    <div style={styles.registrationStyle(width)}>
-                      {qrCodeUrl ? (
-                        <div style={styles.qrCodeStyle()}>
-                          <h3 style={styles.centeredRegistrationHeaderStyle()}>
-                            Connect Mobile Wallet
-                          </h3>
-                          <p style={styles.subheaderStyle()}>
-                            Scan the QR code with a mobile device.
-                          </p>
-                          <div>
-                            <img src={qrCodeUrl} />
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          {(socialLogin || []).length > 0 && (
-                            <div>
-                              <h3 style={styles.registrationHeaderStyle()}>
-                                Sign up or log in with:
-                              </h3>
-                              <div style={styles.socialLoginButtonsStyle()}>
-                                {socialLogin.indexOf('google') > -1 && (
-                                  <div
-                                    style={styles.socialLoginButtonStyle()}
-                                    onClick={() => loginWithSocial('google')}
-                                  >
-                                    <Google width={36} />
-                                  </div>
-                                )}
-                                {socialLogin.indexOf('github') > -1 && (
-                                  <div
-                                    style={styles.socialLoginButtonStyle()}
-                                    onClick={() => loginWithSocial('github')}
-                                  >
-                                    <Github width={36} />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                          <h3 style={styles.registrationHeaderStyle()}>
-                            Sign up or log in with a link
-                          </h3>
-                          {signingIn ? (
-                            <div style={styles.loaderStyle()}>
-                              <Loader width={50} />
-                            </div>
-                          ) : (
-                            <>
-                              {/* <form onSubmit={onSubmit}>
-                                <input
-                                  style={styles.emailInput()}
-                                  type="email"
-                                  placeholder="Email address"
-                                  value={email}
-                                  onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <button style={styles.signInButton(width)} type="submit">
-                                  Send
-                                </button>
-                              </form> */}
-                              <div style={styles.browserExtensionSection()}>
-                                Advanced:&nbsp;
-                                <a
-                                  href={`${walletAppUrl}/extensions`}
-                                  style={styles.browserExtensionLink()}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  Chrome Extension
-                                </a>
-                                &nbsp;or&nbsp;
-                                <a
-                                  href={`${walletAppUrl}/mobile`}
-                                  style={styles.browserExtensionLink()}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  Mobile App
-                                </a>
-                              </div>
-                            </>
-                          )}
-                        </>
-                      )}
-                    </div>
                   </div>
                 </>
               )}

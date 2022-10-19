@@ -30,7 +30,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     initialize(ethosConfiguration)
   }, [])
   
-  const { wallets, providerAndSigner, logout } = useConnect()
+  const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   }, [providerAndSigner])
   
   return (
-    <WalletsContext.Provider value={wallets}>
+    <WalletsContext.Provider value={{ wallets, selectWallet }}>
         <ProviderAndSignerContext.Provider value={providerAndSigner}>
             <ContentsContext.Provider value={contents}>
                 {children}

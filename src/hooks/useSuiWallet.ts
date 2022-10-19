@@ -4,40 +4,47 @@ import { Signer, SignerType } from '../types/Signer';
 import useSuiWalletConnect from './useSuiWalletConnect';
 export interface SuiWalletResponse {
     wallets: WalletAdapter[];
+    selectWallet: (walletName: string) => void,
     signer: Signer | null;
     setSigner: (signer: Signer | null) => void;
 }
 
 const useSuiWallet = (): SuiWalletResponse => {
-  const { wallets, connected, getAccounts, signAndExecuteTransaction } = useSuiWalletConnect()
+    const { 
+        wallets, 
+        select: selectWallet, 
+        connected, 
+        getAccounts, 
+        signAndExecuteTransaction 
+    } = useSuiWalletConnect()
 
-  const requestPreapproval = useCallback(async () => {
-    if (!connected) return false;
+    const requestPreapproval = useCallback(async () => {
+        if (!connected) return false;
 
-    return true;
-  }, []);
+        return true;
+    }, []);
 
-  const getAddress = useCallback(async () => {
-    const accounts = await getAccounts();
-    return accounts[0];
-  }, [])
+    const getAddress = useCallback(async () => {
+        const accounts = await getAccounts();
+        return accounts[0];
+    }, [])
 
-  const sign = useCallback(async () => {
-    return true;
-  }, [])
+    const sign = useCallback(async () => {
+        return true;
+    }, [])
   
-  const [signer, setSigner] = useState<Signer | null>(
-    connected ? {
-      type: SignerType.EXTENSION,
-      getAccounts,
-      getAddress,
-      signAndExecuteTransaction,
-      requestPreapproval,
-      sign
-    } : null
-  )
+    const [signer, setSigner] = useState<Signer | null>(
+        connected ? {
+            type: SignerType.EXTENSION,
+            getAccounts,
+            getAddress,
+            signAndExecuteTransaction,
+            requestPreapproval,
+            sign
+        } : null
+    )
   
-  return { wallets, signer, setSigner }
+  return { wallets, selectWallet, signer, setSigner }
 }
 
 export default useSuiWallet
