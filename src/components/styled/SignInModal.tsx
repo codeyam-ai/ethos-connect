@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import Ethos from '../svg/Ethos'
 import Google from '../svg/Google'
@@ -28,71 +28,73 @@ import log from '../../lib/log'
 import * as styles from './signInModalStyles'
 import FontProvider from './FontProvider'
 import useHandleElementWithIdClicked from '../../lib/useHandleElementWithIdClicked'
+import WalletContext from '../WalletContext'
 
 export type SignInModalProps = {
-  isOpen: boolean
-  socialLogin?: string[]
-  onClose?: () => void
-  hideEmailSignIn?: boolean
-  hideWalletSignIn?: boolean
+    isOpen: boolean
+    socialLogin?: string[]
+    onClose?: () => void
+    hideEmailSignIn?: boolean
+    hideWalletSignIn?: boolean
 }
 
 export function showSignInModal() {
-  window.ethosInternal.showSignInModal()
+    window.ethosInternal.showSignInModal()
 }
 
 export function hideSignInModal() {
-  window.ethosInternal.hideSignInModal()
+    window.ethosInternal.hideSignInModal()
 }
 
 const SignInModal = ({
-  isOpen,
-  onClose,
-  socialLogin = [],
-  hideEmailSignIn,
-  hideWalletSignIn,
+    isOpen,
+    onClose,
+    socialLogin = [],
+    hideEmailSignIn,
+    hideWalletSignIn,
 }: SignInModalProps) => {
-  const [isOpenAll, setIsOpenAll] = useState(isOpen)
-  const [loading, setLoading] = useState(true)
-  const [missingMessage, setMissingMessage] = useState<any | null>(null)
-  const [signingIn, setSigningIn] = useState(false)
-  const [email, setEmail] = useState('')
-  const [emailSent, setEmailSent] = useState(false)
-  const { width } = useWindowDimensions()
-  const { appId, walletAppUrl } = getConfiguration()
-  const captchaRef = useRef<any | null>(null)
-  const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined)
-  const [walletOption, setWalletOption] = useState<string>('email')
-  const closeOnClickId = 'ethos-close-on-click'
+    const wallets = useContext(WalletContext);
+    const [isOpenAll, setIsOpenAll] = useState(isOpen)
+    const [loading, setLoading] = useState(true)
+    const [missingMessage, setMissingMessage] = useState<any | null>(null)
+    const [signingIn, setSigningIn] = useState(false)
+    const [email, setEmail] = useState('')
+    const [emailSent, setEmailSent] = useState(false)
+    const { width } = useWindowDimensions()
+    const { appId, walletAppUrl } = getConfiguration()
+    const captchaRef = useRef<any | null>(null)
+    const [qrCodeUrl, setQrCodeUrl] = useState<string | undefined>(undefined)
+    const [walletOption, setWalletOption] = useState<string>('email')
+    const closeOnClickId = 'ethos-close-on-click'
 
-  const _onClose = useCallback(() => {
-    setIsOpenAll(false)
-    onClose && onClose()
-  }, [])
+    const _onClose = useCallback(() => {
+        setIsOpenAll(false)
+        onClose && onClose()
+    }, [])
 
-  useHandleElementWithIdClicked(closeOnClickId, _onClose)
+    useHandleElementWithIdClicked(closeOnClickId, _onClose)
 
-  const onSubmit = async () => {
-    setSigningIn(true)
-    if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
-      try {
-        await captchaRef.current.execute()
-      } catch (e) {
-        console.log('CAPTCHA ERROR', e)
-        sendEmail()
-      }
-    } else {
-      sendEmail()
+    const onSubmit = async () => {
+        setSigningIn(true)
+        if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
+            try {
+                await captchaRef.current.execute()
+            } catch (e) {
+                console.log('CAPTCHA ERROR', e)
+                sendEmail()
+            }
+        } else {
+            sendEmail()
+        }
     }
-  }
 
-  const sendEmail = async () => {
-    await login({ email, appId })
-    setEmail('')
-    setSigningIn(false)
-    setEmailSent(true)
-    event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
-  }
+    const sendEmail = async () => {
+        await login({ email, appId })
+        setEmail('')
+        setSigningIn(false)
+        setEmailSent(true)
+        event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
+    }
 
   const loginWithSocial = (provider: string) => {
     login({ provider, appId })
@@ -171,18 +173,26 @@ const SignInModal = ({
     setWalletOption('email')
   }
 
-  const logo = (connectorId: string) => {
-    switch (connectorId) {
-      case 'ethos':
-        return <Ethos width={17} color="#5B5D5F" />
-      case 'sui':
-        return <Sui width={15} color="#5B5D5F" />
-      case 'email':
-        return <Email width={21} />
-      default:
-        return <FallbackLogo width={17} />
+    const logo = (connectorId: string) => {
+        switch (connectorId) {
+            case 'ethos':
+                return <Ethos width={17} color="#5B5D5F" />
+            case 'sui':
+                return <Sui width={15} color="#5B5D5F" />
+            case 'email':
+                return <Email width={21} />
+            default:
+                return <FallbackLogo width={17} />
+        }
     }
-  }
+
+    const icon = (src?: string) => {
+        if (!src || src.startsWith("chrome-extension")) return <></>;
+
+        return (
+            <img src={src} height={45} width={45} />
+        )
+    }
 
   useEffect(() => {
     window.ethosInternal ||= {}
@@ -299,24 +309,19 @@ const SignInModal = ({
                               <div style={styles.connectorWarning()}>{missingMessage}</div>
                             )}
                             <div style={styles.walletOptionContainer(width)}>
-                              <button
-                                style={styles.walletOptionButton(width)}
-                                onClick={connectEthos}
-                              >
-                                <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                  {logo('ethos')}
-                                  <span style={styles.walletOptionText()}>Ethos Wallet</span>
-                                </span>
-                              </button>
-                              <button
-                                style={styles.walletOptionButton(width)}
-                                onClick={_connectSui}
-                              >
-                                <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                  {logo('sui')}
-                                  <span style={styles.walletOptionText()}>Sui Wallet</span>
-                                </span>
-                              </button>
+                                {wallets?.map(
+                                    (wallet) => (
+                                        <button
+                                            style={styles.walletOptionButton(width)}
+                                            onClick={connectEthos}
+                                        >
+                                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                            {icon(wallet.icon)}
+                                            <span style={styles.walletOptionText()}>{wallet.name}</span>
+                                            </span>
+                                        </button>
+                                    )
+                                )}
                             </div>
                           </div>
                         )}

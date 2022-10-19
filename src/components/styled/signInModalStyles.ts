@@ -46,8 +46,7 @@ export const signInOptionSubtitleText = () => (
 
 export const walletOptionText = () => (
   {
-    color: '#5B5D5F',
-    marginLeft: '10px'
+    color: '#5B5D5F'
   } as React.CSSProperties
 )
 

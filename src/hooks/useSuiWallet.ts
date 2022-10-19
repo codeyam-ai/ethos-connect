@@ -1,9 +1,15 @@
 import { useCallback, useState } from 'react'
+import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import { Signer, SignerType } from '../types/Signer';
 import useSuiWalletConnect from './useSuiWalletConnect';
+export interface SuiWalletResponse {
+    wallets: WalletAdapter[];
+    signer: Signer | null;
+    setSigner: (signer: Signer | null) => void;
+}
 
-const useSuiWallet = (): { signer: Signer | null, setSigner: (signer: Signer | null) => void } => {
-  const { connected, getAccounts, signAndExecuteTransaction } = useSuiWalletConnect()
+const useSuiWallet = (): SuiWalletResponse => {
+  const { wallets, connected, getAccounts, signAndExecuteTransaction } = useSuiWalletConnect()
 
   const requestPreapproval = useCallback(async () => {
     if (!connected) return false;
@@ -31,7 +37,7 @@ const useSuiWallet = (): { signer: Signer | null, setSigner: (signer: Signer | n
     } : null
   )
   
-  return { signer, setSigner }
+  return { wallets, signer, setSigner }
 }
 
 export default useSuiWallet

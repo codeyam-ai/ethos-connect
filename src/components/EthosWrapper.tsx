@@ -8,10 +8,10 @@ import log from '../lib/log'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'
 import ContentsContext from './ContentsContext'
+import WalletsContext from './WalletContext'
 import useAccount from '../hooks/useAccount'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
-
 export interface EthosWrapperProps {
   ethosConfiguration: EthosConfiguration
   onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void
@@ -30,7 +30,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     initialize(ethosConfiguration)
   }, [])
   
-  const { providerAndSigner, logout } = useConnect()
+  const { wallets, providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
 
   useEffect(() => {
@@ -45,11 +45,13 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   }, [providerAndSigner])
   
   return (
-    <ProviderAndSignerContext.Provider value={providerAndSigner}>
-        <ContentsContext.Provider value={contents}>
-            {children}
-        </ContentsContext.Provider>
-    </ProviderAndSignerContext.Provider>
+    <WalletsContext.Provider value={wallets}>
+        <ProviderAndSignerContext.Provider value={providerAndSigner}>
+            <ContentsContext.Provider value={contents}>
+                {children}
+            </ContentsContext.Provider>
+        </ProviderAndSignerContext.Provider>
+    </WalletsContext.Provider>
   ) 
 }
 

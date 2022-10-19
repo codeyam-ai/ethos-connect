@@ -4,17 +4,22 @@
 import {
     isWalletProvider,
     resolveAdapters,
-    WalletAdapter
+    WalletAdapter,
+    WalletAdapterProvider
   } from "@mysten/wallet-adapter-base";
 import { WalletStandardAdapterProvider } from "@mysten/wallet-adapter-all-wallets";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
   
 const useWalletStandardAdapter = (): WalletAdapter[] => {
-    const adapterAndProviders = [new WalletStandardAdapterProvider]
+    const adapterAndProviders = useMemo<WalletAdapterProvider[]>(
+        () => [new WalletStandardAdapterProvider()],
+        []
+    );
+
     const [wallets, setWallets] = useState(() =>
       resolveAdapters(adapterAndProviders)
     );
-  
+
     useEffect(() => {
       const providers = adapterAndProviders.filter(isWalletProvider);
       if (!providers.length) return;
