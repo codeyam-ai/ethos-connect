@@ -103,7 +103,12 @@ const SignInModal = ({
     const _connectExtension = useCallback((e) => {
         if (!selectWallet) return;
 
-        const name = e.target.dataset.name;
+        let element = e.target;
+        let name;
+        while (!name && element.parentNode) {
+            name = element.dataset.name;
+            element = element.parentNode;
+        }
         selectWallet(name);
     }, []);
 
@@ -247,8 +252,9 @@ const SignInModal = ({
                             </span>
                             <div style={styles.walletOptionContainer(width)}>
                                 {wallets?.map(
-                                    (wallet) => (
+                                    (wallet, index) => (
                                         <button
+                                            key={`wallet-${index}`}
                                             style={styles.walletOptionButton(width)}
                                             data-name={wallet.name}
                                             onClick={_connectExtension}
