@@ -1,7 +1,6 @@
 import {
     useCallback,
     useEffect,
-    useMemo,
     useState,
   } from "react";
   import type {
@@ -62,7 +61,6 @@ const useSuiWalletConnect = () => {
           wallets.find((wallet) => wallet.name === name) ?? null;
   
         setWallet(selectedWallet);
-        console.log("SET WALLET", selectedWallet)
   
         if (selectedWallet && !selectedWallet.connecting) {
           try {
@@ -95,38 +93,34 @@ const useSuiWalletConnect = () => {
         }
     }, [wallets, wallet, connected, connecting, select]);
 
-    const walletContext = useMemo<WalletContextState>(
-        () => ({
-            wallets,
-            wallet,
-            connecting,
-            connected,
-            noConnection,
-            select,
-            disconnect,
-    
-            async getAccounts() {
-                console.log("WALLET", wallet)
-                if (wallet == null) throw Error("Wallet Not Connected");
-                return wallet.getAccounts();
-            },
-    
-            async signAndExecuteTransaction(transaction) {
-                if (wallet == null) {
-                    throw new Error("Wallet Not Connected");
-                }
-                if (!wallet.signAndExecuteTransaction) {
-                    throw new Error(
-                        'Wallet does not support "signAndExecuteTransaction" method'
-                    );
-                }
-                return wallet.signAndExecuteTransaction(transaction);
-            },
-        }),
-        [wallets, wallet, select, disconnect, connecting, connected, noConnection]
-    );
+    const getAccounts = useCallback(async () => {
+        if (wallet == null) throw Error("Wallet Not Connected");
+        return wallet.getAccounts();
+    }, [wallet])
 
-    return walletContext;
+    const signAndExecuteTransaction = useCallback(async (transaction) => {
+        if (wallet == null) {
+            throw new Error("Wallet Not Connected");
+        }
+        if (!wallet.signAndExecuteTransaction) {
+            throw new Error(
+                'Wallet does not support "signAndExecuteTransaction" method'
+            );
+        }
+        return wallet.signAndExecuteTransaction(transaction);
+    }, [wallet]);
+
+    return {
+        wallets,
+        wallet,
+        connecting,
+        connected,
+        noConnection,
+        select,
+        disconnect,
+        getAccounts,
+        signAndExecuteTransaction
+    };
 }
 
 export default useSuiWalletConnect;

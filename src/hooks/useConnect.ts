@@ -80,7 +80,6 @@ const useConnect = () => {
     if (!noSuiConnection && !suiSigner) return
 
     log('useConnect', 'Setting providerAndSigner extension', suiSigner)
-    console.log("CHECK SUI SIGNER", noSuiConnection, suiSigner)
     checkSigner(suiSigner, 'extension')
   }, [noSuiConnection, suiSigner, checkSigner])
 

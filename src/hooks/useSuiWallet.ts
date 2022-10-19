@@ -12,6 +12,7 @@ export interface SuiWalletResponse {
 
 const useSuiWallet = (): SuiWalletResponse => {
     const { 
+        wallet,
         wallets, 
         select: selectWallet, 
         connected,
@@ -29,7 +30,7 @@ const useSuiWallet = (): SuiWalletResponse => {
     const getAddress = useCallback(async () => {
         const accounts = await getAccounts();
         return accounts[0];
-    }, [])
+    }, [getAccounts])
 
     const sign = useCallback(async () => {
         return true;
@@ -42,7 +43,7 @@ const useSuiWallet = (): SuiWalletResponse => {
         signAndExecuteTransaction,
         requestPreapproval,
         sign
-    }), []);
+    }), [wallet, getAccounts, getAddress, signAndExecuteTransaction, requestPreapproval, sign]);
 
     const [signer, setSigner] = useState<Signer | null>(
         connected ?  constructedSigner : null
