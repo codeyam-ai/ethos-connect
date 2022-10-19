@@ -24,9 +24,11 @@ const useConnect = () => {
   const { 
     wallets,
     selectWallet,
+    noConnection: noSuiConnection,
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
+  console.log("USE CONNECT", noSuiConnection, suiSigner)
   
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
@@ -76,11 +78,12 @@ const useConnect = () => {
   }, [checkSigner])
 
   useEffect(() => {
-    // if (!suiSigner) return
+    if (!noSuiConnection && !suiSigner) return
 
     log('useConnect', 'Setting providerAndSigner extension', suiSigner)
+    console.log("CHECK SUI SIGNER", noSuiConnection, suiSigner)
     checkSigner(suiSigner, 'extension')
-  }, [suiSigner, checkSigner])
+  }, [noSuiConnection, suiSigner, checkSigner])
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {

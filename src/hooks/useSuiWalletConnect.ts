@@ -22,6 +22,7 @@ export interface WalletContextState {
   
     connecting: boolean;
     connected: boolean;
+    noConnection: boolean;
     // disconnecting: boolean;
   
     select(walletName: string): void;
@@ -40,6 +41,7 @@ const useSuiWalletConnect = () => {
     const [wallet, setWallet] = useState<WalletAdapter | null>(null);
     const [connected, setConnected] = useState(false);
     const [connecting, setConnecting] = useState(false);
+    const [noConnection, setNoConnection] = useState(false);
   
     const disconnect = useCallback(async () => {
       setConnected(false);
@@ -78,41 +80,48 @@ const useSuiWalletConnect = () => {
   
     // // Auto-connect to the preferred wallet if there is one in storage:
     useEffect(() => {
-      if (!wallet && !connected && !connecting) {
-        let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
-        if (typeof preferredWallet === "string") {
-          select(preferredWallet);
+        if (!wallet && !connected && !connecting) {
+            let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
+            if (typeof preferredWallet === "string") {
+                select(preferredWallet);
+            } else {
+                setNoConnection(true);
+            }
         }
-      }
-    }, [wallet, connected, connecting, select]);
+
+        if (!wallets || wallets.length === 0) {
+            setNoConnection(true);
+        }
+    }, [wallets, wallet, connected, connecting, select]);
 
     const walletContext = useMemo<WalletContextState>(
-      () => ({
-        wallets,
-        wallet,
-        connecting,
-        connected,
-        select,
-        disconnect,
-  
-        async getAccounts() {
-          if (wallet == null) throw Error("Wallet Not Connected");
-          return wallet.getAccounts();
-        },
-  
-        async signAndExecuteTransaction(transaction) {
-          if (wallet == null) {
-            throw new Error("Wallet Not Connected");
-          }
-          if (!wallet.signAndExecuteTransaction) {
-            throw new Error(
-              'Wallet does not support "signAndExecuteTransaction" method'
-            );
-          }
-          return wallet.signAndExecuteTransaction(transaction);
-        },
-      }),
-      [wallets, wallet, select, disconnect, connecting, connected]
+        () => ({
+            wallets,
+            wallet,
+            connecting,
+            connected,
+            noConnection,
+            select,
+            disconnect,
+    
+            async getAccounts() {
+                if (wallet == null) throw Error("Wallet Not Connected");
+                return wallet.getAccounts();
+            },
+    
+            async signAndExecuteTransaction(transaction) {
+                if (wallet == null) {
+                    throw new Error("Wallet Not Connected");
+                }
+                if (!wallet.signAndExecuteTransaction) {
+                    throw new Error(
+                        'Wallet does not support "signAndExecuteTransaction" method'
+                    );
+                }
+                return wallet.signAndExecuteTransaction(transaction);
+            },
+        }),
+        [wallets, wallet, select, disconnect, connecting, connected, noConnection]
     );
 
     return walletContext;
