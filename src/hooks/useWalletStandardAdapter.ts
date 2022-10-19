@@ -30,7 +30,6 @@ const useWalletStandardAdapter = (): WalletAdapter[] => {
       };
     }, [adapterAndProviders]);
   
-    console.log("WALLET", wallets, setWallets)
     return wallets;
 }
 

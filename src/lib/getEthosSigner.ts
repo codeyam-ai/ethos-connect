@@ -10,6 +10,7 @@ const getEthosSigner = async (): Promise<any> => {
   const user: any = await activeUser()
 
   const getAccounts = async () => {
+    if (!user) return [];
     return user.accounts.filter((account: any) => account.chain === Chain.Sui)
   }
 

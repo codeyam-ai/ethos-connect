@@ -21,7 +21,6 @@ const useConnect = () => {
     provider: null,
     signer: null
   })
-  console.log("USECONNECT!!!!")
   const { 
     signer: suiSigner, 
     setSigner: setSuiSigner 
