@@ -62,6 +62,7 @@ const useSuiWalletConnect = () => {
           wallets.find((wallet) => wallet.name === name) ?? null;
   
         setWallet(selectedWallet);
+        console.log("SET WALLET", selectedWallet)
   
         if (selectedWallet && !selectedWallet.connecting) {
           try {
@@ -105,6 +106,7 @@ const useSuiWalletConnect = () => {
             disconnect,
     
             async getAccounts() {
+                console.log("WALLET", wallet)
                 if (wallet == null) throw Error("Wallet Not Connected");
                 return wallet.getAccounts();
             },

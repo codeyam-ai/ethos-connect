@@ -28,7 +28,6 @@ const useConnect = () => {
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
-  console.log("USE CONNECT", noSuiConnection, suiSigner)
   
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
