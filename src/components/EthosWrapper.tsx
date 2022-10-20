@@ -38,7 +38,11 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     log('EthosWrapper', 'calling onWalletConnected', providerAndSigner)
 
     if (providerAndSigner.signer) {
-      providerAndSigner.signer.onlogout = logout;
+        const rawDisconnect = providerAndSigner.signer.disconnect;
+        providerAndSigner.signer.disconnect = () => {
+            rawDisconnect();
+            logout();
+        }
     }
 
     onWalletConnected && onWalletConnected(providerAndSigner)

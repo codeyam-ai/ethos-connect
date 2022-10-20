@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import { Signer, SignerType } from '../types/Signer';
 import useSuiWalletConnect from './useSuiWalletConnect';
@@ -18,23 +18,12 @@ const useSuiWallet = (): SuiWalletResponse => {
         connected,
         noConnection, 
         getAccounts, 
-        signAndExecuteTransaction 
+        getAddress,
+        signAndExecuteTransaction,
+        requestPreapproval,
+        sign,
+        disconnect
     } = useSuiWalletConnect()
-
-    const requestPreapproval = useCallback(async () => {
-        if (!connected) return false;
-
-        return true;
-    }, []);
-
-    const getAddress = useCallback(async () => {
-        const accounts = await getAccounts();
-        return accounts[0];
-    }, [getAccounts])
-
-    const sign = useCallback(async () => {
-        return true;
-    }, [])
   
     const constructedSigner = useMemo<Signer>(() => ({
         type: SignerType.EXTENSION,
@@ -42,7 +31,8 @@ const useSuiWallet = (): SuiWalletResponse => {
         getAddress,
         signAndExecuteTransaction,
         requestPreapproval,
-        sign
+        sign,
+        disconnect
     }), [wallet, getAccounts, getAddress, signAndExecuteTransaction, requestPreapproval, sign]);
 
     const [signer, setSigner] = useState<Signer | null>(

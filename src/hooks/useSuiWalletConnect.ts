@@ -42,12 +42,6 @@ const useSuiWalletConnect = () => {
     const [connecting, setConnecting] = useState(false);
     const [noConnection, setNoConnection] = useState(false);
   
-    const disconnect = useCallback(async () => {
-      setConnected(false);
-      setWallet(null);
-      localStorage.removeItem(DEFAULT_STORAGE_KEY);
-    }, []);
-  
     // Once we connect, we remember that we've connected before to enable auto-connect:
     useEffect(() => {
       if (connected && wallet) {
@@ -98,6 +92,27 @@ const useSuiWalletConnect = () => {
         return wallet.getAccounts();
     }, [wallet])
 
+    const getAddress = useCallback(async () => {
+        const accounts = await getAccounts();
+        return accounts[0];
+    }, [getAccounts])
+
+    const disconnect = useCallback(() => {
+        setConnected(false);
+        localStorage.removeItem(DEFAULT_STORAGE_KEY);
+
+        if (wallet == null) throw Error("Wallet Not Connected");
+
+        if (!wallet.disconnect) {
+            throw new Error(
+                'Wallet does not support "disconnect" method'
+            );
+        }
+
+        wallet.disconnect();
+        setWallet(null);
+    }, [wallet])
+
     const signAndExecuteTransaction = useCallback(async (transaction) => {
         if (wallet == null) {
             throw new Error("Wallet Not Connected");
@@ -110,6 +125,16 @@ const useSuiWalletConnect = () => {
         return wallet.signAndExecuteTransaction(transaction);
     }, [wallet]);
 
+    const requestPreapproval = useCallback(async () => {
+        if (!connected) return false;
+
+        return true;
+    }, [wallet]);
+
+    const sign = useCallback(async () => {
+        return true;
+    }, [wallet])
+
     return {
         wallets,
         wallet,
@@ -117,9 +142,12 @@ const useSuiWalletConnect = () => {
         connected,
         noConnection,
         select,
-        disconnect,
         getAccounts,
-        signAndExecuteTransaction
+        getAddress,
+        signAndExecuteTransaction,
+        requestPreapproval,
+        sign,
+        disconnect
     };
 }
 
