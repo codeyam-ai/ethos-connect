@@ -32,7 +32,7 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
     return (
         <div role="wallet-sign-in">
             <span style={styles.signInOptionSubtitleText()}>
-            Connect an existing wallet
+            Which wallet would you like to use?
             </span>
             <div style={styles.walletOptionContainer(width)}>
                 {wallets?.map(

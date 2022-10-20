@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import Loader from '../svg/Loader'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
@@ -74,54 +74,61 @@ const SignInModal = ({
         }
     }, [])
 
+    const modalContent = useMemo(() => {
+        if (hideWalletSignIn) {
+            return (
+                <Email 
+                    setSigningIn={setSigningIn}
+                    setEmailSent={setEmailSent}
+                    captchaRef={captchaRef}
+                    width={width}
+                />
+            )
+        }
+
+        if (wallets) return (
+            <Wallets
+                wallets={wallets}
+                selectWallet={selectWallet}
+                width={width}
+            />
+        )
+
+        return (
+            <>
+                <Email 
+                    setSigningIn={setSigningIn}
+                    setEmailSent={setEmailSent}
+                    captchaRef={captchaRef}
+                    width={width}
+                />
+                <div style={{ margin: '16px 0 16px 0' }}>
+                    <span style={styles.secondaryHeaderText()}>or</span>
+                </div>
+            </>
+        )
+    }, [hideWalletSignIn, wallets])
+
+    const loader = useMemo(() => (
+        <div style={styles.loaderStyle()}>
+            <Loader width={50} />
+        </div>
+    ), [])
+
     return (
         <Dialog isOpenAll={isOpenAll}>
             <ModalWrapper
                 closeOnClickId={closeOnClickId}
+                onClose={_onClose}
                 isOpenAll={isOpenAll}
                 width={width}
             >
                 {emailSent ? (
                     <EmailSent />
                 ) : (
-                    <>
-                        <div style={{ height: '36px' }}>
-                            <span style={styles.closeStyle()} onClick={_onClose}>
-                            &#x2715;
-                            </span>
-                        </div>
-                        <div style={styles.modalContent(width)}>
-                            
-                            {signingIn ? (
-                                <div style={styles.loaderStyle()}>
-                                    <Loader width={50} />
-                                </div>
-                            ) : (
-                                <>
-                                    {!hideEmailSignIn && (
-                                        <Email 
-                                            setSigningIn={setSigningIn}
-                                            setEmailSent={setEmailSent}
-                                            captchaRef={captchaRef}
-                                            width={width}
-                                        />
-                                    )}
-                                    {!hideEmailSignIn && !hideWalletSignIn && (
-                                        <div style={{ margin: '16px 0 16px 0' }}>
-                                            <span style={styles.secondaryHeaderText()}>or</span>
-                                        </div>
-                                    )}
-                                    {!hideWalletSignIn && (
-                                        <Wallets
-                                            wallets={wallets}
-                                            selectWallet={selectWallet}
-                                            width={width}
-                                        />
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </>
+                    <div style={styles.modalContent(width)}>
+                        {signingIn ? loader :  modalContent}
+                    </div>
                 )}
             </ModalWrapper>
         </Dialog>
