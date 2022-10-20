@@ -73,7 +73,7 @@ const SignInModal = ({
 
     useEffect(() => {
         if (hideEmailSignIn && hideWalletSignIn) {
-        throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
+            throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
         }
         setLoading(false)
     }, [])
@@ -128,6 +128,7 @@ const SignInModal = ({
                                         <Wallets
                                             wallets={wallets}
                                             selectWallet={selectWallet}
+                                            width={width}
                                         />
                                     )}
                                 </>

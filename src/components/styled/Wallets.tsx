@@ -3,8 +3,8 @@ import type { WalletAdapter } from "@mysten/wallet-adapter-base";
 import * as styles from './signInModalStyles'
 
 export type WalletProps = {
-    wallets: WalletAdapter[],
-    selectWallet: (name: string) => void,
+    wallets: WalletAdapter[] | null,
+    selectWallet: ((name: string) => void) | null,
     width: number
 }
 
