@@ -16,6 +16,7 @@ import hideWallet from './lib/hideWallet'
 import dripSui from './lib/dripSui'
 
 import useProviderAndSigner from './hooks/useProviderAndSigner'
+import useAddress from './hooks/useAddress'
 import useContents from './hooks/useContents'
 
 const ethos = {
@@ -29,11 +30,10 @@ const ethos = {
   hideWallet,
   dripSui,
   useProviderAndSigner,
+  useAddress,
   useContents,
   showSignInModal,
   hideSignInModal
 }
-
-// console.log('LOCAL 🥳🔮👹');
 
 export { EthosWrapper, SignInButton, ethos }

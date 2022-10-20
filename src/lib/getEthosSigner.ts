@@ -9,7 +9,7 @@ import hostedInteraction, { HostedInteractionResponse } from './hostedInteractio
 const getEthosSigner = async (): Promise<Signer | null> => {
 
     const user: any = await activeUser()
-
+    
     const getAccounts = async () => {
         if (!user) return [];
         return user.accounts.filter((account: any) => account.chain === Chain.Sui)
@@ -17,7 +17,7 @@ const getEthosSigner = async (): Promise<Signer | null> => {
 
     const getAddress = async () => {
         const accounts = await getAccounts();
-        return accounts[0];
+        return accounts[0]?.address;
     }
 
     const signAndExecuteTransaction = (details: SignableTransaction): Promise<SuiTransactionResponse> => {
@@ -74,4 +74,4 @@ const getEthosSigner = async (): Promise<Signer | null> => {
    
 }
 
-export default getEthosSigner
+export default getEthosSigner;
