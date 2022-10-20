@@ -11,6 +11,7 @@ export enum SignerType {
 
 export type Signer = {
   type: SignerType,
+  email?: string,
   getAccounts: () => Promise<string[]>,
   getAddress: () => Promise<string>,
   signAndExecuteTransaction: (transaction: SignableTransaction) => Promise<SuiTransactionResponse>,

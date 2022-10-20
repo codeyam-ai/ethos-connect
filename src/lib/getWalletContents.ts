@@ -58,9 +58,10 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 
       if (!data) continue;
       
-      const typeComponents = (data?.type || "").split('::');
-      console.log("TYPE COMPONENTS", typeComponents)
-      const type = typeComponents[2];
+      const typeStringComponents = (data?.type || "").split('<');
+      const subtype = (typeStringComponents[1] || "").replace(/>/, '')
+      const typeComponents = typeStringComponents[0].split('::');
+      const type = typeComponents[typeComponents.length - 1];
 
       if (type === 'DevNetNFT') {
         let { url } = data.fields;
@@ -83,10 +84,18 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
             'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
           }
         });
-      } else if (type === 'SUI') {
-        suiBalance += data.fields.balance
-        tokens[type].balance += data.fields.balance
-        tokens[type].coins.push({
+      } else if (type === 'Coin') {
+        if (subtype === '0x2::sui::SUI') {
+            suiBalance += data.fields.balance
+        }
+        
+        tokens[subtype] ||= {
+            balance: 0,
+            coins: []
+        }
+        
+        tokens[subtype].balance += data.fields.balance
+        tokens[subtype].coins.push({
           objectId: reference?.objectId,
           type: data.type,
           balance: data.fields.balance
