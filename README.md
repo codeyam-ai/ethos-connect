@@ -1,28 +1,28 @@
 # Setting up local development
 
+From the root folder of the project you are working on (not this project)
+
+```
+yarn remove ethos-wallet-beta
+cd node_modules react
+yarn link
+cd ../react-dom
+yarn link
+cd ../..
+```
+
 From the root directory of this project:
 
 ```
 yarn link
 yarn install
-cd node_modules/react
-yarn link
-cd ../../node_modules/react-dom
-yarn link
-cd ../..
-yarn build
-```
-
-The last line of the previous commands will watch for changes and the UI will automatically update after you link.
-
-Then, from the root directory of the UI project
-
-```
-yarn link ethos-wallet-beta
 yarn link react
 yarn link react-dom
-yarn dev
 ```
+
+From the root folder of the project you are working on (not this project)
+
+`yarn link ethos-wallet-beta`
 
 ## To reset local
 

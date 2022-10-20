@@ -1,24 +1,16 @@
-import type { ObjectId } from '@mysten/sui.js';
+
 // import getConfiguration from './getConfiguration';
 // import getIframe from './getIframe';
 // import postIFrameMessage from './postIFrameMessage';
 
-export interface Preapproval {
-  module: string,
-  function: string,
-  objectId: ObjectId,
-  description: string,
-  totalGasLimit: number;
-  perTransactionGasLimit: number;
-  maxTransactionCount: number;
-}
+import { Preapproval } from "types/Preapproval";
 
 export type PreapprovalArgs = {
   signer: any,
   preapproval: Preapproval
 }
 
-const requestPreapproval = async ({ signer, preapproval }: PreapprovalArgs) => {
+const preapprove = async ({ signer, preapproval }: PreapprovalArgs) => {
   if (signer.extension) {
     if (!signer.requestPreapproval) {
       console.log("Signer does not support `requestPreapproval`");
@@ -60,4 +52,4 @@ const requestPreapproval = async ({ signer, preapproval }: PreapprovalArgs) => {
   
 }
 
-export default requestPreapproval;
+export default preapprove;

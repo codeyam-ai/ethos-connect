@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import store from 'store2'
 import log from '../lib/log'
 import useSuiWallet from './useSuiWallet' 
-import getProvider from '../lib/getProvider'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { JsonRpcProvider } from '@mysten/sui.js';
 import { suiFullNode } from '../lib/constants'
+import { Signer } from 'types/Signer'
+import getEthosSigner from '../lib/getEthosSigner'
 
 const useConnect = () => {
   const signerFound = useRef<boolean>(false)
@@ -20,25 +22,28 @@ const useConnect = () => {
     signer: null
   })
   const { 
-    providerAndSigner: suiProviderAndSigner, 
-    setProviderAndSigner: setSuiProviderAndSigner 
+    signer: suiSigner, 
+    setSigner: setSuiSigner 
   } = useSuiWallet();
-  const [logoutCount, setLogoutCount] = useState(0);
 
+  const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
+    const suiStore = store.namespace('sui')
+    suiStore('disconnected', true);
+
     signerFound.current = false;
     setProviderAndSigner({
       provider: null,
       signer: null
     });
-    setSuiProviderAndSigner(null);
+    setSuiSigner(null);
     for (const key of Object.keys(methodsChecked.current)) {
       methodsChecked.current[key] = false;
     }
     setLogoutCount(prev => prev + 1);
   }, [])
 
-  const checkProviderAndSigner = useCallback((providerAndSigner: ProviderAndSigner, type?: string) => {
+  const checkSigner = useCallback((signer: Signer | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, providerAndSigner, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
     
@@ -47,65 +52,43 @@ const useConnect = () => {
     }
     
     const allMethodsChecked = !Object.values(methodsChecked.current).includes(false)
-    if (!providerAndSigner.signer && !allMethodsChecked) return;
+    if (!signer && !allMethodsChecked) return;
     
-    if (providerAndSigner.signer) {
-      signerFound.current = true;
-    }
-
-    if (allMethodsChecked || providerAndSigner.provider) {
-      providerAndSigner.provider = new JsonRpcProvider(suiFullNode);
-      providerAndSigner.provider.getSigner = () => providerAndSigner.signer;
-    }
+    signerFound.current = true;
+    
+    const provider = new JsonRpcProvider(suiFullNode);
     
     log("useConnect", "final setting providerAndSigner", providerAndSigner)
-    setProviderAndSigner(providerAndSigner)
+    setProviderAndSigner({ provider, signer })
   }, [logoutCount]);
-
-  // const updateProviderAndSigner = useCallback((updates) => {
-  //   log("useConnect", "updateProviderAndSigner", updates)
-  //   setProviderAndSigner(
-  //     (prev: ProviderAndSigner) => ({
-  //       ...prev,
-  //       ...updates
-  //     })
-  //   )
-  // }, [])
 
   useEffect(() => {
     log("mobile", "listening to mobile connection from EthosWrapper")
     listenForMobileConnection(
-      (mobileProviderAndSigner: any) => {
-        log('useConnect', 'Setting providerAndSigner mobile', mobileProviderAndSigner)
-        log("mobile", "Setting provider and signer", mobileProviderAndSigner)
-        checkProviderAndSigner(mobileProviderAndSigner, 'mobile')
+      (mobileSigner: any) => {
+        log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
+        log("mobile", "Setting provider and signer", mobileSigner)
+        checkSigner(mobileSigner, 'mobile')
       }
     )
-  }, [checkProviderAndSigner])
+  }, [checkSigner])
 
   useEffect(() => {
-    if (!suiProviderAndSigner) return
+    if (!suiSigner) return
 
-    log('useConnect', 'Setting providerAndSigner extension', suiProviderAndSigner)
-    checkProviderAndSigner(suiProviderAndSigner, 'extension')
-  }, [suiProviderAndSigner, checkProviderAndSigner])
+    log('useConnect', 'Setting providerAndSigner extension', suiSigner)
+    checkSigner(suiSigner, 'extension')
+  }, [suiSigner, checkSigner])
 
   useEffect(() => { 
-    const fetchEthosProvider = async () => {
-      const provider = await getProvider()
-      const signer = provider?.getSigner()
-      log('useConnect', 'Setting providerAndSigner ethos', provider, signer)
-      checkProviderAndSigner(
-        {
-          provider,
-          signer
-        }, 
-        'ethos'
-      )
+    const fetchEthosSigner = async () => {
+      const signer = await getEthosSigner()
+      log('useConnect', 'Setting providerAndSigner ethos', signer)
+      checkSigner(signer, 'ethos');
     }
     
-    fetchEthosProvider()
-  }, [checkProviderAndSigner])
+    fetchEthosSigner()
+  }, [checkSigner])
 
   return { providerAndSigner, logout };
 }
