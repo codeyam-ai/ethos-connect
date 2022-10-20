@@ -16,5 +16,5 @@ export type Signer = {
   signAndExecuteTransaction: (transaction: SignableTransaction) => Promise<SuiTransactionResponse>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
   sign: (message: any) => Promise<boolean>,
-  disconnect: () => void
+  disconnect: (wallet?: boolean) => void
 }
