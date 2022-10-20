@@ -8,6 +8,8 @@ import ContentsContext from './ContentsContext'
 import useAccount from '../hooks/useAccount'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
+import SignInModal from './styled/SignInModal'
+import ModalContext from './ModalContext'
 
 export interface EthosWrapperProps {
   ethosConfiguration: EthosConfiguration
@@ -26,11 +28,13 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
   useEffect(() => {
     initialize(ethosConfiguration)
   }, [])
-  
-  const [href, setHref] = useState<string|undefined>()
-  const hrefRef = useRef<string|undefined>();
+
+  const [href, setHref] = useState<string | undefined>()
+  const hrefRef = useRef<string | undefined>();
   const { providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalState = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen, setIsModalOpen])
 
   useEffect(() => {
     if (!providerAndSigner?.provider) return;
@@ -62,14 +66,20 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     }
     return child
   }), [providerAndSigner, href]);
-  
+
   return (
     <ProviderAndSignerContext.Provider value={providerAndSigner}>
       <ContentsContext.Provider value={contents}>
-        {childrenWithProviderAndSigner}
+        <ModalContext.Provider value={modalState}>
+          {childrenWithProviderAndSigner}
+          <SignInModal
+          hideEmailSignIn={ethosConfiguration.hideEmailSignIn}
+          hideWalletSignIn={ethosConfiguration.hideWalletSignIn}
+          />
+        </ModalContext.Provider>
       </ContentsContext.Provider>
     </ProviderAndSignerContext.Provider>
-  ) 
+  )
 }
 
 export default EthosWrapper

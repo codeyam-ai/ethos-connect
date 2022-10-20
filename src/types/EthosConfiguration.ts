@@ -4,6 +4,8 @@ export interface EthosConfiguration {
   walletAppUrl?: string
   chain?: Chain
   network?: string | number
+  hideEmailSignIn?: boolean
+  hideWalletSignIn?: boolean
 }
 
 export interface SuiConfiguration extends EthosConfiguration {}

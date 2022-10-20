@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import login from '../../lib/login'
 import Ethos from '../svg/Ethos'
 import Google from '../svg/Google'
@@ -28,11 +28,10 @@ import log from '../../lib/log'
 import * as styles from './signInModalStyles'
 import FontProvider from './FontProvider'
 import useHandleElementWithIdClicked from '../../lib/useHandleElementWithIdClicked'
+import useModal from 'hooks/useModal'
 
 export type SignInModalProps = {
-  isOpen: boolean
   socialLogin?: string[]
-  onClose?: () => void
   hideEmailSignIn?: boolean
   hideWalletSignIn?: boolean
 }
@@ -46,13 +45,12 @@ export function hideSignInModal() {
 }
 
 const SignInModal = ({
-  isOpen,
-  onClose,
   socialLogin = [],
   hideEmailSignIn,
   hideWalletSignIn,
 }: SignInModalProps) => {
-  const [isOpenAll, setIsOpenAll] = useState(isOpen)
+  const { isModalOpen, openModal, closeModal } = useModal()
+  const [isOpenAll, setIsOpenAll] = useState(isModalOpen)
   const [loading, setLoading] = useState(true)
   const [missingMessage, setMissingMessage] = useState<any | null>(null)
   const [signingIn, setSigningIn] = useState(false)
@@ -65,12 +63,7 @@ const SignInModal = ({
   const [walletOption, setWalletOption] = useState<string>('email')
   const closeOnClickId = 'ethos-close-on-click'
 
-  const _onClose = useCallback(() => {
-    setIsOpenAll(false)
-    onClose && onClose()
-  }, [])
-
-  useHandleElementWithIdClicked(closeOnClickId, _onClose)
+  useHandleElementWithIdClicked(closeOnClickId, closeModal)
 
   const onSubmit = async () => {
     setSigningIn(true)
@@ -120,7 +113,7 @@ const SignInModal = ({
         </div>
       )
     } else {
-      onClose && onClose()
+      closeModal()
     }
     event({ action: 'connect', category: 'sign_in', label: 'ethos', value: connected ? 1 : 0 })
   }
@@ -133,7 +126,7 @@ const SignInModal = ({
     setQrCodeUrl(_qrCodeUrl)
     listenForMobileConnection(() => {
       log('mobile', 'Listening to mobile connection from SignInModal')
-      onClose && onClose()
+      closeModal()
     })
   }
 
@@ -160,7 +153,7 @@ const SignInModal = ({
         </div>
       )
     } else {
-      onClose && onClose()
+      closeModal()
     }
     event({ action: 'connect', category: 'sign_in', label: 'sui', value: connected ? 1 : 0 })
   }
@@ -188,15 +181,15 @@ const SignInModal = ({
     window.ethosInternal ||= {}
 
     window.ethosInternal.showSignInModal = () => {
-      setIsOpenAll(true)
+      openModal()
     }
 
     window.ethosInternal.hideSignInModal = () => {
-      _onClose()
+      closeModal()
     }
 
-    setIsOpenAll(isOpen)
-  }, [isOpen, setIsOpenAll, _onClose])
+    setIsOpenAll(isModalOpen)
+  }, [isModalOpen, setIsOpenAll, openModal, closeModal])
 
   useEffect(() => {
     if (hideEmailSignIn && hideWalletSignIn) {
@@ -243,7 +236,7 @@ const SignInModal = ({
               ) : (
                 <>
                   <div style={{ height: '36px' }}>
-                    <span style={styles.closeStyle()} onClick={_onClose}>
+                    <span style={styles.closeStyle()} onClick={closeModal}>
                       &#x2715;
                     </span>
                   </div>
@@ -329,7 +322,7 @@ const SignInModal = ({
                 <>
                   <div style={styles.headerStyle()}>
                     <h3 style={styles.titleStyle()}>Sign Up or Log In!!!</h3>
-                    <div style={styles.closeStyle()} onClick={onClose}>
+                    <div style={styles.closeStyle()} onClick={closeModal}>
                       &#x2715;
                     </div>
                   </div>
