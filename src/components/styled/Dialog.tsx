@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import React, { ReactNode } from "react"
 import FontProvider from './FontProvider'
 import * as styles from './signInModalStyles'
 

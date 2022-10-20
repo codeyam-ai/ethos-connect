@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import type { WalletAdapter } from "@mysten/wallet-adapter-base";
 import * as styles from './signInModalStyles'
 

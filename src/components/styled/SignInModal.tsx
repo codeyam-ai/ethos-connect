@@ -8,8 +8,6 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 
 import Loader from '../svg/Loader'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { captchaSiteKey } from '../../lib/constants'
 import * as styles from './signInModalStyles'
 import useHandleElementWithIdClicked from '../../lib/useHandleElementWithIdClicked'
 import WalletContext from '../WalletContext'
@@ -42,7 +40,6 @@ const SignInModal = ({
 }: SignInModalProps) => {
     const { wallets, selectWallet } = useContext(WalletContext);
     const [isOpenAll, setIsOpenAll] = useState(isOpen)
-    const [loading, setLoading] = useState(true)
     const [signingIn, setSigningIn] = useState(false)
     
     const [emailSent, setEmailSent] = useState(false)
@@ -75,20 +72,10 @@ const SignInModal = ({
         if (hideEmailSignIn && hideWalletSignIn) {
             throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
         }
-        setLoading(false)
     }, [])
 
     return (
         <Dialog isOpenAll={isOpenAll}>
-            {!loading && (
-                <ReCAPTCHA
-                    sitekey={captchaSiteKey}
-                    ref={captchaRef}
-                    size="invisible"
-                    onChange={sendEmail}
-                />
-            )}
-
             <ModalWrapper
                 closeOnClickId={closeOnClickId}
                 isOpenAll={isOpenAll}

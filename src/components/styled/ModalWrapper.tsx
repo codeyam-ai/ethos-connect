@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import * as styles from './signInModalStyles'
 
 export type ModalWrapperProps = {

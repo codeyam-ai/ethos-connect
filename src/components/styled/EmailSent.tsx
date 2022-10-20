@@ -1,3 +1,4 @@
+import React from 'react';
 import CheckMark from '../svg/CheckMark'
 import * as styles from './signInModalStyles'
 

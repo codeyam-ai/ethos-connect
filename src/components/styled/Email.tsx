@@ -1,4 +1,6 @@
-import { MutableRefObject, useState } from 'react'
+import React, { MutableRefObject, useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { captchaSiteKey } from '../../lib/constants'
 import getConfiguration from '../../lib/getConfiguration'
 import event from '../../lib/event'
 import login from '../../lib/login'
@@ -48,8 +50,8 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
                 </span>
             </h2>
         
-            <div role="email-sign-in">
-                <div style={{ marginTop: '16px' }}>
+            <div role="email-sign-in"  style={{ padding: '16px 0' }}>
+                <div>
                     <span style={styles.signInOptionSubtitleText()}>
                         Sign in with your email
                     </span>
@@ -66,6 +68,14 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
                         Sign In
                     </button>
                 </form>
+            </div>
+            <div style={{marginLeft: "-12px"}}>
+                <ReCAPTCHA
+                    sitekey={captchaSiteKey}
+                    ref={captchaRef}
+                    size="invisible"
+                    onChange={sendEmail}
+                />
             </div>
         </div>
     );
