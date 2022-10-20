@@ -44,7 +44,7 @@ export const signInOptionSubtitleText = () => (
   } as React.CSSProperties
 )
 
-export const walletOptionText = () => (
+export const iconButtonText = () => (
   {
     color: '#5B5D5F',
     marginLeft: '10px'
@@ -354,7 +354,7 @@ export const walletOptionContainer = (width: number) => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
-export const walletOptionButton = (width: number) => {
+export const iconButton = (width: number) => {
   const styles = {
     textDecoration: "none",
     boxSizing: "border-box",
@@ -425,4 +425,22 @@ export const browserExtensionLink = () =>
   color: '#751ac7',
   textDecoration: 'underline',
   fontWeight: 400,
+} as React.CSSProperties)
+
+export const walletInstallExplanation = () => 
+({
+    marginTop: '6px',
+    color: '#751ac7',
+    width: '100%',
+    fontSize: 'smaller',
+    cursor: 'pointer'
+} as React.CSSProperties)
+
+export const walletExplanation = () => 
+({
+    padding: '6px 0',
+    color: '#666',
+    width: '100%',
+    fontSize: 'smaller',
+    textAlign: 'left'
 } as React.CSSProperties)

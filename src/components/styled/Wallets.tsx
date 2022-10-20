@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import type { WalletAdapter } from "@mysten/wallet-adapter-base";
 import * as styles from './signInModalStyles'
+import IconButton from "./IconButton";
 
 export type WalletProps = {
     wallets: WalletAdapter[] | null,
@@ -32,22 +33,18 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
     return (
         <div role="wallet-sign-in">
             <span style={styles.signInOptionSubtitleText()}>
-            Which wallet would you like to use?
+                Select from your wallets:
             </span>
             <div style={styles.walletOptionContainer(width)}>
                 {wallets?.map(
                     (wallet, index) => (
-                        <button
+                        <IconButton
                             key={`wallet-${index}`}
-                            style={styles.walletOptionButton(width)}
-                            data-name={wallet.name}
+                            icon={icon(wallet.icon)}
+                            text={wallet.name}
                             onClick={_connectExtension}
-                        >
-                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                            {icon(wallet.icon)}
-                            <span style={styles.walletOptionText()}>{wallet.name}</span>
-                            </span>
-                        </button>
+                            width={width}
+                        />
                     )
                 )}
             </div>

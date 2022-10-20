@@ -16,6 +16,8 @@ import Wallets from './Wallets'
 import Email from './Email'
 import Dialog from './Dialog'
 import ModalWrapper from './ModalWrapper'
+import InstallWallet from './InstallWallet'
+import IconButton from './IconButton'
 
 export type SignInModalProps = {
     isOpen: boolean
@@ -47,6 +49,9 @@ const SignInModal = ({
     const captchaRef = useRef<any | null>(null)
     const closeOnClickId = 'ethos-close-on-click'
 
+    const [showMobile, setShowMobile] = useState(false);
+    const [showInstallWallet, setShowInstallWallet] = useState(false);
+
     const _onClose = useCallback(() => {
         setIsOpenAll(false)
         onClose && onClose()
@@ -74,7 +79,23 @@ const SignInModal = ({
         }
     }, [])
 
+    const _toggleMobile = useCallback(() => {
+        setShowMobile((prev) => !prev)
+    }, [])
+
+    const _toggleInstallWallet = useCallback(() => {
+        setShowInstallWallet((prev) => !prev)
+    }, [])
+
     const modalContent = useMemo(() => {
+        if (showMobile) {
+            return <div>MOBILE!</div>
+        }
+
+        if (showInstallWallet) {
+            return <InstallWallet width={width} />
+        }
+
         if (hideWalletSignIn) {
             return (
                 <Email 
@@ -86,7 +107,7 @@ const SignInModal = ({
             )
         }
 
-        if (wallets) return (
+        if (wallets && wallets.length > 0) return (
             <Wallets
                 wallets={wallets}
                 selectWallet={selectWallet}
@@ -105,9 +126,27 @@ const SignInModal = ({
                 <div style={{ margin: '16px 0 16px 0' }}>
                     <span style={styles.secondaryHeaderText()}>or</span>
                 </div>
+                
+                <IconButton
+                    icon={<></>}
+                    text="Connect A Mobile Wallet"
+                    onClick={_toggleMobile}
+                    width={width}
+                />
+
+                <div style={{ margin: '16px 0 16px 0' }}>
+                    <span style={styles.secondaryHeaderText()}>or</span>
+                </div>
+
+                <IconButton
+                    icon={<></>}
+                    text="Install A Wallet"
+                    onClick={_toggleInstallWallet}
+                    width={width}
+                />
             </>
         )
-    }, [hideWalletSignIn, wallets])
+    }, [hideWalletSignIn, wallets, showMobile, showInstallWallet])
 
     const loader = useMemo(() => (
         <div style={styles.loaderStyle()}>
