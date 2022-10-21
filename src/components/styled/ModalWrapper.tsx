@@ -19,24 +19,7 @@ const ModalWrapper = ({ closeOnClickId, onClose, isOpenAll, width, back, childre
                         {back && (
                             <span style={styles.backStyle()} onClick={back}>
                                 ←
-                                <svg 
-                                    xmlns="http://www.w3.org/2000/svg" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
-                                    height={18} 
-                                    width={18} 
-                                    strokeWidth="2" 
-                                    stroke="currentColor"
-                                    aria-hidden="true" 
-                                    className="h-5 w-5"
-                                >
-                                    <path 
-                                        strokeLinecap="round" 
-                                        strokeLinejoin="round" 
-                                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18">
-                                    </path>
-                                </svg>
-                                Back
+                                <span style={styles.backStyleText()}>Back</span>
                             </span>
                         )}
                         <span style={styles.closeStyle()} onClick={onClose}>

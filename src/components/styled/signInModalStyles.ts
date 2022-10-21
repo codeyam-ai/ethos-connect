@@ -179,10 +179,15 @@ export const backStyle = () =>
   float: 'left',
   color: '#A0AEBA',
   cursor: 'pointer',
-  fontSize: 'smaller',
+  fontSize: 'larger',
   display: 'flex',
   gap: "6px",
   alignItems: 'center'
+} as React.CSSProperties)
+
+export const backStyleText = () =>
+({
+  fontSize: 'small'
 } as React.CSSProperties)
 
 export const headerStyle = () =>
@@ -456,5 +461,6 @@ export const walletExplanation = () =>
     color: '#666',
     width: '100%',
     fontSize: 'smaller',
-    textAlign: 'left'
+    textAlign: 'left',
+    marginBottom: '12px'
 } as React.CSSProperties)

@@ -46,11 +46,10 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
                     on the Sui blockchain.
                 </p>
             </div>
+            <div style={styles.signInOptionSubtitleText()}>
+                Sui Browser Extension Wallets
+            </div>
             <div style={styles.walletOptionContainer(width)}>
-                <div style={styles.signInOptionSubtitleText()}>
-                    Sui Browser Extension Wallets
-                </div>
-
                 {installWallets?.map(
                     (installWallet, index) => (
                         <a
