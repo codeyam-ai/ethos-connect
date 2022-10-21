@@ -87,6 +87,11 @@ const SignInModal = ({
         setShowInstallWallet((prev) => !prev)
     }, [])
 
+    const _reset = useCallback(() => {
+        setShowInstallWallet(false)
+        setShowMobile(false)
+    }, [])
+
     const modalContent = useMemo(() => {
         if (showMobile) {
             return <div>MOBILE!</div>
@@ -148,6 +153,10 @@ const SignInModal = ({
         )
     }, [hideWalletSignIn, wallets, showMobile, showInstallWallet])
 
+    const subpage = useMemo(() => {
+        return showMobile || showInstallWallet
+    }, [hideWalletSignIn, wallets, showMobile, showInstallWallet])
+
     const loader = useMemo(() => (
         <div style={styles.loaderStyle()}>
             <Loader width={50} />
@@ -161,6 +170,7 @@ const SignInModal = ({
                 onClose={_onClose}
                 isOpenAll={isOpenAll}
                 width={width}
+                back={subpage ? _reset : null}
             >
                 {emailSent ? (
                     <EmailSent />

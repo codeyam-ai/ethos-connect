@@ -38,16 +38,19 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
             </span>
             <div style={styles.walletExplanation()}>
                 <p>
-                    Wallets allow you to interact with store, send, and receive digital assets.
+                    Wallets allow you to interact with, store, send, and receive digital assets.
                 </p>
                 <br/>
                 <p>
-                    Ethos allows you to create a wallet using just your email,
-                    or you can install a browser extension of download a mobile app
-                    to use as your wallet.
+                    The following wallets are available as chrome extensions and mobile wallets
+                    on the Sui blockchain.
                 </p>
             </div>
             <div style={styles.walletOptionContainer(width)}>
+                <div style={styles.signInOptionSubtitleText()}>
+                    Sui Browser Extension Wallets
+                </div>
+
                 {installWallets?.map(
                     (installWallet, index) => (
                         <a
@@ -57,8 +60,8 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
                             href={installWallet.link}
                         >
                             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                            {icon(installWallet.icon)}
-                            <span style={styles.iconButtonText()}>{installWallet.name}</span>
+                                {icon(installWallet.icon)}
+                                <span style={styles.iconButtonText()}>{installWallet.name}</span>
                             </span>
                         </a>
                     )

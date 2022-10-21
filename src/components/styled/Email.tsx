@@ -51,10 +51,8 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
             </h2>
         
             <div role="email-sign-in"  style={{ padding: '16px 0' }}>
-                <div>
-                    <span style={styles.signInOptionSubtitleText()}>
-                        Sign in with your email
-                    </span>
+                <div style={styles.signInOptionSubtitleText()}>
+                    Sign in with your email
                 </div>
                 <form onSubmit={onSubmit}>
                     <input

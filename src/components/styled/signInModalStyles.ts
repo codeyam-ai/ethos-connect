@@ -171,6 +171,20 @@ export const closeStyle = () =>
   cursor: 'pointer',
 } as React.CSSProperties)
 
+
+export const backStyle = () =>
+({
+  marginLeft: '12px',
+  marginTop: '12px',
+  float: 'left',
+  color: '#A0AEBA',
+  cursor: 'pointer',
+  fontSize: 'smaller',
+  display: 'flex',
+  gap: "6px",
+  alignItems: 'center'
+} as React.CSSProperties)
+
 export const headerStyle = () =>
 ({
   borderBottom: '1px solid rgb(241 245 249)',
