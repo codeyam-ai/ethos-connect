@@ -18,6 +18,7 @@ import dripSui from './lib/dripSui'
 import useProviderAndSigner from './hooks/useProviderAndSigner'
 import useAddress from './hooks/useAddress'
 import useContents from './hooks/useContents'
+import useSuiWalletConnect from './hooks/useSuiWalletConnect'
 
 const ethos = {
   login,
@@ -32,6 +33,7 @@ const ethos = {
   useProviderAndSigner,
   useAddress,
   useContents,
+  useSuiWalletConnect, 
   showSignInModal,
   hideSignInModal
 }
