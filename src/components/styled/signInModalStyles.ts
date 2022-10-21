@@ -461,6 +461,5 @@ export const walletExplanation = () =>
     color: '#666',
     width: '100%',
     fontSize: 'smaller',
-    textAlign: 'left',
     marginBottom: '12px'
 } as React.CSSProperties)

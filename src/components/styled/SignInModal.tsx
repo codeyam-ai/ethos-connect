@@ -50,6 +50,7 @@ const SignInModal = ({
     const captchaRef = useRef<any | null>(null)
     const closeOnClickId = 'ethos-close-on-click'
 
+    const [showEmail, setShowEmail] = useState(false);
     const [showMobile, setShowMobile] = useState(false);
     const [showInstallWallet, setShowInstallWallet] = useState(false);
 
@@ -75,17 +76,22 @@ const SignInModal = ({
         }
     }, [])
 
-    const _toggleMobile = useCallback(() => {
-        setShowMobile((prev) => !prev)
-    }, [])
+    // const _toggleMobile = useCallback(() => {
+    //     setShowMobile((prev) => !prev)
+    // }, [])
 
     const _toggleInstallWallet = useCallback(() => {
         setShowInstallWallet((prev) => !prev)
     }, [])
 
+    const _toggleEmail = useCallback(() => {
+        setShowEmail((prev) => !prev)
+    }, [])
+
     const _reset = useCallback(() => {
         setShowInstallWallet(false)
         setShowMobile(false)
+        setShowEmail(false)
     }, [])
 
     const modalContent = useMemo(() => {
@@ -108,12 +114,25 @@ const SignInModal = ({
             )
         }
 
-        if (wallets && wallets.length > 0) return (
-            <Wallets
-                wallets={wallets}
-                selectWallet={selectWallet}
-                width={width}
-            />
+        if (!showEmail && wallets && wallets.length > 0) return (
+            <>
+                <Wallets
+                    wallets={wallets}
+                    selectWallet={selectWallet}
+                    width={width}
+                />
+
+                <div style={{ margin: '16px 0 16px 0' }}>
+                    <span style={styles.secondaryHeaderText()}>or</span>
+                </div>
+
+                <IconButton
+                    icon={<></>}
+                    text="Sign In With Email"
+                    onClick={_toggleEmail}
+                    width={width}
+                />
+            </>
         )
 
         return (
@@ -124,7 +143,8 @@ const SignInModal = ({
                     captchaRef={captchaRef}
                     width={width}
                 />
-                <div style={{ margin: '16px 0 16px 0' }}>
+
+                {/* <div style={{ margin: '16px 0 16px 0' }}>
                     <span style={styles.secondaryHeaderText()}>or</span>
                 </div>
                 
@@ -133,7 +153,7 @@ const SignInModal = ({
                     text="Connect A Mobile Wallet"
                     onClick={_toggleMobile}
                     width={width}
-                />
+                /> */}
 
                 <div style={{ margin: '16px 0 16px 0' }}>
                     <span style={styles.secondaryHeaderText()}>or</span>
@@ -147,7 +167,7 @@ const SignInModal = ({
                 />
             </>
         )
-    }, [hideWalletSignIn, wallets, showMobile, showInstallWallet])
+    }, [hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet
