@@ -19,6 +19,7 @@ import ModalWrapper from './ModalWrapper'
 import InstallWallet from './InstallWallet'
 import IconButton from './IconButton'
 import useModal from '../../hooks/useModal'
+import MobileWallet from './MobileWallet'
 
 export type SignInModalProps = {
     isOpen: boolean
@@ -95,11 +96,13 @@ const SignInModal = ({
     }, [])
 
     const modalContent = useMemo(() => {
+        const safeWallets = wallets || []
+
         if (showMobile) {
-            return <div>MOBILE!</div>
+            return <MobileWallet />
         }
 
-        if (showInstallWallet) {
+        if (showInstallWallet || (hideEmailSignIn && safeWallets.length === 0)) {
             return <InstallWallet width={width} />
         }
 
@@ -114,24 +117,27 @@ const SignInModal = ({
             )
         }
 
-        if (!showEmail && wallets && wallets.length > 0) return (
+        if (!showEmail && safeWallets.length > 0) return (
             <>
                 <Wallets
-                    wallets={wallets}
+                    wallets={safeWallets}
                     selectWallet={selectWallet}
                     width={width}
                 />
+                {!hideEmailSignIn && (
+                    <>
+                        <div style={{ margin: '16px 0 16px 0' }}>
+                            <span style={styles.secondaryHeaderText()}>or</span>
+                        </div>
 
-                <div style={{ margin: '16px 0 16px 0' }}>
-                    <span style={styles.secondaryHeaderText()}>or</span>
-                </div>
-
-                <IconButton
-                    icon={<></>}
-                    text="Sign In With Email"
-                    onClick={_toggleEmail}
-                    width={width}
-                />
+                        <IconButton
+                            icon={<></>}
+                            text="Sign In With Email"
+                            onClick={_toggleEmail}
+                            width={width}
+                        />
+                    </>
+                )}
             </>
         )
 
@@ -167,7 +173,7 @@ const SignInModal = ({
                 />
             </>
         )
-    }, [hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
+    }, [hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet
