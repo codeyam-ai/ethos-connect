@@ -177,7 +177,7 @@ const SignInModal = ({
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet
-    }, [hideWalletSignIn, wallets, showMobile, showInstallWallet])
+    }, [showMobile, showInstallWallet])
 
     const loader = useMemo(() => (
         <div style={styles.loaderStyle()}>
