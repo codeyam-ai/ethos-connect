@@ -46,7 +46,7 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
             <h2 style={{ margin: '0' }}>
                 <span style={{ display: 'inline-flex' }}>
                     <Ethos width={20} />
-                    <span style={styles.ethosWalletTitleText()}>Ethos Wallet</span>
+                    <span style={styles.ethosWalletTitleText()}>Ethos</span>
                 </span>
             </h2>
         
