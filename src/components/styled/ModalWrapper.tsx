@@ -18,6 +18,7 @@ const ModalWrapper = ({ closeOnClickId, onClose, isOpenAll, width, back, childre
                     <div style={{ height: '36px' }}>
                         {back && (
                             <span style={styles.backStyle()} onClick={back}>
+                                ←
                                 <svg 
                                     xmlns="http://www.w3.org/2000/svg" 
                                     fill="none" 

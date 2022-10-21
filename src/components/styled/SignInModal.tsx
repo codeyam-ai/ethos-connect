@@ -18,6 +18,7 @@ import Dialog from './Dialog'
 import ModalWrapper from './ModalWrapper'
 import InstallWallet from './InstallWallet'
 import IconButton from './IconButton'
+import useModal from '../../hooks/useModal'
 
 export type SignInModalProps = {
     isOpen: boolean
@@ -35,13 +36,13 @@ export function hideSignInModal() {
 }
 
 const SignInModal = ({
-    isOpen,
-    onClose,
     hideEmailSignIn,
     hideWalletSignIn,
 }: SignInModalProps) => {
+    
     const { wallets, selectWallet } = useContext(WalletContext);
-    const [isOpenAll, setIsOpenAll] = useState(isOpen)
+    const { isModalOpen, openModal, closeModal } = useModal()
+    const [isOpenAll, setIsOpenAll] = useState(isModalOpen)
     const [signingIn, setSigningIn] = useState(false)
     
     const [emailSent, setEmailSent] = useState(false)
@@ -52,26 +53,21 @@ const SignInModal = ({
     const [showMobile, setShowMobile] = useState(false);
     const [showInstallWallet, setShowInstallWallet] = useState(false);
 
-    const _onClose = useCallback(() => {
-        setIsOpenAll(false)
-        onClose && onClose()
-    }, [])
-
-    useHandleElementWithIdClicked(closeOnClickId, _onClose)
+    useHandleElementWithIdClicked(closeOnClickId, closeModal)
 
     useEffect(() => {
         window.ethosInternal ||= {}
 
         window.ethosInternal.showSignInModal = () => {
-            setIsOpenAll(true)
+            openModal()
         }
 
         window.ethosInternal.hideSignInModal = () => {
-            _onClose()
+            closeModal()
         }
 
-        setIsOpenAll(isOpen)
-    }, [isOpen, setIsOpenAll, _onClose])
+        setIsOpenAll(isModalOpen)
+    }, [isModalOpen, setIsOpenAll, openModal, closeModal])
 
     useEffect(() => {
         if (hideEmailSignIn && hideWalletSignIn) {
@@ -167,7 +163,7 @@ const SignInModal = ({
         <Dialog isOpenAll={isOpenAll}>
             <ModalWrapper
                 closeOnClickId={closeOnClickId}
-                onClose={_onClose}
+                onClose={closeModal}
                 isOpenAll={isOpenAll}
                 width={width}
                 back={subpage ? _reset : null}
