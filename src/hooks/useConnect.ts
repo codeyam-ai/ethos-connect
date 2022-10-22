@@ -47,7 +47,7 @@ const useConnect = () => {
   }, [])
 
   const checkSigner = useCallback((signer: Signer | null, type?: string) => {
-    log("useConnect", "trying to set providerAndSigner", type, providerAndSigner, signerFound.current, methodsChecked.current)
+    log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
     
     if (type) {
@@ -61,7 +61,6 @@ const useConnect = () => {
     
     const provider = new JsonRpcProvider(suiFullNode);
     
-    log("useConnect", "final setting providerAndSigner", providerAndSigner)
     setProviderAndSigner({ provider, signer })
   }, [logoutCount]);
 
