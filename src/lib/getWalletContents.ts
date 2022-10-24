@@ -1,4 +1,6 @@
-import fetchSui from "./fetchSui";
+import { JsonRpcProvider } from "@mysten/sui.js";
+import { suiFullNode } from "./constants";
+// import fetchSui from "./fetchSui";
 
 export type WalletContents = {
   suiBalance: number,
@@ -7,25 +9,27 @@ export type WalletContents = {
 }
 
 const getWalletContents = async (address: string): Promise<WalletContents> => {
-  let objectInfos: any[] = [];
+  const provider = new JsonRpcProvider(suiFullNode);
+//   let objectInfos: any[] = [];
 
-  if (address) {
-    try {
-      const response = await fetchSui(
-        'sui_getObjectsOwnedByAddress',
-        [ address ]
-      )
+//   if (address) {
+//     try {
+//       const response = await fetchSui(
+//         'sui_getObjectsOwnedByAddress',
+//         [ address ]
+//       )
   
-      if (response.error) {
-        console.log("Error getting wallet contenst", response.error);
-      } else {
-        objectInfos = response;
-      }
-      // objectInfos = await provider.getObjectsOwnedByAddress(address);
-    } catch (e) {
-      console.log("Error getting Sui objects owned by adddress", e);
-    }
-  }
+//       if (response.error) {
+//         console.log("Error getting wallet contenst", response.error);
+//       } else {
+//         objectInfos = response;
+//       }
+//       // objectInfos = await provider.getObjectsOwnedByAddress(address);
+//     } catch (e) {
+//       console.log("Error getting Sui objects owned by adddress", e);
+//     }
+//   }
+  const objectInfos = await provider.getObjectsOwnedByAddress(address);
 
   if (objectInfos.length === 0) {
     return {
@@ -36,17 +40,17 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
   }
 
   const objectIds = objectInfos.map((o: any) => o.objectId);
-  // const objects = await provider.getObjectBatch(objectIds)
-  const objects = [];
-  for (const objectId of objectIds) {
-    const object = await fetchSui(
-      'sui_getObject', 
-      [
-        objectId
-      ] 
-    );
-    objects.push(object);
-  }
+  const objects = await provider.getObjectBatch(objectIds)
+//   const objects = [];
+//   for (const objectId of objectIds) {
+//     const object = await fetchSui(
+//       'sui_getObject', 
+//       [
+//         objectId
+//       ] 
+//     );
+//     objects.push(object);
+//   }
  
   let suiBalance = 0;
   const nfts = [];

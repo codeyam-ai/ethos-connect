@@ -47,7 +47,6 @@ export const signInOptionSubtitleText = () => (
 export const iconButtonText = () => (
   {
     color: '#5B5D5F',
-    marginLeft: '10px'
   } as React.CSSProperties
 )
 

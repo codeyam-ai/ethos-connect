@@ -1,18 +1,18 @@
-import React, { MouseEventHandler, ReactNode } from "react";
+import React, { HTMLAttributes, ReactNode } from "react";
 import * as styles from './signInModalStyles'
 
-export type IconButtonProps = {
+export interface IconButtonProps extends HTMLAttributes<HTMLButtonElement> {
     text: string,
     icon: ReactNode,
-    onClick: MouseEventHandler,
     width: number
 }
 
-const IconButton = ({ text, icon, onClick, width }: IconButtonProps) => {
+const IconButton = (props: IconButtonProps) => {
+    const { text, icon, width, ...reactProps } = props;
     return (
         <button
             style={styles.iconButton(width)}
-            onClick={onClick}
+            {...reactProps}
         >   
             {icon}
             <span style={styles.iconButtonText()}>

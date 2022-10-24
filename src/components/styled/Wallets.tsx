@@ -41,6 +41,7 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
                         <IconButton
                             key={`wallet-${index}`}
                             icon={icon(wallet.icon)}
+                            data-name={wallet.name}
                             text={wallet.name}
                             onClick={_connectExtension}
                             width={width}

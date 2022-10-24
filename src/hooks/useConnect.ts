@@ -57,7 +57,7 @@ const useConnect = () => {
     const allMethodsChecked = !Object.values(methodsChecked.current).includes(false)
     if (!signer && !allMethodsChecked) return;
     
-    signerFound.current = true;
+    signerFound.current = !!signer;
     
     const provider = new JsonRpcProvider(suiFullNode);
     
