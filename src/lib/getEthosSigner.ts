@@ -24,14 +24,14 @@ const getEthosSigner = async (): Promise<Signer | null> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
-                    resolve(data);
+                    resolve(data.response);
                 } else {
                     reject({ error: data?.response?.error || "User rejected transaction."})
                 }
             }
         
             hostedInteraction({
-                action: 'transact',
+                action: 'transaction',
                 data: { details },
                 onResponse: transactionEventListener
             })
