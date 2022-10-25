@@ -33,7 +33,7 @@ const useSuiWallet = (): SuiWalletResponse => {
         requestPreapproval,
         sign,
         disconnect
-    }), [wallet, getAccounts, getAddress, signAndExecuteTransaction, requestPreapproval, sign]);
+    }), [wallet, connected, getAccounts, getAddress, signAndExecuteTransaction, requestPreapproval, sign]);
 
     const [signer, setSigner] = useState<Signer | null>(
         connected ?  constructedSigner : null

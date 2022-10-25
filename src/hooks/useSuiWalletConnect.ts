@@ -10,6 +10,7 @@ import {
   } from "@mysten/sui.js";
 import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import useWalletStandardAdapter from "./useWalletStandardAdapter";
+import { Preapproval } from "types/Preapproval";
 
 const DEFAULT_STORAGE_KEY = "preferredSuiWallet";
 
@@ -125,11 +126,19 @@ const useSuiWalletConnect = () => {
         return wallet.signAndExecuteTransaction(transaction);
     }, [wallet]);
 
-    const requestPreapproval = useCallback(async () => {
-        if (!connected) return false;
+    const requestPreapproval = useCallback(async (preapproval: Preapproval) => {
+        if (wallet == null) {
+            throw new Error("Wallet Not Connected");
+        }
 
-        return true;
-    }, [wallet]);
+        const ethosWallet = (window as any).ethosWallet
+        if (!ethosWallet || wallet.name !== "Ethos Wallet") {
+            console.log("Wallet does not support preapproval")
+            return false;
+        }
+
+        return ethosWallet.requestPreapproval(preapproval)
+    }, [connected]);
 
     const sign = useCallback(async () => {
         return true;

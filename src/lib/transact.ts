@@ -1,29 +1,17 @@
-import {
-  SuiCoinTransferTransaction,
-  SuiObjectTransferTransaction,
-  SuiFunctionTransaction,
-  SuiSignedTransaction,
-  BulkSuiTransaction
-} from 'types/Transaction'
+import { SignableTransaction } from '@mysten/sui.js'
 import log from './log'
 
-type transactArgs = {
+type TransactArgs = {
   signer: any
-  details:
-    | SuiCoinTransferTransaction
-    | SuiObjectTransferTransaction
-    | SuiFunctionTransaction
-    | SuiSignedTransaction
-    | BulkSuiTransaction
+  signableTransaction: SignableTransaction
 }
 
 const transact = async ({
   signer,
-  details
-}: transactArgs) => {
-  log("transact", "Starting transaction", signer, details)
-  
-  return signer.transact(details)
+  signableTransaction
+}: TransactArgs) => {
+  log("transact", "Starting transaction", signer, signableTransaction)
+  return signer.signAndExecuteTransaction(signableTransaction)
 }
 
 export default transact
