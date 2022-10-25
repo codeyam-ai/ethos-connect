@@ -51,23 +51,27 @@ const useSuiWalletConnect = () => {
     }, [wallet, connected]);
   
     const select = useCallback(
-      async (name: string) => {
+      async (name: string): Promise<boolean> => {
         let selectedWallet = 
           wallets.find((wallet) => wallet.name === name) ?? null;
   
         setWallet(selectedWallet);
   
+        let _connected = false;
         if (selectedWallet && !selectedWallet.connecting) {
           try {
             setConnecting(true);
             await selectedWallet.connect();
             setConnected(true);
+            _connected = true
           } catch (e) {
             setConnected(false);
           } finally {
             setConnecting(false);
           }
         }
+
+        return _connected;
       },
       [wallets]
     );
@@ -77,7 +81,14 @@ const useSuiWalletConnect = () => {
         if (!wallet && !connected && !connecting) {
             let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
             if (typeof preferredWallet === "string") {
-                select(preferredWallet);
+                select(preferredWallet).then(
+                    (success: boolean) => {
+                        if (!success) {
+                            setNoConnection(true);
+                            localStorage.removeItem(DEFAULT_STORAGE_KEY)
+                        }
+                    }
+                )
             } else {
                 setNoConnection(true);
             }

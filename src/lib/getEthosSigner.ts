@@ -26,7 +26,7 @@ const getEthosSigner = async (): Promise<Signer | null> => {
                 if (approved) {
                     resolve(data);
                 } else {
-                    reject({ error: "User rejected transaction."})
+                    reject({ error: data?.response?.error || "User rejected transaction."})
                 }
             }
         
