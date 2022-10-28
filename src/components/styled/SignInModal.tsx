@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react'
 
 import Loader from '../svg/Loader'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
@@ -23,6 +23,9 @@ import MobileWallet from './MobileWallet'
 import Header from './Header'
 
 export type SignInModalProps = {
+    connectMessage?: string | ReactNode,
+    dappName?: string,
+    dappIcon?: string,
     isOpen: boolean
     onClose?: () => void
     hideEmailSignIn?: boolean
@@ -38,6 +41,9 @@ export function hideSignInModal() {
 }
 
 const SignInModal = ({
+    connectMessage,
+    dappName,
+    dappIcon,
     hideEmailSignIn,
     hideWalletSignIn,
 }: SignInModalProps) => {
@@ -55,6 +61,8 @@ const SignInModal = ({
     const [showEmail, setShowEmail] = useState(false);
     const [showMobile, setShowMobile] = useState(false);
     const [showInstallWallet, setShowInstallWallet] = useState(false);
+
+    const [safeDappName, setSafeDappName] = useState(dappName);
 
     useHandleElementWithIdClicked(closeOnClickId, closeModal)
 
@@ -78,6 +86,12 @@ const SignInModal = ({
         }
     }, [])
 
+    useEffect(() => {
+        if (!connectMessage && !safeDappName) {
+            setSafeDappName(document.title)
+        }
+    }, [safeDappName])
+
     // const _toggleMobile = useCallback(() => {
     //     setShowMobile((prev) => !prev)
     // }, [])
@@ -95,6 +109,18 @@ const SignInModal = ({
         setShowMobile(false)
         setShowEmail(false)
     }, [])
+
+    const safeConnectMessage = useMemo(() => {
+        if (connectMessage) return connectMessage;
+
+        if (!safeDappName) {
+            return <></>
+        }
+
+        return (
+            <>Connect to <span style={styles.highlighted()}>{safeDappName}</span></>
+        )
+    }, [safeDappName, connectMessage]);
 
     const modalContent = useMemo(() => {
         const safeWallets = wallets || []
@@ -120,7 +146,8 @@ const SignInModal = ({
 
         if (!showEmail && safeWallets.length > 0) return (
             <Header
-                title={<>Log in to <span style={styles.highlighted()}>Sui 8192</span></>}
+                title={safeConnectMessage}
+                dappIcon={dappIcon}
                 subTitle="Choose from your connected wallets"
             >
                 <Wallets
@@ -179,7 +206,7 @@ const SignInModal = ({
                 />
             </>
         )
-    }, [hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
+    }, [safeConnectMessage, hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet

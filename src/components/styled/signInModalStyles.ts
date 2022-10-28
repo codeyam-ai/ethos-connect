@@ -111,7 +111,7 @@ export const missingMessage = () =>
 
 export const modalContent = (width: number): React.CSSProperties => {
   const styles = {
-    padding: '0 60px 0 60px'
+    padding: '0 42px'
   }
   const sm = {
   }
