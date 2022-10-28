@@ -60,7 +60,7 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
                         >
                             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                                 {icon(installWallet.icon)}
-                                <span style={styles.iconButtonText()}>{installWallet.name}</span>
+                                <span style={styles.buttonText()}>{installWallet.name}</span>
                             </span>
                         </a>
                     )

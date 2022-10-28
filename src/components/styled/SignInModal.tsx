@@ -20,6 +20,7 @@ import InstallWallet from './InstallWallet'
 import IconButton from './IconButton'
 import useModal from '../../hooks/useModal'
 import MobileWallet from './MobileWallet'
+import Header from './Header'
 
 export type SignInModalProps = {
     isOpen: boolean
@@ -118,7 +119,10 @@ const SignInModal = ({
         }
 
         if (!showEmail && safeWallets.length > 0) return (
-            <>
+            <Header
+                title={<>Log in to <span style={styles.highlighted()}>Sui 8192</span></>}
+                subTitle="Choose from your connected wallets"
+            >
                 <Wallets
                     wallets={safeWallets}
                     selectWallet={selectWallet}
@@ -126,19 +130,21 @@ const SignInModal = ({
                 />
                 {!hideEmailSignIn && (
                     <>
-                        <div style={{ margin: '16px 0 16px 0' }}>
-                            <span style={styles.secondaryHeaderText()}>or</span>
+                        <div style={styles.strikeThroughOrContainer()}>
+                            <div style={styles.strikeThroughOr()}>
+                                or
+                            </div>
                         </div>
-
+                        
                         <IconButton
-                            icon={<></>}
                             text="Sign In With Email"
                             onClick={_toggleEmail}
                             width={width}
+                            primary={true}
                         />
                     </>
                 )}
-            </>
+            </Header>
         )
 
         return (

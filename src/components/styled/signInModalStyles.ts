@@ -24,7 +24,7 @@ export const ethosWalletTitleText = () => (
 export const secondaryHeaderText = () => (
   {
     color: "#999999",
-    fontSize: "12px",
+    fontSize: "14px",
     lineHeight: "24px"
   } as React.CSSProperties
 )
@@ -37,6 +37,24 @@ export const secondaryText = () => (
   } as React.CSSProperties
 )
 
+export const strikeThroughOrContainer = () => (
+    {
+        borderTop: "1px solid #0000001F",
+        margin: "44px 0 30px 0",
+        display: "flex",
+        justifyContent: 'center',
+        color: '#74777C'
+    }
+)
+
+export const strikeThroughOr = () => (
+    {
+        marginTop: "-14px",
+        backgroundColor: "white",
+        padding: "0 6px"
+    }
+)
+
 export const signInOptionSubtitleText = () => (
   {
     fontSize: "14px",
@@ -44,7 +62,7 @@ export const signInOptionSubtitleText = () => (
   } as React.CSSProperties
 )
 
-export const iconButtonText = () => (
+export const buttonText = () => (
   {
     color: '#5B5D5F',
   } as React.CSSProperties
@@ -72,6 +90,11 @@ export const backdrop = (isOpen: boolean) =>
   backgroundColor: 'rgb(107 114 128)',
   opacity: isOpen ? '.75' : '0',
   transition: 'all 300ms ease-in-out',
+} as React.CSSProperties)
+
+export const highlighted = () =>
+({
+    color: '#6D28D9'
 } as React.CSSProperties)
 
 export const missingMessage = () =>
@@ -194,14 +217,32 @@ export const headerStyle = () =>
   borderBottom: '1px solid rgb(241 245 249)',
   padding: '12px',
   display: 'flex',
-  justifyContent: 'space-between',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  gap: '12px'
+} as React.CSSProperties)
+
+export const headerLogosStyle = () =>
+({
+    display: 'flex',
+    justifyContent: 'center',
+    gap: "-6px"
 } as React.CSSProperties)
 
 export const titleStyle = () =>
 ({
-  fontSize: '1rem',
-  fontWeight: '500',
-  margin: '0',
+    fontSize: '24px',
+    fontWeight: '600',
+    lineHeight: '32px',
+    margin: '0',
+} as React.CSSProperties)
+
+export const subTitleStyle = () =>
+({
+    fontSize: '16px',
+    fontWeight: '400',
+    lineHeight: '24px',
+    margin: '0',
 } as React.CSSProperties)
 
 export const mainContentStyle = (width: number) => {
@@ -372,22 +413,21 @@ export const walletOptionContainer = (width: number) => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
-export const iconButton = (width: number) => {
+export const iconButton = (width: number, primary: boolean = false, noIcon: boolean = false) => {
   const styles = {
     textDecoration: "none",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: noIcon ? "center" : "space-between",
     alignItems: "center",
-    padding: "12px 20px",
+    padding: "24px",
     gap: "10px",
     width: "100%",
     height: "48px",
-    background: "#FFFFFF",
-    border: "1px solid #E9EBED",
-    boxShadow: "0px 2px 8px rgba(32, 39, 44, 0.08), 0px 0px 1px rgba(32, 39, 44, 0.08)",
-    borderRadius: "8px",
+    background: primary ? "#6D28D9" : "#F2F2F2",
+    color: primary ? "white" : "black",
+    borderRadius: "12px",
     flex: "none",
     order: "0",
     flexGrow: "0"

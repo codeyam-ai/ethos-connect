@@ -22,8 +22,8 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
         selectWallet(name);
     }, []);
 
-    const icon = (src?: string) => {
-        if (!src || src.startsWith("chrome-extension")) return <></>;
+    const icon = (wallet: WalletAdapter) => {
+        const src = wallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet.icon
 
         return (
             <img src={src} height={30} width={30} />
@@ -32,15 +32,12 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
 
     return (
         <div role="wallet-sign-in">
-            <span style={styles.signInOptionSubtitleText()}>
-                Select from your wallets:
-            </span>
             <div style={styles.walletOptionContainer(width)}>
                 {wallets?.map(
                     (wallet, index) => (
                         <IconButton
                             key={`wallet-${index}`}
-                            icon={icon(wallet.icon)}
+                            icon={icon(wallet)}
                             data-name={wallet.name}
                             text={wallet.name}
                             onClick={_connectExtension}

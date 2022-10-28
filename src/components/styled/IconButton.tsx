@@ -3,21 +3,22 @@ import * as styles from './signInModalStyles'
 
 export interface IconButtonProps extends HTMLAttributes<HTMLButtonElement> {
     text: string,
-    icon: ReactNode,
-    width: number
+    icon?: ReactNode,
+    width: number,
+    primary?: boolean
 }
 
 const IconButton = (props: IconButtonProps) => {
-    const { text, icon, width, ...reactProps } = props;
+    const { text, icon, width, primary, ...reactProps } = props;
     return (
         <button
-            style={styles.iconButton(width)}
+            style={styles.iconButton(width, primary, !icon)}
             {...reactProps}
         >   
-            {icon}
-            <span style={styles.iconButtonText()}>
+            <div>
                 {text}
-            </span>
+            </div>
+            {icon}
         </button>
     )
 }
