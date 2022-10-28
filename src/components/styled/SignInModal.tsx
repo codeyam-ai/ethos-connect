@@ -25,7 +25,7 @@ import Header from './Header'
 export type SignInModalProps = {
     connectMessage?: string | ReactNode,
     dappName?: string,
-    dappIcon?: string,
+    dappIcon?: string | ReactNode,
     isOpen: boolean
     onClose?: () => void
     hideEmailSignIn?: boolean

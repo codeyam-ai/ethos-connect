@@ -20,11 +20,13 @@ import ModalContext from './ModalContext'
 export interface EthosWrapperProps {
   ethosConfiguration: EthosConfiguration
   onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void,
-  connectMessage?: ReactNode | string
+  connectMessage?: string | ReactNode
+  dappName?: string
+  dappIcon?: string | ReactNode
   children: ReactNode
 }
 
-const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, children }: EthosWrapperProps) => {
+const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, dappName, dappIcon, children }: EthosWrapperProps) => {
   // Set defaults
   if (!ethosConfiguration.chain) ethosConfiguration.chain = Chain.Sui;
   if (!ethosConfiguration.network) ethosConfiguration.network = 'sui';
@@ -68,6 +70,8 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, c
                         hideEmailSignIn={ethosConfiguration.hideEmailSignIn}
                         hideWalletSignIn={ethosConfiguration.hideWalletSignIn}
                         connectMessage={connectMessage}
+                        dappName={dappName}
+                        dappIcon={dappIcon}
                     />
                 </ModalContext.Provider>
             </ContentsContext.Provider>
