@@ -7,6 +7,7 @@ declare global {
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react'
 
 import Loader from '../svg/Loader'
+import WalletsIcon from '../svg/WalletsIcon'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 import * as styles from './signInModalStyles'
 import useHandleElementWithIdClicked from '../../lib/useHandleElementWithIdClicked'
@@ -21,6 +22,7 @@ import IconButton from './IconButton'
 import useModal from '../../hooks/useModal'
 import MobileWallet from './MobileWallet'
 import Header from './Header'
+import Or from './Or'
 
 export type SignInModalProps = {
     connectMessage?: string | ReactNode,
@@ -87,7 +89,7 @@ const SignInModal = ({
     }, [])
 
     useEffect(() => {
-        if (!connectMessage && !safeDappName) {
+        if (!safeDappName) {
             setSafeDappName(document.title)
         }
     }, [safeDappName])
@@ -157,11 +159,7 @@ const SignInModal = ({
                 />
                 {!hideEmailSignIn && (
                     <>
-                        <div style={styles.strikeThroughOrContainer()}>
-                            <div style={styles.strikeThroughOr()}>
-                                or
-                            </div>
-                        </div>
+                        <Or />
                         
                         <IconButton
                             text="Sign In With Email"
@@ -175,38 +173,41 @@ const SignInModal = ({
         )
 
         return (
-            <>
+            <Header
+                title={safeConnectMessage}
+                dappIcon={dappIcon}
+                subTitle={`Log in to ${safeDappName}`}
+            >
                 <Email 
                     setSigningIn={setSigningIn}
                     setEmailSent={setEmailSent}
                     captchaRef={captchaRef}
                     width={width}
                 />
-
-                {/* <div style={{ margin: '16px 0 16px 0' }}>
-                    <span style={styles.secondaryHeaderText()}>or</span>
-                </div>
-                
-                <IconButton
-                    icon={<></>}
-                    text="Connect A Mobile Wallet"
-                    onClick={_toggleMobile}
-                    width={width}
-                /> */}
-
-                <div style={{ margin: '16px 0 16px 0' }}>
-                    <span style={styles.secondaryHeaderText()}>or</span>
-                </div>
-
-                <IconButton
-                    icon={<></>}
-                    text="Install A Wallet"
-                    onClick={_toggleInstallWallet}
-                    width={width}
-                />
-            </>
+                {!hideWalletSignIn && (
+                    <>
+                        <Or />
+                        
+                        {safeWallets.length > 0 ? (
+                            <IconButton
+                                icon={<WalletsIcon />}
+                                text="Select One Of Your Wallets"
+                                onClick={_toggleEmail}
+                                width={width}
+                            />
+                        ) : (
+                            <IconButton
+                                icon={<WalletsIcon />}
+                                text="Install A Wallet"
+                                onClick={_toggleInstallWallet}
+                                width={width}
+                            />
+                        )}
+                    </>
+                )}
+            </Header>
         )
-    }, [safeConnectMessage, hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
+    }, [safeConnectMessage, safeDappName, hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet

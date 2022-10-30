@@ -1,6 +1,9 @@
-import React from "react";
+import InstallWalletIcon from "../svg/InstallWalletIcon";
+import React, { ReactNode } from "react";
 import ethosDataIcon from "./ethosDataIcon";
+import Header from "./Header";
 import * as styles from './signInModalStyles'
+import SuiEnclosed from "../svg/SuiEnclosed";
 
 export type WalletInstallInfo = {
     name: string,
@@ -14,12 +17,16 @@ export type InstallWalletProps = {
 }
 
 const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
-    const icon = (src?: string) => {
-        if (!src) return <></>;
+    const icon = (data?: string | ReactNode) => {
+        if (!data) return <></>;
 
-        return (
-            <img src={src} height={30} width={30} />
-        )
+        if (typeof data === "string") {
+            return (
+                <img src={data} height={30} width={30} />
+            )
+        }
+
+        return data;
     }
 
     const installWallets = [
@@ -28,45 +35,41 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
             icon: ethosDataIcon,
             link: "https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli"
         },
+        {
+            name: "Sui Wallet",
+            icon: <SuiEnclosed />,
+            link: "https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
+        },
         ...(walletInfos || [])
     ]
 
     return (
-        <div role="wallet-sign-in">
-            <span style={styles.ethosWalletTitleText()}>
-                Install A Wallet
-            </span>
-            <div style={styles.walletExplanation()}>
-                <p>
-                    Wallets allow you to interact with, store, send, and receive digital assets.
-                </p>
+        <Header
+            dappIcon={<InstallWalletIcon />}
+            title="Install A Wallet"
+            subTitle="Wallets allow you to interact with, store, send, and receive digital assets."
+        >
+            <div role="wallet-sign-in">
                 <br/>
-                <p>
-                    The following wallets are available as chrome extensions and mobile wallets
-                    on the Sui blockchain.
-                </p>
+                <div style={styles.walletOptionContainer(width)}>
+                    {installWallets?.map(
+                        (installWallet, index) => (
+                            <a
+                                key={`wallet-${index}`}
+                                style={styles.iconButton(width)}
+                                href={installWallet.link}
+                                target="_blank"
+                            >   
+                                {installWallet.name}
+                                <div>
+                                    {icon(installWallet.icon)}
+                                </div>
+                            </a>
+                        )
+                    )}
+                </div>
             </div>
-            <div style={styles.signInOptionSubtitleText()}>
-                Sui Browser Extension Wallets
-            </div>
-            <div style={styles.walletOptionContainer(width)}>
-                {installWallets?.map(
-                    (installWallet, index) => (
-                        <a
-                            key={`wallet-${index}`}
-                            style={styles.iconButton(width)}
-                            target="_blank"
-                            href={installWallet.link}
-                        >
-                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                {icon(installWallet.icon)}
-                                <span style={styles.buttonText()}>{installWallet.name}</span>
-                            </span>
-                        </a>
-                    )
-                )}
-            </div>
-        </div>
+        </Header>
     )
 }
 

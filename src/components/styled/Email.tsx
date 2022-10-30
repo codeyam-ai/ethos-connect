@@ -4,7 +4,6 @@ import { captchaSiteKey } from '../../lib/constants'
 import getConfiguration from '../../lib/getConfiguration'
 import event from '../../lib/event'
 import login from '../../lib/login'
-import Ethos from '../svg/Ethos'
 import * as styles from './signInModalStyles'
 
 export type EmailProps = {
@@ -42,31 +41,18 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
 
     return (
         <div>
-            <span style={styles.secondaryHeaderText()}>Sign in with</span>
-            <h2 style={{ margin: '0' }}>
-                <span style={{ display: 'inline-flex' }}>
-                    <Ethos width={20} />
-                    <span style={styles.ethosWalletTitleText()}>Ethos</span>
-                </span>
-            </h2>
-        
-            <div role="email-sign-in"  style={{ padding: '16px 0' }}>
-                <div style={styles.signInOptionSubtitleText()}>
-                    Sign in with your email
-                </div>
-                <form onSubmit={onSubmit}>
-                    <input
-                        style={styles.emailInput()}
-                        type="email"
-                        placeholder="Email address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <button style={styles.signInButton(width)} type="submit">
-                        Sign In
-                    </button>
-                </form>
-            </div>
+            <form onSubmit={onSubmit}>
+                <input
+                    style={styles.emailInput()}
+                    type="email"
+                    placeholder="Email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <button style={styles.signInButton(width)} type="submit">
+                    Sign In
+                </button>
+            </form>
             <div style={{marginLeft: "-12px"}}>
                 <ReCAPTCHA
                     sitekey={captchaSiteKey}

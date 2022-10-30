@@ -33,7 +33,11 @@ export const secondaryText = () => (
   {
     color: "#6B7280",
     fontSize: "0.875rem",
-    lineHeight: "1.25rem"
+    lineHeight: "1.25rem",
+    padding: "24px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px"
   } as React.CSSProperties
 )
 
@@ -111,7 +115,7 @@ export const missingMessage = () =>
 
 export const modalContent = (width: number): React.CSSProperties => {
   const styles = {
-    padding: '0 42px'
+    padding: '0 30px'
   }
   const sm = {
   }
@@ -219,7 +223,8 @@ export const headerStyle = () =>
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  gap: '12px'
+  gap: '12px',
+  width: '100%'
 } as React.CSSProperties)
 
 export const headerLogosStyle = () =>
