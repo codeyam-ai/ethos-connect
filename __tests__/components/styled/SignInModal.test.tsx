@@ -6,6 +6,7 @@ import SignInModal from '../../../src/components/styled/SignInModal'
 import Ethos from '../../../src/components/svg/Ethos'
 import FallbackLogo from '../../../src/components/svg/FallbackLogo'
 import * as lib from '../../../src/lib/login'
+import EthosWrapper from '../../../src/components/EthosWrapper'
 
 const modalExists = (root: any) => {
   const modal = root.findByProps({ role: 'dialog' })
@@ -22,7 +23,11 @@ const expectElementWithRoleToExist = (root: any, role: string, shouldExist: bool
 
 describe('SignInModal', () => {
   it('renders a hidden modal if isOpen is false', () => {
-    const signInModal = create(<SignInModal isOpen={false} />)
+    const signInModal = create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={false} />
+        </EthosWrapper>
+    )
 
     const root = signInModal.root
     expect(modalExists(root)).toBeFalsy()
@@ -31,7 +36,11 @@ describe('SignInModal', () => {
   })
 
   it('renders a visible modal if isOpen is true', () => {
-    const signInModal = create(<SignInModal isOpen={true} />)
+    const signInModal = create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} />
+        </EthosWrapper>
+    )
 
     const root = signInModal.root
     expect(modalExists(root)).toBeTruthy()
@@ -42,7 +51,11 @@ describe('SignInModal', () => {
   })
 
   it('renders email and wallet sign in if hideEmailSignIn is not true', () => {
-    const signInModal = create(<SignInModal isOpen={true} />)
+    const signInModal = create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} />
+        </EthosWrapper>
+    )
 
     const root = signInModal.root
     expectElementWithRoleToExist(root, 'email-sign-in', true)
@@ -50,15 +63,23 @@ describe('SignInModal', () => {
   })
   
   it('does NOT render email if hideEmailSignIn is true', () => {
-    const signInModal = create(<SignInModal isOpen={true} hideEmailSignIn={true} />)
+    const signInModal = create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} hideEmailSignIn={true} />
+        </EthosWrapper>
+    )
     
     const root = signInModal.root
     expectElementWithRoleToExist(root, 'email-sign-in', false)
   })
   
   it('does NOT render wallet if hideWalletSignIn is true', () => {
-    const signInModal = create(<SignInModal isOpen={true} hideWalletSignIn={true} />)
-    
+    const signInModal = create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} hideWalletSignIn={true} />
+        </EthosWrapper>
+    )
+
     const root = signInModal.root
     expectElementWithRoleToExist(root, 'wallet-sign-in', false)
   })
@@ -66,7 +87,11 @@ describe('SignInModal', () => {
   it('should throw if hideWalletSignIn and hideWalletSignIn are both true', () => {
     // Hide console error in test
     console.error = jest.fn();
-    expect(() => create(<SignInModal isOpen={true} hideEmailSignIn={true} hideWalletSignIn={true} />)).toThrow()
+    expect(() => create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} hideWalletSignIn={true} hideEmailSignIn={true} />
+        </EthosWrapper>
+    )).toThrow()
   })
 
   it('shows a warning if you click the Ethos wallet button and it is not installed', async () => {
@@ -75,7 +100,11 @@ describe('SignInModal', () => {
         className: 'missing-message',
       }).length
 
-    const signInModal = create(<SignInModal isOpen={true} />)
+    const signInModal = create(
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} />
+        </EthosWrapper>    
+    )
 
     const root = signInModal.root
     expect(warningCount(root)).toBe(0)
@@ -98,7 +127,9 @@ describe('SignInModal', () => {
     })
 
     const signInModal = create(
-      <SignInModal isOpen={true} onClose={() => null} />
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} onClose={() => null} />
+        </EthosWrapper>    
     )
 
     const root = signInModal.root
@@ -124,7 +155,9 @@ describe('SignInModal', () => {
 
   it('should render captcha as invisible', async () => {
     const signInModal = create(
-      <SignInModal isOpen={true} onClose={() => null} />
+        <EthosWrapper ethosConfiguration={{ appId: 'test' }}>
+            <SignInModal isOpen={true} onClose={() => null} />
+        </EthosWrapper>
     )
 
     const root = signInModal.root
