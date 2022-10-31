@@ -1,4 +1,5 @@
-import { getConfiguration } from '.'
+import lib from './lib'
+const { getConfiguration } = lib;
 
 type ApiCallProps = {
   relativePath: string

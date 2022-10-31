@@ -1,4 +1,4 @@
-import sui from '../mocks/sui.mock'
+import sui from '../../__mocks__/sui.mock'
 import getWalletContents from '../../src/lib/getWalletContents';
 
 describe('getWalletBalance', () => {   

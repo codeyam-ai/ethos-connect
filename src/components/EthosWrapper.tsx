@@ -5,7 +5,7 @@ import React, {
   ReactNode 
 } from 'react'
 import { EthosConfiguration } from 'types/EthosConfiguration'
-import initialize from '../lib/initialize'
+import initialize from '../lib/initializeEthos'
 import log from '../lib/log'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'

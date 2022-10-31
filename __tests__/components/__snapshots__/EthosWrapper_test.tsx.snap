@@ -1,3 +1,377 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EthosWrapper renders nothing but the children provided 1`] = `"test"`;
+exports[`EthosWrapper renders nothing but the children provided 1`] = `
+Array [
+  "test",
+  <link
+    href="https://rsms.me/inter/inter.css"
+    rel="stylesheet"
+  />,
+  <div
+    style={
+      Object {
+        "color": "black",
+        "fontFamily": "'Inter', sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "1.5",
+      }
+    }
+  >
+    <div
+      role="dialog"
+      style={
+        Object {
+          "position": "relative",
+          "visibility": "hidden",
+          "zIndex": "100",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "backgroundColor": "rgb(107 114 128)",
+            "bottom": "0px",
+            "left": "0px",
+            "opacity": "0",
+            "position": "fixed",
+            "right": "0px",
+            "top": "0px",
+            "transition": "all 300ms ease-in-out",
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "bottom": "0px",
+            "left": "0px",
+            "opacity": "0",
+            "overflowY": "auto",
+            "position": "fixed",
+            "right": "0px",
+            "scale": ".95",
+            "top": "0px",
+            "transition": "all 300ms ease-in-out",
+            "zIndex": "99",
+          }
+        }
+      >
+        <div
+          id="ethos-close-on-click"
+          style={
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+              "justifyContent": "center",
+              "minHeight": "100%",
+              "padding": "0",
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            style={
+              Object {
+                "backgroundColor": "#ffffff",
+                "borderRadius": "0.5rem",
+                "boxShadow": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                "maxWidth": "400px",
+                "overflow": "hidden",
+                "paddingBottom": "32px",
+                "position": "relative",
+                "transitionProperty": "all",
+                "width": "100%",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "height": "36px",
+                }
+              }
+            >
+              <span
+                onClick={[Function]}
+                style={
+                  Object {
+                    "backgroundColor": "#F9FAFB",
+                    "borderRadius": "100%",
+                    "color": "#A0AEBA",
+                    "cursor": "pointer",
+                    "float": "right",
+                    "height": "24px",
+                    "marginRight": "12px",
+                    "marginTop": "12px",
+                    "textAlign": "center",
+                    "width": "24px",
+                  }
+                }
+              >
+                ✕
+              </span>
+            </div>
+            <div
+              style={
+                Object {
+                  "padding": "0 30px",
+                }
+              }
+            >
+              <div>
+                <div
+                  style={
+                    Object {
+                      "borderBottom": "1px solid rgb(241 245 249)",
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "gap": "12px",
+                      "justifyContent": "center",
+                      "padding": "12px",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "gap": "-6px",
+                        "justifyContent": "center",
+                      }
+                    }
+                  />
+                  <div
+                    style={
+                      Object {
+                        "fontSize": "24px",
+                        "fontWeight": "600",
+                        "lineHeight": "32px",
+                        "margin": "0",
+                      }
+                    }
+                  />
+                  <div
+                    style={
+                      Object {
+                        "fontSize": "16px",
+                        "fontWeight": "400",
+                        "lineHeight": "24px",
+                        "margin": "0",
+                      }
+                    }
+                  >
+                    Log in to 
+                  </div>
+                </div>
+                <div>
+                  <form
+                    onSubmit={[Function]}
+                  >
+                    <input
+                      onChange={[Function]}
+                      placeholder="Email address"
+                      style={
+                        Object {
+                          "border": "1px solid rgb(203 213 225)",
+                          "borderRadius": "0.5rem",
+                          "boxSizing": "border-box",
+                          "marginTop": "12px",
+                          "padding": "12px",
+                          "width": "100%",
+                        }
+                      }
+                      type="email"
+                      value=""
+                    />
+                    <button
+                      style={
+                        Object {
+                          "backgroundColor": "#761AC7",
+                          "border": "1px solid rgb(203 213 225)",
+                          "borderRadius": "0.5rem",
+                          "color": "#FFFFFF",
+                          "cursor": "pointer",
+                          "fontWeight": "600",
+                          "marginTop": ".75rem",
+                          "padding": "12px 20px 12px 20px",
+                          "textDecoration": "none",
+                          "width": "100%",
+                        }
+                      }
+                      type="submit"
+                    >
+                      Sign In
+                    </button>
+                  </form>
+                  <div
+                    style={
+                      Object {
+                        "marginLeft": "-12px",
+                      }
+                    }
+                  >
+                    <div />
+                  </div>
+                </div>
+                <div
+                  style={
+                    Object {
+                      "borderTop": "1px solid #0000001F",
+                      "color": "#74777C",
+                      "display": "flex",
+                      "justifyContent": "center",
+                      "margin": "44px 0 30px 0",
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "backgroundColor": "white",
+                        "marginTop": "-14px",
+                        "padding": "0 6px",
+                      }
+                    }
+                  >
+                    or
+                  </div>
+                </div>
+                <button
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "background": "#F2F2F2",
+                      "borderRadius": "12px",
+                      "boxSizing": "border-box",
+                      "color": "black",
+                      "display": "flex",
+                      "flex": "none",
+                      "flexDirection": "row",
+                      "flexGrow": "0",
+                      "gap": "10px",
+                      "height": "48px",
+                      "justifyContent": "space-between",
+                      "order": "0",
+                      "padding": "24px",
+                      "textDecoration": "none",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div>
+                    Install A Wallet
+                  </div>
+                  <svg
+                    fill="none"
+                    height={42}
+                    viewBox="0 0 56 56"
+                    width={42}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      filter="url(#filter0_d_514_2149)"
+                    >
+                      <rect
+                        fill="url(#paint0_angular_514_2149)"
+                        height="32"
+                        rx="8"
+                        shapeRendering="crispEdges"
+                        width="32"
+                        x="12"
+                        y="8"
+                      />
+                      <path
+                        d="M19 18.25C19.6485 17.7621 20.4384 17.4988 21.25 17.5H34.75C35.594 17.5 36.373 17.779 37 18.25C37 17.9545 36.9418 17.6619 36.8287 17.389C36.7157 17.116 36.5499 16.8679 36.341 16.659C36.1321 16.4501 35.884 16.2843 35.611 16.1713C35.3381 16.0582 35.0455 16 34.75 16H21.25C20.6533 16 20.081 16.2371 19.659 16.659C19.2371 17.081 19 17.6533 19 18.25V18.25ZM19 21.25C19.6485 20.7621 20.4384 20.4988 21.25 20.5H34.75C35.594 20.5 36.373 20.779 37 21.25C37 20.9545 36.9418 20.6619 36.8287 20.389C36.7157 20.116 36.5499 19.8679 36.341 19.659C36.1321 19.4501 35.884 19.2843 35.611 19.1713C35.3381 19.0582 35.0455 19 34.75 19H21.25C20.6533 19 20.081 19.2371 19.659 19.659C19.2371 20.081 19 20.6533 19 21.25V21.25ZM25 22C25.2652 22 25.5196 22.1054 25.7071 22.2929C25.8946 22.4804 26 22.7348 26 23C26 23.5304 26.2107 24.0391 26.5858 24.4142C26.9609 24.7893 27.4696 25 28 25C28.5304 25 29.0391 24.7893 29.4142 24.4142C29.7893 24.0391 30 23.5304 30 23C30 22.7348 30.1054 22.4804 30.2929 22.2929C30.4804 22.1054 30.7348 22 31 22H34.75C35.0455 22 35.3381 22.0582 35.611 22.1713C35.884 22.2843 36.1321 22.4501 36.341 22.659C36.5499 22.8679 36.7157 23.116 36.8287 23.389C36.9418 23.6619 37 23.9545 37 24.25V29.75C37 30.0455 36.9418 30.3381 36.8287 30.611C36.7157 30.884 36.5499 31.1321 36.341 31.341C36.1321 31.5499 35.884 31.7157 35.611 31.8287C35.3381 31.9418 35.0455 32 34.75 32H21.25C20.6533 32 20.081 31.7629 19.659 31.341C19.2371 30.919 19 30.3467 19 29.75V24.25C19 23.6533 19.2371 23.081 19.659 22.659C20.081 22.2371 20.6533 22 21.25 22H25Z"
+                        fill="white"
+                      />
+                    </g>
+                    <defs>
+                      <filter
+                        color-interpolation-filters="sRGB"
+                        filterUnits="userSpaceOnUse"
+                        height="56"
+                        id="filter0_d_514_2149"
+                        width="56"
+                        x="0"
+                        y="0"
+                      >
+                        <feFlood
+                          flood-opacity="0"
+                          result="BackgroundImageFix"
+                        />
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          result="hardAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        />
+                        <feOffset
+                          dy="4"
+                        />
+                        <feGaussianBlur
+                          stdDeviation="6"
+                        />
+                        <feComposite
+                          in2="hardAlpha"
+                          operator="out"
+                        />
+                        <feColorMatrix
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0"
+                        />
+                        <feBlend
+                          in2="BackgroundImageFix"
+                          mode="normal"
+                          result="effect1_dropShadow_514_2149"
+                        />
+                        <feBlend
+                          in="SourceGraphic"
+                          in2="effect1_dropShadow_514_2149"
+                          mode="normal"
+                          result="shape"
+                        />
+                      </filter>
+                      <radialGradient
+                        cx="0"
+                        cy="0"
+                        gradientTransform="translate(50.5 36) rotate(52.1843) scale(42.4058)"
+                        gradientUnits="userSpaceOnUse"
+                        id="paint0_angular_514_2149"
+                        r="1"
+                      >
+                        <stop
+                          offset="0.32986"
+                          stop-color="#E57948"
+                        />
+                        <stop
+                          offset="0.396972"
+                          stop-color="#4AC2A7"
+                        />
+                        <stop
+                          offset="0.441723"
+                          stop-color="#65B1DF"
+                        />
+                        <stop
+                          offset="0.492932"
+                          stop-color="#BCA1E8"
+                        />
+                        <stop
+                          offset="0.570879"
+                          stop-color="#EED32C"
+                        />
+                      </radialGradient>
+                    </defs>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

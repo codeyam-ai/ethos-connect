@@ -1,7 +1,6 @@
 import store from 'store2'
 import { User } from 'types/User'
-import getConfiguration from './getConfiguration'
-import postIFrameMessage from './postIFrameMessage'
+import lib from './lib'
 
 export type loginArgs = {
   email?: string, 
@@ -10,7 +9,7 @@ export type loginArgs = {
 }
 
 const login = async ({ email, provider, appId }: loginArgs) => {
-  const { walletAppUrl } = getConfiguration();
+  const { walletAppUrl } = lib.getConfiguration();
   const userStore = store.namespace('users')
 
   if (provider) {
@@ -34,7 +33,7 @@ const login = async ({ email, provider, appId }: loginArgs) => {
 
     window.addEventListener('message', loginEventListener)
 
-    postIFrameMessage({
+    lib.postIFrameMessage({
       action: 'login',
       data: {
         email,

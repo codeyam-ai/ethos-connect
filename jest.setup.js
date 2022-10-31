@@ -1,24 +1,24 @@
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
 
-import * as lib from './src/lib'; 
-import sui from './__tests__/mocks/sui.mock'
+import sui from './__mocks__/sui.mock'
 const { getObjectsOwnedByAddress, getObjectBatch } = sui;
 
-jest.mock('./src/lib', () => {
+jest.mock('./src/lib/lib', () => {
     return {
         __esModule: true,
-        ...jest.requireActual('./src/lib')
+        ...jest.requireActual('./src/lib/lib')
     };
 });
 
-beforeEach(() => {
-    jest.spyOn(lib, 'getConfiguration').mockImplementation(() => ({
+jest.mock('./src/lib/getConfiguration', () => ({
+    __esModule: true,
+    default: () => ({
         walletAppUrl: 'test',
         appId: 'test',
         network: 'test',
         chain: 'test',
-    }))
-})
+    })
+}));
 
 jest.mock('@mysten/sui.js', () => ({
     JsonRpcProvider: function () {

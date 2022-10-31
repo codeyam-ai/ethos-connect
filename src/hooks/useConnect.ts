@@ -7,7 +7,7 @@ import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { JsonRpcProvider } from '@mysten/sui.js';
 import { suiFullNode } from '../lib/constants'
 import { Signer } from 'types/Signer'
-import getEthosSigner from '../lib/getEthosSigner'
+import lib from '../lib/lib'
 
 const useConnect = () => {
   const signerFound = useRef<boolean>(false)
@@ -84,7 +84,7 @@ const useConnect = () => {
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {
-      const signer = await getEthosSigner()
+      const signer = await lib.getEthosSigner()
       log('useConnect', 'Setting providerAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }

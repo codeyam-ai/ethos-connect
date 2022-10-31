@@ -2,16 +2,14 @@ import React from 'react'
 import { create, act } from 'react-test-renderer'
 
 import EthosWrapper from '../../src/components/EthosWrapper'
-import getWalletContents from '../../src/lib/getWalletContents'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
-import initialize from '../../src/lib/initialize';
-import getEthosSigner from '../../src/lib/getEthosSigner'
+import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
 
-const spyMethods = { getWalletContents, initialize, getEthosSigner }
-
 describe('EthosWrapper', () => {
+  const provider =  {}
+
   const signer = {
     getAddress: () => "ADDRESS"
   }
@@ -21,7 +19,7 @@ describe('EthosWrapper', () => {
   let onWalletConnected
 
   beforeEach(() => {
-    jest.spyOn(spyMethods, 'getEthosSigner').mockImplementation(() => {
+    jest.spyOn(lib, 'getEthosSigner').mockImplementation(() => {
       return Promise.resolve({
         signer,
         getAddress: () => Promise.resolve("ADDRESS"),
@@ -39,11 +37,11 @@ describe('EthosWrapper', () => {
       receivedSigner = s
     });
 
-    jest.spyOn(getWalletContents as any, 'default').mockReturnValue({
-      balance: 0,
-      coins: [],
+    jest.spyOn(lib, 'getWalletContents').mockReturnValue(Promise.resolve({
+      suiBalance: 0,
+      tokens: {},
       nfts: []
-    })
+    }))
   })
 
   afterEach(() => {
@@ -64,10 +62,9 @@ describe('EthosWrapper', () => {
     expect(ethosWrapper.toJSON()).toMatchSnapshot()
   })
 
-  it('renders calls the onWalletConnected callback', async () => {
-    let ethosWrapper
+  it('calls the onWalletConnected callback', async () => {
     await act(async () => {
-      ethosWrapper = create(
+      create(
         <EthosWrapper ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
           test
         </EthosWrapper>
@@ -75,7 +72,7 @@ describe('EthosWrapper', () => {
     })
 
     expect(onWalletConnected.mock.calls.length).toBe(1)
-    expect(receivedProvider.getSigner()).toBe(signer)
+    expect(receivedProvider).toBe(provider)
     expect(receivedSigner).toBe(signer)
   })
 
@@ -89,7 +86,7 @@ describe('EthosWrapper', () => {
       network: 'sui'
     }
 
-    const initializeSpy = jest.spyOn(spyMethods, 'initialize')
+    const initializeSpy = jest.spyOn(lib, 'initializeEthos')
 
     await act(async () => {
       ethosWrapper = create(
