@@ -1,5 +1,5 @@
 {
-  "name": "ethos-wallet",
+  "name": "ethos-wallet-staging",
   "version": "0.0.1",
   "description": "Build on Sui with ease with the Ethos Wallet APIs. Support all wallets and users with no wallet.",
   "main": "dist/index.cjs",
