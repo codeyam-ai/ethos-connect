@@ -6,14 +6,16 @@ import getWalletContents from './getWalletContents'
 import showWallet from './showWallet'
 import hideWallet from './hideWallet'
 import dripSui from './dripSui'
+import getConfiguration from './getConfiguration'
 
 export {
-  showWallet,
-  hideWallet,
-  login,
-  logout,
-  transact,
-  preapprove,
-  getWalletContents,
-  dripSui
+    getConfiguration,
+    showWallet,
+    hideWallet,
+    login,
+    logout,
+    transact,
+    preapprove,
+    getWalletContents,
+    dripSui
 }

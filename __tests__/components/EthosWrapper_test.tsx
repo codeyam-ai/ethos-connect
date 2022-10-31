@@ -2,11 +2,14 @@ import React from 'react'
 import { create, act } from 'react-test-renderer'
 
 import EthosWrapper from '../../src/components/EthosWrapper'
-import * as getWalletContents from '../../src/lib/getWalletContents'
+import getWalletContents from '../../src/lib/getWalletContents'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
-import * as initialize from '../../src/lib/initialize';
-import * as getEthosSigner from '../../src/lib/getEthosSigner'
+import initialize from '../../src/lib/initialize';
+import getEthosSigner from '../../src/lib/getEthosSigner'
+import { SignerType } from '../../src/types/Signer'
+
+const spyMethods = { getWalletContents, initialize, getEthosSigner }
 
 describe('EthosWrapper', () => {
   const signer = {
@@ -18,9 +21,16 @@ describe('EthosWrapper', () => {
   let onWalletConnected
 
   beforeEach(() => {
-    jest.spyOn(getEthosSigner as any, 'default').mockImplementation(() => {
+    jest.spyOn(spyMethods, 'getEthosSigner').mockImplementation(() => {
       return Promise.resolve({
-        signer
+        signer,
+        getAddress: () => Promise.resolve("ADDRESS"),
+        getAccounts: () => Promise.resolve([]),
+        type: SignerType.EXTENSION,
+        signAndExecuteTransaction: (_transaction) => Promise.resolve({} as any),
+        requestPreapproval: (_preApproval) => Promise.resolve(true),
+        sign: (_message) => Promise.resolve(true),
+        disconnect: () => {}
       })
     })
 
@@ -79,7 +89,7 @@ describe('EthosWrapper', () => {
       network: 'sui'
     }
 
-    const initializeSpy = jest.spyOn(initialize, 'default')
+    const initializeSpy = jest.spyOn(spyMethods, 'initialize')
 
     await act(async () => {
       ethosWrapper = create(

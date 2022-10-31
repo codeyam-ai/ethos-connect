@@ -30,7 +30,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 //     }
 //   }
   const objectInfos = await provider.getObjectsOwnedByAddress(address);
-
+  
   if (objectInfos.length === 0) {
     return {
         suiBalance: 0,
@@ -41,6 +41,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 
   const objectIds = objectInfos.map((o: any) => o.objectId);
   const objects = await provider.getObjectBatch(objectIds)
+  
 //   const objects = [];
 //   for (const objectId of objectIds) {
 //     const object = await fetchSui(

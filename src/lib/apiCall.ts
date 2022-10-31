@@ -1,4 +1,4 @@
-import getConfiguration from './getConfiguration'
+import { getConfiguration } from '.'
 
 type ApiCallProps = {
   relativePath: string

@@ -2,6 +2,7 @@ import store from 'store2'
 import { EthosConfiguration } from '../types/EthosConfiguration'
 
 const getConfiguration = (): EthosConfiguration => {
+    console.log("CALLING REAL ONE")
   const ethosStore = store.namespace('ethos')
   const configuration = ethosStore('configuration')
   return configuration || {}

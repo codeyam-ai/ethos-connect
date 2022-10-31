@@ -1,51 +1,15 @@
-import * as fetchSui from '../../src/lib/fetchSui';
-
+import sui from '../mocks/sui.mock'
 import getWalletContents from '../../src/lib/getWalletContents';
 
-describe('getWalletBalance', () => {
-    const fetchSpy = jest.spyOn(fetchSui, 'default')
-
-    const nft = {
-        name: 'example',
-        tokenId: 0,
-        imageUri: 'example.com/0',
-        chain: 'sui',
-        collection: {
-            name: 'example collection',
-        },
-    }
-
-    const coin = {
-        details: {
-            data: {
-                type: '0x2::coin::Coin<0x2::sui::SUI>',
-                fields: {
-                    balance: 10000
-                }
-            }
-        }
-    }
-
-    afterEach(() => {
-        fetchSpy.mockReset()
-    });
-
+describe('getWalletBalance', () => {   
     it('should get balance for given wallet, getting config', async () => {
-        const expectedContents = { 
-            suiBalance: 10000,
-            tokens: { 
-                sui: { 
-                    balance: 10000,
-                    coins: [coin], 
-                }, 
-            },
-            nfts: [nft]
-        };
-
-        fetchSpy.mockReturnValue(Promise.resolve([coin, nft]));
         const contents = await getWalletContents('0x123')
         
-        expect(fetchSpy).toBeCalledTimes(1)
-        expect(contents).toEqual(expectedContents)
+        expect(sui.getObjectsOwnedByAddress).toBeCalledTimes(1)
+        expect(contents.suiBalance).toEqual(sui.coin.details.data.fields.balance)
+        const suiTokens = contents.tokens['0x2::sui::SUI']
+        expect(suiTokens.balance).toEqual(sui.coin.details.data.fields.balance)
+        expect(suiTokens.coins.length).toEqual(1)
+        expect(contents.nfts.length).toEqual(1)
     })
 })
