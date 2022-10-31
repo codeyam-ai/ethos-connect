@@ -1,7 +1,6 @@
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
 
 import sui from './__mocks__/sui.mock'
-const { getObjectsOwnedByAddress, getObjectBatch } = sui;
 
 jest.mock('./src/lib/lib', () => {
     return {
@@ -22,9 +21,6 @@ jest.mock('./src/lib/getConfiguration', () => ({
 
 jest.mock('@mysten/sui.js', () => ({
     JsonRpcProvider: function () {
-        return {
-            getObjectsOwnedByAddress,
-            getObjectBatch
-        }
+        return sui.provider
     } 
 }));

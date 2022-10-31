@@ -6,12 +6,17 @@ import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
+import sui from '../../__mocks__/sui.mock'
 
 describe('EthosWrapper', () => {
-  const provider =  {}
-
   const signer = {
-    getAddress: () => "ADDRESS"
+    getAddress: () => Promise.resolve("ADDRESS"),
+    getAccounts: () => Promise.resolve([]),
+    type: SignerType.EXTENSION,
+    signAndExecuteTransaction: (_transaction) => Promise.resolve({} as any),
+    requestPreapproval: (_preApproval) => Promise.resolve(true),
+    sign: (_message) => Promise.resolve(true),
+    disconnect: () => {}
   }
 
   let receivedProvider
@@ -20,16 +25,7 @@ describe('EthosWrapper', () => {
 
   beforeEach(() => {
     jest.spyOn(lib, 'getEthosSigner').mockImplementation(() => {
-      return Promise.resolve({
-        signer,
-        getAddress: () => Promise.resolve("ADDRESS"),
-        getAccounts: () => Promise.resolve([]),
-        type: SignerType.EXTENSION,
-        signAndExecuteTransaction: (_transaction) => Promise.resolve({} as any),
-        requestPreapproval: (_preApproval) => Promise.resolve(true),
-        sign: (_message) => Promise.resolve(true),
-        disconnect: () => {}
-      })
+      return Promise.resolve(signer)
     })
 
     onWalletConnected = jest.fn(({ provider: p, signer: s }) => {
@@ -72,7 +68,7 @@ describe('EthosWrapper', () => {
     })
 
     expect(onWalletConnected.mock.calls.length).toBe(1)
-    expect(receivedProvider).toBe(provider)
+    expect(receivedProvider).toBe(sui.provider)
     expect(receivedSigner).toBe(signer)
   })
 

@@ -5,7 +5,7 @@ import React, {
   ReactNode 
 } from 'react'
 import { EthosConfiguration } from 'types/EthosConfiguration'
-import initialize from '../lib/initializeEthos'
+import lib from '../lib/lib'
 import log from '../lib/log'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'
@@ -35,7 +35,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, d
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
   
   useEffect(() => {
-    initialize(ethosConfiguration)
+    lib.initializeEthos(ethosConfiguration)
   }, [])
   
   const { wallets, selectWallet, providerAndSigner, logout } = useConnect()

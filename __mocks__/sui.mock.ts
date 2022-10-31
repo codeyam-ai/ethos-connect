@@ -43,5 +43,9 @@ export default {
     coin,
     nft, 
     getObjectsOwnedByAddress,
-    getObjectBatch
+    getObjectBatch,
+    provider: {
+        getObjectsOwnedByAddress,
+        getObjectBatch
+    }
 }
