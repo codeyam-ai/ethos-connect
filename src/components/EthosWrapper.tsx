@@ -19,7 +19,7 @@ import ModalContext from './ModalContext'
 
 export interface EthosWrapperProps {
   ethosConfiguration: EthosConfiguration
-  onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void,
+  onWalletConnected?: ({ provider, signer }: ProviderAndSigner) => void,
   connectMessage?: string | ReactNode
   dappName?: string
   dappIcon?: string | ReactNode
