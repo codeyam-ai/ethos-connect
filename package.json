@@ -1,6 +1,6 @@
 {
   "name": "ethos-connect-staging",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Build on Sui with ease with the Ethos Wallet APIs. Connect with all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",

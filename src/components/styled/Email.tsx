@@ -58,7 +58,7 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
                     Sign In
                 </button>
             </form>
-            <div style={{marginLeft: "-12px"}}>
+            <div style={{display: 'none', marginLeft: "-12px"}}>
                 <ReCAPTCHA
                     sitekey={captchaSiteKey}
                     ref={captchaRef}
