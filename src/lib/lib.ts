@@ -10,6 +10,7 @@ import getConfiguration from './getConfiguration'
 import getEthosSigner from './getEthosSigner'
 import initializeEthos from './initializeEthos'
 import postIFrameMessage from './postIFrameMessage'
+import listenForMobileConnection from './listenForMobileConnection'
 
 const lib = {
     // showWallet,
@@ -23,7 +24,8 @@ const lib = {
     postIFrameMessage,
     getEthosSigner,
     getConfiguration,
-    initializeEthos,    
+    initializeEthos, 
+    listenForMobileConnection   
 }
 
 export default lib;

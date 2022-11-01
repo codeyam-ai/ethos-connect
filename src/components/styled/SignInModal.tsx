@@ -4,14 +4,12 @@ declare global {
   }
 }
 
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState, ReactNode } from 'react'
 
 import Loader from '../svg/Loader'
 import WalletsIcon from '../svg/WalletsIcon'
-import useWindowDimensions from '../../hooks/useWindowDimensions'
 import * as styles from './signInModalStyles'
 import useHandleElementWithIdClicked from '../../lib/useHandleElementWithIdClicked'
-import WalletContext from '../WalletContext'
 import EmailSent from './EmailSent'
 import Wallets from './Wallets'
 import Email from './Email'
@@ -19,7 +17,7 @@ import Dialog from './Dialog'
 import ModalWrapper from './ModalWrapper'
 import InstallWallet from './InstallWallet'
 import IconButton from './IconButton'
-import useModal from '../../hooks/useModal'
+import hooks from '../../hooks/hooks'
 import MobileWallet from './MobileWallet'
 import Header from './Header'
 import Or from './Or'
@@ -50,13 +48,13 @@ const SignInModal = ({
     hideWalletSignIn,
 }: SignInModalProps) => {
     
-    const { wallets, selectWallet } = useContext(WalletContext);
-    const { isModalOpen, openModal, closeModal } = useModal()
+    const { wallets, selectWallet } = hooks.useWallet()
+    const { isModalOpen, openModal, closeModal } = hooks.useModal()
     const [isOpenAll, setIsOpenAll] = useState(isModalOpen)
     const [signingIn, setSigningIn] = useState(false)
     
     const [emailSent, setEmailSent] = useState(false)
-    const { width } = useWindowDimensions()
+    const { width } = hooks.useWindowDimensions()
     const captchaRef = useRef<any | null>(null)
     const closeOnClickId = 'ethos-close-on-click'
 

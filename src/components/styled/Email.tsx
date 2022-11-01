@@ -40,7 +40,7 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
     }
 
     return (
-        <div>
+        <div role='email-sign-in'>
             <form onSubmit={onSubmit}>
                 <input
                     style={styles.emailInput()}

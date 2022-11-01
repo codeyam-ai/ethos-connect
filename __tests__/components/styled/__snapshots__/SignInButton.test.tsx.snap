@@ -169,7 +169,9 @@ Array [
                     Log in to undefined
                   </div>
                 </div>
-                <div>
+                <div
+                  role="email-sign-in"
+                >
                   <form
                     onSubmit={[Function]}
                   >
