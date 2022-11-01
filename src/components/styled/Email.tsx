@@ -16,7 +16,19 @@ export type EmailProps = {
 const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) => {
     const { appId } = getConfiguration()
     const [email, setEmail] = useState('')
-    
+
+    const sendEmail = useCallback(async () => {
+        await login({ email, appId })
+        setEmail('')
+        setSigningIn(false)
+        setEmailSent(true)
+        event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
+    }, [login, email, appId]);
+
+    const _handleChange = useCallback((e) => {
+        setEmail(e.target.value)
+    }, [])
+
     const onSubmit = useCallback(async () => {
         setSigningIn(true)
         sendEmail()
@@ -30,15 +42,7 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
     //     } else {
     //         sendEmail()
     //     }
-    }, []);
-
-    const sendEmail = useCallback(async () => {
-        await login({ email, appId })
-        setEmail('')
-        setSigningIn(false)
-        setEmailSent(true)
-        event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
-    }, [login, email, appId]);
+    }, [sendEmail]);
 
     return (
         <div role='email-sign-in'>
@@ -48,7 +52,7 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
                     type="email"
                     placeholder="Email address"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={_handleChange}
                 />
                 <button style={styles.signInButton(width)} type="submit">
                     Sign In

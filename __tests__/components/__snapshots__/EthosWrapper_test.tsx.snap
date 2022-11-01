@@ -292,7 +292,7 @@ Array [
                     </g>
                     <defs>
                       <filter
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                         filterUnits="userSpaceOnUse"
                         height="56"
                         id="filter0_d_514_2149"
@@ -301,7 +301,7 @@ Array [
                         y="0"
                       >
                         <feFlood
-                          flood-opacity="0"
+                          floodOpacity="0"
                           result="BackgroundImageFix"
                         />
                         <feColorMatrix
@@ -346,23 +346,23 @@ Array [
                       >
                         <stop
                           offset="0.32986"
-                          stop-color="#E57948"
+                          stopColor="#E57948"
                         />
                         <stop
                           offset="0.396972"
-                          stop-color="#4AC2A7"
+                          stopColor="#4AC2A7"
                         />
                         <stop
                           offset="0.441723"
-                          stop-color="#65B1DF"
+                          stopColor="#65B1DF"
                         />
                         <stop
                           offset="0.492932"
-                          stop-color="#BCA1E8"
+                          stopColor="#BCA1E8"
                         />
                         <stop
                           offset="0.570879"
-                          stop-color="#EED32C"
+                          stopColor="#EED32C"
                         />
                       </radialGradient>
                     </defs>

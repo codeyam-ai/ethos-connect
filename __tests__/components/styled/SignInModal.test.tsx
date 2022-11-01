@@ -126,19 +126,19 @@ describe('SignInModal', () => {
             const root = signInModal.root
             const emailInput = root.findByProps({ type: 'email' })
             const emailForm = emailInput.parent
-            let captcha: ReactTestInstance
-            await waitFor(() => {
-            captcha = root.findByProps({ size: 'invisible' })
-            });
+            // let captcha: ReactTestInstance
+            // await waitFor(() => {
+            //     captcha = root.findByProps({ size: 'invisible' })
+            // });
 
             act(() => {
-            emailInput.props.onChange({ target: { value: testEmail } })
+                emailInput.props.onChange({ target: { value: testEmail } })
             })
 
             await act(async () => {
-            // Pass captcha
-            captcha.props.onChange();
-            emailForm?.props.onSubmit()
+                // Pass captcha
+                // captcha.props.onChange();
+                emailForm?.props.onSubmit()
             })
 
             expect(emailProvided).toBe(testEmail)

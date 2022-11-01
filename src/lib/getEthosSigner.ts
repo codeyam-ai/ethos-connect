@@ -29,11 +29,12 @@ const getEthosSigner = async (): Promise<Signer | null> => {
                     reject({ error: data?.response?.error || "User rejected transaction."})
                 }
             }
-        
+            
             hostedInteraction({
                 action: 'transaction',
                 data: { details },
-                onResponse: transactionEventListener
+                onResponse: transactionEventListener,
+                showWallet: true
             })
         });
     }
