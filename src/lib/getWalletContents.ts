@@ -8,6 +8,13 @@ export type WalletContents = {
   nfts: any[]
 }
 
+const ipfsConversion = (src: string): string => {
+    if (src.indexOf('ipfs') === 0) {  
+        src = `https://ipfs.io/ipfs/${url.substring(5)}`;
+    }
+    return src;
+}
+
 const getWalletContents = async (address: string): Promise<WalletContents> => {
   const provider = new JsonRpcProvider(suiFullNode);
 //   let objectInfos: any[] = [];
@@ -70,17 +77,15 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 
       if (type === 'DevNetNFT') {
         let { url } = data.fields;
-        if (url.indexOf('ipfs') === 0) {  
-          url = `https://ipfs.io/ipfs/${url.substring(5)}`;
-        }
+        let safeUrl = ipfsConversion(url)
         nfts.push({
           chain: 'Sui',
           address: reference?.objectId,
           name: data.fields.name,
           description: data.fields.description,
-          imageUri: url,
-          previewUri: url,
-          thumbnailUri: url,
+          imageUri: safeUrl,
+          previewUri: safeUrl,
+          thumbnailUri: safeUrl,
           collection: {
             name: "DevNetNFT",
             type: data?.type
@@ -107,6 +112,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
         })
       } else {
         const { name, description, url, image_url, image, ...remaining } = data.fields || {}
+        const safeUrl = ipfsConversion(url || image_url || image);
         nfts.push({
           type: data?.type,
           package: typeComponents[0],
@@ -114,9 +120,9 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
           address: reference?.objectId,
           name: name,
           description: description,
-          imageUri: url || image_url || image,
-          previewUri: url || image_url || image,
-          thumbnailUri: url || image_url || image,
+          imageUri: safeUrl,
+          previewUri: safeUrl,
+          thumbnailUri: safeUrl,
           extraFields: remaining,
           module: typeComponents[1],
           links: {

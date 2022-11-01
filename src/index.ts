@@ -14,6 +14,7 @@ import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
 
 import dripSui from './lib/dripSui'
+import lookup from './lib/lookup'
 
 import useProviderAndSigner from './hooks/useProviderAndSigner'
 import useAddress from './hooks/useAddress'
@@ -35,7 +36,8 @@ const ethos = {
   useContents,
   useSuiWalletConnect, 
   showSignInModal,
-  hideSignInModal
+  hideSignInModal,
+  lookup
 }
 
 export { EthosWrapper, SignInButton, ethos }
