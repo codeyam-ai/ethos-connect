@@ -12,7 +12,7 @@ const postIFrameMessage = (message: any) => {
     log("Storing iframe message", result)
     return;
   }
-
+  
   iframe?.contentWindow?.postMessage(message, '*')
 }
 
