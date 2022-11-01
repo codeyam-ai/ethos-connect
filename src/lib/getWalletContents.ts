@@ -9,8 +9,9 @@ export type WalletContents = {
 }
 
 const ipfsConversion = (src: string): string => {
+    if (!src) return "";
     if (src.indexOf('ipfs') === 0) {  
-        src = `https://ipfs.io/ipfs/${url.substring(5)}`;
+        src = `https://ipfs.io/ipfs/${src.substring(5)}`;
     }
     return src;
 }

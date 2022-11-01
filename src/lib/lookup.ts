@@ -34,11 +34,13 @@ const lookup = async (name: string): Promise<SuiAddress | string> => {
             const records = moveNameObject.fields.records.fields.contents;
 
             suiNSRecords = {};
-            console.log("RECORDS", records)
             for (const record of records) {
                 const { key, value } = record.fields;
-                suiNSRecords[key] = value.fields.owner;
-                suiNSRecords[value.fields.owner] = key;
+                const { owner } = value.fields;
+                suiNSRecords[key] = owner;
+                if (key.indexOf('addr.reverse') === -1) {
+                    suiNSRecords[owner] = key;
+                }
             }
             const { version } = suiNamesObject.reference;
             const timestamp = Date.now();
