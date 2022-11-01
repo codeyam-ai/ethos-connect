@@ -1,12 +1,12 @@
 import { SignableTransaction, SuiTransactionResponse } from '@mysten/sui.js'
 import store from 'store2'
 import { Chain } from '../enums/Chain'
-import { Signer, SignerType } from '../types/Signer'
+import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
 
-const getEthosSigner = async (): Promise<Signer | null> => {
+const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
@@ -47,7 +47,7 @@ const getEthosSigner = async (): Promise<Signer | null> => {
         return Promise.resolve(true);
     }
 
-    const disconnect = (wallet = false) => {
+    const disconnect = (fromWallet = false) => {
         return new Promise((resolve) => {
             const transactionEventListener = () => {
                 resolve(true);
@@ -55,7 +55,7 @@ const getEthosSigner = async (): Promise<Signer | null> => {
         
             hostedInteraction({
                 action: 'logout',
-                data: { wallet },
+                data: { fromWallet },
                 onResponse: transactionEventListener
             })
 
@@ -63,15 +63,20 @@ const getEthosSigner = async (): Promise<Signer | null> => {
         });
     }
 
+    const logout = () => {
+        disconnect(true);
+    }
+
     return user ? {
-        type: SignerType.ETHOS_HOSTED,
+        type: SignerType.HOSTED,
         email: user.email,
         getAccounts,
         getAddress,
         signAndExecuteTransaction,
         requestPreapproval,
         sign,
-        disconnect
+        disconnect,
+        logout
     } : null
    
 }
