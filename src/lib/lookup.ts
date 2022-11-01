@@ -6,7 +6,7 @@ import type { SuiAddress, SuiMoveObject, SuiObject } from '@mysten/sui.js';
 
 const CACHE_DELAY = 1000 * 30;
 
-const lookup = async (name: string): Promise<SuiAddress | string> => {
+const lookup = async (nameOrAddress: string): Promise<SuiAddress | string> => {
     const provider = new JsonRpcProvider(suiFullNode);
 
     const nameObjectId = '0xcc35bba43b5453db9c96b6045cba5e8b97bebac4';
@@ -24,6 +24,8 @@ const lookup = async (name: string): Promise<SuiAddress | string> => {
                 suiNSRecords = null;
             }
         }
+        recordsInfo.timestamp = Date.now();
+        lookupStore(nameObjectId, recordsInfo);
     }
 
     if (!suiNSRecords) {
@@ -52,9 +54,9 @@ const lookup = async (name: string): Promise<SuiAddress | string> => {
         }
     }
 
-    if (!suiNSRecords) return name;
+    if (!suiNSRecords) return nameOrAddress;
 
-    return suiNSRecords[name] || name;
+    return suiNSRecords[nameOrAddress] || nameOrAddress;
 };
 
 export default lookup;
