@@ -4,7 +4,7 @@ From the root folder of the project you are working on (not this project)
 
 ```
 yarn remove ethos-wallet-beta
-cd node_modules react
+cd node_modules/react
 yarn link
 cd ../react-dom
 yarn link
