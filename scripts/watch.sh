@@ -3,7 +3,7 @@ set -e
 
 # Known variables
 outdir="./dist"
-name="ethos-wallet-beta"
+name="ethos-connect-staging"
 input="./src/index.ts"
 
 # Find executables

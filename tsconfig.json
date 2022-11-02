@@ -17,7 +17,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "ethos-wallet-beta": ["src"],
+      "ethos-connect-staging": ["src"],
       "*": ["src/*", "node_modules/*"]
     },
     "jsx": "preserve",
