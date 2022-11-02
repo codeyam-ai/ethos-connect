@@ -20,6 +20,9 @@ jest.mock('./src/lib/getConfiguration', () => ({
 }));
 
 jest.mock('@mysten/sui.js', () => ({
+    Network: {
+      DEVNET: ""
+    },
     JsonRpcProvider: function () {
         return sui.provider
     } 

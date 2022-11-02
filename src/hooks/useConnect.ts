@@ -4,8 +4,7 @@ import log from '../lib/log'
 import useSuiWallet from './useSuiWallet' 
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
-import { JsonRpcProvider } from '@mysten/sui.js';
-import { suiFullNode } from '../lib/constants'
+import { JsonRpcProvider, Network } from '@mysten/sui.js';
 import { Signer } from 'types/Signer'
 import lib from '../lib/lib'
 
@@ -59,7 +58,7 @@ const useConnect = () => {
     
     signerFound.current = !!signer;
     
-    const provider = new JsonRpcProvider(suiFullNode);
+    const provider = new JsonRpcProvider(Network.DEVNET);
     
     setProviderAndSigner({ provider, signer })
   }, [logoutCount]);

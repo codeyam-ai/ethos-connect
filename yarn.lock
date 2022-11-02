@@ -621,12 +621,38 @@
   dependencies:
     bn.js "^5.2.1"
 
-"@mysten/sui.js@0.13.0", "@mysten/sui.js@^0.13.0":
+"@mysten/bcs@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@mysten/bcs/-/bcs-0.4.0.tgz#d0c9deb91918fcd37a2f1eb30621ac5a58ef6381"
+  integrity sha512-9qtPtFgUu7k2DnS1PyfT5lRngzgzUPx5x6BobcxOZgl+nxoa+WZNvJBWU6VoI2RJi2uxg72MswCEtgFsYaoIfQ==
+  dependencies:
+    bn.js "^5.2.1"
+
+"@mysten/sui.js@0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.13.0.tgz#c03dd7a023e609b7d8beda21592ad262d89e1400"
   integrity sha512-8s4IYN6GH95Begjuy0Xr45vQyyVZZHx83g5hJOpT9o98kQgdjaO218UdqQRVoFt/TODpNsTaI5OlymlKCgFVTQ==
   dependencies:
     "@mysten/bcs" "0.3.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
+    "@scure/bip32" "^1.1.0"
+    "@scure/bip39" "^1.1.0"
+    bn.js "^5.2.0"
+    buffer "^6.0.3"
+    cross-fetch "^3.1.5"
+    jayson "^3.6.6"
+    js-sha3 "^0.8.0"
+    lossless-json "^1.0.5"
+    rpc-websockets "^7.5.0"
+    tweetnacl "^1.0.3"
+
+"@mysten/sui.js@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.15.0.tgz#72fe242e8890c813a9cf9e53073fc45b53e8886b"
+  integrity sha512-9JgrWVDDuxAI+ymhdnUvxcQ99ar0dbeBKk2zyjYjvuIvI7934fqcwDPuEl6QOuJjkVG+OTyhCae1gDi0LIq4og==
+  dependencies:
+    "@mysten/bcs" "0.4.0"
     "@noble/hashes" "^1.1.2"
     "@noble/secp256k1" "^1.6.3"
     "@scure/bip32" "^1.1.0"

@@ -1,6 +1,6 @@
 {
   "name": "ethos-connect-staging",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Build on Sui with ease with the Ethos Wallet APIs. Connect with all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -67,7 +67,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.13.0",
+    "@mysten/sui.js": "^0.15.0",
     "@mysten/wallet-adapter-all-wallets": "^0.2.1",
     "@mysten/wallet-adapter-react": "^4.0.0",
     "@superstate/react": "^0.1.0",

@@ -1,5 +1,4 @@
-import { JsonRpcProvider } from "@mysten/sui.js";
-import { suiFullNode } from "./constants";
+import { JsonRpcProvider, Network } from "@mysten/sui.js";
 // import fetchSui from "./fetchSui";
 
 export type WalletContents = {
@@ -17,7 +16,7 @@ const ipfsConversion = (src: string): string => {
 }
 
 const getWalletContents = async (address: string): Promise<WalletContents> => {
-  const provider = new JsonRpcProvider(suiFullNode);
+  const provider = new JsonRpcProvider(Network.DEVNET);
 //   let objectInfos: any[] = [];
 
 //   if (address) {

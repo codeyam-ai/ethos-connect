@@ -1,13 +1,12 @@
-import { getObjectVersion, JsonRpcProvider } from '@mysten/sui.js';
+import { getObjectVersion, JsonRpcProvider, Network } from '@mysten/sui.js';
 import store from 'store2'
-import { suiFullNode } from './constants';
 
 import type { SuiAddress, SuiMoveObject, SuiObject } from '@mysten/sui.js';
 
 const CACHE_DELAY = 1000 * 30;
 
 const lookup = async (nameOrAddress: string): Promise<SuiAddress | string> => {
-    const provider = new JsonRpcProvider(suiFullNode);
+    const provider = new JsonRpcProvider(Network.DEVNET);
 
     const nameObjectId = '0xcc35bba43b5453db9c96b6045cba5e8b97bebac4';
 
