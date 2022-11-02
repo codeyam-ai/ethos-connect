@@ -152,7 +152,7 @@ const useSuiWalletConnect = () => {
     }, [connected]);
 
     const sign = useCallback(async () => {
-        return true;
+        return false;
     }, [wallet])
 
     return {

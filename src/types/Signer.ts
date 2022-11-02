@@ -15,7 +15,7 @@ export interface Signer {
   getAddress: () => Promise<string>,
   signAndExecuteTransaction: (transaction: SignableTransaction) => Promise<SuiTransactionResponse>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
-  sign: (message: any) => Promise<boolean>,
+  sign: (message: any) => Promise<any>,
   disconnect: () => void
 }
 

@@ -43,8 +43,23 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         return Promise.resolve(true);
     }
 
-    const sign = () => {
-        return Promise.resolve(true);
+    const sign = (message: string | Uint8Array): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
+                if (approved) {
+                    resolve(data.response);
+                } else {
+                    reject({ error: data?.response?.error || "User rejected signing."})
+                }
+            }
+            
+            hostedInteraction({
+                action: 'sign',
+                data: { signData: message },
+                onResponse: transactionEventListener,
+                showWallet: true
+            })
+        });
     }
 
     const disconnect = (fromWallet = false) => {
