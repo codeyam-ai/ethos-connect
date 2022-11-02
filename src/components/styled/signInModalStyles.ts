@@ -8,6 +8,8 @@ Add media queries using `modalInnerWrapperStyle` as an example
 
 import { Breakpoints } from "../../enums/Breakpoints"
 
+const COLOR_LIGHT_TEXT_MEDIUM = '#74777C';
+
 /*
 FONTS
 */
@@ -39,24 +41,6 @@ export const secondaryText = () => (
     flexDirection: "column",
     gap: "12px"
   } as React.CSSProperties
-)
-
-export const strikeThroughOrContainer = () => (
-    {
-        borderTop: "1px solid #0000001F",
-        margin: "44px 0 30px 0",
-        display: "flex",
-        justifyContent: 'center',
-        color: '#74777C'
-    }
-)
-
-export const strikeThroughOr = () => (
-    {
-        marginTop: "-14px",
-        backgroundColor: "white",
-        padding: "0 6px"
-    }
 )
 
 export const signInOptionSubtitleText = () => (
@@ -98,7 +82,7 @@ export const backdrop = (isOpen: boolean) =>
 
 export const highlighted = () =>
 ({
-    color: '#6D28D9'
+  color: '#6D28D9'
 } as React.CSSProperties)
 
 export const missingMessage = () =>
@@ -112,18 +96,6 @@ export const missingMessage = () =>
   background: "#F2F2F2",
   borderRadius: "6px"
 } as React.CSSProperties)
-
-export const modalContent = (width: number): React.CSSProperties => {
-  const styles = {
-    padding: '0 30px'
-  }
-  const sm = {
-  }
-
-  return width < Breakpoints.sm
-    ? (styles as React.CSSProperties)
-    : ({ ...styles, ...sm } as React.CSSProperties)
-}
 
 export const modalOuterWrapper = (isOpen: boolean) =>
 // fixed z-10 inset-0 overflow-y-auto
@@ -170,12 +142,9 @@ export const dialogPanel = (width: number) => {
     transitionProperty: 'all',
     borderRadius: '0.5rem',
     boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-    paddingBottom: '32px'
   }
   const sm = {
-    width: '100%',
-    maxWidth: '400px'
-    //   maxWidth: emailSent ? '28rem' : '40rem',
+    width: '360px',
   }
 
   return width < Breakpoints.sm
@@ -183,16 +152,20 @@ export const dialogPanel = (width: number) => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
+export const topPanelStyle = () =>
+({
+  padding: '24px 24px 0px',
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center"
+
+} as React.CSSProperties)
+
 export const closeStyle = () =>
 ({
-  backgroundColor: '#F9FAFB',
-  borderRadius: '100%',
   width: '24px',
   height: '24px',
-  textAlign: 'center',
-  marginRight: '12px',
-  marginTop: '12px',
-  float: 'right',
   color: '#A0AEBA',
   cursor: 'pointer',
 } as React.CSSProperties)
@@ -200,12 +173,8 @@ export const closeStyle = () =>
 
 export const backStyle = () =>
 ({
-  marginLeft: '12px',
-  marginTop: '12px',
-  float: 'left',
-  color: '#A0AEBA',
+  color: COLOR_LIGHT_TEXT_MEDIUM,
   cursor: 'pointer',
-  fontSize: 'larger',
   display: 'flex',
   gap: "6px",
   alignItems: 'center'
@@ -213,13 +182,13 @@ export const backStyle = () =>
 
 export const backStyleText = () =>
 ({
-  fontSize: 'small'
+  fontSize: '16px',
+  lineHeight: '24px'
 } as React.CSSProperties)
 
 export const headerStyle = () =>
 ({
-  borderBottom: '1px solid rgb(241 245 249)',
-  padding: '12px',
+  padding: '24px 24px 32px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -229,25 +198,26 @@ export const headerStyle = () =>
 
 export const headerLogosStyle = () =>
 ({
-    display: 'flex',
-    justifyContent: 'center',
-    gap: "-6px"
+  display: 'flex',
+  justifyContent: 'center',
+  gap: "-6px"
 } as React.CSSProperties)
 
 export const titleStyle = () =>
 ({
-    fontSize: '24px',
-    fontWeight: '600',
-    lineHeight: '32px',
-    margin: '0',
+  fontSize: '24px',
+  fontWeight: '600',
+  lineHeight: '32px',
+  margin: '0',
 } as React.CSSProperties)
 
 export const subTitleStyle = () =>
 ({
-    fontSize: '16px',
-    fontWeight: '400',
-    lineHeight: '24px',
-    margin: '0',
+  fontSize: '16px',
+  fontWeight: '400',
+  lineHeight: '24px',
+  margin: '0',
+  color: COLOR_LIGHT_TEXT_MEDIUM
 } as React.CSSProperties)
 
 export const mainContentStyle = (width: number) => {
@@ -369,14 +339,36 @@ export const subheaderStyle = () =>
   textAlign: 'center'
 } as React.CSSProperties)
 
+export const strikeThroughOrContainer = () => (
+  {
+    padding: "0px 24px 24px",
+    display: "flex",
+    flexDirection: "row",
+    gap: "12px",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: COLOR_LIGHT_TEXT_MEDIUM
+  } as React.CSSProperties
+)
+
+export const line = () => (
+  {
+    height: '1px',
+    width: '100%',
+    background: "rgba(0, 0, 0, 0.12)",
+    borderRadius: "16px"
+  } as React.CSSProperties
+)
+
 export const emailInput = () =>
 ({
   boxSizing: 'border-box',
-  border: '1px solid rgb(203 213 225)',
-  borderRadius: '0.5rem',
-  padding: '12px',
+  border: '1px solid rgba(0, 0, 0, 0.08)',
+  borderRadius: '16px',
+  background: '#F2F2F2',
+  padding: '20px',
   width: '100%',
-  marginTop: '12px',
+
 } as React.CSSProperties)
 
 export const signInButton = (width: number) => {
@@ -403,12 +395,11 @@ export const signInButton = (width: number) => {
 
 export const walletOptionContainer = (width: number) => {
   const styles = {
-    marginTop: '12px',
+    padding: '0px 24px 24px',
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
-    padding: "0px",
-    gap: "8px"
+    alignItems: "center",
+    gap: "12px"
   }
   const sm = {
   }
@@ -426,16 +417,15 @@ export const iconButton = (width: number, primary: boolean = false, noIcon: bool
     flexDirection: "row",
     justifyContent: noIcon ? "center" : "space-between",
     alignItems: "center",
-    padding: "24px",
-    gap: "10px",
+    padding: primary ? "18px 20px" : "16px 20px",
     width: "100%",
-    height: "48px",
     background: primary ? "#6D28D9" : "#F2F2F2",
     color: primary ? "white" : "black",
-    borderRadius: "12px",
+    borderRadius: "16px",
     flex: "none",
     order: "0",
-    flexGrow: "0"
+    flexGrow: "0",
+    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)"
   }
   const sm = {
   }
@@ -444,6 +434,12 @@ export const iconButton = (width: number, primary: boolean = false, noIcon: bool
     ? (styles as React.CSSProperties)
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
+
+export const submitButtonContainer = () => (
+  {
+    padding: '0px 24px 24px'
+  } as React.CSSProperties
+)
 
 export const learnMoreButton = (width: number) => {
   const styles = {
@@ -490,20 +486,20 @@ export const browserExtensionLink = () =>
   fontWeight: 400,
 } as React.CSSProperties)
 
-export const walletInstallExplanation = () => 
+export const walletInstallExplanation = () =>
 ({
-    marginTop: '6px',
-    color: '#751ac7',
-    width: '100%',
-    fontSize: 'smaller',
-    cursor: 'pointer'
+  marginTop: '6px',
+  color: '#751ac7',
+  width: '100%',
+  fontSize: 'smaller',
+  cursor: 'pointer'
 } as React.CSSProperties)
 
-export const walletExplanation = () => 
+export const walletExplanation = () =>
 ({
-    padding: '6px 0',
-    color: '#666',
-    width: '100%',
-    fontSize: 'smaller',
-    marginBottom: '12px'
+  padding: '6px 0',
+  color: '#666',
+  width: '100%',
+  fontSize: 'smaller',
+  marginBottom: '12px'
 } as React.CSSProperties)

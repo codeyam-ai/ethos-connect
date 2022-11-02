@@ -5,6 +5,7 @@ import getConfiguration from '../../lib/getConfiguration'
 import event from '../../lib/event'
 import login from '../../lib/login'
 import * as styles from './signInModalStyles'
+import IconButton from './IconButton'
 
 export type EmailProps = {
     setSigningIn: (signingIn: boolean) => void,
@@ -32,33 +33,36 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
     const onSubmit = useCallback(async () => {
         setSigningIn(true)
         sendEmail()
-    //     if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
-    //         try {
-    //             await captchaRef.current.execute()
-    //         } catch (e) {
-    //             console.log('CAPTCHA ERROR', e)
-    //             sendEmail()
-    //         }
-    //     } else {
-    //         sendEmail()
-    //     }
+        //     if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
+        //         try {
+        //             await captchaRef.current.execute()
+        //         } catch (e) {
+        //             console.log('CAPTCHA ERROR', e)
+        //             sendEmail()
+        //         }
+        //     } else {
+        //         sendEmail()
+        //     }
     }, [sendEmail]);
 
     return (
         <div role='email-sign-in'>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} style={styles.walletOptionContainer(width)}>
                 <input
                     style={styles.emailInput()}
                     type="email"
-                    placeholder="Email address"
+                    placeholder="Enter your email address..."
                     value={email}
                     onChange={_handleChange}
                 />
-                <button style={styles.signInButton(width)} type="submit">
-                    Sign In
-                </button>
+                <IconButton
+                    text="Sign In With Email"
+                    type='submit'
+                    width={width}
+                    primary={true}
+                />
             </form>
-            <div style={{display: 'none', marginLeft: "-12px"}}>
+            <div style={{ display: 'none', marginLeft: "-12px" }}>
                 <ReCAPTCHA
                     sitekey={captchaSiteKey}
                     ref={captchaRef}

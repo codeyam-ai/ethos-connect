@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WalletsIcon = ({ width = 30 }) => (
+const WalletsIcon = ({ width = 32 }) => (
     <img src={dataUri} width={width} height={width}  />
 );
 

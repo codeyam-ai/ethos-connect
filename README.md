@@ -18,6 +18,7 @@ yarn link
 yarn install
 yarn link react
 yarn link react-dom
+yarn build
 ```
 
 From the root folder of the project you are working on (not this project)

@@ -4,9 +4,9 @@ import * as styles from './signInModalStyles'
 const Or = () => {
     return (
         <div style={styles.strikeThroughOrContainer()}>
-            <div style={styles.strikeThroughOr()}>
+            <div style={styles.line()} />
                 or
-            </div>
+            <div style={styles.line()} />
         </div>
     )
 }
