@@ -13,7 +13,7 @@ export type HeaderProps = {
 const Header = ({ title, subTitle, dappIcon, showEthos=false, children }: HeaderProps) => {
     return (
         <div>
-            <div style={styles.headerStyle()}>
+            <div style={styles.headerStyle(!!dappIcon)}>
                 <div style={styles.headerLogosStyle()}>
                     {dappIcon && (
                         typeof dappIcon === 'string' ? <img src={dappIcon} /> : dappIcon

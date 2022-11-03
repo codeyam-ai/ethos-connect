@@ -186,14 +186,13 @@ export const backStyleText = () =>
   lineHeight: '24px'
 } as React.CSSProperties)
 
-export const headerStyle = () =>
+export const headerStyle = (withIcon=false) =>
 ({
-  padding: '24px 24px 32px',
+  padding: withIcon ? '24px 24px 32px' : '0 24px 32px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   gap: '12px',
-  width: '100%'
 } as React.CSSProperties)
 
 export const headerLogosStyle = () =>

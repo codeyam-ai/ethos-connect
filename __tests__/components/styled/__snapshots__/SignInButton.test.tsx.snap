@@ -133,8 +133,7 @@ Array [
                     "flexDirection": "column",
                     "gap": "12px",
                     "justifyContent": "center",
-                    "padding": "24px 24px 32px",
-                    "width": "100%",
+                    "padding": "0 24px 32px",
                   }
                 }
               >
