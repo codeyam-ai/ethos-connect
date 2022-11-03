@@ -50,7 +50,6 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
             subTitle="Wallets allow you to interact with, store, send, and receive digital assets."
         >
             <div role="wallet-sign-in">
-                <br/>
                 <div style={styles.walletOptionContainer(width)}>
                     {installWallets?.map(
                         (installWallet, index) => (

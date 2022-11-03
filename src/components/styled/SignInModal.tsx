@@ -1,7 +1,7 @@
 declare global {
-  interface Window {
-    ethosInternal: any
-  }
+    interface Window {
+        ethosInternal: any
+    }
 }
 
 import React, { useCallback, useEffect, useMemo, useRef, useState, ReactNode } from 'react'
@@ -47,12 +47,12 @@ const SignInModal = ({
     hideEmailSignIn,
     hideWalletSignIn,
 }: SignInModalProps) => {
-    
+
     const { wallets, selectWallet } = hooks.useWallet()
     const { isModalOpen, openModal, closeModal } = hooks.useModal()
     const [isOpenAll, setIsOpenAll] = useState(isModalOpen)
     const [signingIn, setSigningIn] = useState(false)
-    
+
     const [emailSent, setEmailSent] = useState(false)
     const { width } = hooks.useWindowDimensions()
     const captchaRef = useRef<any | null>(null)
@@ -135,7 +135,7 @@ const SignInModal = ({
 
         if (hideWalletSignIn) {
             return (
-                <Email 
+                <Email
                     setSigningIn={setSigningIn}
                     setEmailSent={setEmailSent}
                     captchaRef={captchaRef}
@@ -158,13 +158,15 @@ const SignInModal = ({
                 {!hideEmailSignIn && (
                     <>
                         <Or />
-                        
-                        <IconButton
-                            text="Sign In With Email"
-                            onClick={_toggleEmail}
-                            width={width}
-                            primary={true}
-                        />
+
+                        <div style={styles.submitButtonContainer()}>
+                            <IconButton
+                                text="Sign In With Email"
+                                onClick={_toggleEmail}
+                                width={width}
+                                primary={true}
+                            />
+                        </div>
                     </>
                 )}
             </Header>
@@ -176,7 +178,7 @@ const SignInModal = ({
                 dappIcon={dappIcon}
                 subTitle={`Log in to ${safeDappName}`}
             >
-                <Email 
+                <Email
                     setSigningIn={setSigningIn}
                     setEmailSent={setEmailSent}
                     captchaRef={captchaRef}
@@ -185,22 +187,24 @@ const SignInModal = ({
                 {!hideWalletSignIn && (
                     <>
                         <Or />
-                        
-                        {safeWallets.length > 0 ? (
-                            <IconButton
-                                icon={<WalletsIcon />}
-                                text="Select One Of Your Wallets"
-                                onClick={_toggleEmail}
-                                width={width}
-                            />
-                        ) : (
-                            <IconButton
-                                icon={<WalletsIcon />}
-                                text="Install A Wallet"
-                                onClick={_toggleInstallWallet}
-                                width={width}
-                            />
-                        )}
+
+                        <div style={styles.submitButtonContainer()}>
+                            {safeWallets.length > 0 ? (
+                                <IconButton
+                                    icon={<WalletsIcon />}
+                                    text="Select One Of Your Wallets"
+                                    onClick={_toggleEmail}
+                                    width={width}
+                                />
+                            ) : (
+                                <IconButton
+                                    icon={<WalletsIcon />}
+                                    text="Install A Wallet"
+                                    onClick={_toggleInstallWallet}
+                                    width={width}
+                                />
+                            )}
+                        </div>
                     </>
                 )}
             </Header>
@@ -229,9 +233,7 @@ const SignInModal = ({
                 {emailSent ? (
                     <EmailSent />
                 ) : (
-                    <div style={styles.modalContent(width)}>
-                        {signingIn ? loader :  modalContent}
-                    </div>
+                    signingIn ? loader : modalContent
                 )}
             </ModalWrapper>
         </Dialog>
