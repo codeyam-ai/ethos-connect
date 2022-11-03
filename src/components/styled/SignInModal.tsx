@@ -4,7 +4,7 @@ declare global {
     }
 }
 
-import React, { useCallback, useEffect, useMemo, useRef, useState, ReactNode } from 'react'
+import React, { useCallback, useEffect, useMemo, useState, ReactNode } from 'react'
 
 import Loader from '../svg/Loader'
 import WalletsIcon from '../svg/WalletsIcon'
@@ -55,7 +55,7 @@ const SignInModal = ({
 
     const [emailSent, setEmailSent] = useState(false)
     const { width } = hooks.useWindowDimensions()
-    const captchaRef = useRef<any | null>(null)
+    // const captchaRef = useRef<any | null>(null)
     const closeOnClickId = 'ethos-close-on-click'
 
     const [showEmail, setShowEmail] = useState(false);
@@ -138,7 +138,7 @@ const SignInModal = ({
                 <Email
                     setSigningIn={setSigningIn}
                     setEmailSent={setEmailSent}
-                    captchaRef={captchaRef}
+                    // captchaRef={captchaRef}
                     width={width}
                 />
             )
@@ -181,7 +181,7 @@ const SignInModal = ({
                 <Email
                     setSigningIn={setSigningIn}
                     setEmailSent={setEmailSent}
-                    captchaRef={captchaRef}
+                    // captchaRef={captchaRef}
                     width={width}
                 />
                 {!hideWalletSignIn && (

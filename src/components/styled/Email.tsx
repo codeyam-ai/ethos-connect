@@ -1,6 +1,6 @@
-import React, { MutableRefObject, useCallback, useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { captchaSiteKey } from '../../lib/constants'
+import React, { useCallback, useState } from 'react'
+// import ReCAPTCHA from 'react-google-recaptcha'
+// import { captchaSiteKey } from '../../lib/constants'
 import getConfiguration from '../../lib/getConfiguration'
 import event from '../../lib/event'
 import login from '../../lib/login'
@@ -10,11 +10,11 @@ import IconButton from './IconButton'
 export type EmailProps = {
     setSigningIn: (signingIn: boolean) => void,
     setEmailSent: (emailSent: boolean) => void,
-    captchaRef: MutableRefObject<any>,
+    // captchaRef: MutableRefObject<any>,
     width: number
 }
 
-const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) => {
+const Email = ({ setSigningIn, setEmailSent, width }: EmailProps) => {
     const { appId } = getConfiguration()
     const [email, setEmail] = useState('')
 
@@ -62,14 +62,14 @@ const Email = ({ setSigningIn, setEmailSent, captchaRef, width }: EmailProps) =>
                     primary={true}
                 />
             </form>
-            <div style={{ display: 'none', marginLeft: "-12px" }}>
+            {/* <div style={{ display: 'none', marginLeft: "-12px" }}>
                 <ReCAPTCHA
                     sitekey={captchaSiteKey}
                     ref={captchaRef}
                     size="invisible"
                     onChange={sendEmail}
                 />
-            </div>
+            </div> */}
         </div>
     );
 }
