@@ -29,7 +29,7 @@ From the root folder of the project you are working on (not this project)
 ### To reset your UI (consumer of the NPM package)
 
 ```
-yarn unlink ethos-wallet-beta
+yarn unlink ethos-connect-staging
 yarn unlink react
 yarn unlink react-dom
 yarn add ethos-wallet-beta react react-dom
