@@ -9,7 +9,7 @@ const Button = (props: any) => {
       {isWorking ? (
         workingComponent || (
           <span className="block p-2">
-            <Loader width={30} />
+            <Loader width={32} />
           </span>
         )
       ) : (

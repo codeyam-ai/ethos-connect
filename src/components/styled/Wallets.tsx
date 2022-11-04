@@ -26,7 +26,7 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
         const src = wallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet.icon
 
         return (
-            <img src={src} height={30} width={30} />
+            <img src={src} height={32} width={32} />
         )
     }
 

@@ -1,9 +1,9 @@
 import InstallWalletIcon from "../svg/InstallWalletIcon";
 import React, { ReactNode } from "react";
-import ethosDataIcon from "./ethosDataIcon";
 import Header from "./Header";
 import * as styles from './signInModalStyles'
 import SuiEnclosed from "../svg/SuiEnclosed";
+import EthosWalletIcon from "../svg/EthosWalletIcon";
 
 export type WalletInstallInfo = {
     name: string,
@@ -22,7 +22,7 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
 
         if (typeof data === "string") {
             return (
-                <img src={data} height={30} width={30} />
+                <img src={data} height={32} width={32} />
             )
         }
 
@@ -32,7 +32,7 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
     const installWallets = [
         {
             name: "Ethos Wallet",
-            icon: ethosDataIcon,
+            icon: <EthosWalletIcon />,
             link: "https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli"
         },
         {
