@@ -48,6 +48,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, d
     log('EthosWrapper', 'calling onWalletConnected', providerAndSigner)
 
     if (providerAndSigner.signer) {
+        setIsModalOpen(false);
         const rawDisconnect = providerAndSigner.signer.disconnect;
         providerAndSigner.signer.disconnect = () => {
             rawDisconnect();
@@ -57,6 +58,14 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, d
 
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [providerAndSigner])
+
+  useEffect(() => {
+    if (isModalOpen) {
+        document.getElementsByTagName('html').item(0)?.setAttribute('style', 'overflow: hidden;')
+    } else {
+        document.getElementsByTagName('html').item(0)?.setAttribute('style', '')
+    }
+  }, [isModalOpen])
   
   return (
     <WalletsContext.Provider value={{ wallets, selectWallet }}>

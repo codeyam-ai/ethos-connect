@@ -201,11 +201,12 @@ Array [
                     style={
                       Object {
                         "alignItems": "center",
-                        "background": "#6D28D9",
+                        "background": "rgb(188 158 234)",
                         "borderRadius": "16px",
                         "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
                         "boxSizing": "border-box",
-                        "color": "white",
+                        "color": "#9376e8",
+                        "cursor": "not-allowed",
                         "display": "flex",
                         "flex": "none",
                         "flexDirection": "row",
@@ -278,6 +279,7 @@ Array [
                       "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
                       "boxSizing": "border-box",
                       "color": "black",
+                      "cursor": "pointer",
                       "display": "flex",
                       "flex": "none",
                       "flexDirection": "row",

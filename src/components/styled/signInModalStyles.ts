@@ -408,7 +408,7 @@ export const walletOptionContainer = (width: number) => {
     : ({ ...styles, ...sm } as React.CSSProperties)
 }
 
-export const iconButton = (width: number, primary: boolean = false, noIcon: boolean = false) => {
+export const iconButton = (width: number, disabled: boolean = false, primary: boolean = false, noIcon: boolean = false) => {
   const styles = {
     textDecoration: "none",
     fontWeight: primary ? '500' : '400',
@@ -419,8 +419,9 @@ export const iconButton = (width: number, primary: boolean = false, noIcon: bool
     alignItems: "center",
     padding: primary ? "20px 20px" : "16px 16px 16px 20px",
     width: "100%",
-    background: primary ? "#6D28D9" : "#F2F2F2",
-    color: primary ? "white" : "black",
+    background: primary ? (disabled ? "rgb(188 158 234)" : "#6D28D9") : "#F2F2F2",
+    color: primary ? (disabled ? "#9376e8" : "white") : "black",
+    cursor: disabled ? "not-allowed" : "pointer",
     borderRadius: "16px",
     flex: "none",
     order: "0",
