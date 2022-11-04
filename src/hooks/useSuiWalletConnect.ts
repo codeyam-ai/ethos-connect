@@ -9,7 +9,7 @@ import {
     SignableTransaction,
   } from "@mysten/sui.js";
 import { WalletAdapter } from "@mysten/wallet-adapter-base";
-import useWalletStandardAdapter from "./useWalletStandardAdapter";
+import useWalletAdapters from "./useWalletAdapters";
 import { Preapproval } from "types/Preapproval";
 
 const DEFAULT_STORAGE_KEY = "preferredSuiWallet";
@@ -36,7 +36,7 @@ export interface WalletContextState {
   }
   
 const useSuiWalletConnect = () => {
-    const wallets = useWalletStandardAdapter();
+    const wallets = useWalletAdapters();
     
     const [wallet, setWallet] = useState<WalletAdapter | null>(null);
     const [connected, setConnected] = useState(false);

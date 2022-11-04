@@ -3,7 +3,7 @@
 From the root folder of the project you are working on (not this project)
 
 ```
-yarn remove ethos-connect-staging
+yarn remove ethos-connect
 cd node_modules/react
 yarn link
 cd ../react-dom
@@ -24,7 +24,7 @@ yarn build
 From the root folder of the project you are working on (not this project)
 
 ```
-yarn link ethos-connect-staging
+yarn link ethos-connect
 ```
 
 ## To reset local
