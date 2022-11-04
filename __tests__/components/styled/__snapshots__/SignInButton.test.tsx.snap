@@ -214,9 +214,10 @@ Array [
                         "flex": "none",
                         "flexDirection": "row",
                         "flexGrow": "0",
+                        "fontWeight": "500",
                         "justifyContent": "center",
                         "order": "0",
-                        "padding": "18px 20px",
+                        "padding": "20px 20px",
                         "textDecoration": "none",
                         "width": "100%",
                       }
@@ -228,16 +229,6 @@ Array [
                     </div>
                   </button>
                 </form>
-                <div
-                  style={
-                    Object {
-                      "display": "none",
-                      "marginLeft": "-12px",
-                    }
-                  }
-                >
-                  <div />
-                </div>
               </div>
               <div
                 style={
@@ -295,9 +286,10 @@ Array [
                       "flex": "none",
                       "flexDirection": "row",
                       "flexGrow": "0",
+                      "fontWeight": "400",
                       "justifyContent": "space-between",
                       "order": "0",
-                      "padding": "16px 20px",
+                      "padding": "16px 16px 16px 20px",
                       "textDecoration": "none",
                       "width": "100%",
                     }

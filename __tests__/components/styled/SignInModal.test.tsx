@@ -144,17 +144,17 @@ describe('SignInModal', () => {
             expect(emailProvided).toBe(testEmail)
         })
 
-        it('should render captcha as invisible', async () => {
-            const signInModal = create(
-                <SignInModal isOpen={true} onClose={() => null} />
-            )
+        // it('should render captcha as invisible', async () => {
+        //     const signInModal = create(
+        //         <SignInModal isOpen={true} onClose={() => null} />
+        //     )
 
-            const root = signInModal.root
-            let captcha: ReactTestInstance
-            await waitFor(() => {
-            captcha = root.findByProps({ size: 'invisible' })
-            expect(captcha).toBeTruthy();
-            });
-        });
+        //     const root = signInModal.root
+        //     let captcha: ReactTestInstance
+        //     await waitFor(() => {
+        //     captcha = root.findByProps({ size: 'invisible' })
+        //     expect(captcha).toBeTruthy();
+        //     });
+        // });
     })
 })
