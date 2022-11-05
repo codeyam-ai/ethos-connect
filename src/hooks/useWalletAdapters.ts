@@ -25,7 +25,7 @@ const useWalletAdapters = () => {
 
         // Re-resolve the adapters just in case a provider has injected
         // before we've been able to attach an event listener:
-        // setWallets(resolveAdapters(adapterAndProviders));
+        setWallets(resolveAdapters(adapterAndProviders));
 
         const listeners = providers.map((provider) =>
             provider.on("changed", () => {

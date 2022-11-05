@@ -81,6 +81,7 @@ const useSuiWalletConnect = () => {
         if (!wallet && !connected && !connecting) {
             let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
             if (typeof preferredWallet === "string") {
+                if (!wallets || wallets.length === 0) return;
                 select(preferredWallet).then(
                     (success: boolean) => {
                         if (!success) {
