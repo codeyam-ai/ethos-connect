@@ -52,7 +52,6 @@ const Email = ({ setSigningIn, setEmailSent, width }: EmailProps) => {
         //     }
     }, [sendEmail]);
 
-    console.log("validEmail", validEmail)
     return (
         <div role='email-sign-in'>
             <form onSubmit={onSubmit} style={styles.walletOptionContainer(width)}>
