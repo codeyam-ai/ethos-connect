@@ -78,37 +78,37 @@ const useSuiWalletConnect = () => {
   
     // // Auto-connect to the preferred wallet if there is one in storage:
     useEffect(() => {
-        if (!wallet && !connected && !connecting) {
-            let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
-            if (typeof preferredWallet === "string") {
-                if (!wallets || wallets.length === 0) return;
-                select(preferredWallet).then(
-                    (success: boolean) => {
-                        if (!success) {
-                            setNoConnection(true);
-                            localStorage.removeItem(DEFAULT_STORAGE_KEY)
+        const checkWallets = async () => {
+            if (!wallet && !connected && !connecting) {
+                let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
+                if (typeof preferredWallet === "string") {
+                    if (!wallets || wallets.length === 0) return;
+                    const success = await select(preferredWallet)
+                    if (!success) {
+                        setNoConnection(true);
+                        localStorage.removeItem(DEFAULT_STORAGE_KEY)
+                    }
+                    return;
+                } else if ((wallets || []).length > 0) {
+                    for (const wallet of wallets) {
+                        if (wallet.name !== "Ethos Wallet") continue;
+                        const accounts = await wallet.getAccounts();
+                        if ((accounts || []).length > 0) {
+                            const success = await select(wallet.name);
+                            if (success) return;
                         }
                     }
-                )
-            } else {
-                if ((wallets || []).length > 0) {
-                    for (const wallet of wallets) {
-                        wallet.getAccounts().then(
-                            (accounts) => {
-                                if ((accounts || []).length > 0) {
-                                    select(wallet.name);
-                                }
-                            } 
-                        );
-                    }
                 }
+
+                setNoConnection(true);
+            }
+    
+            if (!wallets || wallets.length === 0) {
                 setNoConnection(true);
             }
         }
-
-        if (!wallets || wallets.length === 0) {
-            setNoConnection(true);
-        }
+        
+        checkWallets();
     }, [wallets, wallet, connected, connecting, select]);
 
     const getAccounts = useCallback(async () => {
