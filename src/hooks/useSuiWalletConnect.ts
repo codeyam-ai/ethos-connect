@@ -91,6 +91,17 @@ const useSuiWalletConnect = () => {
                     }
                 )
             } else {
+                if ((wallets || []).length > 0) {
+                    for (const wallet of wallets) {
+                        wallet.getAccounts().then(
+                            (accounts) => {
+                                if ((accounts || []).length > 0) {
+                                    select(wallet.name);
+                                }
+                            } 
+                        );
+                    }
+                }
                 setNoConnection(true);
             }
         }
