@@ -32,21 +32,19 @@ yarn link ethos-connect
 ### To reset your UI (consumer of the NPM package)
 
 ```
-yarn unlink ethos-connect-staging
+yarn unlink ethos-connect
 yarn unlink react
 yarn unlink react-dom
-yarn add ethos-connect-staging react react-dom
+yarn add ethos-connect react react-dom
 ```
 
 ### To reset and unlink in the NPM package repo
 
 ```
 yarn unlink
-cd node_modules/react
-yarn unlink
-cd ../../node_modules/react-dom
-yarn unlink
-cd ../..
+yarn unlink react
+yarn unlink react-dom
+yarn add react react-dom
 ```
 
 You can also reset all your linked packages by running (mac only):

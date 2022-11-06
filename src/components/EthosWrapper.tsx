@@ -41,6 +41,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, d
   const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const modalState = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen, setIsModalOpen])
 
   useEffect(() => {
@@ -66,6 +67,14 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, d
         document.getElementsByTagName('html').item(0)?.setAttribute('style', '')
     }
   }, [isModalOpen])
+
+  useEffect(() => {
+    setLoading(false)
+  }, []);
+
+  if (loading) {
+    return <></>
+  }
   
   return (
     <WalletsContext.Provider value={{ wallets, selectWallet }}>
@@ -73,6 +82,7 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, d
             <ContentsContext.Provider value={contents}>
                 <ModalContext.Provider value={modalState}>
                     {children}
+
 
                     <SignInModal
                         isOpen={isModalOpen}
