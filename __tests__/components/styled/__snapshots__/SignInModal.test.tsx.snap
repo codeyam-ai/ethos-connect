@@ -1,0 +1,623 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignInModal closed renders a hidden modal if isOpen is false 1`] = `
+Array [
+  <link
+    href="https://rsms.me/inter/inter.css"
+    rel="stylesheet"
+  />,
+  <div
+    style={
+      Object {
+        "color": "black",
+        "fontFamily": "'Inter', sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "1.5",
+      }
+    }
+  >
+    <div
+      role="dialog"
+      style={
+        Object {
+          "position": "relative",
+          "visibility": "hidden",
+          "zIndex": "100",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "backgroundColor": "rgb(107 114 128)",
+            "bottom": "0px",
+            "left": "0px",
+            "opacity": "0",
+            "position": "fixed",
+            "right": "0px",
+            "top": "0px",
+            "transition": "all 300ms ease-in-out",
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "bottom": "0px",
+            "left": "0px",
+            "opacity": "0",
+            "overflowY": "auto",
+            "position": "fixed",
+            "right": "0px",
+            "scale": ".95",
+            "top": "0px",
+            "transition": "all 300ms ease-in-out",
+            "zIndex": "99",
+          }
+        }
+      >
+        <div
+          id="ethos-close-on-click"
+          style={
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+              "justifyContent": "center",
+              "minHeight": "100%",
+              "padding": "0",
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            style={
+              Object {
+                "backgroundColor": "#ffffff",
+                "borderRadius": "0.5rem",
+                "boxShadow": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                "overflow": "hidden",
+                "position": "relative",
+                "transitionProperty": "all",
+                "width": "360px",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "padding": "24px 24px 0px",
+                }
+              }
+            >
+              <span />
+              <span
+                onClick={[Function]}
+                style={
+                  Object {
+                    "color": "#A0AEBA",
+                    "cursor": "pointer",
+                    "height": "24px",
+                    "width": "24px",
+                  }
+                }
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 18L18 6M6 6l12 12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "gap": "12px",
+                    "justifyContent": "center",
+                    "padding": "0 24px 32px",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "display": "flex",
+                      "gap": "-6px",
+                      "justifyContent": "center",
+                    }
+                  }
+                />
+                <div
+                  style={
+                    Object {
+                      "fontSize": "24px",
+                      "fontWeight": "600",
+                      "lineHeight": "32px",
+                      "margin": "0",
+                    }
+                  }
+                />
+                <div
+                  style={
+                    Object {
+                      "color": "#74777C",
+                      "fontSize": "16px",
+                      "fontWeight": "400",
+                      "lineHeight": "24px",
+                      "margin": "0",
+                    }
+                  }
+                >
+                  Log in to undefined
+                </div>
+              </div>
+              <div
+                role="email-sign-in"
+              >
+                <form
+                  onSubmit={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "gap": "12px",
+                      "padding": "0px 24px 24px",
+                    }
+                  }
+                >
+                  <input
+                    onChange={[Function]}
+                    placeholder="Enter your email address..."
+                    style={
+                      Object {
+                        "background": "#F2F2F2",
+                        "border": "1px solid rgba(0, 0, 0, 0.08)",
+                        "borderRadius": "16px",
+                        "boxSizing": "border-box",
+                        "padding": "20px",
+                        "width": "100%",
+                      }
+                    }
+                    type="email"
+                    value=""
+                  />
+                  <button
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "background": "rgb(188 158 234)",
+                        "borderRadius": "16px",
+                        "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
+                        "boxSizing": "border-box",
+                        "color": "#9376e8",
+                        "cursor": "not-allowed",
+                        "display": "flex",
+                        "flex": "none",
+                        "flexDirection": "row",
+                        "flexGrow": "0",
+                        "fontWeight": "500",
+                        "justifyContent": "center",
+                        "order": "0",
+                        "padding": "20px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
+                      }
+                    }
+                    type="submit"
+                  >
+                    <div>
+                      Sign In With Email
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <div
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "color": "#74777C",
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "gap": "12px",
+                    "justifyContent": "space-between",
+                    "padding": "0px 24px 24px",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "background": "rgba(0, 0, 0, 0.12)",
+                      "borderRadius": "16px",
+                      "height": "1px",
+                      "width": "100%",
+                    }
+                  }
+                />
+                or
+                <div
+                  style={
+                    Object {
+                      "background": "rgba(0, 0, 0, 0.12)",
+                      "borderRadius": "16px",
+                      "height": "1px",
+                      "width": "100%",
+                    }
+                  }
+                />
+              </div>
+              <div
+                style={
+                  Object {
+                    "padding": "0px 24px 24px",
+                  }
+                }
+              >
+                <button
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "background": "#F2F2F2",
+                      "borderRadius": "16px",
+                      "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
+                      "boxSizing": "border-box",
+                      "color": "black",
+                      "cursor": "pointer",
+                      "display": "flex",
+                      "flex": "none",
+                      "flexDirection": "row",
+                      "flexGrow": "0",
+                      "fontWeight": "400",
+                      "justifyContent": "space-between",
+                      "order": "0",
+                      "padding": "16px 16px 16px 20px",
+                      "textDecoration": "none",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div>
+                    Install A Wallet
+                  </div>
+                  <img
+                    height={32}
+                    src="data:image/png;base64,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"
+                    width={32}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`SignInModal opened renders a visible modal if isOpen is true 1`] = `
+Array [
+  <link
+    href="https://rsms.me/inter/inter.css"
+    rel="stylesheet"
+  />,
+  <div
+    style={
+      Object {
+        "color": "black",
+        "fontFamily": "'Inter', sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "1.5",
+      }
+    }
+  >
+    <div
+      role="dialog"
+      style={
+        Object {
+          "position": "relative",
+          "visibility": "",
+          "zIndex": "100",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "backgroundColor": "rgb(107 114 128)",
+            "bottom": "0px",
+            "left": "0px",
+            "opacity": ".75",
+            "position": "fixed",
+            "right": "0px",
+            "top": "0px",
+            "transition": "all 300ms ease-in-out",
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "bottom": "0px",
+            "left": "0px",
+            "opacity": "1",
+            "overflowY": "auto",
+            "position": "fixed",
+            "right": "0px",
+            "scale": "1",
+            "top": "0px",
+            "transition": "all 300ms ease-in-out",
+            "zIndex": "99",
+          }
+        }
+      >
+        <div
+          id="ethos-close-on-click"
+          style={
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+              "justifyContent": "center",
+              "minHeight": "100%",
+              "padding": "0",
+              "textAlign": "center",
+            }
+          }
+        >
+          <div
+            style={
+              Object {
+                "backgroundColor": "#ffffff",
+                "borderRadius": "0.5rem",
+                "boxShadow": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                "overflow": "hidden",
+                "position": "relative",
+                "transitionProperty": "all",
+                "width": "360px",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "padding": "24px 24px 0px",
+                }
+              }
+            >
+              <span />
+              <span
+                onClick={[Function]}
+                style={
+                  Object {
+                    "color": "#A0AEBA",
+                    "cursor": "pointer",
+                    "height": "24px",
+                    "width": "24px",
+                  }
+                }
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 18L18 6M6 6l12 12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "gap": "12px",
+                    "justifyContent": "center",
+                    "padding": "0 24px 32px",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "display": "flex",
+                      "gap": "-6px",
+                      "justifyContent": "center",
+                    }
+                  }
+                />
+                <div
+                  style={
+                    Object {
+                      "fontSize": "24px",
+                      "fontWeight": "600",
+                      "lineHeight": "32px",
+                      "margin": "0",
+                    }
+                  }
+                />
+                <div
+                  style={
+                    Object {
+                      "color": "#74777C",
+                      "fontSize": "16px",
+                      "fontWeight": "400",
+                      "lineHeight": "24px",
+                      "margin": "0",
+                    }
+                  }
+                >
+                  Log in to 
+                </div>
+              </div>
+              <div
+                role="email-sign-in"
+              >
+                <form
+                  onSubmit={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "gap": "12px",
+                      "padding": "0px 24px 24px",
+                    }
+                  }
+                >
+                  <input
+                    onChange={[Function]}
+                    placeholder="Enter your email address..."
+                    style={
+                      Object {
+                        "background": "#F2F2F2",
+                        "border": "1px solid rgba(0, 0, 0, 0.08)",
+                        "borderRadius": "16px",
+                        "boxSizing": "border-box",
+                        "padding": "20px",
+                        "width": "100%",
+                      }
+                    }
+                    type="email"
+                    value=""
+                  />
+                  <button
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "background": "rgb(188 158 234)",
+                        "borderRadius": "16px",
+                        "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
+                        "boxSizing": "border-box",
+                        "color": "#9376e8",
+                        "cursor": "not-allowed",
+                        "display": "flex",
+                        "flex": "none",
+                        "flexDirection": "row",
+                        "flexGrow": "0",
+                        "fontWeight": "500",
+                        "justifyContent": "center",
+                        "order": "0",
+                        "padding": "20px 20px",
+                        "textDecoration": "none",
+                        "width": "100%",
+                      }
+                    }
+                    type="submit"
+                  >
+                    <div>
+                      Sign In With Email
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <div
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "color": "#74777C",
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "gap": "12px",
+                    "justifyContent": "space-between",
+                    "padding": "0px 24px 24px",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "background": "rgba(0, 0, 0, 0.12)",
+                      "borderRadius": "16px",
+                      "height": "1px",
+                      "width": "100%",
+                    }
+                  }
+                />
+                or
+                <div
+                  style={
+                    Object {
+                      "background": "rgba(0, 0, 0, 0.12)",
+                      "borderRadius": "16px",
+                      "height": "1px",
+                      "width": "100%",
+                    }
+                  }
+                />
+              </div>
+              <div
+                style={
+                  Object {
+                    "padding": "0px 24px 24px",
+                  }
+                }
+              >
+                <button
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "background": "#F2F2F2",
+                      "borderRadius": "16px",
+                      "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
+                      "boxSizing": "border-box",
+                      "color": "black",
+                      "cursor": "pointer",
+                      "display": "flex",
+                      "flex": "none",
+                      "flexDirection": "row",
+                      "flexGrow": "0",
+                      "fontWeight": "400",
+                      "justifyContent": "space-between",
+                      "order": "0",
+                      "padding": "16px 16px 16px 20px",
+                      "textDecoration": "none",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div>
+                    Install A Wallet
+                  </div>
+                  <img
+                    height={32}
+                    src="data:image/png;base64,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"
+                    width={32}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

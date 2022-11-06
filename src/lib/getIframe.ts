@@ -48,7 +48,7 @@ const getIframe = (show?: boolean) => {
     iframe.id = iframeId
     iframe.style.border = 'none'
     iframe.style.position = 'absolute'
-    iframe.style.top = scrollY + 'px'
+    iframe.style.top = scrollY - 1 + 'px'
     iframe.style.right = '60px'
     iframe.style.width = '1px'
     iframe.style.height = '1px'

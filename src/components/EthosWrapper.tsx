@@ -1,10 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState, Children, isValidElement, cloneElement, ReactNode } from 'react'
+import React, { 
+  useEffect, 
+  useMemo,
+  useState,
+  ReactNode 
+} from 'react'
 import { EthosConfiguration } from 'types/EthosConfiguration'
-import initialize from '../lib/initialize'
+import lib from '../lib/lib'
 import log from '../lib/log'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'
 import ContentsContext from './ContentsContext'
+import WalletsContext from './WalletContext'
 import useAccount from '../hooks/useAccount'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
@@ -13,25 +19,26 @@ import ModalContext from './ModalContext'
 
 export interface EthosWrapperProps {
   ethosConfiguration: EthosConfiguration
-  onWalletConnected: ({ provider, signer }: ProviderAndSigner) => void
+  onWalletConnected?: ({ provider, signer }: ProviderAndSigner) => void,
+  connectMessage?: string | ReactNode
+  dappName?: string
+  dappIcon?: string | ReactNode
   children: ReactNode
 }
 
-const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: EthosWrapperProps) => {
+const EthosWrapper = ({ ethosConfiguration, onWalletConnected, connectMessage, dappName, dappIcon, children }: EthosWrapperProps) => {
   // Set defaults
   if (!ethosConfiguration.chain) ethosConfiguration.chain = Chain.Sui;
   if (!ethosConfiguration.network) ethosConfiguration.network = 'sui';
   if (!ethosConfiguration.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz';
 
   log('EthosWrapper', 'EthosWrapper Configuration:', ethosConfiguration)
-
+  
   useEffect(() => {
-    initialize(ethosConfiguration)
+    lib.initializeEthos(ethosConfiguration)
   }, [])
-
-  const [href, setHref] = useState<string | undefined>()
-  const hrefRef = useRef<string | undefined>();
-  const { providerAndSigner, logout } = useConnect()
+  
+  const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
   const { contents } = useAccount(providerAndSigner.signer)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalState = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen, setIsModalOpen])
@@ -41,45 +48,45 @@ const EthosWrapper = ({ ethosConfiguration, onWalletConnected, children }: Ethos
     log('EthosWrapper', 'calling onWalletConnected', providerAndSigner)
 
     if (providerAndSigner.signer) {
-      providerAndSigner.signer.onlogout = logout;
+        setIsModalOpen(false);
+        const rawDisconnect = providerAndSigner.signer.disconnect;
+        providerAndSigner.signer.disconnect = () => {
+            rawDisconnect();
+            logout();
+        }
     }
 
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [providerAndSigner])
 
   useEffect(() => {
-    const checkLocation = () => {
-      const newHref = window.location.href;
-      if (newHref !== hrefRef.current) {
-        setHref(newHref);
-        hrefRef.current = newHref;
-      }
+    if (isModalOpen) {
+        document.getElementsByTagName('html').item(0)?.setAttribute('style', 'overflow: hidden;')
+    } else {
+        document.getElementsByTagName('html').item(0)?.setAttribute('style', '')
     }
-
-    const checkId = setInterval(checkLocation, 100);
-    return () => clearInterval(checkId);
-  }, []);
-
-  const childrenWithProviderAndSigner = useMemo(() => Children.map(children, (child) => {
-    if (isValidElement(child)) {
-      return cloneElement(child, { ...providerAndSigner })
-    }
-    return child
-  }), [providerAndSigner, href]);
-
+  }, [isModalOpen])
+  
   return (
-    <ProviderAndSignerContext.Provider value={providerAndSigner}>
-      <ContentsContext.Provider value={contents}>
-        <ModalContext.Provider value={modalState}>
-          {childrenWithProviderAndSigner}
-          <SignInModal
-          hideEmailSignIn={ethosConfiguration.hideEmailSignIn}
-          hideWalletSignIn={ethosConfiguration.hideWalletSignIn}
-          />
-        </ModalContext.Provider>
-      </ContentsContext.Provider>
-    </ProviderAndSignerContext.Provider>
-  )
+    <WalletsContext.Provider value={{ wallets, selectWallet }}>
+        <ProviderAndSignerContext.Provider value={providerAndSigner}>
+            <ContentsContext.Provider value={contents}>
+                <ModalContext.Provider value={modalState}>
+                    {children}
+
+                    <SignInModal
+                        isOpen={isModalOpen}
+                        hideEmailSignIn={ethosConfiguration.hideEmailSignIn}
+                        hideWalletSignIn={ethosConfiguration.hideWalletSignIn}
+                        connectMessage={connectMessage}
+                        dappName={dappName}
+                        dappIcon={dappIcon}
+                    />
+                </ModalContext.Provider>
+            </ContentsContext.Provider>
+        </ProviderAndSignerContext.Provider>
+    </WalletsContext.Provider>
+  ) 
 }
 
 export default EthosWrapper

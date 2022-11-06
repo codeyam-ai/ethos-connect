@@ -4,7 +4,7 @@
 
 import store from 'store2'
 import { User } from '../../src/types/User'
-import * as postIFrameMessage from '../../src/lib/postIFrameMessage'
+import lib from '../../src/lib/lib'
 import login from '../../src/lib/login'
 
 describe('login', () => {
@@ -32,7 +32,7 @@ describe('login', () => {
         }
       })
     })
-    spyPostMessage = jest.spyOn(postIFrameMessage, 'default').mockImplementation(() => {})
+    spyPostMessage = jest.spyOn(lib, 'postIFrameMessage').mockReturnValue()
 
     actualUser = await login({ email, appId })
   })

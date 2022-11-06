@@ -1,17 +1,17 @@
 {
-  "name": "ethos-wallet-beta",
-  "version": "0.0.170",
-  "description": "Beta version of the Ethos Wallet NPM Package",
+  "name": "ethos-connect-staging",
+  "version": "0.3.7",
+  "description": "Build on Sui with ease with the Ethos Wallet APIs. Connect with all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
-  "module": "dist/ethos-wallet-beta.esm.js",
+  "module": "dist/ethos-connect-staging.esm.js",
   "license": "MIT",
   "files": [
     "README.md",
     "dist"
   ],
   "exports": {
-    "import": "./dist/ethos-wallet-beta.esm.js",
+    "import": "./dist/ethos-connect-staging.esm.js",
     "require": "./dist/index.cjs",
     "types": "./dist/index.d.ts"
   },
@@ -67,9 +67,12 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.13.0",
-    "@mysten/wallet-adapter-react": "^4.0.0",
+    "@mysten/sui.js": "^0.15.0",
+    "@mysten/wallet-adapter-all-wallets": "^0.3.0",
+    "@mysten/wallet-adapter-base": "^0.3.1",
+    "@mysten/wallet-adapter-react": "^6.0.0",
     "@superstate/react": "^0.1.0",
+    "encoding": "^0.1.13",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",
     "store2": "^2.13.2"

@@ -4,10 +4,9 @@ import log from '../lib/log'
 import useSuiWallet from './useSuiWallet' 
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
-import { JsonRpcProvider } from '@mysten/sui.js';
-import { suiFullNode } from '../lib/constants'
+import { JsonRpcProvider, Network } from '@mysten/sui.js';
 import { Signer } from 'types/Signer'
-import getEthosSigner from '../lib/getEthosSigner'
+import lib from '../lib/lib'
 
 const useConnect = () => {
   const signerFound = useRef<boolean>(false)
@@ -22,10 +21,13 @@ const useConnect = () => {
     signer: null
   })
   const { 
+    wallets,
+    selectWallet,
+    noConnection: noSuiConnection,
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
-
+  
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
     const suiStore = store.namespace('sui')
@@ -44,7 +46,7 @@ const useConnect = () => {
   }, [])
 
   const checkSigner = useCallback((signer: Signer | null, type?: string) => {
-    log("useConnect", "trying to set providerAndSigner", type, providerAndSigner, signerFound.current, methodsChecked.current)
+    log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
     
     if (type) {
@@ -54,11 +56,10 @@ const useConnect = () => {
     const allMethodsChecked = !Object.values(methodsChecked.current).includes(false)
     if (!signer && !allMethodsChecked) return;
     
-    signerFound.current = true;
+    signerFound.current = !!signer;
     
-    const provider = new JsonRpcProvider(suiFullNode);
+    const provider = new JsonRpcProvider(Network.DEVNET);
     
-    log("useConnect", "final setting providerAndSigner", providerAndSigner)
     setProviderAndSigner({ provider, signer })
   }, [logoutCount]);
 
@@ -74,15 +75,15 @@ const useConnect = () => {
   }, [checkSigner])
 
   useEffect(() => {
-    if (!suiSigner) return
+    if (!noSuiConnection && !suiSigner) return
 
     log('useConnect', 'Setting providerAndSigner extension', suiSigner)
     checkSigner(suiSigner, 'extension')
-  }, [suiSigner, checkSigner])
+  }, [noSuiConnection, suiSigner, checkSigner])
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {
-      const signer = await getEthosSigner()
+      const signer = await lib.getEthosSigner()
       log('useConnect', 'Setting providerAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }
@@ -90,7 +91,7 @@ const useConnect = () => {
     fetchEthosSigner()
   }, [checkSigner])
 
-  return { providerAndSigner, logout };
+  return { wallets, selectWallet, providerAndSigner, logout };
 }
 
 export default useConnect;

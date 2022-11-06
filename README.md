@@ -3,7 +3,7 @@
 From the root folder of the project you are working on (not this project)
 
 ```
-yarn remove ethos-wallet-beta
+yarn remove ethos-connect
 cd node_modules/react
 yarn link
 cd ../react-dom
@@ -18,21 +18,24 @@ yarn link
 yarn install
 yarn link react
 yarn link react-dom
+yarn build
 ```
 
 From the root folder of the project you are working on (not this project)
 
-`yarn link ethos-wallet-beta`
+```
+yarn link ethos-connect
+```
 
 ## To reset local
 
 ### To reset your UI (consumer of the NPM package)
 
 ```
-yarn unlink ethos-wallet-beta
+yarn unlink ethos-connect-staging
 yarn unlink react
 yarn unlink react-dom
-yarn add ethos-wallet-beta react react-dom
+yarn add ethos-connect-staging react react-dom
 ```
 
 ### To reset and unlink in the NPM package repo

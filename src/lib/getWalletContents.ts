@@ -1,55 +1,68 @@
-import fetchSui from "./fetchSui";
+import { JsonRpcProvider, Network } from "@mysten/sui.js";
+// import fetchSui from "./fetchSui";
 
 export type WalletContents = {
-  balance: number,
-  coins: any[],
+  suiBalance: number,
+  tokens: {[key: string]: any},
   nfts: any[]
 }
 
-const getWalletContents = async (address: string): Promise<WalletContents> => {
-  let objectInfos: any[] = [];
-
-  if (address) {
-    try {
-      const response = await fetchSui(
-        'sui_getObjectsOwnedByAddress',
-        [ address ]
-      )
-  
-      if (response.error) {
-        console.log("Error getting wallet contenst", response.error);
-      } else {
-        objectInfos = response;
-      }
-      // objectInfos = await provider.getObjectsOwnedByAddress(address);
-    } catch (e) {
-      console.log("Error getting Sui objects owned by adddress", e);
+const ipfsConversion = (src: string): string => {
+    if (!src) return "";
+    if (src.indexOf('ipfs') === 0) {  
+        src = `https://ipfs.io/ipfs/${src.substring(5)}`;
     }
-  }
+    return src;
+}
 
+const getWalletContents = async (address: string): Promise<WalletContents> => {
+  const provider = new JsonRpcProvider(Network.DEVNET);
+//   let objectInfos: any[] = [];
+
+//   if (address) {
+//     try {
+//       const response = await fetchSui(
+//         'sui_getObjectsOwnedByAddress',
+//         [ address ]
+//       )
+  
+//       if (response.error) {
+//         console.log("Error getting wallet contenst", response.error);
+//       } else {
+//         objectInfos = response;
+//       }
+//       // objectInfos = await provider.getObjectsOwnedByAddress(address);
+//     } catch (e) {
+//       console.log("Error getting Sui objects owned by adddress", e);
+//     }
+//   }
+  const objectInfos = await provider.getObjectsOwnedByAddress(address);
+  
   if (objectInfos.length === 0) {
     return {
-      balance: 0,
-      coins: [],
-      nfts: []
+        suiBalance: 0,
+        tokens: [],
+        nfts: []
     }
   }
 
   const objectIds = objectInfos.map((o: any) => o.objectId);
-  // const objects = await provider.getObjectBatch(objectIds)
-  const objects = [];
-  for (const objectId of objectIds) {
-    const object = await fetchSui(
-      'sui_getObject', 
-      [
-        objectId
-      ] 
-    );
-    objects.push(object);
-  }
+  const objects = await provider.getObjectBatch(objectIds)
+  
+//   const objects = [];
+//   for (const objectId of objectIds) {
+//     const object = await fetchSui(
+//       'sui_getObject', 
+//       [
+//         objectId
+//       ] 
+//     );
+//     objects.push(object);
+//   }
  
+  let suiBalance = 0;
   const nfts = [];
-  const coins = [];
+  const tokens: {[key: string]: any}= {};
   // const modules = {};
   for (const object of objects) {
     try {
@@ -57,19 +70,22 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 
       if (!data) continue;
       
-      if (data?.type === '0x2::devnet_nft::DevNetNFT') {
+      const typeStringComponents = (data?.type || "").split('<');
+      const subtype = (typeStringComponents[1] || "").replace(/>/, '')
+      const typeComponents = typeStringComponents[0].split('::');
+      const type = typeComponents[typeComponents.length - 1];
+
+      if (type === 'DevNetNFT') {
         let { url } = data.fields;
-        if (url.indexOf('ipfs') === 0) {  
-          url = `https://ipfs.io/ipfs/${url.substring(5)}`;
-        }
+        let safeUrl = ipfsConversion(url)
         nfts.push({
           chain: 'Sui',
           address: reference?.objectId,
           name: data.fields.name,
           description: data.fields.description,
-          imageUri: url,
-          previewUri: url,
-          thumbnailUri: url,
+          imageUri: safeUrl,
+          previewUri: safeUrl,
+          thumbnailUri: safeUrl,
           collection: {
             name: "DevNetNFT",
             type: data?.type
@@ -78,34 +94,37 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
             'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
           }
         });
-      } else if (data?.type?.startsWith('0x2::coin::Coin')) {
-        coins.push({
-          address: reference?.objectId,
+      } else if (type === 'Coin') {
+        if (subtype === '0x2::sui::SUI') {
+            suiBalance += data.fields.balance
+        }
+        
+        tokens[subtype] ||= {
+            balance: 0,
+            coins: []
+        }
+        
+        tokens[subtype].balance += data.fields.balance
+        tokens[subtype].coins.push({
+          objectId: reference?.objectId,
           type: data.type,
           balance: data.fields.balance
         })
       } else {
-        // console.dir(data, { depth: null })
-        const objectParts = data?.type.split('::')
-        // if (!modules[objectParts[0]]) {
-        //   const mod = await fetchSui('sui_getNormalizedMoveModule', [objectParts[0], objectParts[1]], process.env.SHINAMI_GATEWAY)
-        //   modules[objectParts[0]] = mod
-        // }
-        
         const { name, description, url, image_url, image, ...remaining } = data.fields || {}
-        // console.log("NEW", data.fields)
+        const safeUrl = ipfsConversion(url || image_url || image);
         nfts.push({
           type: data?.type,
-          package: objectParts[0],
+          package: typeComponents[0],
           chain: 'Sui',
           address: reference?.objectId,
           name: name,
           description: description,
-          imageUri: url || image_url || image,
-          previewUri: url || image_url || image,
-          thumbnailUri: url || image_url || image,
+          imageUri: safeUrl,
+          previewUri: safeUrl,
+          thumbnailUri: safeUrl,
           extraFields: remaining,
-          module: objectParts[1],
+          module: typeComponents[1],
           links: {
             'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
           }
@@ -116,13 +135,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
     }
   } 
 
-  const balance = coins.filter(
-    (coin) => coin.type === '0x2::coin::Coin<0x2::sui::SUI>'
-  ).reduce(
-    (total, coin) => total + parseFloat(coin.balance), 
-    0
-  );
-  return { balance, coins, nfts }
+  return { suiBalance, tokens, nfts }
 }
 
 export default getWalletContents;

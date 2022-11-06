@@ -1,25 +1,12 @@
+import { JsonRpcProvider, Network } from "@mysten/sui.js";
+
 type DripSuiProps = {
   address: string
 }
 
 const dripSui = async ({ address }: DripSuiProps) => {
-  const response = await fetch(
-    'https://faucet.devnet.sui.io:443/gas',
-    { 
-      method: 'POST',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "FixedAmountRequest": {
-          "recipient": address
-        }
-      })
-    }
-  );
-  
-  return response.ok
+  const provider = new JsonRpcProvider(Network.DEVNET);
+  return provider.requestSuiFromFaucet(address)
 }
 
 export default dripSui
