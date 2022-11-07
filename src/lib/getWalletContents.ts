@@ -32,7 +32,6 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 //     }
 //   }
 
-  console.log('address :>> ', address);
   if (!address) {
     return {
       suiBalance: 0,
@@ -40,10 +39,10 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
       tokens: []
     }
   }
+  
   const objectInfos = await provider.getObjectsOwnedByAddress(address);
   // const objectInfos: SuiObjectInfo[] = []
   
-  console.log('objectInfos :>> ', objectInfos);
   if (objectInfos.length === 0) {
     return {
         suiBalance: 0,

@@ -60,7 +60,6 @@ const useSuiWalletConnect = () => {
           
           try {
             await selectedWallet.connect();
-            console.log('connection success ✅');
             
             setConnected(true);
             _connected = true
@@ -167,9 +166,7 @@ const useSuiWalletConnect = () => {
 
     const sign = useCallback(async () => {
         return false;
-    }, [wallet])
-
-    console.log('connected returned from useSuiWalletConnect :>> ', connected);
+    }, [wallet]);
 
     return {
         wallets,
