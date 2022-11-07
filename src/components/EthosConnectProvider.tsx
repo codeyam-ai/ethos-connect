@@ -40,7 +40,7 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         lib.initializeEthos(ethosConfiguration || {})
     }, [])
   
-    const { connecting, connected } = useSuiWallet();
+    const { connecting, noConnection, connected } = useSuiWallet();
     const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
     const { address, contents } = useAccount(providerAndSigner.signer)
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,6 +54,7 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
             selectWallet,
             provider,
             connecting,
+            noConnection,
             connected
         }
         
@@ -74,6 +75,7 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         wallets, 
         selectWallet, 
         connecting, 
+        noConnection,
         connected, 
         address,
         providerAndSigner,

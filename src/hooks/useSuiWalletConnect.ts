@@ -40,7 +40,8 @@ const useSuiWalletConnect = () => {
     
     const [wallet, setWallet] = useState<WalletAdapter | null>(null);
     const [connected, setConnected] = useState(false);
-    const [connecting, setConnecting] = useState(true);
+    const [connecting, setConnecting] = useState(false);
+    const [noConnection, setNoConnection] = useState(false);
   
     // Once we connect, we remember that we've connected before to enable auto-connect:
     useEffect(() => {
@@ -59,8 +60,8 @@ const useSuiWalletConnect = () => {
         if (selectedWallet && !selectedWallet.connecting) {
           
           try {
+            setConnecting(true);
             await selectedWallet.connect();
-            
             setConnected(true);
             _connected = true
           } catch (e) {
@@ -86,7 +87,7 @@ const useSuiWalletConnect = () => {
                     if (!wallets || wallets.length === 0) return;
                     const success = await select(preferredWallet)
                     if (!success) {
-                        setConnecting(false);
+                        setNoConnection(true);
                         localStorage.removeItem(DEFAULT_STORAGE_KEY)
                     }
                     return;
@@ -101,11 +102,11 @@ const useSuiWalletConnect = () => {
                     }
                 }
 
-                setConnecting(false);
+                setNoConnection(true);
             }
     
             if (!wallets || wallets.length === 0) {
-                setConnecting(false);
+                setNoConnection(true);
             }
         }
         
@@ -172,6 +173,7 @@ const useSuiWalletConnect = () => {
         wallets,
         wallet,
         connecting,
+        noConnection,
         connected,
         select,
         getAccounts,

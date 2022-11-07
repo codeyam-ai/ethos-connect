@@ -6,6 +6,7 @@ export interface SuiWalletResponse {
     wallets: WalletAdapter[];
     selectWallet: (walletName: string) => void,
     connecting: boolean,
+    noConnection: boolean,
     connected: boolean,
     signer: Signer | null;
     setSigner: (signer: Signer | null) => void;
@@ -17,6 +18,7 @@ const useSuiWallet = (): SuiWalletResponse => {
         wallets, 
         select: selectWallet, 
         connecting, 
+        noConnection,
         connected,
         getAccounts, 
         getAddress,
@@ -46,7 +48,7 @@ const useSuiWallet = (): SuiWalletResponse => {
         setSigner(constructedSigner)
     }, [connected])
 
-    return { connected, connecting, wallets, selectWallet, signer, setSigner }
+    return { connecting, noConnection, connected, wallets, selectWallet, signer, setSigner }
 }
 
 export default useSuiWallet

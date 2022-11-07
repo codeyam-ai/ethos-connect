@@ -7,6 +7,7 @@ export type WalletContextContent = {
     wallets?: WalletAdapter[],
     selectWallet?: ((walletName: string) => void),
     connecting: boolean,
+    noConnection: boolean,
     connected: boolean,
     provider?: JsonRpcProvider,
     wallet?: Wallet
@@ -14,6 +15,7 @@ export type WalletContextContent = {
 
 const defaultWalletContext: WalletContextContent = {
     connecting: true,
+    noConnection: false,
     connected: false,
 };
 
