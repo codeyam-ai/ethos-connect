@@ -1,11 +1,6 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
+import { WalletContents } from "types/WalletContents";
 // import fetchSui from "./fetchSui";
-
-export type WalletContents = {
-  suiBalance: number,
-  tokens: {[key: string]: any},
-  nfts: any[]
-}
 
 const ipfsConversion = (src: string): string => {
     if (!src) return "";

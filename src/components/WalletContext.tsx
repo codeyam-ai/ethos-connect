@@ -1,13 +1,15 @@
 import { createContext } from 'react';
 import type { WalletAdapter } from "@mysten/wallet-adapter-base";
-import { SuiAddress } from '@mysten/sui.js';
+import { Wallet } from 'types/Wallet';
+import { JsonRpcProvider } from '@mysten/sui.js';
 
 export type WalletContextContent = {
     wallets?: WalletAdapter[],
     selectWallet?: ((walletName: string) => void),
     connecting: boolean,
     connected: boolean,
-    address?: SuiAddress
+    provider?: JsonRpcProvider,
+    wallet?: Wallet
 }
 
 const defaultWalletContext: WalletContextContent = {

@@ -10,7 +10,7 @@ import log from '../lib/log'
 import { Chain } from '../enums/Chain'
 import ProviderAndSignerContext from './ProviderAndSignerContext'
 import ContentsContext from './ContentsContext'
-import WalletsContext from './WalletContext'
+import WalletsContext, { WalletContextContent } from './WalletContext'
 import useAccount from '../hooks/useAccount'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
@@ -48,13 +48,28 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
     const modalState = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen, setIsModalOpen])
 
     const walletContext = useMemo(() => {
-        return { 
-            wallets, 
-            selectWallet, 
-            connecting, 
-            connected, 
-            address 
+        const { provider, signer } = providerAndSigner;
+        const context: WalletContextContent = {
+            wallets,
+            selectWallet,
+            provider,
+            connecting,
+            connected
         }
+
+        if (connected) {
+            context.wallet = {
+                ...signer,
+                address,
+                contents,
+                disconnect: () => {
+                    signer.disconnect();
+                    logout();
+                }
+            }
+        }
+        
+        return context;
     }, [
         wallets, 
         selectWallet, 
