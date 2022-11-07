@@ -1,7 +1,8 @@
 import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useState } from 'react'
+import { Signer } from 'types/Signer';
 
-const useAccount = (signer: any) => {
+const useAccount = (signer: Signer) => {
   const [account, setAccount] = useState<any|null>({})
   
   useEffect(() => {
@@ -9,6 +10,9 @@ const useAccount = (signer: any) => {
    
     const initAccount = async () => {
       const address = await signer?.getAddress();
+      if (!address) {
+        return
+      }
       const contents = await getWalletContents(address);
       setAccount({
         address,

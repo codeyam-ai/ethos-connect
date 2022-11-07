@@ -25,6 +25,7 @@ const useSuiWallet = (): SuiWalletResponse => {
         sign,
         disconnect
     } = useSuiWalletConnect()
+
   
     const constructedSigner = useMemo<Signer>(() => ({
         type: SignerType.EXTENSION,
@@ -45,6 +46,7 @@ const useSuiWallet = (): SuiWalletResponse => {
 
         setSigner(constructedSigner)
     }, [connected])
+    console.log('connected in useSuiWallet :>> ', connected);
 
     return { connected, connecting, wallets, selectWallet, signer, setSigner }
 }

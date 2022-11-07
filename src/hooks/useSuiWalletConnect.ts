@@ -49,29 +49,33 @@ const useSuiWalletConnect = () => {
       }
     }, [wallet, connected]);
   
-    const select = useCallback(
+    const select = useCallback(  
       async (name: string): Promise<boolean> => {
         let selectedWallet = 
           wallets.find((wallet) => wallet.name === name) ?? null;
-  
         setWallet(selectedWallet);
   
         let _connected = false;
         if (selectedWallet && !selectedWallet.connecting) {
+          
           try {
             await selectedWallet.connect();
+            console.log('connection success ✅');
+            
             setConnected(true);
             _connected = true
           } catch (e) {
             setConnected(false);
           } finally {
+            
             setConnecting(false);
           }
         }
 
+
         return _connected;
       },
-      [wallets]
+      [wallets, setConnected, setConnecting]
     );
   
     // // Auto-connect to the preferred wallet if there is one in storage:
@@ -164,6 +168,8 @@ const useSuiWalletConnect = () => {
     const sign = useCallback(async () => {
         return false;
     }, [wallet])
+
+    console.log('connected returned from useSuiWalletConnect :>> ', connected);
 
     return {
         wallets,

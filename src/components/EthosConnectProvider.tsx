@@ -41,12 +41,18 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
     }, [])
   
     const { connecting, connected } = useSuiWallet();
+    console.log('connected right after getting it :>> ', connected);
     const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
     const { address, contents } = useAccount(providerAndSigner.signer)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const modalState = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen, setIsModalOpen])
 
+    console.log('in EthosConnectProvider NO MEMO');
+    console.log('address :>> ', address);
+    console.log('contents :>> ', contents);
+    console.log('connected :>> ', connected);
+    console.log('========');
     const walletContext = useMemo(() => {
         const { provider, signer } = providerAndSigner;
         const context: WalletContextContent = {
@@ -56,6 +62,13 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
             connecting,
             connected
         }
+
+        console.log('in EthosConnectProvider MEMO');
+        console.log('address :>> ', address);
+        console.log('contents :>> ', contents);
+        console.log('connected :>> ', connected);
+        console.log('========');
+        
 
         if (connected) {
             context.wallet = {
@@ -68,6 +81,8 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
                 }
             }
         }
+
+        console.log('context :>> ', context);
         
         return context;
     }, [
@@ -75,7 +90,10 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         selectWallet, 
         connecting, 
         connected, 
-        address 
+        address,
+        providerAndSigner,
+        contents,
+        logout
     ])
 
     useEffect(() => {
