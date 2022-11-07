@@ -4,8 +4,8 @@ import * as styles from './signInModalStyles'
 import IconButton from "./IconButton";
 
 export type WalletProps = {
-    wallets: WalletAdapter[] | null,
-    selectWallet: ((name: string) => void) | null,
+    wallets?: WalletAdapter[],
+    selectWallet?: ((name: string) => void),
     width: number
 }
 

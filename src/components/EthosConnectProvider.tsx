@@ -40,12 +40,28 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         lib.initializeEthos(ethosConfiguration || {})
     }, [])
   
-    const { connecting, connected, noConnection } = useSuiWallet();
+    const { connecting, connected } = useSuiWallet();
     const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
-    const { contents } = useAccount(providerAndSigner.signer)
+    const { address, contents } = useAccount(providerAndSigner.signer)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const modalState = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen, setIsModalOpen])
+
+    const walletContext = useMemo(() => {
+        return { 
+            wallets, 
+            selectWallet, 
+            connecting, 
+            connected, 
+            address 
+        }
+    }, [
+        wallets, 
+        selectWallet, 
+        connecting, 
+        connected, 
+        address 
+    ])
 
     useEffect(() => {
         if (!providerAndSigner?.provider) return;
@@ -80,7 +96,7 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
     }
     
     return (
-        <WalletsContext.Provider value={{ wallets, selectWallet, connecting, connected, noConnection }}>
+        <WalletsContext.Provider value={walletContext}>
             <ProviderAndSignerContext.Provider value={providerAndSigner}>
                 <ContentsContext.Provider value={contents}>
                     <ModalContext.Provider value={modalState}>
