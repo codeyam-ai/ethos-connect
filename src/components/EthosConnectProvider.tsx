@@ -70,8 +70,8 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
                 ...signer,
                 address,
                 contents,
-                disconnect: () => {
-                    signer.disconnect();
+                disconnect: async () => {
+                    await signer.disconnect();
                     logout();
                 }
             }

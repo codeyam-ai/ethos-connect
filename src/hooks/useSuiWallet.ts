@@ -43,10 +43,8 @@ const useSuiWallet = (): SuiWalletResponse => {
     )
   
     useEffect(() => {
-        if (!connected) return;
-
-        setSigner(constructedSigner)
-    }, [connected])
+        setSigner(connected ? constructedSigner : null)
+    }, [connected, constructedSigner])
 
     return { connecting, noConnection, connected, wallets, selectWallet, signer, setSigner }
 }
