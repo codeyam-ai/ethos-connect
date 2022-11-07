@@ -1,14 +1,14 @@
 import React from 'react'
 import { create, act } from 'react-test-renderer'
 
-import EthosWrapper from '../../src/components/EthosWrapper'
+import EthosConnectProvider from '../../src/components/EthosConnectProvider'
 import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
 import sui from '../../__mocks__/sui.mock'
 
-describe('EthosWrapper', () => {
+describe('EthosConnectProvider', () => {
   const signer = {
     getAddress: () => Promise.resolve("ADDRESS"),
     getAccounts: () => Promise.resolve([]),
@@ -49,9 +49,9 @@ describe('EthosWrapper', () => {
     let ethosWrapper
     await act(async () => {
       ethosWrapper = create(
-        <EthosWrapper ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
+        <EthosConnectProvider ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
           test
-        </EthosWrapper>
+        </EthosConnectProvider>
       )
     })
 
@@ -61,9 +61,9 @@ describe('EthosWrapper', () => {
   it('calls the onWalletConnected callback', async () => {
     await act(async () => {
       create(
-        <EthosWrapper ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
+        <EthosConnectProvider ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
           test
-        </EthosWrapper>
+        </EthosConnectProvider>
       )
     })
 
@@ -86,9 +86,9 @@ describe('EthosWrapper', () => {
 
     await act(async () => {
       ethosWrapper = create(
-        <EthosWrapper ethosConfiguration={initialEthosConfiguration} onWalletConnected={onWalletConnected}>
+        <EthosConnectProvider ethosConfiguration={initialEthosConfiguration} onWalletConnected={onWalletConnected}>
           test
-        </EthosWrapper>
+        </EthosConnectProvider>
       )
     })
 

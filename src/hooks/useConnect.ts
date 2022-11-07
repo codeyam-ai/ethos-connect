@@ -64,7 +64,7 @@ const useConnect = () => {
   }, [logoutCount]);
 
   useEffect(() => {
-    log("mobile", "listening to mobile connection from EthosWrapper")
+    log("mobile", "listening to mobile connection from EthosConnectProvider")
     listenForMobileConnection(
       (mobileSigner: any) => {
         log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)

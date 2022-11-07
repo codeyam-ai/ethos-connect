@@ -1,4 +1,4 @@
-import EthosWrapper from './components/EthosWrapper'
+import EthosConnectProvider from './components/EthosConnectProvider'
 
 import SignInButton from './components/styled/SignInButton'
 import { showSignInModal, hideSignInModal } from './components/styled/SignInModal';
@@ -19,7 +19,7 @@ import lookup from './lib/lookup'
 import useProviderAndSigner from './hooks/useProviderAndSigner'
 import useAddress from './hooks/useAddress'
 import useContents from './hooks/useContents'
-import useSuiWalletConnect from './hooks/useSuiWalletConnect'
+import useWallet from './hooks/useWallet'
 
 const ethos = {
   login,
@@ -34,10 +34,10 @@ const ethos = {
   useProviderAndSigner,
   useAddress,
   useContents,
-  useSuiWalletConnect, 
+  useWallet, 
   showSignInModal,
   hideSignInModal,
   lookup
 }
 
-export { EthosWrapper, SignInButton, ethos }
+export { EthosConnectProvider, SignInButton, ethos }

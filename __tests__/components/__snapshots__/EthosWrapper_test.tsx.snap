@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EthosWrapper renders nothing but the children provided 1`] = `
+exports[`EthosConnectProvider renders nothing but the children provided 1`] = `
 Array [
   "test",
   <link
