@@ -5,16 +5,16 @@ import lib from './lib'
 export type loginArgs = {
   email?: string, 
   provider?: string, 
-  appId: string
+  apiKey?: string
 }
 
-const login = async ({ email, provider, appId }: loginArgs) => {
+const login = async ({ email, provider, apiKey }: loginArgs) => {
   const { walletAppUrl } = lib.getConfiguration();
   const userStore = store.namespace('users')
 
   if (provider) {
     const returnTo = location.href;
-    const fullUrl = `${walletAppUrl}/auth?appId=${appId}&returnTo=${encodeURIComponent(returnTo)}`
+    const fullUrl = `${walletAppUrl}/auth?apiKey=${apiKey}&returnTo=${encodeURIComponent(returnTo)}`
     location.href = `${walletAppUrl}/socialauth?provider=${provider}&redirectTo=${encodeURIComponent(fullUrl)}`;
     return;
   }
@@ -39,7 +39,7 @@ const login = async ({ email, provider, appId }: loginArgs) => {
         email,
         provider,
         returnTo: window.location.href,
-        appId
+        apiKey
       },
     })
   })

@@ -115,7 +115,7 @@ describe('SignInModal', () => {
             jest.spyOn(lib, 'postIFrameMessage').mockImplementation(({ action, data }) => {
                 expect(action).toBe('login')
                 emailProvided = data.email
-                expect(data.appId).toBe('test')
+                expect(data.apiKey).toBe('test')
                 return Promise.resolve({})
             })
 

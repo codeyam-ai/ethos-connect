@@ -4,10 +4,10 @@ import log from './log'
 import postIFrameMessage from './postIFrameMessage'
 
 const getIframe = (show?: boolean) => {
-  const { appId, walletAppUrl } = getConfiguration()
-  log('getIframe', 'getIframe', appId, walletAppUrl)
+  const { apiKey, walletAppUrl } = getConfiguration()
+  log('getIframe', 'getIframe', apiKey, walletAppUrl)
   
-  if (!appId || !walletAppUrl) return;
+  if (!apiKey || !walletAppUrl) return;
 
   const iframeId = 'ethos-wallet-iframe'
   let scrollY: number = 0
@@ -24,7 +24,7 @@ const getIframe = (show?: boolean) => {
     const queryParams = new URLSearchParams(window.location.search)
     const auth = queryParams.get('auth')
 
-    let fullWalletAppUrl = walletAppUrl + `/wallet?appId=${appId}`
+    let fullWalletAppUrl = walletAppUrl + `/wallet?apiKey=${apiKey}`
     if (auth) {
       fullWalletAppUrl += `&auth=${auth}`
 

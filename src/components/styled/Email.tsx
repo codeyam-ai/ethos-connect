@@ -15,7 +15,7 @@ export type EmailProps = {
 }
 
 const Email = ({ setSigningIn, setEmailSent, width }: EmailProps) => {
-    const { appId } = getConfiguration()
+    const { apiKey } = getConfiguration()
     const [email, setEmail] = useState('')
 
     const validEmail = useMemo(() => {
@@ -26,12 +26,12 @@ const Email = ({ setSigningIn, setEmailSent, width }: EmailProps) => {
 
     const sendEmail = useCallback(async () => {
         if (!validEmail) return
-        await login({ email, appId })
+        await login({ email, apiKey })
         setEmail('')
         setSigningIn(false)
         setEmailSent(true)
         event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
-    }, [validEmail, login, email, appId]);
+    }, [validEmail, login, email, apiKey]);
 
     const _handleChange = useCallback((e) => {
         setEmail(e.target.value)

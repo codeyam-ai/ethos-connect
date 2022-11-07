@@ -74,9 +74,9 @@ describe('EthosConnectProvider', () => {
 
   it('should initialize default configuration if no optional values are given', async () => {
     let ethosWrapper: any;
-    const initialEthosConfiguration: EthosConfiguration = { appId: 'test-id' }
+    const initialEthosConfiguration: EthosConfiguration = { apiKey: 'test-id' }
     const expectedEthosConfiguration: EthosConfiguration = {
-      appId: 'test-id',
+      apiKey: 'test-id',
       walletAppUrl: 'https://ethoswallet.xyz',
       chain: Chain.Sui,
       network: 'sui'

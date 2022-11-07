@@ -5,7 +5,7 @@ import postIFrameMessage from './postIFrameMessage'
 
 const activeUser = () => {
   log('activeUser', 'Calling Active User')
-  const { walletAppUrl, appId } = getConfiguration()
+  const { walletAppUrl, apiKey } = getConfiguration()
 
   const resolver = (resolve: any) => {
     const listener = (message: any) => {
@@ -13,7 +13,7 @@ const activeUser = () => {
       if (message.origin === walletAppUrl) {
         const { action, data } = message.data
         log('MESSAGE2: ', action, data)
-        if (action === 'user' && data.appId === appId) {
+        if (action === 'user' && data.apiKey === apiKey) {
           window.removeEventListener('message', listener)
           resolve(data?.user)
         }

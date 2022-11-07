@@ -11,7 +11,7 @@ describe('login', () => {
   let spyPostMessage: jest.SpyInstance
   let actualUser: User
   const email = 'test@t.co'
-  const appId = '123abc'
+  const apiKey = '123abc'
   const wallet = '0x0'
   const expectedUser: User = { email, wallet }
 
@@ -34,7 +34,7 @@ describe('login', () => {
     })
     spyPostMessage = jest.spyOn(lib, 'postIFrameMessage').mockReturnValue()
 
-    actualUser = await login({ email, appId })
+    actualUser = await login({ email, apiKey })
   })
 
   it('should call the /login endpoint', async () => {
@@ -43,7 +43,7 @@ describe('login', () => {
       "action": "login",
       "data": {
         email,
-        appId,
+        apiKey,
         returnTo: window.location.href,
         provider: undefined
       }

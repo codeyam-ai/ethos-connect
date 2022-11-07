@@ -13,7 +13,7 @@ jest.mock('./src/lib/getConfiguration', () => ({
     __esModule: true,
     default: () => ({
         walletAppUrl: 'test',
-        appId: 'test',
+        apiKey: 'test',
         network: 'test',
         chain: 'test',
     })

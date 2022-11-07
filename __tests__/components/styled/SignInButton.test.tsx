@@ -8,7 +8,7 @@ describe('SignInButton', () => {
     const rendered = create(
         <EthosConnectProvider
             ethosConfiguration={{
-                appId: "test"
+                apiKey: "test"
             }}
         >
             <SignInButton />
