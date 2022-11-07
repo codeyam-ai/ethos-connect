@@ -7,8 +7,3 @@ export interface EthosConfiguration {
   hideEmailSignIn?: boolean
   hideWalletSignIn?: boolean
 }
-
-export interface SuiConfiguration extends EthosConfiguration {}
-export interface EthereumConfiguration extends EthosConfiguration {
-  alchemyId: string
-}

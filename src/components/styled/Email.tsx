@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { FormEvent, useCallback, useMemo, useState } from 'react'
 // import ReCAPTCHA from 'react-google-recaptcha'
 // import { captchaSiteKey } from '../../lib/constants'
 import getConfiguration from '../../lib/getConfiguration'
@@ -37,7 +37,11 @@ const Email = ({ setSigningIn, setEmailSent, width }: EmailProps) => {
         setEmail(e.target.value)
     }, [])
 
-    const onSubmit = useCallback(async () => {
+    const onSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+        if (!validEmail) {
+            e.preventDefault()
+            return
+        }
         setSigningIn(true)
         sendEmail()
         //     if (captchaRef && captchaRef.current && process.env.NODE_ENV !== 'development') {
