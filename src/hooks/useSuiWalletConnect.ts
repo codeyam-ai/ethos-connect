@@ -81,24 +81,29 @@ const useSuiWalletConnect = () => {
     useEffect(() => {
         const checkWallets = async () => {
             if (!wallet && !connected && !connecting) {
-                // Auto-connect might be too aggressive, but leaving here to make it easy to re-enable
-                let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
-                if (typeof preferredWallet === "string") {
-                    if (!wallets || wallets.length === 0) return;
-                    const success = await select(preferredWallet)
-                    if (!success) {
-                        setNoConnection(true);
-                        localStorage.removeItem(DEFAULT_STORAGE_KEY)
+                let preferredWalletName = localStorage.getItem(DEFAULT_STORAGE_KEY);
+
+                if (typeof preferredWalletName !== "string") {
+                    if (location.origin !== "https://ethoswallet.xyz") {
+                        preferredWalletName = "Ethos Wallet";
                     }
-                    return;
-                } else 
-                if ((wallets || []).length > 0) {
-                    for (const wallet of wallets) {
-                        if (wallet.name !== "Ethos Wallet" || location.origin !== "https://ethoswallet.xyz") continue;
-                        const accounts = await wallet.getAccounts();
-                        if ((accounts || []).length > 0) {
-                            const success = await select(wallet.name);
-                            if (success) return;
+                }
+
+                if (typeof preferredWalletName === "string") {
+                    if (!wallets || wallets.length === 0) return;
+
+                    const preferredWallet  = wallets.find(
+                        (w) => w.name === preferredWalletName
+                    );
+                    if (preferredWallet) {
+                        const accounts = await preferredWallet.getAccounts();
+                        if (accounts.length > 0) {
+                            const success = await select(preferredWallet.name)
+                            if (!success) {
+                                setNoConnection(true);
+                                localStorage.removeItem(DEFAULT_STORAGE_KEY)
+                            }
+                            return;
                         }
                     }
                 }
