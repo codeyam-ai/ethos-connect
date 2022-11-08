@@ -80,7 +80,7 @@ const useConnect = () => {
 
     log('useConnect', 'Setting providerAndSigner extension', suiSigner)
     checkSigner(suiSigner, 'extension')
-  }, [suiSigner, checkSigner])
+  }, [ suiConnected, suiNoConnection, suiSigner, checkSigner])
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {

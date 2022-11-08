@@ -94,7 +94,7 @@ const useSuiWalletConnect = () => {
                 // } else 
                 if ((wallets || []).length > 0) {
                     for (const wallet of wallets) {
-                        if (wallet.name !== "Ethos Wallet") continue;
+                        if (wallet.name !== "Ethos Wallet" || location.origin !== "https://ethoswallet.xyz") continue;
                         const accounts = await wallet.getAccounts();
                         if ((accounts || []).length > 0) {
                             const success = await select(wallet.name);
