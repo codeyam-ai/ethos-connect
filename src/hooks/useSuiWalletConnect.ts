@@ -95,16 +95,20 @@ const useSuiWalletConnect = () => {
                     const preferredWallet  = wallets.find(
                         (w) => w.name === preferredWalletName
                     );
+
                     if (preferredWallet) {
-                        const accounts = await preferredWallet.getAccounts();
-                        if (accounts.length > 0) {
-                            const success = await select(preferredWallet.name)
-                            if (!success) {
-                                setNoConnection(true);
-                                localStorage.removeItem(DEFAULT_STORAGE_KEY)
-                            }
-                            return;
+                        // Wallet doesn't always show accounts even when it has permission
+                        // const accounts = await preferredWallet.getAccounts();
+
+                        // console.log("ACCOUNTS", accounts)
+                        // if (accounts.length > 0) {
+                        const success = await select(preferredWallet.name)
+                        if (!success) {
+                            setNoConnection(true);
+                            localStorage.removeItem(DEFAULT_STORAGE_KEY)
                         }
+                        return;
+                        // }
                     }
                 }
 
