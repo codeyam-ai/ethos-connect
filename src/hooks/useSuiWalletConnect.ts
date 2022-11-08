@@ -44,11 +44,11 @@ const useSuiWalletConnect = () => {
     const [noConnection, setNoConnection] = useState(false);
   
     // Once we connect, we remember that we've connected before to enable auto-connect:
-    // useEffect(() => {
-    //   if (connected && wallet) {
-    //     localStorage.setItem(DEFAULT_STORAGE_KEY, wallet.name);
-    //   }
-    // }, [wallet, connected]);
+    useEffect(() => {
+      if (connected && wallet) {
+        localStorage.setItem(DEFAULT_STORAGE_KEY, wallet.name);
+      }
+    }, [wallet, connected]);
   
     const select = useCallback(  
       async (name: string): Promise<boolean> => {
@@ -82,16 +82,16 @@ const useSuiWalletConnect = () => {
         const checkWallets = async () => {
             if (!wallet && !connected && !connecting) {
                 // Auto-connect might be too aggressive, but leaving here to make it easy to re-enable
-                // let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
-                // if (typeof preferredWallet === "string") {
-                //     if (!wallets || wallets.length === 0) return;
-                //     const success = await select(preferredWallet)
-                //     if (!success) {
-                //         setNoConnection(true);
-                //         localStorage.removeItem(DEFAULT_STORAGE_KEY)
-                //     }
-                //     return;
-                // } else 
+                let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
+                if (typeof preferredWallet === "string") {
+                    if (!wallets || wallets.length === 0) return;
+                    const success = await select(preferredWallet)
+                    if (!success) {
+                        setNoConnection(true);
+                        localStorage.removeItem(DEFAULT_STORAGE_KEY)
+                    }
+                    return;
+                } else 
                 if ((wallets || []).length > 0) {
                     for (const wallet of wallets) {
                         if (wallet.name !== "Ethos Wallet" || location.origin !== "https://ethoswallet.xyz") continue;
