@@ -69,11 +69,7 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
             context.wallet = {
                 ...signer,
                 address,
-                contents,
-                disconnect: async () => {
-                    await signer.disconnect();
-                    logout();
-                }
+                contents
             }
         }
         
@@ -94,8 +90,8 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         if (providerAndSigner.signer) {
             setIsModalOpen(false);
             const rawDisconnect = providerAndSigner.signer.disconnect;
-            providerAndSigner.signer.disconnect = () => {
-                rawDisconnect();
+            providerAndSigner.signer.disconnect = async () => {
+                await rawDisconnect();
                 logout();
             }
         }

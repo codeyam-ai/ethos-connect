@@ -11,6 +11,7 @@ import {
 import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import useWalletAdapters from "./useWalletAdapters";
 import { Preapproval } from "types/Preapproval";
+import log from "../lib/log";
 
 const DEFAULT_STORAGE_KEY = "preferredSuiWallet";
 
@@ -85,37 +86,47 @@ const useSuiWalletConnect = () => {
 
                 if (typeof preferredWalletName !== "string") {
                     if (location.origin !== "https://ethoswallet.xyz") {
-                        preferredWalletName = "Ethos Wallet";
+                        const ethosWallet = (wallets || []).find(
+                            (w) => w.name === preferredWalletName
+                        );
+                        if (ethosWallet) {
+                            const accounts = await ethosWallet?.getAccounts();
+                            if (accounts.length > 0) {
+                                preferredWalletName = "Ethos Wallet";
+                            }
+                        }
                     }
                 }
 
                 if (typeof preferredWalletName === "string") {
                     if (!wallets || wallets.length === 0) return;
 
-                    const preferredWallet  = wallets.find(
-                        (w) => w.name === preferredWalletName
-                    );
+                    // const preferredWallet = wallets.find(
+                    //     (w) => w.name === preferredWalletName
+                    // );
 
-                    if (preferredWallet) {
+                    // if (preferredWallet) {
                         // Wallet doesn't always show accounts even when it has permission
                         // const accounts = await preferredWallet.getAccounts();
 
-                        // console.log("ACCOUNTS", accounts)
                         // if (accounts.length > 0) {
-                        const success = await select(preferredWallet.name)
-                        if (!success) {
-                            setNoConnection(true);
-                            localStorage.removeItem(DEFAULT_STORAGE_KEY)
-                        }
-                        return;
-                        // }
+                    const success = await select(preferredWalletName)
+                    if (!success) {
+                        log('suiWalletConnect', "setNoConnection0")
+                        setNoConnection(true);
+                        localStorage.removeItem(DEFAULT_STORAGE_KEY)
                     }
+                    return;
+                        // }
+                    // }
                 }
 
+                log('suiWalletConnect', "setNoConnection1")
                 setNoConnection(true);
             }
     
             if (!wallets || wallets.length === 0) {
+                log('suiWalletConnect', "setNoConnection2")
                 setNoConnection(true);
             }
         }

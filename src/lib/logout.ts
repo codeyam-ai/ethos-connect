@@ -5,9 +5,9 @@ const logout = async (signer: ExtensionSigner | HostedSigner, fromWallet: boolea
     log('logout', `-- Wallet ${fromWallet} --`, `-- Is Extension: ${signer?.type} --`, `-- Disconnect: ${!!signer?.disconnect} --`, "signer", signer)
         
     if (signer.type === "extension" || !fromWallet) {
-        signer.disconnect();
+        await signer.disconnect();
     } else {
-        signer.logout()
+        await signer.logout()
     }
 }
     

@@ -9,7 +9,7 @@ const postIFrameMessage = (message: any) => {
     const messageStore = store.namespace('iframeMessages')
     const existingMessages = messageStore('messages') || []
     const result = messageStore('messages', [...existingMessages, message])
-    log("Storing iframe message", result)
+    log("iframe", "Storing iframe message", result)
     return;
   }
   

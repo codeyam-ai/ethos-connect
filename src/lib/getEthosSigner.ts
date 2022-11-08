@@ -79,7 +79,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
     }
 
     const logout = () => {
-        disconnect(true);
+        return disconnect(true);
     }
 
     return user ? {

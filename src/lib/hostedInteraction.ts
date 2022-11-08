@@ -20,6 +20,7 @@ const hostedInteraction = ({ id, action, data, onResponse, showWallet=false }: H
   const { walletAppUrl } = getConfiguration();
 
   const iframeListener = (message: any) => {
+    log("hostedInteraction", "response: ", message)
     if (message.origin === walletAppUrl) {
       const { approved, action: responseAction, data: responseData } = message.data
       if (responseAction !== action) return
