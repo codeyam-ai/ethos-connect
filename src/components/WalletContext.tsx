@@ -13,7 +13,7 @@ export type WalletContextContent = {
 }
 
 const defaultWalletContext: WalletContextContent = {
-    status: EthosConnectStatus.LOADING
+    status: EthosConnectStatus.Loading
 };
 
 const WalletContext = createContext<WalletContextContent>(defaultWalletContext);

@@ -29,7 +29,7 @@ const useSuiWallet = (): SuiWalletResponse => {
     } = useSuiWalletConnect()
 
     const constructedSigner = useMemo<Signer>(() => ({
-        type: SignerType.EXTENSION,
+        type: SignerType.Extension,
         getAccounts,
         getAddress,
         signAndExecuteTransaction,

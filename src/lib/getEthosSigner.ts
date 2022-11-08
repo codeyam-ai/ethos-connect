@@ -83,7 +83,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
     }
 
     return user ? {
-        type: SignerType.HOSTED,
+        type: SignerType.Hosted,
         email: user.email,
         getAccounts,
         getAddress,

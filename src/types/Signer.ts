@@ -5,8 +5,8 @@ import type {
 } from '@mysten/sui.js';
 
 export enum SignerType {
-  EXTENSION = "extension",
-  HOSTED = "hosted"
+  Extension = "extension",
+  Hosted = "hosted"
 }
 
 export interface Signer {
@@ -20,11 +20,11 @@ export interface Signer {
 }
 
 export interface ExtensionSigner extends Signer {
-    type: SignerType.EXTENSION,   
+    type: SignerType.Extension,   
 }
 
 export interface HostedSigner extends Signer {
-    type: SignerType.HOSTED,
+    type: SignerType.Hosted,
     email?: string,
     logout: () => void
 }

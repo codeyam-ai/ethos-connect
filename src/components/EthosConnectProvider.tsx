@@ -51,12 +51,12 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         let status;
         if (provider) {
             if (signer) {
-                status = EthosConnectStatus.CONNECTED
+                status = EthosConnectStatus.Connected
             } else {
-                status = EthosConnectStatus.NO_CONNECTION
+                status = EthosConnectStatus.NoConnection
             }
         } else {
-            status = EthosConnectStatus.LOADING
+            status = EthosConnectStatus.Loading
         }
         const context: WalletContextContent = {
             status,

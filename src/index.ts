@@ -21,6 +21,13 @@ import useAddress from './hooks/useAddress'
 import useContents from './hooks/useContents'
 import useWallet from './hooks/useWallet'
 
+// Enums (must be exported as objects, NOT types)
+import { EthosConnectStatus } from './types/EthosConnectStatus';
+
+// Types, interfaces, and enums
+import { Wallet } from './types/Wallet';
+import { WalletContents } from './types/WalletContents';
+
 const ethos = {
   login,
   logout,
@@ -34,10 +41,20 @@ const ethos = {
   useProviderAndSigner,
   useAddress,
   useContents,
-  useWallet, 
+  useWallet,
   showSignInModal,
   hideSignInModal,
   lookup
 }
 
-export { EthosConnectProvider, SignInButton, ethos }
+export {
+  EthosConnectProvider,
+  SignInButton,
+  ethos,
+  EthosConnectStatus
+}
+
+export type {
+  Wallet,
+  WalletContents
+}

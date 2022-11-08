@@ -6,5 +6,11 @@ import { EthosConnectProvider, SignInButton } from '../src/index'
  * the outside world that we didn't want!
  */
 it('should expose the correct components', () => {
-  expect(Object.keys(ReactApi)).toEqual([EthosConnectProvider.name, SignInButton.name, 'ethos'])
+  const exportNames = [
+    EthosConnectProvider.name,
+    SignInButton.name,
+    'ethos',
+    'EthosConnectStatus'
+  ]
+  expect(Object.keys(ReactApi)).toEqual(exportNames)
 })

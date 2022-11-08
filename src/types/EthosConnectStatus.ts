@@ -1,5 +1,5 @@
 export enum EthosConnectStatus {
-    LOADING = "loading",
-    NO_CONNECTION = "no_connection",
-    CONNECTED = "connected"
+    Loading = "loading",
+    NoConnection = "no_connection",
+    Connected = "connected"
 }
