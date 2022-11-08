@@ -23,7 +23,8 @@ const useConnect = () => {
   const { 
     wallets,
     selectWallet,
-    noConnection: noSuiConnection,
+    connected: suiConnected,
+    noConnection: suiNoConnection,
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
@@ -64,7 +65,7 @@ const useConnect = () => {
   }, [logoutCount]);
 
   useEffect(() => {
-    log("mobile", "listening to mobile connection from EthosWrapper")
+    log("mobile", "listening to mobile connection from EthosConnectProvider")
     listenForMobileConnection(
       (mobileSigner: any) => {
         log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
@@ -75,11 +76,11 @@ const useConnect = () => {
   }, [checkSigner])
 
   useEffect(() => {
-    if (!noSuiConnection && !suiSigner) return
+    if (!suiConnected && !suiNoConnection) return
 
     log('useConnect', 'Setting providerAndSigner extension', suiSigner)
     checkSigner(suiSigner, 'extension')
-  }, [noSuiConnection, suiSigner, checkSigner])
+  }, [ suiConnected, suiNoConnection, suiSigner, checkSigner])
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {

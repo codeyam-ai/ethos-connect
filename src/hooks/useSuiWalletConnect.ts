@@ -44,21 +44,21 @@ const useSuiWalletConnect = () => {
     const [noConnection, setNoConnection] = useState(false);
   
     // Once we connect, we remember that we've connected before to enable auto-connect:
-    useEffect(() => {
-      if (connected && wallet) {
-        localStorage.setItem(DEFAULT_STORAGE_KEY, wallet.name);
-      }
-    }, [wallet, connected]);
+    // useEffect(() => {
+    //   if (connected && wallet) {
+    //     localStorage.setItem(DEFAULT_STORAGE_KEY, wallet.name);
+    //   }
+    // }, [wallet, connected]);
   
-    const select = useCallback(
+    const select = useCallback(  
       async (name: string): Promise<boolean> => {
         let selectedWallet = 
           wallets.find((wallet) => wallet.name === name) ?? null;
-  
         setWallet(selectedWallet);
   
         let _connected = false;
         if (selectedWallet && !selectedWallet.connecting) {
+          
           try {
             setConnecting(true);
             await selectedWallet.connect();
@@ -67,31 +67,34 @@ const useSuiWalletConnect = () => {
           } catch (e) {
             setConnected(false);
           } finally {
+            
             setConnecting(false);
           }
         }
 
+
         return _connected;
       },
-      [wallets]
+      [wallets, setConnected, setConnecting]
     );
   
-    // // Auto-connect to the preferred wallet if there is one in storage:
     useEffect(() => {
         const checkWallets = async () => {
             if (!wallet && !connected && !connecting) {
-                let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
-                if (typeof preferredWallet === "string") {
-                    if (!wallets || wallets.length === 0) return;
-                    const success = await select(preferredWallet)
-                    if (!success) {
-                        setNoConnection(true);
-                        localStorage.removeItem(DEFAULT_STORAGE_KEY)
-                    }
-                    return;
-                } else if ((wallets || []).length > 0) {
+                // Auto-connect might be too aggressive, but leaving here to make it easy to re-enable
+                // let preferredWallet = localStorage.getItem(DEFAULT_STORAGE_KEY);
+                // if (typeof preferredWallet === "string") {
+                //     if (!wallets || wallets.length === 0) return;
+                //     const success = await select(preferredWallet)
+                //     if (!success) {
+                //         setNoConnection(true);
+                //         localStorage.removeItem(DEFAULT_STORAGE_KEY)
+                //     }
+                //     return;
+                // } else 
+                if ((wallets || []).length > 0) {
                     for (const wallet of wallets) {
-                        if (wallet.name !== "Ethos Wallet") continue;
+                        if (wallet.name !== "Ethos Wallet" || location.origin !== "https://ethoswallet.xyz") continue;
                         const accounts = await wallet.getAccounts();
                         if ((accounts || []).length > 0) {
                             const success = await select(wallet.name);
@@ -117,6 +120,7 @@ const useSuiWalletConnect = () => {
     }, [wallet])
 
     const getAddress = useCallback(async () => {
+        if (wallet == null) throw Error("Wallet Not Connected");
         const accounts = await getAccounts();
         return accounts[0];
     }, [getAccounts])
@@ -165,14 +169,14 @@ const useSuiWalletConnect = () => {
 
     const sign = useCallback(async () => {
         return false;
-    }, [wallet])
+    }, [wallet]);
 
     return {
         wallets,
         wallet,
         connecting,
-        connected,
         noConnection,
+        connected,
         select,
         getAccounts,
         getAddress,

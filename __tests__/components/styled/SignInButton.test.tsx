@@ -1,18 +1,18 @@
 import React from 'react'
 import { create } from 'react-test-renderer'
-import EthosWrapper from '../../../src/components/EthosWrapper'
+import EthosConnectProvider from '../../../src/components/EthosConnectProvider'
 import SignInButton from '../../../src/components/styled/SignInButton'
 
 describe('SignInButton', () => {
   it('renders correctly', () => {
     const rendered = create(
-        <EthosWrapper
+        <EthosConnectProvider
             ethosConfiguration={{
-                appId: "test"
+                apiKey: "test"
             }}
         >
             <SignInButton />
-        </EthosWrapper>
+        </EthosConnectProvider>
     ).toJSON()
     expect(rendered).toMatchSnapshot()
   })

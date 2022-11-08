@@ -1,6 +1,6 @@
 import { Chain } from '../enums/Chain'
 export interface EthosConfiguration {
-  appId: string
+  apiKey?: string
   walletAppUrl?: string
   chain?: Chain
   network?: string | number

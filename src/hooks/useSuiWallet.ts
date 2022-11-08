@@ -5,7 +5,9 @@ import useSuiWalletConnect from './useSuiWalletConnect';
 export interface SuiWalletResponse {
     wallets: WalletAdapter[];
     selectWallet: (walletName: string) => void,
+    connecting: boolean,
     noConnection: boolean,
+    connected: boolean,
     signer: Signer | null;
     setSigner: (signer: Signer | null) => void;
 }
@@ -15,8 +17,9 @@ const useSuiWallet = (): SuiWalletResponse => {
         wallet,
         wallets, 
         select: selectWallet, 
+        connecting, 
+        noConnection,
         connected,
-        noConnection, 
         getAccounts, 
         getAddress,
         signAndExecuteTransaction,
@@ -24,7 +27,7 @@ const useSuiWallet = (): SuiWalletResponse => {
         sign,
         disconnect
     } = useSuiWalletConnect()
-  
+
     const constructedSigner = useMemo<Signer>(() => ({
         type: SignerType.EXTENSION,
         getAccounts,
@@ -40,12 +43,10 @@ const useSuiWallet = (): SuiWalletResponse => {
     )
   
     useEffect(() => {
-        if (!connected) return;
+        setSigner(connected ? constructedSigner : null)
+    }, [connected, constructedSigner])
 
-        setSigner(constructedSigner)
-    }, [connected])
-
-    return { noConnection, wallets, selectWallet, signer, setSigner }
+    return { connecting, noConnection, connected, wallets, selectWallet, signer, setSigner }
 }
 
 export default useSuiWallet

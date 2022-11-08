@@ -1,11 +1,6 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
+import { WalletContents } from "types/WalletContents";
 // import fetchSui from "./fetchSui";
-
-export type WalletContents = {
-  suiBalance: number,
-  tokens: {[key: string]: any},
-  nfts: any[]
-}
 
 const ipfsConversion = (src: string): string => {
     if (!src) return "";
@@ -36,7 +31,17 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 //       console.log("Error getting Sui objects owned by adddress", e);
 //     }
 //   }
+
+  if (!address) {
+    return {
+      suiBalance: 0,
+      nfts: [],
+      tokens: []
+    }
+  }
+  
   const objectInfos = await provider.getObjectsOwnedByAddress(address);
+  // const objectInfos: SuiObjectInfo[] = []
   
   if (objectInfos.length === 0) {
     return {
