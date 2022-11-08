@@ -12,6 +12,7 @@ import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import useWalletAdapters from "./useWalletAdapters";
 import { Preapproval } from "types/Preapproval";
 import log from "../lib/log";
+import { ethos } from "ethos-connect-staging";
 
 const DEFAULT_STORAGE_KEY = "preferredSuiWallet";
 
@@ -85,15 +86,18 @@ const useSuiWalletConnect = () => {
                 let preferredWalletName = localStorage.getItem(DEFAULT_STORAGE_KEY);
 
                 if (typeof preferredWalletName !== "string") {
-                    if (location.origin !== "https://ethoswallet.xyz") {
+                    if (location.origin === "https://ethoswallet.xyz") {
+                        console.log("Wallet explorer", (wallets || []).map((w) => w.name));
                         const ethosWallet = (wallets || []).find(
-                            (w) => w.name === preferredWalletName
+                            (w) => w.name === "Ethos Wallet"
                         );
                         if (ethosWallet) {
-                            const accounts = await ethosWallet?.getAccounts();
-                            if (accounts.length > 0) {
-                                preferredWalletName = "Ethos Wallet";
-                            }
+                            const accounts = await ethosWallet.getAccounts();
+                            console.log("Ethos wallet connected", ethosWallet.connected, accounts);
+                            // const accounts = await ethosWallet?.getAccounts();
+                            // if (accounts.length > 0) {
+                            preferredWalletName = ethosWallet.name;
+                            // }
                         }
                     }
                 }
