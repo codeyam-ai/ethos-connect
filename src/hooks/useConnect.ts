@@ -23,7 +23,8 @@ const useConnect = () => {
   const { 
     wallets,
     selectWallet,
-    connecting: suiConnecting,
+    connected: suiConnected,
+    noConnection: suiNoConnection,
     signer: suiSigner, 
     setSigner: setSuiSigner 
   } = useSuiWallet();
@@ -75,11 +76,11 @@ const useConnect = () => {
   }, [checkSigner])
 
   useEffect(() => {
-    if (suiConnecting) return
+    if (!suiConnected && !suiNoConnection) return
 
     log('useConnect', 'Setting providerAndSigner extension', suiSigner)
     checkSigner(suiSigner, 'extension')
-  }, [suiSigner, checkSigner])
+  }, [ suiConnected, suiNoConnection, suiSigner, checkSigner])
 
   useEffect(() => { 
     const fetchEthosSigner = async () => {

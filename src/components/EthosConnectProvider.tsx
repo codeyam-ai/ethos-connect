@@ -16,7 +16,7 @@ import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
 import SignInModal from './styled/SignInModal'
 import ModalContext from './ModalContext'
-import useSuiWallet from '../hooks/useSuiWallet'
+import { EthosConnectStatus } from '../types/EthosConnectStatus'
 
 export interface EthosConnectProviderProps {
   ethosConfiguration?: EthosConfiguration
@@ -40,7 +40,6 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
         lib.initializeEthos(ethosConfiguration || {})
     }, [])
   
-    const { connecting, connected } = useSuiWallet();
     const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
     const { address, contents } = useAccount(providerAndSigner.signer)
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,21 +48,30 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
 
     const walletContext = useMemo(() => {
         const { provider, signer } = providerAndSigner;
+        let status;
+        if (provider) {
+            if (signer) {
+                status = EthosConnectStatus.CONNECTED
+            } else {
+                status = EthosConnectStatus.NO_CONNECTION
+            }
+        } else {
+            status = EthosConnectStatus.LOADING
+        }
         const context: WalletContextContent = {
+            status,
             wallets,
             selectWallet,
-            provider,
-            connecting,
-            connected
+            provider
         }
-
-        if (connected) {
+        
+        if (signer) {
             context.wallet = {
                 ...signer,
                 address,
                 contents,
-                disconnect: () => {
-                    signer.disconnect();
+                disconnect: async () => {
+                    await signer.disconnect();
                     logout();
                 }
             }
@@ -73,9 +81,10 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
     }, [
         wallets, 
         selectWallet, 
-        connecting, 
-        connected, 
-        address 
+        address,
+        providerAndSigner,
+        contents,
+        logout
     ])
 
     useEffect(() => {

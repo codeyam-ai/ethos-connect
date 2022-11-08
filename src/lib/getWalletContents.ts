@@ -31,7 +31,17 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 //       console.log("Error getting Sui objects owned by adddress", e);
 //     }
 //   }
+
+  if (!address) {
+    return {
+      suiBalance: 0,
+      nfts: [],
+      tokens: []
+    }
+  }
+  
   const objectInfos = await provider.getObjectsOwnedByAddress(address);
+  // const objectInfos: SuiObjectInfo[] = []
   
   if (objectInfos.length === 0) {
     return {
