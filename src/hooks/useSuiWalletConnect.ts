@@ -87,13 +87,13 @@ const useSuiWalletConnect = () => {
 
                 if (typeof preferredWalletName !== "string") {
                     if (location.origin === "https://ethoswallet.xyz") {
-                        console.log("Wallet explorer", (wallets || []).map((w) => w.name));
+                        log('suiWalletConnect', "Wallet explorer", (wallets || []).map((w) => w.name));
                         const ethosWallet = (wallets || []).find(
                             (w) => w.name === "Ethos Wallet"
                         );
                         if (ethosWallet) {
-                            const accounts = await ethosWallet.getAccounts();
-                            console.log("Ethos wallet connected", ethosWallet.connected, accounts);
+                            // const accounts = await ethosWallet.getAccounts();
+                            log('suiWalletConnect', "Ethos wallet connected", ethosWallet.connected);
                             // const accounts = await ethosWallet?.getAccounts();
                             // if (accounts.length > 0) {
                             preferredWalletName = ethosWallet.name;
