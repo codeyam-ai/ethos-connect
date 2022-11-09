@@ -12,7 +12,6 @@ import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import useWalletAdapters from "./useWalletAdapters";
 import { Preapproval } from "types/Preapproval";
 import log from "../lib/log";
-import { ethos } from "ethos-connect-staging";
 
 const DEFAULT_STORAGE_KEY = "preferredSuiWallet";
 

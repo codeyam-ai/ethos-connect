@@ -20,6 +20,7 @@ const useConnect = () => {
     provider: null,
     signer: null
   })
+
   const { 
     wallets,
     selectWallet,
@@ -34,10 +35,7 @@ const useConnect = () => {
     suiStore('disconnected', true);
 
     signerFound.current = false;
-    setProviderAndSigner({
-      provider: null,
-      signer: null
-    });
+    setProviderAndSigner((prev: ProviderAndSigner) => ({ ...prev, signer: null }))
     setSuiSigner(null);
     for (const key of Object.keys(methodsChecked.current)) {
       methodsChecked.current[key] = false;
@@ -57,7 +55,7 @@ const useConnect = () => {
     if (!signer && !allMethodsChecked) return;
     
     signerFound.current = !!signer;
-    
+
     const provider = new JsonRpcProvider(Network.DEVNET);
     
     setProviderAndSigner({ provider, signer })
