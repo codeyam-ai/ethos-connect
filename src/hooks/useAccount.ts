@@ -21,7 +21,7 @@ const useAccount = (signer: Signer) => {
     }    
 
     initAccount();
-    const interval = setInterval(initAccount, 3000);
+    const interval = setInterval(initAccount, 5000);
 
     return () => clearInterval(interval);
   }, [signer])

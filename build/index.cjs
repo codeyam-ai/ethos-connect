@@ -1,7 +1,7 @@
 'use strict'
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./ethos-connect-staging.prod.cjs')
+  module.exports = require('./ethos-connect.prod.cjs')
 } else {
-  module.exports = require('./ethos-connect-staging.dev.cjs')
+  module.exports = require('./ethos-connect.dev.cjs')
 }

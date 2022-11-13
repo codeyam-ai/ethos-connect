@@ -14,6 +14,8 @@ cd ../..
 From the root directory of this project:
 
 ```
+yarn unlink react
+yarn unlink react-dom
 yarn link
 yarn install
 yarn link react

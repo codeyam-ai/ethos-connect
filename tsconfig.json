@@ -17,7 +17,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "ethos-connect-staging": ["src"],
+      "ethos-connect": ["src"],
       "*": ["src/*", "node_modules/*"]
     },
     "jsx": "preserve",

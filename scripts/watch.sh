@@ -3,7 +3,7 @@ set -e
 
 # Known variables
 outdir="./dist"
-name="ethos-connect-staging"
+name="ethos-connect"
 input="./src/index.ts"
 
 # Find executables
