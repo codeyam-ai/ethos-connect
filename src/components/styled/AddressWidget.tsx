@@ -9,7 +9,7 @@ import truncateMiddle from '../../lib/truncateMiddle';
 
 import Sui from "../svg/Sui";
 import CopyWalletAddressButton from './CopyWalletAddressButton';
-import WalletExplorerButton from './LogOutButton';
+import WalletExplorerButton from './WalletExplorerButton';
 import LogOutButton from './LogOutButton';
 
 export interface AddressWidgetProps {
