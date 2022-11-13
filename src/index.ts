@@ -4,6 +4,7 @@ import SignInButton from './components/styled/SignInButton'
 import { showSignInModal, hideSignInModal } from './components/styled/SignInModal';
 
 import AddressWidget from './components/styled/AddressWidget'
+import MenuButton from './components/styled/MenuButton'
 import HoverColorButton from './components/headless/HoverColorButton'
 
 import login from './lib/login'
@@ -34,9 +35,8 @@ import { Wallet } from './types/Wallet';
 import { WalletContents } from './types/WalletContents';
 
 const components = {
-    styled: {   
-        Address: AddressWidget
-    },
+    AddressWidget,
+    MenuButton,
     headless: {
         HoverColorButton
     }   

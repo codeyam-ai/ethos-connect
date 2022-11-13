@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
-import HoverColorButton from "../headless/HoverColorButton";
+
+import MenuButton from './MenuButton';
 
 import useWallet from '../../hooks/useWallet';
 import { MenuButtonProps } from '../../types/MenuButtonProps';
+
 
 const CopyWalletAddressButton = (props: MenuButtonProps) => {
     const { wallet } = useWallet();
@@ -33,13 +35,13 @@ const CopyWalletAddressButton = (props: MenuButtonProps) => {
     }, [wallet])
 
     return (
-        <HoverColorButton 
+        <MenuButton 
             {...props}
             onClick={onClick}
             hoverChildren={children(true)}
         >
             { children(false) }
-        </HoverColorButton>
+        </MenuButton>
     )
 }
 

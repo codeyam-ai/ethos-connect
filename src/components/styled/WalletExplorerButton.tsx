@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import HoverColorButton from "../headless/HoverColorButton";
+import MenuButton from './MenuButton';
 import type { MenuButtonProps } from '../../types/MenuButtonProps';
 
 const WalletExplorerButton = (props: MenuButtonProps) => {
@@ -23,13 +23,13 @@ const WalletExplorerButton = (props: MenuButtonProps) => {
     }, [])
 
     return (
-        <HoverColorButton 
+        <MenuButton 
             {...props}
             onClick={onClick}
             hoverChildren={children(true)}
         >
             { children(false) }
-        </HoverColorButton>
+        </MenuButton>
     )
 }
 

@@ -58,16 +58,13 @@ const AddressWidget = ({ includeMenu = true, buttonColor = primaryColor, extraBu
             {includeMenu && showMenu && (
                 <div style={menu()}>
                     <CopyWalletAddressButton 
-                        style={button()}
                         hoverBackgroundColor={buttonColor} 
                     />
                     <WalletExplorerButton
-                        style={button()}
                         hoverBackgroundColor={buttonColor} 
                     />
                     {extraButtons}
                     <LogOutButton
-                        style={button()}
                         hoverBackgroundColor={buttonColor}
                     />
                 </div>
@@ -83,7 +80,7 @@ export const container = () => (
     {
         position: "relative",
         backgroundColor: 'white',
-        padding: "6px 6px 6px 12px",
+        padding: "6px 12px 6px 18px",
         boxShadow: "1px 1px 3px 1px #dfdfe0",
         borderRadius: '18px',
         fontSize: '14px'
@@ -96,7 +93,7 @@ export const primary = () => (
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '6px',
+        gap: '12px',
     } as React.CSSProperties
 )
 
@@ -113,7 +110,7 @@ export const menu = () => (
         display: "flex",
         flexDirection: "column",
         gap: "6px",
-        padding: "12px",
+        padding: "12px 18px",
         position: "absolute",
         bottom: 0,
         left: "12px",
@@ -124,18 +121,6 @@ export const menu = () => (
         borderBottomRightRadius: '18px',
         backgroundColor: 'white',
         zIndex: "99"
-    } as React.CSSProperties
-)
-
-export const button = () => (
-    {
-        width: "100%",
-        borderRadius: "12px",
-        textAlign: 'left',
-        padding: "6px 12px",
-        display: "flex",
-        alignItems: 'center',
-        gap: "6px"
     } as React.CSSProperties
 )
 
