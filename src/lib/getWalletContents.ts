@@ -54,7 +54,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
   const objectIds = objectInfos.map((o: any) => o.objectId);
   const objects = await provider.getObjectBatch(objectIds)
 
-  console.log("OBJECTS", objects)
+//   console.log("OBJECTS", objects)
   
 //   const objects = [];
 //   for (const objectId of objectIds) {

@@ -1,8 +1,8 @@
 import React from 'react'
-import Button from '../headless/Button'
+import WorkingButton, { WorkingButtonProps } from '../headless/WorkingButton'
 import useModal from '../../hooks/useModal'
 
-export interface SignInButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+export interface SignInButtonProps extends WorkingButtonProps {
   onLoaded?: () => void
 }
 
@@ -17,9 +17,9 @@ const SignInButton = (props: SignInButtonProps) => {
 
   return (
     <>
-      <Button onClick={_onClick} {...reactProps}>
+      <WorkingButton onClick={_onClick} {...reactProps}>
         {children || <>Sign In</>}
-      </Button>
+      </WorkingButton>
     </>
   )
 }
