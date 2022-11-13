@@ -1,11 +1,7 @@
-import React, { ButtonHTMLAttributes, ReactNode } from 'react'
+import React from 'react'
+import { WorkingButtonProps } from '../../types/WorkingButtonProps'
 
 import Loader from '../svg/Loader'
-
-export interface WorkingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    isWorking?: boolean,
-    workingComponent?: ReactNode 
-}
 
 const WorkingButton = (props: WorkingButtonProps) => {
     const { children, isWorking, workingComponent, ...reactProps } = props

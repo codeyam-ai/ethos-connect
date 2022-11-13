@@ -1,5 +1,6 @@
 import React from 'react'
-import WorkingButton, { WorkingButtonProps } from '../headless/WorkingButton'
+import WorkingButton from '../headless/WorkingButton'
+import { WorkingButtonProps } from '../../types/WorkingButtonProps'
 import useModal from '../../hooks/useModal'
 
 export interface SignInButtonProps extends WorkingButtonProps {

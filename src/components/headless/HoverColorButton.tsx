@@ -1,5 +1,6 @@
 import React, { ReactNode, useCallback, useState } from "react";
-import WorkingButton, { WorkingButtonProps } from "./WorkingButton";
+import WorkingButton from "./WorkingButton";
+import { WorkingButtonProps } from '../../types/WorkingButtonProps'
 
 export interface HoverColorButtonProps extends WorkingButtonProps {
     hoverBackgroundColor: string

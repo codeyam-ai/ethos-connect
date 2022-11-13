@@ -1,12 +1,8 @@
 import React, { useCallback } from 'react';
 import HoverColorButton from "../headless/HoverColorButton";
-import { WorkingButtonProps } from '../headless/WorkingButton';
 
 import useWallet from '../../hooks/useWallet';
-
-export interface MenuButtonProps extends WorkingButtonProps {
-    hoverBackgroundColor: string
-}
+import { MenuButtonProps } from '../../types/MenuButtonProps';
 
 const CopyWalletAddressButton = (props: MenuButtonProps) => {
     const { wallet } = useWallet();
