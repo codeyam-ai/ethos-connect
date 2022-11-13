@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback, useState } from "react";
 import WorkingButton from "./WorkingButton";
 import { WorkingButtonProps } from '../../types/WorkingButtonProps'
+import { primaryColor } from "../../lib/constants";
 
 export interface HoverColorButtonProps extends WorkingButtonProps {
     hoverBackgroundColor: string
@@ -25,7 +26,7 @@ const HoverColorButton = (props: HoverColorButtonProps) => {
             onMouseLeave={onMouseLeave}
             style={{ 
                 ...style,
-                backgroundColor: hover ? hoverBackgroundColor : undefined,
+                backgroundColor: hover ? hoverBackgroundColor  || primaryColor : undefined,
                 color: hover ? 'white' : 'black'
             }}
             {...workingButtonProps}

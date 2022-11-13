@@ -4,6 +4,7 @@ import SignInButton from './components/styled/SignInButton'
 import { showSignInModal, hideSignInModal } from './components/styled/SignInModal';
 
 import AddressWidget from './components/styled/AddressWidget'
+import HoverColorButton from './components/headless/HoverColorButton'
 
 import login from './lib/login'
 import logout from './lib/logout'
@@ -32,6 +33,16 @@ import { EthosConnectStatus } from './types/EthosConnectStatus';
 import { Wallet } from './types/Wallet';
 import { WalletContents } from './types/WalletContents';
 
+const components = {
+    styled: {   
+        Address: AddressWidget
+    },
+    headless: {
+        HoverColorButton
+    }   
+}    
+
+
 const ethos = {
   login,
   logout,
@@ -57,7 +68,7 @@ const ethos = {
   formatBalance,
   truncateMiddle,
 
-  AddressWidget
+  components
 }
 
 export {

@@ -11,6 +11,7 @@ import Sui from "../svg/Sui";
 import CopyWalletAddressButton from './CopyWalletAddressButton';
 import WalletExplorerButton from './WalletExplorerButton';
 import LogOutButton from './LogOutButton';
+import { primaryColor } from '../../lib/constants';
 
 export interface AddressWidgetProps {
     includeMenu: boolean,
@@ -18,7 +19,7 @@ export interface AddressWidgetProps {
     extraButtons: ReactNode[]
 }
 
-const AddressWidget = ({ includeMenu = true, buttonColor = "#6f53e4", extraButtons = [] }: AddressWidgetProps) => {
+const AddressWidget = ({ includeMenu = true, buttonColor = primaryColor, extraButtons = [] }: AddressWidgetProps) => {
     const { wallet } = useWallet();
     const [showMenu, setShowMenu] = useState(false);
 
@@ -95,7 +96,7 @@ export const primary = () => (
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '12px',
+        gap: '6px',
     } as React.CSSProperties
 )
 
