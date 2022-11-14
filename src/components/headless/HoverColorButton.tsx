@@ -4,7 +4,7 @@ import { WorkingButtonProps } from '../../types/WorkingButtonProps'
 import { primaryColor } from "../../lib/constants";
 
 export interface HoverColorButtonProps extends WorkingButtonProps {
-    hoverBackgroundColor: string
+    hoverBackgroundColor?: string
     hoverChildren: ReactNode
 }
 

@@ -14,9 +14,9 @@ import LogOutButton from './LogOutButton';
 import { primaryColor } from '../../lib/constants';
 
 export interface AddressWidgetProps {
-    includeMenu: boolean,
+    includeMenu?: boolean,
     buttonColor?: string,
-    extraButtons: ReactNode[]
+    extraButtons?: ReactNode[]
 }
 
 const AddressWidget = ({ includeMenu = true, buttonColor = primaryColor, extraButtons = [] }: AddressWidgetProps) => {

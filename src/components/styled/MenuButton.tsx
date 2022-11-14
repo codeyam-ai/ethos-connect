@@ -6,7 +6,6 @@ const MenuButton = (props: HoverColorButtonProps) => {
         <HoverColorButton
             {...props}
             style={button()}
-            
         />
     )
 }
