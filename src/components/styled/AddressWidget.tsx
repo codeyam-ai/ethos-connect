@@ -10,17 +10,24 @@ import truncateMiddle from '../../lib/truncateMiddle';
 import Sui from "../svg/Sui";
 import CopyWalletAddressButton from './CopyWalletAddressButton';
 import WalletExplorerButton from './WalletExplorerButton';
-import LogOutButton from './LogOutButton';
+import LogoutButton from './LogoutButton';
 import { primaryColor } from '../../lib/constants';
 import { useEffect } from 'react';
+import { AddressWidgetButtons } from '../../enums/AddressWidgetButtons';
 
 export interface AddressWidgetProps {
     includeMenu?: boolean,
     buttonColor?: string,
     extraButtons?: ReactNode[]
+    excludeButtons?: AddressWidgetButtons[]
 }
 
-const AddressWidget = ({ includeMenu = true, buttonColor = primaryColor, extraButtons = [] }: AddressWidgetProps) => {
+const AddressWidget = ({ 
+    includeMenu = true, 
+    buttonColor = primaryColor,
+    extraButtons = [],
+    excludeButtons = [] 
+}: AddressWidgetProps) => {
     const { wallet } = useWallet();
     const [showMenu, setShowMenu] = useState(false);
 
@@ -64,16 +71,23 @@ const AddressWidget = ({ includeMenu = true, buttonColor = primaryColor, extraBu
             </div>
             {includeMenu && showMenu && (
                 <div style={menu()}>
-                    <CopyWalletAddressButton 
-                        hoverBackgroundColor={buttonColor} 
-                    />
-                    <WalletExplorerButton
-                        hoverBackgroundColor={buttonColor} 
-                    />
+                    {!excludeButtons.includes(AddressWidgetButtons.CopyWalletAddress) && (
+                        <CopyWalletAddressButton 
+                            hoverBackgroundColor={buttonColor} 
+                        />
+                    )}
+                    
+                    {!excludeButtons.includes(AddressWidgetButtons.WalletExplorer) && (
+                        <WalletExplorerButton
+                            hoverBackgroundColor={buttonColor} 
+                        />
+                    )}
                     {extraButtons}
-                    <LogOutButton
-                        hoverBackgroundColor={buttonColor}
-                    />
+                    {!excludeButtons.includes(AddressWidgetButtons.Logout) && (
+                        <LogoutButton
+                            hoverBackgroundColor={buttonColor}
+                        />
+                    )}
                 </div>
             )}
 

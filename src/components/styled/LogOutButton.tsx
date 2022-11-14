@@ -4,7 +4,7 @@ import type { MenuButtonProps } from '../../types/MenuButtonProps';
 
 import useWallet from '../../hooks/useWallet';
 
-const LogOutButton = (props: MenuButtonProps) => {
+const LogoutButton = (props: MenuButtonProps) => {
     const { wallet } = useWallet();
 
     const children = useCallback((hover: boolean) => (
@@ -30,4 +30,4 @@ const LogOutButton = (props: MenuButtonProps) => {
     )
 }
 
-export default LogOutButton;
+export default LogoutButton;
