@@ -5,8 +5,10 @@ From the root folder of the project you are working on (not this project)
 ```
 yarn remove ethos-connect
 cd node_modules/react
+yarn unlink
 yarn link
 cd ../react-dom
+yarn unlink
 yarn link
 cd ../..
 ```

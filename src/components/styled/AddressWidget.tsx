@@ -12,6 +12,7 @@ import CopyWalletAddressButton from './CopyWalletAddressButton';
 import WalletExplorerButton from './WalletExplorerButton';
 import LogOutButton from './LogOutButton';
 import { primaryColor } from '../../lib/constants';
+import { useEffect } from 'react';
 
 export interface AddressWidgetProps {
     includeMenu?: boolean,
@@ -22,6 +23,12 @@ export interface AddressWidgetProps {
 const AddressWidget = ({ includeMenu = true, buttonColor = primaryColor, extraButtons = [] }: AddressWidgetProps) => {
     const { wallet } = useWallet();
     const [showMenu, setShowMenu] = useState(false);
+
+    useEffect(() => {
+        if (!wallet) {
+            setShowMenu(false);
+        }
+    }, [wallet])
 
     const onMouseEnter = useCallback(() => {
         if (!wallet) return;

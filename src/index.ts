@@ -28,7 +28,8 @@ import useContents from './hooks/useContents'
 import useWallet from './hooks/useWallet'
 
 // Enums (must be exported as objects, NOT types)
-import { EthosConnectStatus } from './types/EthosConnectStatus';
+import { EthosConnectStatus } from './enums/EthosConnectStatus';
+import { AddressWidgetButtons } from './enums/AddressWidgetButtons'
 
 // Types, interfaces, and enums
 import { Wallet } from './types/Wallet';
@@ -41,6 +42,10 @@ const components = {
         HoverColorButton
     }   
 }    
+
+const enums = {
+    AddressWidgetButtons
+}
 
 
 const ethos = {
@@ -68,7 +73,9 @@ const ethos = {
   formatBalance,
   truncateMiddle,
 
-  components
+  components,
+
+  enums
 }
 
 export {

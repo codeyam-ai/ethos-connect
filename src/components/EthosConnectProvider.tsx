@@ -16,7 +16,7 @@ import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import useConnect from '../hooks/useConnect'
 import SignInModal from './styled/SignInModal'
 import ModalContext from './ModalContext'
-import { EthosConnectStatus } from '../types/EthosConnectStatus'
+import { EthosConnectStatus } from '../enums/EthosConnectStatus'
 
 export interface EthosConnectProviderProps {
   ethosConfiguration?: EthosConfiguration
