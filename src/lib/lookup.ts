@@ -45,7 +45,7 @@ const lookup = async (nameOrAddress: string): Promise<SuiAddress | string> => {
             }
             const { version } = suiNamesObject.reference;
             const timestamp = Date.now();
-            lookupStore(nameObjectId, {
+            lookupStore('suins', {
                 version,
                 timestamp,
                 suiNSRecords,
