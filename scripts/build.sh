@@ -7,7 +7,7 @@ SCRIPT_DIR=$(cd ${0%/*} && pwd -P)
 # Known variables
 SRC='./src'
 DST='./dist'
-name="ethos-connect-staging"
+name="ethos-connect"
 input="./${SRC}/index.ts"
 
 # Find executables

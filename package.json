@@ -1,17 +1,17 @@
 {
   "name": "ethos-connect",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Build on Sui with ease with the Ethos Wallet APIs. Connect with all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
-  "module": "dist/ethos-connect-staging.esm.js",
+  "module": "dist/ethos-connect.esm.js",
   "license": "MIT",
   "files": [
     "README.md",
     "dist"
   ],
   "exports": {
-    "import": "./dist/ethos-connect-staging.esm.js",
+    "import": "./dist/ethos-connect.esm.js",
     "require": "./dist/index.cjs",
     "types": "./dist/index.d.ts"
   },
@@ -72,6 +72,7 @@
     "@mysten/wallet-adapter-base": "^0.3.1",
     "@mysten/wallet-adapter-react": "^6.0.0",
     "@superstate/react": "^0.1.0",
+    "bignumber.js": "^9.1.0",
     "encoding": "^0.1.13",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",

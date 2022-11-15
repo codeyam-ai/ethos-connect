@@ -1,3 +1,4 @@
+export const primaryColor = "#6f53e4";
 export const appBaseUrl =
   typeof window !== 'undefined' && window.location.origin.indexOf('http://localhost') === 0
     ? 'http://localhost:3000'

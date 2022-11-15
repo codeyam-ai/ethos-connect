@@ -81,6 +81,7 @@ const useSuiWalletConnect = () => {
   
     useEffect(() => {
         const checkWallets = async () => {
+            log('suiWalletConnect', "Wallets", (wallets || []).map((w) => w.name));
             if (!wallet && !connected && !connecting) {
                 let preferredWalletName = localStorage.getItem(DEFAULT_STORAGE_KEY);
 

@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import type { WalletAdapter } from "@mysten/wallet-adapter-base";
 import { Wallet } from '../types/Wallet';
 import { JsonRpcProvider } from '@mysten/sui.js';
-import { EthosConnectStatus } from '../types/EthosConnectStatus';
+import { EthosConnectStatus } from '../enums/EthosConnectStatus';
 
 export type WalletContextContent = {
     wallets?: WalletAdapter[],
