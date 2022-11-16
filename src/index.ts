@@ -34,17 +34,19 @@ import { AddressWidgetButtons } from './enums/AddressWidgetButtons'
 // Types, interfaces, and enums
 import { Wallet } from './types/Wallet';
 import { WalletContents } from './types/WalletContents';
+import { ProviderAndSigner } from './types/ProviderAndSigner';
+import { Signer } from './types/Signer';
 
 const components = {
-    AddressWidget,
-    MenuButton,
-    headless: {
-        HoverColorButton
-    }   
-}    
+  AddressWidget,
+  MenuButton,
+  headless: {
+    HoverColorButton
+  }
+}
 
 const enums = {
-    AddressWidgetButtons
+  AddressWidgetButtons
 }
 
 
@@ -58,10 +60,10 @@ const ethos = {
 
   showWallet,
   hideWallet,
-  
+
   showSignInModal,
   hideSignInModal,
-  
+
   useProviderAndSigner,
   useAddress,
   useContents,
@@ -87,5 +89,7 @@ export {
 
 export type {
   Wallet,
-  WalletContents
+  WalletContents,
+  ProviderAndSigner,
+  Signer
 }
