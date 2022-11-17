@@ -191,8 +191,18 @@ const useSuiWalletConnect = () => {
         return ethosWallet.requestPreapproval(preapproval)
     }, [connected]);
 
-    const sign = useCallback(async () => {
-        return false;
+    const sign = useCallback(async ({ message }) => {
+        if (wallet == null) {
+            throw new Error("Wallet Not Connected");
+        }
+
+        const ethosWallet = (window as any).ethosWallet
+        if (!ethosWallet || wallet.name !== "Ethos Wallet") {
+            console.log("Wallet does not support sign")
+            return false;
+        }
+
+        return ethosWallet.signMessage(message)
     }, [wallet]);
 
     return {

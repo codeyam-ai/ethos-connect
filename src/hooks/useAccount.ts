@@ -2,7 +2,7 @@ import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useState } from 'react'
 import { Signer } from 'types/Signer';
 
-const useAccount = (signer?: Signer) => {
+const useAccount = (signer: Signer | null) => {
   const [account, setAccount] = useState<any | null>({})
 
   useEffect(() => {

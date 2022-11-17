@@ -8,12 +8,13 @@ export type WalletContextContent = {
     wallets?: WalletAdapter[],
     selectWallet?: ((walletName: string) => void),
     status: EthosConnectStatus,
-    provider?: JsonRpcProvider,
+    provider: JsonRpcProvider | null,
     wallet?: Wallet
 }
 
 const defaultWalletContext: WalletContextContent = {
-    status: EthosConnectStatus.Loading
+    status: EthosConnectStatus.Loading,
+    provider: null
 };
 
 const WalletContext = createContext<WalletContextContent>(defaultWalletContext);
