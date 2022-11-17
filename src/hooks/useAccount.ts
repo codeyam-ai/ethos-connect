@@ -2,12 +2,12 @@ import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useState } from 'react'
 import { Signer } from 'types/Signer';
 
-const useAccount = (signer: Signer) => {
-  const [account, setAccount] = useState<any|null>({})
-  
+const useAccount = (signer?: Signer) => {
+  const [account, setAccount] = useState<any | null>({})
+
   useEffect(() => {
     if (!signer) return;
-   
+
     const initAccount = async () => {
       const address = await signer?.getAddress();
       if (!address) {
@@ -17,8 +17,8 @@ const useAccount = (signer: Signer) => {
       setAccount({
         address,
         contents
-      }) 
-    }    
+      })
+    }
 
     initAccount();
     const interval = setInterval(initAccount, 5000);
