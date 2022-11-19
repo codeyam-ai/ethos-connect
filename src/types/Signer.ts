@@ -11,6 +11,8 @@ export enum SignerType {
 
 export interface Signer {
   type: SignerType,
+  name?: string,
+  icon?: string,
   getAccounts: () => Promise<string[]>,
   getAddress: () => Promise<string>,
   signAndExecuteTransaction: (transaction: SignableTransaction) => Promise<SuiTransactionResponse>,

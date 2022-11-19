@@ -62,6 +62,12 @@ const AddressWidget = ({
                             Sui
                         </div>
                         <div style={address()}>
+                            {wallet.icon && (
+                                <img 
+                                    style={walletIcon()}
+                                    src={wallet.icon}
+                                />
+                            )}
                             {truncateMiddle(wallet.address)}
                         </div>
                     </>
@@ -122,7 +128,10 @@ export const address = () => (
     {
         borderRadius: "30px",
         backgroundColor: "#f2f1f0",
-        padding: "6px 12px"
+        padding: "6px 12px",
+        display: "flex",
+        alignItems: "center",
+        gap: "6px"
     } as React.CSSProperties
 )
 
@@ -149,6 +158,13 @@ export const signIn = () => (
     {  
         paddingRight: "12px",
         whiteSpace: "nowrap"
+    } as React.CSSProperties
+);
+
+export const walletIcon = () => (
+    {  
+        width: "20px",
+        height: "20px"
     } as React.CSSProperties
 );
 

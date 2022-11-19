@@ -30,6 +30,8 @@ const useSuiWallet = (): SuiWalletResponse => {
 
     const constructedSigner = useMemo<Signer>(() => ({
         type: SignerType.Extension,
+        name: wallet?.name,
+        icon: wallet?.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet?.icon,
         getAccounts,
         getAddress,
         signAndExecuteTransaction,
