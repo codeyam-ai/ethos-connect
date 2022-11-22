@@ -110,7 +110,8 @@ export const container = () => (
         padding: "6px 12px 6px 18px",
         boxShadow: "1px 1px 3px 1px #dfdfe0",
         borderRadius: '18px',
-        fontSize: '14px'
+        fontSize: '14px',
+        color: 'black'
 
     } as React.CSSProperties
 )
