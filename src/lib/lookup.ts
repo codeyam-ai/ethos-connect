@@ -8,7 +8,7 @@ const CACHE_DELAY = 1000 * 30;
 const lookup = async (nameOrAddress: string): Promise<SuiAddress | string> => {
     const provider = new JsonRpcProvider(Network.DEVNET);
 
-    const namesObjectId = '0x8e241d0bab21d3ef8ef0193217baedafedf8b4ce';
+    const namesObjectId = '0x79af4acd5d1d70fbb29b724b5060c67063cae83c';
 
     const lookupStore = store.namespace('lookup')
     const recordsInfo = await lookupStore('suins');
@@ -28,28 +28,32 @@ const lookup = async (nameOrAddress: string): Promise<SuiAddress | string> => {
     }
 
     if (!suiNSRecords) {
-        const namesObject = await provider.getObject(namesObjectId);
-       if (namesObject.status === 'Exists') {
-            const suiNamesObject = namesObject.details as SuiObject;
-            const moveNameObject = suiNamesObject.data as SuiMoveObject;
-            const records = moveNameObject.fields.records.fields.contents;
-
-            suiNSRecords = {};
-            for (const record of records) {
-                const { key, value } = record.fields;
-                const { owner } = value.fields;
-                suiNSRecords[key] = owner;
-                if (key.indexOf('addr.reverse') === -1) {
-                    suiNSRecords[owner] = key;
+        try {
+            const namesObject = await provider.getObject(namesObjectId);
+            if (namesObject.status === 'Exists') {
+                const suiNamesObject = namesObject.details as SuiObject;
+                const moveNameObject = suiNamesObject.data as SuiMoveObject;
+                const records = moveNameObject.fields.records.fields.contents;
+    
+                suiNSRecords = {};
+                for (const record of records) {
+                    const { key, value } = record.fields;
+                    const { owner } = value.fields;
+                    suiNSRecords[key] = owner;
+                    if (key.indexOf('addr.reverse') === -1) {
+                        suiNSRecords[owner] = key;
+                    }
                 }
+                const { version } = suiNamesObject.reference;
+                const timestamp = Date.now();
+                lookupStore('suins', {
+                    version,
+                    timestamp,
+                    suiNSRecords,
+                });
             }
-            const { version } = suiNamesObject.reference;
-            const timestamp = Date.now();
-            lookupStore('suins', {
-                version,
-                timestamp,
-                suiNSRecords,
-            });
+        } catch (e) {
+            console.log("Error retrieving SuiNS lookup information", e);
         }
     }
 

@@ -5,7 +5,7 @@ import useSuiWallet from './useSuiWallet'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { JsonRpcProvider, Network } from '@mysten/sui.js';
-import { Signer } from 'types/Signer'
+import { ExtensionSigner, HostedSigner } from 'types/Signer'
 import lib from '../lib/lib'
 
 const useConnect = () => {
@@ -43,7 +43,7 @@ const useConnect = () => {
     setLogoutCount(prev => prev + 1);
   }, [])
 
-  const checkSigner = useCallback((signer: Signer | null, type?: string) => {
+  const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
     
