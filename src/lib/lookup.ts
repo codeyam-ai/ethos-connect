@@ -8,7 +8,7 @@ const CACHE_DELAY = 1000 * 30;
 const lookup = async (nameOrAddress: string): Promise<SuiAddress | string> => {
     const provider = new JsonRpcProvider(Network.DEVNET);
 
-    const namesObjectId = '0x79af4acd5d1d70fbb29b724b5060c67063cae83c';
+    const namesObjectId = '0x8b6497c11ffd52ee2414115234fb3200e84cd2c8';
 
     const lookupStore = store.namespace('lookup')
     const recordsInfo = await lookupStore('suins');
