@@ -18,10 +18,22 @@ const SignInButton = (props: SignInButtonProps) => {
 
   return (
     <>
-      <WorkingButton onClick={_onClick} {...reactProps}>
+      <WorkingButton onClick={_onClick} {...reactProps} style={buttonDefault()}>
         {children || <>Sign In</>}
       </WorkingButton>
     </>
   )
 }
 export default SignInButton
+
+export const buttonDefault = () => (
+  {
+    lineHeight: '21px',
+    padding: '0 12px 0 0',
+    border: 'none',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    fontFamily: 'inherit',
+    fontSize: '14px'
+  } as React.CSSProperties
+)
