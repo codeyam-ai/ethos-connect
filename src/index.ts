@@ -65,6 +65,7 @@ const ethos = {
   hideSignInModal,
 
   useProviderAndSigner,
+  useProvider,
   useAddress,
   useContents,
   useWallet,

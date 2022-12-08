@@ -17,6 +17,7 @@ import useConnect from '../hooks/useConnect'
 import SignInModal from './styled/SignInModal'
 import ModalContext from './ModalContext'
 import { EthosConnectStatus } from '../enums/EthosConnectStatus'
+import { Network } from '@mysten/sui.js'
 
 export interface EthosConnectProviderProps {
   ethosConfiguration?: EthosConfiguration
@@ -25,6 +26,7 @@ export interface EthosConnectProviderProps {
   dappName?: string
   dappIcon?: string | ReactNode
   children: ReactNode
+  network?: Network
 }
 
 const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMessage, dappName, dappIcon, children }: EthosConnectProviderProps) => {
@@ -116,24 +118,26 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
     }
     
     return (
-        <WalletsContext.Provider value={walletContext}>
-            <ProviderAndSignerContext.Provider value={providerAndSigner}>
-                <ContentsContext.Provider value={contents}>
-                    <ModalContext.Provider value={modalState}>
-                        {children}
+        <NetworkContext.Provider value={ethosConfiguration.network || Network.DEVNET}>
+            <WalletsContext.Provider value={walletContext}>
+                <ProviderAndSignerContext.Provider value={providerAndSigner}>
+                    <ContentsContext.Provider value={contents}>
+                        <ModalContext.Provider value={modalState}>
+                            {children}
 
-                        <SignInModal
-                            isOpen={isModalOpen}
-                            hideEmailSignIn={ethosConfiguration.hideEmailSignIn}
-                            hideWalletSignIn={ethosConfiguration.hideWalletSignIn}
-                            connectMessage={connectMessage}
-                            dappName={dappName}
-                            dappIcon={dappIcon}
-                        />
-                    </ModalContext.Provider>
-                </ContentsContext.Provider>
-            </ProviderAndSignerContext.Provider>
-        </WalletsContext.Provider>
+                            <SignInModal
+                                isOpen={isModalOpen}
+                                hideEmailSignIn={ethosConfiguration.hideEmailSignIn}
+                                hideWalletSignIn={ethosConfiguration.hideWalletSignIn}
+                                connectMessage={connectMessage}
+                                dappName={dappName}
+                                dappIcon={dappIcon}
+                            />
+                        </ModalContext.Provider>
+                    </ContentsContext.Provider>
+                </ProviderAndSignerContext.Provider>
+            </WalletsContext.Provider>
+        </NetworkContext.Provider>
     ) 
 }
 
