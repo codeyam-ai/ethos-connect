@@ -20,6 +20,9 @@ export const button = () => (
         padding: "6px 12px",
         display: "flex",
         alignItems: 'center',
-        gap: "6px"
+        gap: "6px",
+        border: "none",
+        fontFamily: 'inherit',
+        cursor: 'pointer'
     } as React.CSSProperties
 )

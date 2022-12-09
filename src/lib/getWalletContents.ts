@@ -1,5 +1,5 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
-import { WalletContents } from "types/WalletContents";
+import { WalletContentContents } from "types/WalletContents";
 // import fetchSui from "./fetchSui";
 
 const ipfsConversion = (src: string): string => {
@@ -10,7 +10,16 @@ const ipfsConversion = (src: string): string => {
     return src;
 }
 
-const getWalletContents = async (address: string): Promise<WalletContents> => {
+const empty: WalletContentContents = {
+  contents: {
+    suiBalance: 0,
+    nfts: [],
+    tokens: []
+  },
+  objectInfos: []     
+}
+
+const getWalletContents = async (address: string, objectInfos: any[] = []): Promise<WalletContentContents | null> => {
   const provider = new JsonRpcProvider(Network.DEVNET);
 //   let objectInfos: any[] = [];
 
@@ -33,25 +42,27 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
 //   }
 
   if (!address) {
-    return {
-      suiBalance: 0,
-      nfts: [],
-      tokens: []
-    }
+    return empty
   }
   
-  const objectInfos = await provider.getObjectsOwnedByAddress(address);
-  // const objectInfos: SuiObjectInfo[] = []
+  const newObjectInfos = await provider.getObjectsOwnedByAddress(address);
+  // const newObjectInfos: SuiObjectInfo[] = []
   
-  if (objectInfos.length === 0) {
-    return {
-        suiBalance: 0,
-        tokens: [],
-        nfts: []
-    }
+  if (newObjectInfos.length === 0) {
+    return empty;
   }
 
-  const objectIds = objectInfos.map((o: any) => o.objectId);
+  const objectIds = newObjectInfos.filter(
+    (newObjectInfo) => !objectInfos.find(
+      (objectInfo) => (
+        newObjectInfo.objectId === objectInfo.objectId &&
+        newObjectInfo.version === objectInfo.version
+      )
+    )
+  ).map((o: any) => o.objectId);
+
+  if (objectIds.length === 0) return null;
+
   const objects = await provider.getObjectBatch(objectIds)
 
 //   console.log("OBJECTS", objects)
@@ -142,7 +153,7 @@ const getWalletContents = async (address: string): Promise<WalletContents> => {
     }
   } 
 
-  return { suiBalance, tokens, nfts }
+  return { contents: { suiBalance, tokens, nfts }, objectInfos: newObjectInfos }
 }
 
 export default getWalletContents;

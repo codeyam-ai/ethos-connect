@@ -5,7 +5,8 @@ import type { MenuButtonProps } from '../../types/MenuButtonProps';
 import useWallet from '../../hooks/useWallet';
 
 const LogoutButton = (props: MenuButtonProps) => {
-    const { wallet } = useWallet();
+    const { externalContext, ...buttonProps } = props;
+    const { wallet } = externalContext?.wallet || useWallet();
 
     const children = useCallback((hover: boolean) => (
         <>
@@ -21,7 +22,7 @@ const LogoutButton = (props: MenuButtonProps) => {
 
     return (
         <MenuButton 
-            {...props}
+            {...buttonProps}
             onClick={wallet?.disconnect}
             hoverChildren={children(true)}
         >

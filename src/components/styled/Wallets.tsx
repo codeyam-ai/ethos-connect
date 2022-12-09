@@ -22,13 +22,13 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
         selectWallet(name);
     }, []);
 
-    const icon = (wallet: WalletAdapter) => {
+    const icon = useCallback((wallet: WalletAdapter) => {
         const src = wallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet.icon
 
         return (
             <img src={src} height={32} width={32} />
         )
-    }
+    }, []);
 
     return (
         <div role="wallet-sign-in">
@@ -36,7 +36,7 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
                 {wallets?.map(
                     (wallet, index) => (
                         <IconButton
-                            key={`wallet-${index}`}
+                            key={`select-wallet-${index}`}
                             icon={icon(wallet)}
                             data-name={wallet.name}
                             text={wallet.name}

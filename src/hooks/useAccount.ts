@@ -4,6 +4,7 @@ import { Signer } from 'types/Signer';
 
 const useAccount = (signer: Signer | null) => {
   const [account, setAccount] = useState<any | null>({})
+  const [existingObjectInfos, setExistingObjectInfos] = useState<any | null>([])
 
   useEffect(() => {
     if (!signer) return;
@@ -13,7 +14,13 @@ const useAccount = (signer: Signer | null) => {
       if (!address) {
         return
       }
-      const contents = await getWalletContents(address);
+      const contentsWrapper = await getWalletContents(address, existingObjectInfos);
+
+      if (!contentsWrapper) return;
+
+      const { contents, objectInfos } = contentsWrapper;
+
+      setExistingObjectInfos(objectInfos);
       setAccount({
         address,
         contents
@@ -24,7 +31,7 @@ const useAccount = (signer: Signer | null) => {
     const interval = setInterval(initAccount, 5000);
 
     return () => clearInterval(interval);
-  }, [signer])
+  }, [signer, existingObjectInfos])
 
   return account;
 }

@@ -427,7 +427,9 @@ export const iconButton = (width: number, disabled: boolean = false, primary: bo
     flex: "none",
     order: "0",
     flexGrow: "0",
-    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)"
+    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
+    border: "none",
+    fontSize: 'inherit'
   }
   const sm = {
   }

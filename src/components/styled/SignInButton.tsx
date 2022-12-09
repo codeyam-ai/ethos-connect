@@ -1,20 +1,21 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import WorkingButton from '../headless/WorkingButton'
 import { WorkingButtonProps } from '../../types/WorkingButtonProps'
 import useModal from '../../hooks/useModal'
 
 export interface SignInButtonProps extends WorkingButtonProps {
   onLoaded?: () => void
+  externalContext?: any
 }
 
 const SignInButton = (props: SignInButtonProps) => {
-  const { children, onClick, ...reactProps } = props
-  const { openModal } = useModal()
+  const { children, onClick, externalContext, ...reactProps } = props
+  const { openModal } = externalContext?.modal || useModal();
 
-  const _onClick = (e: any) => {
+  const _onClick = useCallback((e: any) => {
     openModal()
     onClick && onClick(e)
-  }
+  }, [openModal, onClick])
 
   return (
     <>

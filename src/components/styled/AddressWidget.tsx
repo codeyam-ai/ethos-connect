@@ -16,19 +16,21 @@ import { useEffect } from 'react';
 import { AddressWidgetButtons } from '../../enums/AddressWidgetButtons';
 
 export interface AddressWidgetProps {
-    includeMenu?: boolean,
-    buttonColor?: string,
+    includeMenu?: boolean
+    buttonColor?: string
     extraButtons?: ReactNode[]
     excludeButtons?: AddressWidgetButtons[]
+    externalContext?: any
 }
 
 const AddressWidget = ({ 
     includeMenu = true, 
     buttonColor = primaryColor,
     extraButtons = [],
-    excludeButtons = [] 
+    excludeButtons = [],
+    externalContext 
 }: AddressWidgetProps) => {
-    const { wallet } = useWallet();
+    const { wallet } = externalContext?.wallet || useWallet();
     const [showMenu, setShowMenu] = useState(false);
 
     useEffect(() => {
@@ -72,13 +74,14 @@ const AddressWidget = ({
                         </div>
                     </>
                 ) : (
-                    <SignInButton style={signIn()} />
+                    <SignInButton style={signIn()} externalContext={externalContext} />
                 )}
             </div>
             {includeMenu && showMenu && (
                 <div style={menu()}>
                     {!excludeButtons.includes(AddressWidgetButtons.CopyWalletAddress) && (
                         <CopyWalletAddressButton 
+                            externalContext={externalContext}
                             hoverBackgroundColor={buttonColor} 
                         />
                     )}
@@ -91,6 +94,7 @@ const AddressWidget = ({
                     {extraButtons}
                     {!excludeButtons.includes(AddressWidgetButtons.Logout) && (
                         <LogoutButton
+                            externalContext={externalContext}
                             hoverBackgroundColor={buttonColor}
                         />
                     )}
