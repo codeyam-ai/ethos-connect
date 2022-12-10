@@ -149,7 +149,7 @@ const SignInModal = ({
             <Header
                 title={safeConnectMessage}
                 dappIcon={dappIcon}
-                subTitle="Choose from your connected wallets"
+                subTitle="Choose from your installed wallets"
             >
                 <Wallets
                     wallets={safeWallets}
