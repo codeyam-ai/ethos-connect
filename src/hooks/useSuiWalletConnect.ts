@@ -37,13 +37,18 @@ export interface WalletContextState {
   }
   
 const useSuiWalletConnect = () => {
-    const wallets = useWalletAdapters();
+    const walletAdapters = useWalletAdapters();
     
+    const [wallets, setWallets] = useState<WalletAdapter[]>([]);
     const [wallet, setWallet] = useState<WalletAdapter | null>(null);
     const [connected, setConnected] = useState(false);
     const [connecting, setConnecting] = useState(false);
     const [noConnection, setNoConnection] = useState(false);
   
+    useEffect(() => {
+        setWallets(walletAdapters);
+    }, [walletAdapters]);
+
     // Once we connect, we remember that we've connected before to enable auto-connect:
     useEffect(() => {
       if (connected && wallet) {
@@ -53,6 +58,8 @@ const useSuiWalletConnect = () => {
   
     const select = useCallback(  
       async (name: string): Promise<boolean> => {
+        if (!wallets) return false;
+
         let selectedWallet = 
           wallets.find((wallet) => wallet.name === name) ?? null;
         setWallet(selectedWallet);
