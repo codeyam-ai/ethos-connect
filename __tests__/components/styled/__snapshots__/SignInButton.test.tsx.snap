@@ -6,13 +6,11 @@ Array [
     onClick={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
         "border": "none",
         "cursor": "pointer",
         "fontFamily": "inherit",
         "fontSize": "14px",
         "lineHeight": "21px",
-        "padding": "0 12px 0 0",
       }
     }
   >

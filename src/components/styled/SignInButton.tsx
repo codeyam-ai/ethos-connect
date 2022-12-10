@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { CSSProperties, useCallback } from 'react'
 import WorkingButton from '../headless/WorkingButton'
 import { WorkingButtonProps } from '../../types/WorkingButtonProps'
 import useModal from '../../hooks/useModal'
@@ -19,7 +19,7 @@ const SignInButton = (props: SignInButtonProps) => {
 
   return (
     <>
-      <WorkingButton onClick={_onClick} {...reactProps} style={buttonDefault()}>
+      <WorkingButton onClick={_onClick} {...reactProps} style={buttonDefault(props.style)}>
         {children || <>Sign In</>}
       </WorkingButton>
     </>
@@ -27,14 +27,13 @@ const SignInButton = (props: SignInButtonProps) => {
 }
 export default SignInButton
 
-export const buttonDefault = () => (
+export const buttonDefault = (providedStyles: CSSProperties | undefined) => (
   {
     lineHeight: '21px',
-    padding: '0 12px 0 0',
     border: 'none',
-    backgroundColor: 'transparent',
     cursor: 'pointer',
     fontFamily: 'inherit',
-    fontSize: '14px'
+    fontSize: '14px',
+    ...providedStyles || {}
   } as React.CSSProperties
 )

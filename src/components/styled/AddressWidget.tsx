@@ -159,7 +159,8 @@ export const menu = () => (
 
 export const signIn = () => (
     {  
-        paddingRight: "12px",
+        padding: "0 12px 0 0",
+        background: "none",
         whiteSpace: "nowrap"
     } as React.CSSProperties
 );
