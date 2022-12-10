@@ -44,6 +44,21 @@ const suiCoin2 = {
     }    
 }
 
+const suiCoin3 = {
+    details: {
+        data: {
+            type: '0x2::coin::Coin<0x2::sui::SUI>',
+            fields: {
+                balance: 50000
+            }
+        },
+        reference: {
+            objectId: 'COIN3',
+            version: 36
+        }
+    }    
+}
+
 const getObjectsOwnedByAddress = jest.fn(
     () => Promise.resolve([suiCoin, suiCoin2, nft].map((o: any) => ({ 
         objectId: o.details.reference.objectId,
@@ -53,7 +68,7 @@ const getObjectsOwnedByAddress = jest.fn(
 
 const getObjectBatch = jest.fn(
     (objectIds: string[]) => {
-        return [suiCoin, suiCoin2, nft].filter(
+        return [suiCoin, suiCoin2, suiCoin3, nft].filter(
             (o: any) => objectIds.includes(o.details.reference.objectId)
         )
     }
@@ -62,6 +77,7 @@ const getObjectBatch = jest.fn(
 export default {
     suiCoin,
     suiCoin2,
+    suiCoin3,
     nft, 
     getObjectsOwnedByAddress,
     getObjectBatch,

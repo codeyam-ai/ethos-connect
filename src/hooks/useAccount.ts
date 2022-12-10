@@ -30,7 +30,7 @@ const useAccount = (signer: Signer | null) => {
     const interval = setInterval(initAccount, 5000);
 
     return () => clearInterval(interval);
-  }, [signer])
+  }, [signer, account.contents])
 
   return account;
 }

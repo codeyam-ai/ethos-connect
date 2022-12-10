@@ -31,6 +31,29 @@ describe('getWalletBalance', () => {
         expect(sui.getObjectBatch).toBeCalledTimes(0)
         expect(contents).toBeNull();
     })
+
+    it('should add and remove objects as necessary', async () => {
+      sui.getObjectsOwnedByAddress.mockReturnValueOnce(
+        Promise.resolve([sui.suiCoin, sui.suiCoin3].map((o: any) => ({ 
+          objectId: o.details.reference.objectId,
+          version: o.details.reference.version
+        })))
+      )
+
+      const contents = await getWalletContents({ address: '0x123', existingContents })
+
+      const totalBalance = (
+        sui.suiCoin.details.data.fields.balance +
+        sui.suiCoin3.details.data.fields.balance
+      )
+      
+      expect(sui.getObjectBatch).toBeCalledWith(["COIN3"])
+      expect(contents?.nfts.length).toBe(0)
+      expect(contents?.suiBalance).toBe(totalBalance)
+      expect(contents?.tokens['0x2::sui::SUI'].balance).toBe(totalBalance);
+      expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
+      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toBe(sui.suiCoin3.details.data.fields.balance)  
+  })
 })
 
 const existingContents = {

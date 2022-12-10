@@ -66,7 +66,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
     } else {
         newObjectInfos = objectInfos;
     }
-    
+
     if (newObjectInfos.length === 0) return null;
 
     const newObjectIds = newObjectInfos.map((o: any) => o.objectId);
