@@ -12,7 +12,7 @@ const ipfsConversion = (src: string): string => {
 
 export type GetWalletContentsArgs = {
     address: string,
-    existingContents?: WalletContents | any[]
+    existingContents?: WalletContents
 }
 
 const empty: WalletContents = {
@@ -43,26 +43,30 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
       return object.details;
     }
 
-    const existingObjects = Array.isArray(existingContents) ? existingContents : existingContents.objects
     const currentObjects = [];
-    const newObjectInfos = []
-    for (const objectInfo of objectInfos) {
-        const existingObject = existingObjects.find(
-            (existingObject) => {
-                const { reference } = referenceAndData(existingObject);
-                return (
-                    reference?.objectId === objectInfo.objectId &&
-                    reference?.version === objectInfo.version
-                )
+    let newObjectInfos = [];
+    if (existingContents?.objects && existingContents.objects.length > 0) {
+        for (const objectInfo of objectInfos) {
+            const existingObject = existingContents?.objects.find(
+                (existingObject) => {
+                    const { reference } = referenceAndData(existingObject);
+                    return (
+                        reference?.objectId === objectInfo.objectId &&
+                        reference?.version === objectInfo.version
+                    )
+                }
+            );
+            
+            if (existingObject) {
+                currentObjects.push(existingObject);
+            } else {
+                newObjectInfos.push(objectInfo);
             }
-        );
-        
-        if (existingObject) {
-            currentObjects.push(existingObject);
-        } else {
-            newObjectInfos.push(objectInfo);
         }
+    } else {
+        newObjectInfos = objectInfos;
     }
+    
     if (newObjectInfos.length === 0) return null;
 
     const newObjectIds = newObjectInfos.map((o: any) => o.objectId);

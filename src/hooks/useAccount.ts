@@ -2,7 +2,7 @@ import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useState } from 'react'
 import { Signer } from 'types/Signer';
 
-const useAccount = (signer: Signer | null, raw: boolean = false) => {
+const useAccount = (signer: Signer | null) => {
   const [account, setAccount] = useState<any | null>({})
  
   useEffect(() => {
@@ -15,8 +15,7 @@ const useAccount = (signer: Signer | null, raw: boolean = false) => {
       }
       const contents = await getWalletContents({
         address, 
-        existingContents: account.contents,
-        raw
+        existingContents: account.contents
       });
 
       if (!contents) return;
