@@ -117,7 +117,7 @@ export const modalInnerWrapper = (width: number): React.CSSProperties => {
   // flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0
   const styles = {
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100%',
     padding: '1rem' /* 16px */,
