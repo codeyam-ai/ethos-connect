@@ -1,5 +1,5 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
-import { WalletContentContents } from "types/WalletContents";
+import { WalletContents } from "../types/WalletContents";
 // import fetchSui from "./fetchSui";
 
 const ipfsConversion = (src: string): string => {
@@ -10,17 +10,21 @@ const ipfsConversion = (src: string): string => {
     return src;
 }
 
-const empty: WalletContentContents = {
-  contents: {
-    suiBalance: 0,
-    nfts: [],
-    tokens: []
-  },
-  objectInfos: []     
+export type GetWalletContentsArgs = {
+    address: string,
+    raw?: boolean,
+    existingContents?: WalletContents | any[]
 }
 
-const getWalletContents = async (address: string, objectInfos: any[] = []): Promise<WalletContentContents | null> => {
-  const provider = new JsonRpcProvider(Network.DEVNET);
+const empty: WalletContents = {
+    suiBalance: 0,
+    nfts: [],
+    tokens: [],
+    objects: []  
+}
+
+const getWalletContents = async ({ address, raw = false, existingContents = empty }: GetWalletContentsArgs): Promise<WalletContents | any[] | null> => {
+    const provider = new JsonRpcProvider(Network.DEVNET);
 //   let objectInfos: any[] = [];
 
 //   if (address) {
@@ -42,28 +46,72 @@ const getWalletContents = async (address: string, objectInfos: any[] = []): Prom
 //   }
 
   if (!address) {
-    return empty
+    return raw ? [] : empty
   }
   
-  const newObjectInfos = await provider.getObjectsOwnedByAddress(address);
+  const objectInfos = await provider.getObjectsOwnedByAddress(address);
   // const newObjectInfos: SuiObjectInfo[] = []
   
-  if (newObjectInfos.length === 0) {
-    return empty;
+  if (objectInfos.length === 0) {
+    return raw ? [] : empty;
   }
 
-  const objectIds = newObjectInfos.filter(
-    (newObjectInfo) => !objectInfos.find(
-      (objectInfo) => (
-        newObjectInfo.objectId === objectInfo.objectId &&
-        newObjectInfo.version === objectInfo.version
+  const referenceAndData = (object: any) => {
+    if (
+      typeof object.details === "string" || 
+      !("reference" in object.details)
+    ) return {};
+
+    return object.details;
+  }
+
+  const allRawObjects = Array.isArray(existingContents) ? existingContents : existingContents.objects
+  const rawObjects = allRawObjects.length === 0 ? allRawObjects : allRawObjects.filter(
+    (object: any) => {
+      const { reference } = referenceAndData(object);
+      return !!objectInfos.find(
+        (info) => {
+          return info.objectId === reference?.objectId
+        }
       )
+    }
+  );
+  
+  const objectIds = objectInfos.filter(
+    (objectInfo) => !rawObjects.find(
+      (object: any) => {
+        const { reference } = referenceAndData(object);
+        return (
+          reference?.objectId === objectInfo.objectId &&
+          reference?.version === objectInfo.version
+        )
+      }
     )
   ).map((o: any) => o.objectId);
 
   if (objectIds.length === 0) return null;
 
   const objects = await provider.getObjectBatch(objectIds)
+
+  for (const object of objects) {
+    const { reference } = referenceAndData(object);
+    if (!reference) continue;
+
+    const index = rawObjects.findIndex(
+      (o) => {
+        const { reference: r } = referenceAndData(o);
+        if (!r) return false;
+        return r.objectId === reference.objectId
+      }
+    );
+    console.log("index", index, rawObjects.length, rawObjects[index])
+    if (index === -1) {
+      rawObjects.push(object);
+    } else {
+      rawObjects.splice(index, 1, object);
+    }
+    console.log("after", rawObjects.length, rawObjects[index])
+  }
 
 //   console.log("OBJECTS", objects)
   
@@ -82,13 +130,12 @@ const getWalletContents = async (address: string, objectInfos: any[] = []): Prom
   const nfts = [];
   const tokens: {[key: string]: any}= {};
   // const modules = {};
-  for (const object of objects) {
+  for (const object of rawObjects) {
     try {
-      const { data, reference } = object.details as any || {}
-
-      if (!data) continue;
+      const { reference, data } = referenceAndData(object);
+      if (!reference) continue;  
       
-      const typeStringComponents = (data?.type || "").split('<');
+      const typeStringComponents = (data.type || "").split('<');
       const subtype = (typeStringComponents[1] || "").replace(/>/, '')
       const typeComponents = typeStringComponents[0].split('::');
       const type = typeComponents[typeComponents.length - 1];
@@ -99,6 +146,7 @@ const getWalletContents = async (address: string, objectInfos: any[] = []): Prom
         nfts.push({
           chain: 'Sui',
           address: reference?.objectId,
+          objectId: reference?.objectId,
           name: data.fields.name,
           description: data.fields.description,
           imageUri: safeUrl,
@@ -136,6 +184,7 @@ const getWalletContents = async (address: string, objectInfos: any[] = []): Prom
           package: typeComponents[0],
           chain: 'Sui',
           address: reference?.objectId,
+          objectId: reference?.objectId,
           name: name,
           description: description,
           imageUri: safeUrl,
@@ -153,7 +202,7 @@ const getWalletContents = async (address: string, objectInfos: any[] = []): Prom
     }
   } 
 
-  return { contents: { suiBalance, tokens, nfts }, objectInfos: newObjectInfos }
+  return { suiBalance, tokens, nfts, objects: rawObjects }
 }
 
 export default getWalletContents;

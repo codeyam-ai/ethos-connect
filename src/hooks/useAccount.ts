@@ -2,10 +2,9 @@ import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useState } from 'react'
 import { Signer } from 'types/Signer';
 
-const useAccount = (signer: Signer | null) => {
+const useAccount = (signer: Signer | null, raw: boolean = false) => {
   const [account, setAccount] = useState<any | null>({})
-  const [existingObjectInfos, setExistingObjectInfos] = useState<any | null>([])
-
+ 
   useEffect(() => {
     if (!signer) return;
 
@@ -14,13 +13,14 @@ const useAccount = (signer: Signer | null) => {
       if (!address) {
         return
       }
-      const contentsWrapper = await getWalletContents(address, existingObjectInfos);
+      const contents = await getWalletContents({
+        address, 
+        existingContents: account.contents,
+        raw
+      });
 
-      if (!contentsWrapper) return;
+      if (!contents) return;
 
-      const { contents, objectInfos } = contentsWrapper;
-
-      setExistingObjectInfos(objectInfos);
       setAccount({
         address,
         contents
@@ -31,7 +31,7 @@ const useAccount = (signer: Signer | null) => {
     const interval = setInterval(initAccount, 5000);
 
     return () => clearInterval(interval);
-  }, [signer, existingObjectInfos])
+  }, [signer])
 
   return account;
 }
