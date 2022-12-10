@@ -5,7 +5,7 @@ import ConnectContext from '../components/ConnectContext';
 const useProviderAndSigner = (): ProviderAndSigner => {
   const { providerAndSigner } = useContext(ConnectContext);
 
-  return providerAndSigner || { provider: null };
+  return providerAndSigner || { provider: null, signer: null };
 }
 
 export default useProviderAndSigner;

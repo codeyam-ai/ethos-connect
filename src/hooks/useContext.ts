@@ -10,8 +10,17 @@ import { WalletContextContents } from '../types/WalletContextContents'
 import useAccount from './useAccount'
 import useConnect from './useConnect'
 import { EthosConnectStatus } from '../enums/EthosConnectStatus'
+import { ModalContextContents } from '../types/ModalContextContents';
+import { ConnectContextContents } from '../types/ConnectContextContents';
+import { EthosConfiguration } from '../types/EthosConfiguration';
+import { ProviderAndSigner } from '../types/ProviderAndSigner';
 
-const useContext = (ethosConfiguration: any, onWalletConnected: any) => {
+export interface UseContextArgs {
+    ethosConfiguration?: EthosConfiguration, 
+    onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void
+}
+
+const useContext = ({ ethosConfiguration, onWalletConnected }: UseContextArgs): ConnectContextContents => {
     if (!ethosConfiguration) ethosConfiguration = {};
     if (!ethosConfiguration?.chain) ethosConfiguration.chain = Chain.Sui;
     if (!ethosConfiguration?.network) ethosConfiguration.network = 'sui';
@@ -27,7 +36,7 @@ const useContext = (ethosConfiguration: any, onWalletConnected: any) => {
     const { address, contents } = useAccount(providerAndSigner.signer)
     const [isModalOpen, setIsModalOpen] = useState(false);
     
-    const modal = useMemo(() => {
+    const modal: ModalContextContents = useMemo(() => {
         const openModal = () => {
             setIsModalOpen(true)
         }

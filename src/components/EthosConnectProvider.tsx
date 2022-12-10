@@ -5,7 +5,7 @@ import { EthosConfiguration } from 'types/EthosConfiguration'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import SignInModal from './styled/SignInModal'
 import ConnectContext from './ConnectContext'
-import useValue from '../hooks/useContext'
+import useContext from '../hooks/useContext'
 
 export interface EthosConnectProviderProps {
   ethosConfiguration?: EthosConfiguration
@@ -17,16 +17,16 @@ export interface EthosConnectProviderProps {
 }
 
 const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMessage, dappName, dappIcon, children }: EthosConnectProviderProps) => {
-    const value = useValue(ethosConfiguration, onWalletConnected);
+    const context = useContext({ ethosConfiguration, onWalletConnected });
     
     return (
-        <ConnectContext.Provider value={{ setContext: () => {}, ...value }}>
+        <ConnectContext.Provider value={context}>
             {children}
 
             <SignInModal
-                isOpen={value.modal.isModalOpen}
-                hideEmailSignIn={value.ethosConfiguration.hideEmailSignIn}
-                hideWalletSignIn={value.ethosConfiguration.hideWalletSignIn}
+                isOpen={context.modal?.isModalOpen || false}
+                hideEmailSignIn={context.ethosConfiguration.hideEmailSignIn}
+                hideWalletSignIn={context.ethosConfiguration.hideWalletSignIn}
                 connectMessage={connectMessage}
                 dappName={dappName}
                 dappIcon={dappIcon}
