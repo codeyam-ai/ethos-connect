@@ -65,53 +65,31 @@ const getWalletContents = async ({ address, raw = false, existingContents = empt
     return object.details;
   }
 
-  const allRawObjects = Array.isArray(existingContents) ? existingContents : existingContents.objects
-  const rawObjects = allRawObjects.length === 0 ? allRawObjects : allRawObjects.filter(
-    (object: any) => {
-      const { reference } = referenceAndData(object);
-      return !!objectInfos.find(
-        (info) => {
-          return info.objectId === reference?.objectId
-        }
-      )
-    }
-  );
-  
-  const objectIds = objectInfos.filter(
-    (objectInfo) => !rawObjects.find(
-      (object: any) => {
-        const { reference } = referenceAndData(object);
+  const existingObjects = Array.isArray(existingContents) ? existingContents : existingContents.objects
+  const currentObjects = [];
+  for (let i=0; i<objectInfos.length; ++i) {
+    const objectInfo = objectInfos[i];
+    const existingObject = existingObjects.find(
+      (existingObject) => {
+        const { reference } = referenceAndData(existingObject);
         return (
           reference?.objectId === objectInfo.objectId &&
           reference?.version === objectInfo.version
         )
       }
-    )
-  ).map((o: any) => o.objectId);
-
-  if (objectIds.length === 0) return null;
-
-  const objects = await provider.getObjectBatch(objectIds)
-
-  for (const object of objects) {
-    const { reference } = referenceAndData(object);
-    if (!reference) continue;
-
-    const index = rawObjects.findIndex(
-      (o) => {
-        const { reference: r } = referenceAndData(o);
-        if (!r) return false;
-        return r.objectId === reference.objectId
-      }
     );
-    console.log("index", index, rawObjects.length, rawObjects[index])
-    if (index === -1) {
-      rawObjects.push(object);
-    } else {
-      rawObjects.splice(index, 1, object);
+
+    if (existingObject) {
+      currentObjects.push(existingObject);
+      objectInfos.splice(i, 1);
     }
-    console.log("after", rawObjects.length, rawObjects[index])
   }
+  
+  if (objectInfos.length === 0) return null;
+
+  const objectIds = objectInfos.map((o: any) => o.objectId);
+  const newObjects = await provider.getObjectBatch(objectIds)
+  const objects = currentObjects.concat(newObjects)
 
 //   console.log("OBJECTS", objects)
   
@@ -130,7 +108,7 @@ const getWalletContents = async ({ address, raw = false, existingContents = empt
   const nfts = [];
   const tokens: {[key: string]: any}= {};
   // const modules = {};
-  for (const object of rawObjects) {
+  for (const object of objects) {
     try {
       const { reference, data } = referenceAndData(object);
       if (!reference) continue;  
@@ -202,7 +180,7 @@ const getWalletContents = async ({ address, raw = false, existingContents = empt
     }
   } 
 
-  return { suiBalance, tokens, nfts, objects: rawObjects }
+  return { suiBalance, tokens, nfts, objects }
 }
 
 export default getWalletContents;
