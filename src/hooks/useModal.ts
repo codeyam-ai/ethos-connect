@@ -1,18 +1,10 @@
 import { useContext } from "react"
-import ModalContext from "../components/ModalContext";
+import ConnectContext from '../components/ConnectContext';
 
 const useModal = () => {
-    const {isModalOpen, setIsModalOpen} = useContext(ModalContext)
+    const { modal } = useContext(ConnectContext)
 
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false)
-    }
-
-    return { openModal, closeModal, isModalOpen }
+    return modal
 }
 
 export default useModal;

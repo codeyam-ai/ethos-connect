@@ -7,7 +7,8 @@ import { MenuButtonProps } from '../../types/MenuButtonProps';
 
 
 const CopyWalletAddressButton = (props: MenuButtonProps) => {
-    const { wallet } = useWallet();
+    const { externalContext, ...buttonProps } = props;
+    const { wallet } = externalContext?.wallet || useWallet();
 
     const children = useCallback((hover: boolean) => (
         <>
@@ -36,7 +37,7 @@ const CopyWalletAddressButton = (props: MenuButtonProps) => {
 
     return (
         <MenuButton 
-            {...props}
+            {...buttonProps}
             onClick={onClick}
             hoverChildren={children(true)}
         >

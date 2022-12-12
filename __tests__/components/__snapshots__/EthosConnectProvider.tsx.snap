@@ -202,6 +202,7 @@ Array [
                       Object {
                         "alignItems": "center",
                         "background": "#6D28D9",
+                        "border": "none",
                         "borderRadius": "16px",
                         "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
                         "boxSizing": "border-box",
@@ -211,6 +212,7 @@ Array [
                         "flex": "none",
                         "flexDirection": "row",
                         "flexGrow": "0",
+                        "fontSize": "inherit",
                         "fontWeight": "500",
                         "justifyContent": "center",
                         "opacity": 0.5,
@@ -276,6 +278,7 @@ Array [
                     Object {
                       "alignItems": "center",
                       "background": "#F2F2F2",
+                      "border": "none",
                       "borderRadius": "16px",
                       "boxShadow": "0px 1px 2px rgba(0, 0, 0, 0.05)",
                       "boxSizing": "border-box",
@@ -285,6 +288,7 @@ Array [
                       "flex": "none",
                       "flexDirection": "row",
                       "flexGrow": "0",
+                      "fontSize": "inherit",
                       "fontWeight": "400",
                       "justifyContent": "space-between",
                       "opacity": 1,

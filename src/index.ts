@@ -37,6 +37,9 @@ import { WalletContents } from './types/WalletContents';
 import { ProviderAndSigner } from './types/ProviderAndSigner';
 import { Signer } from './types/Signer';
 
+import useContext from './hooks/useContext';
+import DetachedEthosConnectProvider from './components/DetachedEthosConnectProvider';
+
 const components = {
   AddressWidget,
   MenuButton,
@@ -68,6 +71,7 @@ const ethos = {
   useAddress,
   useContents,
   useWallet,
+  useContext,
   getWalletContents,
 
   dripSui,
@@ -82,6 +86,7 @@ const ethos = {
 
 export {
   EthosConnectProvider,
+  DetachedEthosConnectProvider,
   SignInButton,
   ethos,
   EthosConnectStatus

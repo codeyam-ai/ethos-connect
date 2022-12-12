@@ -54,7 +54,7 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
                     {installWallets?.map(
                         (installWallet, index) => (
                             <a
-                                key={`wallet-${index}`}
+                                key={`install-wallet-${index}`}
                                 style={styles.iconButton(width)}
                                 href={installWallet.link}
                                 target="_blank"

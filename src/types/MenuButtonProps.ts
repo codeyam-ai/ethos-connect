@@ -1,5 +1,6 @@
 import type { WorkingButtonProps } from './WorkingButtonProps';
 
 export interface MenuButtonProps extends WorkingButtonProps {
-    hoverBackgroundColor: string
+    hoverBackgroundColor: string,
+    externalContext?: any
 }

@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import ContentsContext from '../components/ContentsContext'
+import ConnectContext from '../components/ConnectContext';
 
 const useContents = () => {
-  const contents = useContext(ContentsContext);
+  const contents = useContext(ConnectContext).wallet?.wallet?.contents;
 
   return contents;
 }

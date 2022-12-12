@@ -6,41 +6,78 @@ const nft = {
                 url: "IMAGE",
                 name: "NAME"
             }
+        },
+        reference: {
+            objectId: 'NFT',
+            version: 1
         }
-    },
-    reference: {
-        objectId: 'NFT'
     }
 }
 
-const coin = {
+const suiCoin = {
     details: {
         data: {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
             fields: {
                 balance: 10000
             }
+        },
+        reference: {
+            objectId: 'COIN1',
+            version: 2
         }
-    },
-    reference: {
-        objectId: 'COIN'
-    }
+    }    
+}
+
+const suiCoin2 = {
+    details: {
+        data: {
+            type: '0x2::coin::Coin<0x2::sui::SUI>',
+            fields: {
+                balance: 5000
+            }
+        },
+        reference: {
+            objectId: 'COIN2',
+            version: 6
+        }
+    }    
+}
+
+const suiCoin3 = {
+    details: {
+        data: {
+            type: '0x2::coin::Coin<0x2::sui::SUI>',
+            fields: {
+                balance: 50000
+            }
+        },
+        reference: {
+            objectId: 'COIN3',
+            version: 36
+        }
+    }    
 }
 
 const getObjectsOwnedByAddress = jest.fn(
-    () => Promise.resolve([coin, nft].map((o: any) => ({ objectId: o.reference.objectId })))
+    () => Promise.resolve([suiCoin, suiCoin2, nft].map((o: any) => ({ 
+        objectId: o.details.reference.objectId,
+        version: o.details.reference.version
+    })))
 )
 
 const getObjectBatch = jest.fn(
     (objectIds: string[]) => {
-        return [coin, nft].filter(
-            (o: any) => objectIds.includes(o.reference.objectId)
+        return [suiCoin, suiCoin2, suiCoin3, nft].filter(
+            (o: any) => objectIds.includes(o.details.reference.objectId)
         )
     }
 )
 
 export default {
-    coin,
+    suiCoin,
+    suiCoin2,
+    suiCoin3,
     nft, 
     getObjectsOwnedByAddress,
     getObjectBatch,

@@ -117,7 +117,7 @@ export const modalInnerWrapper = (width: number): React.CSSProperties => {
   // flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0
   const styles = {
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100%',
     padding: '1rem' /* 16px */,
@@ -427,7 +427,9 @@ export const iconButton = (width: number, disabled: boolean = false, primary: bo
     flex: "none",
     order: "0",
     flexGrow: "0",
-    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)"
+    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
+    border: "none",
+    fontSize: 'inherit'
   }
   const sm = {
   }

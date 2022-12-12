@@ -16,19 +16,21 @@ import { useEffect } from 'react';
 import { AddressWidgetButtons } from '../../enums/AddressWidgetButtons';
 
 export interface AddressWidgetProps {
-    includeMenu?: boolean,
-    buttonColor?: string,
+    includeMenu?: boolean
+    buttonColor?: string
     extraButtons?: ReactNode[]
     excludeButtons?: AddressWidgetButtons[]
+    externalContext?: any
 }
 
 const AddressWidget = ({ 
     includeMenu = true, 
     buttonColor = primaryColor,
     extraButtons = [],
-    excludeButtons = [] 
+    excludeButtons = [],
+    externalContext 
 }: AddressWidgetProps) => {
-    const { wallet } = useWallet();
+    const { wallet } = externalContext?.wallet || useWallet();
     const [showMenu, setShowMenu] = useState(false);
 
     useEffect(() => {
@@ -72,13 +74,14 @@ const AddressWidget = ({
                         </div>
                     </>
                 ) : (
-                    <SignInButton style={signIn()} />
+                    <SignInButton style={signIn()} externalContext={externalContext} />
                 )}
             </div>
             {includeMenu && showMenu && (
                 <div style={menu()}>
                     {!excludeButtons.includes(AddressWidgetButtons.CopyWalletAddress) && (
                         <CopyWalletAddressButton 
+                            externalContext={externalContext}
                             hoverBackgroundColor={buttonColor} 
                         />
                     )}
@@ -91,6 +94,7 @@ const AddressWidget = ({
                     {extraButtons}
                     {!excludeButtons.includes(AddressWidgetButtons.Logout) && (
                         <LogoutButton
+                            externalContext={externalContext}
                             hoverBackgroundColor={buttonColor}
                         />
                     )}
@@ -111,8 +115,6 @@ export const container = () => (
         boxShadow: "1px 1px 3px 1px #dfdfe0",
         borderRadius: '18px',
         fontSize: '14px',
-        color: 'black'
-
     } as React.CSSProperties
 )
 
@@ -157,7 +159,8 @@ export const menu = () => (
 
 export const signIn = () => (
     {  
-        paddingRight: "12px",
+        padding: "0 12px 0 0",
+        background: "none",
         whiteSpace: "nowrap"
     } as React.CSSProperties
 );
@@ -168,4 +171,11 @@ export const walletIcon = () => (
         height: "20px"
     } as React.CSSProperties
 );
+
+export const svg = () => (
+    {
+        verticalAlign: 'middle',
+        display: 'block'
+    }
+)
 

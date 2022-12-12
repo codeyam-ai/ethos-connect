@@ -29,7 +29,8 @@ export type SignInModalProps = {
     isOpen: boolean
     onClose?: () => void
     hideEmailSignIn?: boolean
-    hideWalletSignIn?: boolean
+    hideWalletSignIn?: boolean,
+    externalContext?: any
 }
 
 export function showSignInModal() {
@@ -46,10 +47,10 @@ const SignInModal = ({
     dappIcon,
     hideEmailSignIn,
     hideWalletSignIn,
+    externalContext
 }: SignInModalProps) => {
-
-    const { wallets, selectWallet } = hooks.useWallet()
-    const { isModalOpen, openModal, closeModal } = hooks.useModal()
+    const { wallets, selectWallet } = externalContext?.wallet || hooks.useWallet()
+    const { isModalOpen, openModal, closeModal } = externalContext?.modal || hooks.useModal()
     const [isOpenAll, setIsOpenAll] = useState(isModalOpen)
     const [signingIn, setSigningIn] = useState(false)
 
@@ -148,7 +149,7 @@ const SignInModal = ({
             <Header
                 title={safeConnectMessage}
                 dappIcon={dappIcon}
-                subTitle="Choose from your connected wallets"
+                subTitle="Choose from your installed wallets"
             >
                 <Wallets
                     wallets={safeWallets}
