@@ -38,7 +38,7 @@ import { ProviderAndSigner } from './types/ProviderAndSigner';
 import { Signer } from './types/Signer';
 
 import useContext from './hooks/useContext';
-import EthosConnectProviderForVue from './components/EthosConnectProviderForVue';
+import DetachedEthosConnectProvider from './components/DetachedEthosConnectProvider';
 
 const components = {
   AddressWidget,
@@ -86,7 +86,7 @@ const ethos = {
 
 export {
   EthosConnectProvider,
-  EthosConnectProviderForVue,
+  DetachedEthosConnectProvider,
   SignInButton,
   ethos,
   EthosConnectStatus

@@ -3,7 +3,7 @@ import React, {
 } from 'react'
 import SignInModal from './styled/SignInModal'
 
-export interface EthosConnectProviderForVueProps {
+export interface DetachedEthosConnectProviderProps {
   context: any,
   connectMessage?: string | ReactNode
   dappName?: string
@@ -11,7 +11,7 @@ export interface EthosConnectProviderForVueProps {
   children: ReactNode
 }
 
-const EthosConnectProviderForVue = ({ context, connectMessage, dappName, dappIcon, children }: EthosConnectProviderForVueProps) => {
+const DetachedEthosConnectProvider = ({ context, connectMessage, dappName, dappIcon, children }: DetachedEthosConnectProviderProps) => {
     return (
         <>
             {children}
@@ -29,4 +29,4 @@ const EthosConnectProviderForVue = ({ context, connectMessage, dappName, dappIco
     ) 
 }
 
-export default EthosConnectProviderForVue
+export default DetachedEthosConnectProvider
