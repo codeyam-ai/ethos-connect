@@ -115,6 +115,7 @@ export const container = () => (
         boxShadow: "1px 1px 3px 1px #dfdfe0",
         borderRadius: '18px',
         fontSize: '14px',
+        color: 'black'
     } as React.CSSProperties
 )
 
