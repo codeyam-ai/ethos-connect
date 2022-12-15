@@ -102,6 +102,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     ])
 
     useEffect(() => {
+        log('EthosConnectProvider', 'checking provider', providerAndSigner)
         if (!providerAndSigner?.provider) return;
         log('EthosConnectProvider', 'calling onWalletConnected', providerAndSigner)
 

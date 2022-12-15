@@ -89,6 +89,12 @@ const useSuiWalletConnect = () => {
     useEffect(() => {
         const checkWallets = async () => {
             log('suiWalletConnect', "Wallets", (wallets || []).map((w) => w.name));
+            if (!wallets || wallets.length === 0) {
+                log('suiWalletConnect', "setNoConnection2")
+                setNoConnection(true);
+                return;
+            }
+
             if (!wallet && !connected && !connecting) {
                 let preferredWalletName = localStorage.getItem(DEFAULT_STORAGE_KEY);
 
@@ -110,8 +116,6 @@ const useSuiWalletConnect = () => {
                 }
 
                 if (typeof preferredWalletName === "string") {
-                    if (!wallets || wallets.length === 0) return;
-
                     // const preferredWallet = wallets.find(
                     //     (w) => w.name === preferredWalletName
                     // );
@@ -133,11 +137,6 @@ const useSuiWalletConnect = () => {
                 }
 
                 log('suiWalletConnect', "setNoConnection1")
-                setNoConnection(true);
-            }
-    
-            if (!wallets || wallets.length === 0) {
-                log('suiWalletConnect', "setNoConnection2")
                 setNoConnection(true);
             }
         }
