@@ -1,4 +1,5 @@
 import { 
+    useCallback,
     useEffect, 
     useMemo,
     useState,
@@ -16,23 +17,29 @@ import { EthosConfiguration } from '../types/EthosConfiguration';
 import { ProviderAndSigner } from '../types/ProviderAndSigner';
 
 export interface UseContextArgs {
-    ethosConfiguration?: EthosConfiguration, 
+    configuration?: EthosConfiguration,
     onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void
 }
 
-const useContext = ({ ethosConfiguration, onWalletConnected }: UseContextArgs): ConnectContextContents => {
-    if (!ethosConfiguration) ethosConfiguration = {};
-    if (!ethosConfiguration?.chain) ethosConfiguration.chain = Chain.Sui;
-    if (!ethosConfiguration?.network) ethosConfiguration.network = 'sui';
-    if (!ethosConfiguration?.walletAppUrl) ethosConfiguration.walletAppUrl = 'https://ethoswallet.xyz';
+const useContext = ({ configuration, onWalletConnected }: UseContextArgs): ConnectContextContents => {  
+    const [ethosConfiguration, setEthosConfiguration] = useState<EthosConfiguration | undefined>(configuration)
 
-    log('EthosConnectProvider', 'EthosConnectProvider Configuration:', ethosConfiguration)
-  
+    const init = useCallback((config?: EthosConfiguration) => {
+        if (!config) return;
+        if (!config?.chain) config.chain = Chain.Sui;
+        if (!config?.network) config.network = "sui";
+        if (!config?.walletAppUrl) config.walletAppUrl = 'https://ethoswallet.xyz';
+
+        log('EthosConnectProvider', 'EthosConnectProvider Configuration:', config)
+        lib.initializeEthos(config)
+        setEthosConfiguration(config);
+    }, []);
+
     useEffect(() => {
-        lib.initializeEthos(ethosConfiguration || {})
-    }, [])
+        init(configuration);
+    }, [configuration])
   
-    const { wallets, selectWallet, providerAndSigner, logout } = useConnect()
+    const { wallets, selectWallet, providerAndSigner, logout } = useConnect(ethosConfiguration)
     const { address, contents } = useAccount(providerAndSigner.signer)
     const [isModalOpen, setIsModalOpen] = useState(false);
     
@@ -124,7 +131,7 @@ const useContext = ({ ethosConfiguration, onWalletConnected }: UseContextArgs): 
         providerAndSigner
     }), [wallet, modal, providerAndSigner]);
     
-    return { ...value, ethosConfiguration }
+    return { ...value, ethosConfiguration, init }
 }
 
 export default useContext;

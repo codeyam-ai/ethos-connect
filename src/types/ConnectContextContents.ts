@@ -7,5 +7,6 @@ export interface ConnectContextContents {
     wallet?: WalletContextContents,
     modal?: ModalContextContents,
     providerAndSigner?: ProviderAndSigner,
-    ethosConfiguration: EthosConfiguration
+    ethosConfiguration?: EthosConfiguration,
+    init: (configuration: EthosConfiguration) => void
 }

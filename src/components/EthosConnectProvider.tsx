@@ -17,7 +17,7 @@ export interface EthosConnectProviderProps {
 }
 
 const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMessage, dappName, dappIcon, children }: EthosConnectProviderProps) => {
-    const context = useContext({ ethosConfiguration, onWalletConnected });
+  const context = useContext({ configuration: ethosConfiguration || {}, onWalletConnected });
     
     return (
         <ConnectContext.Provider value={context}>
@@ -25,8 +25,8 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
 
             <SignInModal
                 isOpen={context.modal?.isModalOpen || false}
-                hideEmailSignIn={context.ethosConfiguration.hideEmailSignIn}
-                hideWalletSignIn={context.ethosConfiguration.hideWalletSignIn}
+                hideEmailSignIn={context.ethosConfiguration?.hideEmailSignIn || false}
+                hideWalletSignIn={context.ethosConfiguration?.hideWalletSignIn|| false}
                 connectMessage={connectMessage}
                 dappName={dappName}
                 dappIcon={dappIcon}

@@ -7,17 +7,19 @@ import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
 import sui from '../../__mocks__/sui.mock'
+import { HostedSigner } from '../../src/types/Signer';
 
 describe('EthosConnectProvider', () => {
   const signer = {
+    type: SignerType.Hosted,
     getAddress: () => Promise.resolve("ADDRESS"),
     getAccounts: () => Promise.resolve([]),
-    type: SignerType.EXTENSION,
     signAndExecuteTransaction: (_transaction) => Promise.resolve({} as any),
     requestPreapproval: (_preApproval) => Promise.resolve(true),
     sign: (_message) => Promise.resolve(true),
-    disconnect: () => {}
-  }
+    disconnect: () => {},
+    logout: () => {}
+  } as HostedSigner
 
   let receivedProvider
   let receivedSigner
@@ -36,7 +38,8 @@ describe('EthosConnectProvider', () => {
     jest.spyOn(lib, 'getWalletContents').mockReturnValue(Promise.resolve({
       suiBalance: 0,
       tokens: {},
-      nfts: []
+      nfts: [],
+      objects: []
     }))
   })
 
@@ -61,7 +64,7 @@ describe('EthosConnectProvider', () => {
   it('calls the onWalletConnected callback', async () => {
     await act(async () => {
       create(
-        <EthosConnectProvider ethosConfiguration={{}} onWalletConnected={onWalletConnected}>
+        <EthosConnectProvider ethosConfiguration={{ apiKey: "test" }} onWalletConnected={onWalletConnected}>
           test
         </EthosConnectProvider>
       )
@@ -73,7 +76,6 @@ describe('EthosConnectProvider', () => {
   })
 
   it('should initialize default configuration if no optional values are given', async () => {
-    let ethosWrapper: any;
     const initialEthosConfiguration: EthosConfiguration = { apiKey: 'test-id' }
     const expectedEthosConfiguration: EthosConfiguration = {
       apiKey: 'test-id',
@@ -85,7 +87,7 @@ describe('EthosConnectProvider', () => {
     const initializeSpy = jest.spyOn(lib, 'initializeEthos')
 
     await act(async () => {
-      ethosWrapper = create(
+      create(
         <EthosConnectProvider ethosConfiguration={initialEthosConfiguration} onWalletConnected={onWalletConnected}>
           test
         </EthosConnectProvider>

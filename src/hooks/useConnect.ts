@@ -7,8 +7,9 @@ import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { JsonRpcProvider, Network } from '@mysten/sui.js';
 import { ExtensionSigner, HostedSigner } from 'types/Signer'
 import lib from '../lib/lib'
+import { EthosConfiguration } from '../types/EthosConfiguration'
 
-const useConnect = () => {
+const useConnect = (ethosConfiguration?: EthosConfiguration) => {
   const signerFound = useRef<boolean>(false)
   const methodsChecked = useRef<any>({
     'ethos': false,
@@ -62,6 +63,8 @@ const useConnect = () => {
   }, [logoutCount]);
 
   useEffect(() => {
+    if (!ethosConfiguration) return;
+    
     log("mobile", "listening to mobile connection from EthosConnectProvider")
     listenForMobileConnection(
       (mobileSigner: any) => {
@@ -70,16 +73,26 @@ const useConnect = () => {
         checkSigner(mobileSigner, 'mobile')
       }
     )
-  }, [checkSigner])
+  }, [checkSigner, ethosConfiguration])
 
   useEffect(() => {
+    if (!ethosConfiguration) return;
+
     log('useConnect', 'Setting providerAndSigner extension', suiSigner, suiNoConnection)
     if (!suiNoConnection && !suiSigner) return
 
     checkSigner(suiSigner, 'extension')
-  }, [suiNoConnection, suiSigner, checkSigner])
+  }, [suiNoConnection, suiSigner, checkSigner, ethosConfiguration])
 
-  useEffect(() => { 
+  useEffect(() => {
+    if (!ethosConfiguration) return;
+
+    if (!ethosConfiguration.apiKey) {
+      log('useConnect', 'Setting null providerAndSigner ethos');
+      checkSigner(null, 'ethos');
+      return;
+    }
+
     const fetchEthosSigner = async () => {
       const signer = await lib.getEthosSigner()
       log('useConnect', 'Setting providerAndSigner ethos', signer)
@@ -87,7 +100,7 @@ const useConnect = () => {
     }
     
     fetchEthosSigner()
-  }, [checkSigner])
+  }, [checkSigner, ethosConfiguration])
 
   return { wallets, selectWallet, providerAndSigner, logout };
 }

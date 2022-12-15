@@ -18,8 +18,8 @@ const DetachedEthosConnectProvider = ({ context, connectMessage, dappName, dappI
 
             <SignInModal
                 isOpen={context.modal.isModalOpen}
-                hideEmailSignIn={context.ethosConfiguration.hideEmailSignIn}
-                hideWalletSignIn={context.ethosConfiguration.hideWalletSignIn}
+                hideEmailSignIn={context.ethosConfiguration?.hideEmailSignIn || false}
+                hideWalletSignIn={context.ethosConfiguration?.hideWalletSignIn || false}
                 connectMessage={connectMessage}
                 dappName={dappName}
                 dappIcon={dappIcon}
