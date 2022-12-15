@@ -1,4 +1,11 @@
-# Setting up local development
+# Ethos Connect
+
+### Documentation
+
+For full documentation on Ethos Connect please visit [Ethos Connect](https://ethoswallet.xyz/dev). 
+
+
+### Setting up local development
 
 From the root folder of the project you are working on (not this project)
 
