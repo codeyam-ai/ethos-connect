@@ -1,3 +1,5 @@
+import { newBN } from "../src/lib/bigNumber"
+
 const nft = {
     details: {
         data: {
@@ -19,7 +21,7 @@ const suiCoin = {
         data: {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
             fields: {
-                balance: 10000
+                balance: newBN(10000)
             }
         },
         reference: {
@@ -34,7 +36,7 @@ const suiCoin2 = {
         data: {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
             fields: {
-                balance: 5000
+                balance: newBN(5000)
             }
         },
         reference: {
@@ -49,7 +51,7 @@ const suiCoin3 = {
         data: {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
             fields: {
-                balance: 50000
+                balance: newBN(50000)
             }
         },
         reference: {

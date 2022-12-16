@@ -1,5 +1,6 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
 import { WalletContents } from "../types/WalletContents";
+import { newBN, sumBN } from '../lib/bigNumber';
 // import fetchSui from "./fetchSui";
 
 const ipfsConversion = (src: string): string => {
@@ -16,7 +17,7 @@ export type GetWalletContentsArgs = {
 }
 
 const empty: WalletContents = {
-    suiBalance: 0,
+    suiBalance: newBN(0),
     nfts: [],
     tokens: [],
     objects: []  
@@ -73,7 +74,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
     const newObjects = await provider.getObjectBatch(newObjectIds);
     const objects = currentObjects.concat(newObjects);
 
-    let suiBalance = 0;
+    let suiBalance = newBN(0);
     const nfts = [];
     const tokens: {[key: string]: any}= {};
     for (const object of objects) {
@@ -108,7 +109,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                 });
             } else if (type === 'Coin') {
                 if (subtype === '0x2::sui::SUI') {
-                    suiBalance += data.fields.balance
+                    suiBalance = sumBN(suiBalance, data.fields.balance);
                 }
                 
                 tokens[subtype] ||= {
@@ -116,7 +117,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                     coins: []
                 }
                 
-                tokens[subtype].balance += data.fields.balance
+                tokens[subtype].balance = sumBN(tokens[subtype].balance, data.fields.balance);
                 tokens[subtype].coins.push({
                     objectId: reference?.objectId,
                     type: data.type,

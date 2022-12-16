@@ -4,7 +4,7 @@ import React, { ReactNode, useCallback, useState } from 'react';
 import SignInButton from './SignInButton';
 
 import useWallet from '../../hooks/useWallet';
-import formatBalance from '../../lib/formatBalance';
+import { formatBalance } from '../../lib/bigNumber';
 import truncateMiddle from '../../lib/truncateMiddle';
 
 import Sui from "../svg/Sui";

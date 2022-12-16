@@ -1,5 +1,9 @@
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
 
+import { TextEncoder, TextDecoder } from 'util'
+globalThis.TextEncoder = TextEncoder;
+globalThis.TextDecoder = TextDecoder;
+
 import sui from './__mocks__/sui.mock'
 
 jest.mock('./src/lib/lib', () => {

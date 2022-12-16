@@ -19,7 +19,7 @@ import hideWallet from './lib/hideWallet'
 
 import dripSui from './lib/dripSui'
 import lookup from './lib/lookup'
-import formatBalance from './lib/formatBalance';
+import { formatBalance } from './lib/bigNumber';
 import truncateMiddle from './lib/truncateMiddle';
 
 import useProviderAndSigner from './hooks/useProviderAndSigner'

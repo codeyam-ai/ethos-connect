@@ -1,5 +1,7 @@
 import sui from '../../__mocks__/sui.mock'
+import { newBN } from '../../src/lib/bigNumber';
 import getWalletContents from '../../src/lib/getWalletContents';
+import { sumBN } from '../../src/lib/bigNumber';
 
 describe('getWalletBalance', () => {  
     beforeEach(() => {
@@ -10,8 +12,8 @@ describe('getWalletBalance', () => {
     it('should get balance for given wallet', async () => {
         const contents = await getWalletContents({ address: '0x123' })
         
-        const balance = (
-            sui.suiCoin.details.data.fields.balance +
+        const balance = sumBN(
+            sui.suiCoin.details.data.fields.balance,
             sui.suiCoin2.details.data.fields.balance
         )
 
@@ -42,35 +44,35 @@ describe('getWalletBalance', () => {
 
       const contents = await getWalletContents({ address: '0x123', existingContents })
 
-      const totalBalance = (
-        sui.suiCoin.details.data.fields.balance +
+      const totalBalance = sumBN(
+        sui.suiCoin.details.data.fields.balance,
         sui.suiCoin3.details.data.fields.balance
       )
       
       expect(sui.getObjectBatch).toBeCalledWith(["COIN3"])
       expect(contents?.nfts.length).toBe(0)
-      expect(contents?.suiBalance).toBe(totalBalance)
-      expect(contents?.tokens['0x2::sui::SUI'].balance).toBe(totalBalance);
+      expect(contents?.suiBalance).toStrictEqual(totalBalance)
+      expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);
       expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
       expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toBe(sui.suiCoin3.details.data.fields.balance)  
   })
 })
 
 const existingContents = {
-    suiBalance: 15000,
+    suiBalance: newBN(15000),
     tokens: {
       '0x2::sui::SUI': {
-        balance: 15000,
+        balance: newBN(15000),
         coins: [
           {
             objectId: 'COIN1',
             type: '0x2::coin::Coin<0x2::sui::SUI>',
-            balance: 10000
+            balance: newBN(10000)
           },
           {
             objectId: 'COIN2',
             type: '0x2::coin::Coin<0x2::sui::SUI>',
-            balance: 5000
+            balance: newBN(5000)
           }
         ]
       }
@@ -99,7 +101,7 @@ const existingContents = {
         details: {
           data: {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
-            fields: { balance: 10000 }
+            fields: { balance: newBN(10000) }
           },
           reference: { objectId: 'COIN1', version: 2 }
         }
@@ -108,7 +110,7 @@ const existingContents = {
         details: {
           data: {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
-            fields: { balance: 5000 }
+            fields: { balance: newBN(5000) }
           },
           reference: { objectId: 'COIN2', version: 6 }
         }
