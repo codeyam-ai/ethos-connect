@@ -64,9 +64,13 @@ const useSuiWalletConnect = () => {
           wallets.find((wallet) => wallet.name === name) ?? null;
         setWallet(selectedWallet);
   
+        if (selectedWallet && !connecting && selectedWallet.connecting) {
+            await selectedWallet.disconnect();
+        }
+
         let _connected = false;
-        if (selectedWallet && !selectedWallet.connecting) {
-          
+
+        if (selectedWallet && !selectedWallet?.connecting) {
           try {
             setConnecting(true);
             await selectedWallet.connect();
@@ -74,12 +78,10 @@ const useSuiWalletConnect = () => {
             _connected = true
           } catch (e) {
             setConnected(false);
-          } finally {
-            
+          } finally {            
             setConnecting(false);
           }
         }
-
 
         return _connected;
       },
