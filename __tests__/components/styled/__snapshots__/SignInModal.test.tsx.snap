@@ -64,7 +64,7 @@ Array [
               "display": "flex",
               "justifyContent": "center",
               "minHeight": "100%",
-              "padding": "0",
+              "padding": "1rem",
               "textAlign": "center",
             }
           }
@@ -78,7 +78,6 @@ Array [
                 "overflow": "hidden",
                 "position": "relative",
                 "transitionProperty": "all",
-                "width": "360px",
               }
             }
           >
@@ -381,7 +380,7 @@ Array [
               "display": "flex",
               "justifyContent": "center",
               "minHeight": "100%",
-              "padding": "0",
+              "padding": "1rem",
               "textAlign": "center",
             }
           }
@@ -395,7 +394,6 @@ Array [
                 "overflow": "hidden",
                 "position": "relative",
                 "transitionProperty": "all",
-                "width": "360px",
               }
             }
           >
