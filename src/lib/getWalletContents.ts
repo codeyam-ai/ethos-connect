@@ -1,5 +1,5 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
-import { WalletContents } from "../types/WalletContents";
+import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from '../lib/bigNumber';
 // import fetchSui from "./fetchSui";
 
@@ -75,7 +75,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
     const objects = currentObjects.concat(newObjects);
 
     let suiBalance = newBN(0);
-    const nfts = [];
+    const nfts: SuiNFT[] = [];
     const tokens: {[key: string]: any}= {};
     for (const object of objects) {
         try {
@@ -92,13 +92,14 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                 let safeUrl = ipfsConversion(url)
                 nfts.push({
                     chain: 'Sui',
+                    package: '0x2',
+                    type,
+                    module: 'sui',
                     address: reference?.objectId,
                     objectId: reference?.objectId,
                     name: data.fields.name,
                     description: data.fields.description,
                     imageUri: safeUrl,
-                    previewUri: safeUrl,
-                    thumbnailUri: safeUrl,
                     collection: {
                         name: "DevNetNFT",
                         type: data?.type
@@ -135,8 +136,6 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                     name: name,
                     description: description,
                     imageUri: safeUrl,
-                    previewUri: safeUrl,
-                    thumbnailUri: safeUrl,
                     extraFields: remaining,
                     module: typeComponents[1],
                     links: {
