@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js"
-import { SuiObject } from '@mysten/sui.js';
 
 export interface SuiNFTCollection {
     name: string,
@@ -16,7 +15,7 @@ export interface SuiNFT {
     name?: string,
     description?: string,
     imageUri?: string
-    extraFields?: SuiObject,
+    extraFields?: Record<string, string>,
     collection?: SuiNFTCollection,
     links?: Record<string, string>
 }
