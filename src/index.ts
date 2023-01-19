@@ -18,7 +18,7 @@ import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
 
 import dripSui from './lib/dripSui'
-import lookup from './lib/lookup'
+import { getSuiAddress, getSuiName } from './lib/nameService'
 import { formatBalance } from './lib/bigNumber';
 import truncateMiddle from './lib/truncateMiddle';
 
@@ -75,7 +75,8 @@ const ethos = {
   getWalletContents,
 
   dripSui,
-  lookup,
+  getSuiName,
+  getSuiAddress,
   formatBalance,
   truncateMiddle,
 
