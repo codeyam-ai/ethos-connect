@@ -1,6 +1,6 @@
 {
   "name": "ethos-connect",
-  "version": "0.0.66",
+  "version": "0.0.67",
   "description": "Build on Sui with ease with the Ethos Wallet APIs. Connect with all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -67,16 +67,16 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.20.0",
-    "@mysten/wallet-adapter-all-wallets": "^0.3.6",
-    "@mysten/wallet-adapter-base": "^0.3.7",
+    "@mysten/sui.js": "^0.22.0",
+    "@mysten/wallet-adapter-all-wallets": "^0.3.8",
+    "@mysten/wallet-adapter-base": "^0.3.9",
     "@mysten/wallet-adapter-react": "^11.0.0",
     "@superstate/react": "^0.1.0",
-    "bignumber.js": "^9.1.0",
+    "bignumber.js": "^9.1.1",
     "encoding": "^0.1.13",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",
-    "store2": "^2.13.2"
+    "store2": "^2.14.2"
   },
   "lint-staged": {
     "*": "yarn lint"
