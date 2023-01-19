@@ -20,35 +20,41 @@ const trimAddress = (address: string) => String(address?.match(/0x0{0,}([\w\d]+)
 const toFullAddress = (trimmedAddress: string) => (trimmedAddress ? `0x${trimmedAddress.padStart(40, '0')}` : '');
 
 export const getSuiName = async (address: string, sender: string = SENDER) => {
-  const resolverBytes = get(
-    await suiProvider.devInspectMoveCall(sender, {
+  try {
+    const resolverBytes = get(
+      await suiProvider.devInspectMoveCall(sender, {
+        packageObjectId: PACKAGE_ADDRESS,
+        module: 'base_registry',
+        function: 'get_record_by_key',
+        typeArguments: [],
+        arguments: [REGISTRY_ADDRESS, `${trimAddress(address)}.addr.reverse`],
+      }),
+      DEV_INSPECT_RESULT_PATH_1,
+    );
+    if (!resolverBytes) return address;
+
+    const resolver = toFullAddress(toHexString(resolverBytes));
+    const resolverResponse = await suiProvider.devInspectMoveCall(sender, {
       packageObjectId: PACKAGE_ADDRESS,
-      module: 'base_registry',
-      function: 'get_record_by_key',
+      module: 'resolver',
+      function: 'name',
       typeArguments: [],
-      arguments: [REGISTRY_ADDRESS, `${trimAddress(address)}.addr.reverse`],
-    }),
-    DEV_INSPECT_RESULT_PATH_1,
-  );
-  if (!resolverBytes) return address;
+      arguments: [resolver, address],
+    })
+  
+    const nameByteArray = get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
+    if (!nameByteArray) return address;
 
-  const resolver = toFullAddress(toHexString(resolverBytes));
-  const resolverResponse = await suiProvider.devInspectMoveCall(sender, {
-    packageObjectId: PACKAGE_ADDRESS,
-    module: 'resolver',
-    function: 'name',
-    typeArguments: [],
-    arguments: [resolver, address],
-  })
-  console.log(resolverResponse)
-  const nameByteArray = get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
-  if (!nameByteArray) return address;
-
-  const name = toString(nameByteArray);
-  return name;
+    const name = toString(nameByteArray);
+    return name;
+  } catch (e) {
+    console.log("Error retreiving SuiNS Name", e);
+    return address;
+  }
 };
 
 export const getSuiAddress = async (domain: string, sender: string = SENDER) => {
+  try {
     const resolverResponse = await suiProvider.devInspectMoveCall(sender, {
         packageObjectId: PACKAGE_ADDRESS,
         module: 'base_registry',
@@ -58,7 +64,7 @@ export const getSuiAddress = async (domain: string, sender: string = SENDER) => 
       });
 
     const resolverBytes = get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
-    if (!resolverBytes) return;
+    if (!resolverBytes) return domain;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
     const resolverResponse2 = await suiProvider.devInspectMoveCall(sender, {
@@ -70,8 +76,11 @@ export const getSuiAddress = async (domain: string, sender: string = SENDER) => 
     })
     const addr = get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
 
-    if (!addr) return;
+    if (!addr) return domain;
 
-    console.log(addr)
     return toFullAddress(toHexString(addr));
+  } catch (e) {
+    console.log("Error retrieving address from SuiNS name", e);
+    return domain;
+  }
 };
