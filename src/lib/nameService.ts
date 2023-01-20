@@ -1,8 +1,8 @@
 import get from 'lodash/get';
 import { JsonRpcProvider, Network } from '@mysten/sui.js';
 
-const PACKAGE_ADDRESS = '0xabcac57a24d25c3e9d6bbe4af816e157cd51cfea';
-const REGISTRY_ADDRESS = '0x1aea32df28117c0237fe1334e113e3a567006bcb';
+const PACKAGE_ADDRESS = '0xc0ce82cb6210799e42d4a26bc7b6f5cebca0a010';
+const REGISTRY_ADDRESS = '0x3ffb7841348e62000081a2c98a2455eb4eb346f3';
 const SENDER = '0xd4c4c0f3c6eae1bec838442a49bacc358fdc3c5b';
 const DEV_INSPECT_RESULT_PATH_0 = 'results.Ok[0][1].returnValues[0][0]';
 const DEV_INSPECT_RESULT_PATH_1 = 'results.Ok[0][1].returnValues[1][0]';
