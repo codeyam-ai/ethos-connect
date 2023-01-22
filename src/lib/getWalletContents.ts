@@ -1,6 +1,7 @@
 import { JsonRpcProvider, Network } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from '../lib/bigNumber';
+import getBagNFT, { isBagNFT } from "./getBagNFT";
 // import fetchSui from "./fetchSui";
 
 const ipfsConversion = (src: string): string => {
@@ -124,24 +125,29 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                     type: data.type,
                     balance: data.fields.balance
                 })
+            } else if (isBagNFT(object)) {
+                const bagNFT = await getBagNFT(provider, object);
+                console.log("BAG NFT", bagNFT)
             } else {
                 const { name, description, url, image_url, image, ...remaining } = data.fields || {}
                 const safeUrl = ipfsConversion(url || image_url || image);
-                nfts.push({
-                    type: data?.type,
-                    package: typeComponents[0],
-                    chain: 'Sui',
-                    address: reference?.objectId,
-                    objectId: reference?.objectId,
-                    name: name,
-                    description: description,
-                    imageUri: safeUrl,
-                    extraFields: remaining,
-                    module: typeComponents[1],
-                    links: {
-                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
-                    }
-                });
+                if (safeUrl) {
+                    nfts.push({
+                        type: data?.type,
+                        package: typeComponents[0],
+                        chain: 'Sui',
+                        address: reference?.objectId,
+                        objectId: reference?.objectId,
+                        name: name,
+                        description: description,
+                        imageUri: safeUrl,
+                        extraFields: remaining,
+                        module: typeComponents[1],
+                        links: {
+                            'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
+                        }
+                    });    
+                }
             }
         } catch (error) {
             console.log("Error retrieving object", object, error);
