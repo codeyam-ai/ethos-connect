@@ -19,7 +19,7 @@ export type GetWalletContentsArgs = {
 const empty: WalletContents = {
     suiBalance: newBN(0),
     nfts: [],
-    tokens: [],
+    tokens: {},
     objects: []  
 }
 

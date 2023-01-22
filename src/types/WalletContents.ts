@@ -20,9 +20,20 @@ export interface SuiNFT {
     links?: Record<string, string>
 }
 
+export interface Coin {
+    type: string,
+    objectId: string,
+    balance: number
+}
+
+export interface Token {
+    balance: number,
+    coins: Coin[]
+}
+
 export interface WalletContents {
     suiBalance: BigNumber,
-    tokens: {[key: string]: any},
-    nfts: any[]
+    tokens: {[key: string]: Token},
+    nfts: SuiNFT[]
     objects: any[]
 }
