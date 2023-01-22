@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { JsonRpcProvider, Network } from '@mysten/sui.js';
 
 const PACKAGE_ADDRESS = '0xc0ce82cb6210799e42d4a26bc7b6f5cebca0a010';
