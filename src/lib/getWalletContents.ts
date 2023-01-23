@@ -4,7 +4,7 @@ import { newBN, sumBN } from '../lib/bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
 // import fetchSui from "./fetchSui";
 
-const ipfsConversion = (src: string): string => {
+export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
     if (src.indexOf('ipfs') === 0) {  
         src = `https://ipfs.io/ipfs/${src.substring(5)}`;
@@ -127,7 +127,24 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                 })
             } else if (isBagNFT(object)) {
                 const bagNFT = await getBagNFT(provider, object);
-                console.log("BAG NFT", bagNFT)
+                
+                if ("name" in bagNFT) {
+                    nfts.push({
+                        type: data?.type,
+                        package: typeComponents[0],
+                        chain: 'Sui',
+                        address: reference?.objectId,
+                        objectId: reference?.objectId,
+                        name: bagNFT.name,
+                        description: bagNFT.description,
+                        imageUri: ipfsConversion(bagNFT.url),
+                        module: typeComponents[1],
+                        links: {
+                            'Explorer': `https://explorer.sui.io/objects/${reference?.objectId}`
+                        }
+                    });       
+                }
+
             } else {
                 const { name, description, url, image_url, image, ...remaining } = data.fields || {}
                 const safeUrl = ipfsConversion(url || image_url || image);
@@ -144,7 +161,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                         extraFields: remaining,
                         module: typeComponents[1],
                         links: {
-                            'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
+                            'Explorer': `https://explorer.sui.io/objects/${reference?.objectId}`
                         }
                     });    
                 }

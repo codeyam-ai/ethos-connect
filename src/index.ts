@@ -12,7 +12,7 @@ import logout from './lib/logout'
 import sign from './lib/sign'
 import transact from './lib/transact'
 import preapprove from './lib/preapprove'
-import getWalletContents from './lib/getWalletContents'
+import getWalletContents, { ipfsConversion } from './lib/getWalletContents'
 
 import showWallet from './lib/showWallet'
 import hideWallet from './lib/hideWallet'
@@ -79,6 +79,7 @@ const ethos = {
   getSuiAddress,
   formatBalance,
   truncateMiddle,
+  ipfsConversion,
 
   components,
 
