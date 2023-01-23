@@ -3,6 +3,7 @@ import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from '../lib/bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
 // import fetchSui from "./fetchSui";
+import { ConvenenienceSuiObject } from 'types/ConvenienceSuiObject';
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -78,6 +79,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
     let suiBalance = newBN(0);
     const nfts: SuiNFT[] = [];
     const tokens: {[key: string]: any}= {};
+    const convenenienceObjects: ConvenenienceSuiObject[] = [];
     for (const object of objects) {
         try {
             const { reference, data } = referenceAndData(object);
@@ -87,6 +89,16 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
             const subtype = (typeStringComponents[1] || "").replace(/>/, '')
             const typeComponents = typeStringComponents[0].split('::');
             const type = typeComponents[typeComponents.length - 1];
+
+            const { name, description, ...extraFields } = data.fields || {}
+            convenenienceObjects.push({
+                ...object,
+                type: data?.type,
+                objectId: reference?.objectId,
+                name,
+                description,
+                extraFields
+            })
 
             if (type === 'DevNetNFT') {
                 let { url } = data.fields;
@@ -144,9 +156,8 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
                         }
                     });       
                 }
-
             } else {
-                const { name, description, url, image_url, image, ...remaining } = data.fields || {}
+                const { url, image_url, image, ...remaining } = extraFields || {}
                 const safeUrl = ipfsConversion(url || image_url || image);
                 if (safeUrl) {
                     nfts.push({
@@ -171,7 +182,7 @@ const getWalletContents = async ({ address, existingContents = empty }: GetWalle
         }
     } 
 
-    return { suiBalance, tokens, nfts, objects }
+    return { suiBalance, tokens, nfts, objects: convenenienceObjects }
 }
 
 export default getWalletContents;
