@@ -9,6 +9,7 @@ import { SignerType } from '../../src/types/Signer'
 import sui from '../../__mocks__/sui.mock'
 import { HostedSigner } from '../../src/types/Signer';
 import { Network } from '@mysten/sui.js'
+import BigNumber from 'bignumber.js';
 
 describe('EthosConnectProvider', () => {
   const signer = {
@@ -37,7 +38,7 @@ describe('EthosConnectProvider', () => {
     });
 
     jest.spyOn(lib, 'getWalletContents').mockReturnValue(Promise.resolve({
-      suiBalance: 0,
+      suiBalance: new BigNumber(0),
       tokens: {},
       nfts: [],
       objects: []
