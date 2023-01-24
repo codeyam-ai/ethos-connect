@@ -1,9 +1,10 @@
 import get from 'lodash/get.js';
 import { JsonRpcProvider } from '@mysten/sui.js';
-import { DEFAULT_NETWORK } from './constants';
+import { DEFAULT_NETWORK } from 'lib/constants';
 
 const PACKAGE_ADDRESS = '0xe7ed73e4c2c1b38729155bf5c44dc4496a9edd2f';
 const REGISTRY_ADDRESS = '0xa378adb13792599e8eb8c7e4f2e938863921e4f4';
+const SENDER = '0xd4c4c0f3c6eae1bec838442a49bacc358fdc3c5b';
 const DEV_INSPECT_RESULT_PATH_0 = 'results.Ok[0][1].returnValues[0][0]';
 const DEV_INSPECT_RESULT_PATH_1 = 'results.Ok[0][1].returnValues[1][0]';
 
@@ -17,7 +18,7 @@ const trimAddress = (address: string) => String(address?.match(/0x0{0,}([\w\d]+)
 
 const toFullAddress = (trimmedAddress: string) => (trimmedAddress ? `0x${trimmedAddress.padStart(40, '0')}` : '');
 
-export const getSuiName = async (address: string, network: string, sender: string) => {
+export const getSuiName = async (address: string, network: string, sender: string = SENDER) => {
   const suiProvider = new JsonRpcProvider(network || DEFAULT_NETWORK);
 
   try {
@@ -53,7 +54,7 @@ export const getSuiName = async (address: string, network: string, sender: strin
   }
 };
 
-export const getSuiAddress = async (domain: string, network: string, sender: string) => {
+export const getSuiAddress = async (domain: string, network: string, sender: string = SENDER) => {
   const suiProvider = new JsonRpcProvider(network || DEFAULT_NETWORK);
 
   try {
