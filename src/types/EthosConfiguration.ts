@@ -3,7 +3,7 @@ export interface EthosConfiguration {
   apiKey?: string
   walletAppUrl?: string
   chain?: Chain
-  network?: string | number
+  network?: string
   hideEmailSignIn?: boolean
   hideWalletSignIn?: boolean
 }

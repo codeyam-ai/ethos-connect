@@ -1,6 +1,6 @@
 import get from 'lodash/get.js';
 import { JsonRpcProvider } from '@mysten/sui.js';
-import { DEFAULT_NETWORK } from 'lib/constants';
+import { DEFAULT_NETWORK } from './constants';
 
 const PACKAGE_ADDRESS = '0xe7ed73e4c2c1b38729155bf5c44dc4496a9edd2f';
 const REGISTRY_ADDRESS = '0xa378adb13792599e8eb8c7e4f2e938863921e4f4';
