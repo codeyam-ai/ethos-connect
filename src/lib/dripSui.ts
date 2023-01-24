@@ -1,11 +1,13 @@
-import { JsonRpcProvider, Network } from "@mysten/sui.js";
+import { JsonRpcProvider } from "@mysten/sui.js";
+import { DEFAULT_NETWORK } from './constants';
 
 type DripSuiProps = {
-  address: string
+  address: string,
+  network: string
 }
 
-const dripSui = async ({ address }: DripSuiProps) => {
-  const provider = new JsonRpcProvider(Network.DEVNET);
+const dripSui = async ({ address, network }: DripSuiProps) => {
+  const provider = new JsonRpcProvider(network || DEFAULT_NETWORK);
   return provider.requestSuiFromFaucet(address)
 }
 

@@ -1,9 +1,10 @@
-import { JsonRpcProvider, Network } from "@mysten/sui.js";
+import { JsonRpcProvider } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
-import { newBN, sumBN } from '../lib/bigNumber';
+import { newBN, sumBN } from './bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
 // import fetchSui from "./fetchSui";
-import { ConvenenienceSuiObject } from 'types/ConvenienceSuiObject';
+import { ConvenenienceSuiObject } from '../types/ConvenienceSuiObject';
+import { DEFAULT_NETWORK } from './constants';
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -15,6 +16,7 @@ export const ipfsConversion = (src?: string): string => {
 
 export type GetWalletContentsArgs = {
     address: string,
+    network: string,
     existingContents?: WalletContents
 }
 
@@ -25,8 +27,9 @@ const empty: WalletContents = {
     objects: []  
 }
 
-const getWalletContents = async ({ address, existingContents = empty }: GetWalletContentsArgs): Promise<WalletContents | null> => {
-    const provider = new JsonRpcProvider(Network.DEVNET);
+const getWalletContents = async ({ address, network, existingContents = empty }: GetWalletContentsArgs): Promise<WalletContents | null> => {
+
+    const provider = new JsonRpcProvider(network || DEFAULT_NETWORK);
 
     if (!address) {
         return empty

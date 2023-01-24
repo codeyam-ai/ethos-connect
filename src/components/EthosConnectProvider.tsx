@@ -17,7 +17,7 @@ export interface EthosConnectProviderProps {
 }
 
 const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMessage, dappName, dappIcon, children }: EthosConnectProviderProps) => {
-  const context = useContext({ configuration: ethosConfiguration || {}, onWalletConnected });
+    const context = useContext({ configuration: ethosConfiguration || {}, onWalletConnected });
     
     return (
         <ConnectContext.Provider value={context}>

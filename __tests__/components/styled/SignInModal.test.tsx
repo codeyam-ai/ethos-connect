@@ -1,11 +1,11 @@
 import React from 'react'
 import { create, act, ReactTestInstance } from 'react-test-renderer'
-import { waitFor } from '@testing-library/react'
 
 import SignInModal from '../../../src/components/styled/SignInModal'
 import FallbackLogo from '../../../src/components/svg/FallbackLogo'
 import lib from '../../../src/lib/lib'
 import hooks from '../../../src/hooks/hooks'
+import { EthosConnectStatus } from '../../../src/enums/EthosConnectStatus';
 
 const modalExists = (root: ReactTestInstance) => {
     const modal = root.findByProps({ role: 'dialog' })
@@ -23,6 +23,8 @@ const expectElementWithRoleToExist = (root: any, role: string, shouldExist: bool
 beforeEach(() => {
     jest.spyOn(hooks, 'useWallet').mockReturnValue({
         wallets: [],
+        status: EthosConnectStatus.Loading,
+        provider: null,
         selectWallet: () => {}
     })
 })
