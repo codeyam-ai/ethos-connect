@@ -19,7 +19,7 @@ const WalletExplorerButton = (props: MenuButtonProps) => {
     ), []);
 
     const onClick = useCallback(() => {
-        window.open("https://ethoswallet.xyz/dashboard", "_blank")
+        window.open("https://beta.ethoswallet.xyz/dashboard", "_blank")
     }, [])
 
     return (
