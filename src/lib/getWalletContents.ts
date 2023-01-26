@@ -28,7 +28,6 @@ const empty: WalletContents = {
 }
 
 const getWalletContents = async ({ address, network, existingContents = empty }: GetWalletContentsArgs): Promise<WalletContents | null> => {
-
     const provider = new JsonRpcProvider(network || DEFAULT_NETWORK);
 
     if (!address) {

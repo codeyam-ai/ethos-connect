@@ -10,7 +10,7 @@ describe('getWalletBalance', () => {
     })
     
     it('should get balance for given wallet', async () => {
-        const contents = await getWalletContents({ address: '0x123' })
+        const contents = await getWalletContents({ address: '0x123', network: "TEST" })
         
         const balance = sumBN(
             sui.suiCoin.details.data.fields.balance,
@@ -21,8 +21,8 @@ describe('getWalletBalance', () => {
         expect(sui.getObjectBatch).toBeCalledTimes(1)
         expect(contents?.suiBalance).toEqual(balance)
         const suiTokens = contents?.tokens['0x2::sui::SUI']
-        expect(suiTokens.balance).toEqual(balance)
-        expect(suiTokens.coins.length).toEqual(2)
+        expect(suiTokens?.balance).toEqual(balance)
+        expect(suiTokens?.coins.length).toEqual(2)
         expect(contents?.nfts.length).toEqual(1)
     })
 
