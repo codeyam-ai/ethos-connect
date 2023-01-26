@@ -27,6 +27,7 @@ const hostedInteraction = ({ id, action, data, onResponse, showWallet=false }: H
       if (responseAction !== action) return
       onResponse({ approved, data: responseData });
       window.removeEventListener('message', iframeListener);
+      getIframe(false);
     }
   }
 
@@ -35,7 +36,6 @@ const hostedInteraction = ({ id, action, data, onResponse, showWallet=false }: H
   const ethosStore = store.namespace('ethos')
   const configuration = ethosStore("configuration");
   const { network } = configuration;
-  console.log("CONFIGURATION", configuration)
 
   log("hostedInteraction", "Posting interaction", id, action, data)
   postIFrameMessage({ id, network, action, data })
