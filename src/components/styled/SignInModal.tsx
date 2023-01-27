@@ -30,7 +30,8 @@ export type SignInModalProps = {
     onClose?: () => void
     hideEmailSignIn?: boolean
     hideWalletSignIn?: boolean,
-    externalContext?: any
+    externalContext?: any,
+    preferredWallets?: string[]
 }
 
 export function showSignInModal() {
@@ -47,7 +48,8 @@ const SignInModal = ({
     dappIcon,
     hideEmailSignIn,
     hideWalletSignIn,
-    externalContext
+    externalContext,
+    preferredWallets
 }: SignInModalProps) => {
     const { wallets, selectWallet } = externalContext?.wallet || hooks.useWallet()
     const { isModalOpen, openModal, closeModal } = externalContext?.modal || hooks.useModal()
@@ -124,7 +126,25 @@ const SignInModal = ({
     }, [safeDappName, connectMessage]);
 
     const modalContent = useMemo(() => {
-        const safeWallets = wallets || []
+        let safeWallets = wallets || []
+
+        if (preferredWallets && preferredWallets.length > 0) {
+            safeWallets = safeWallets.sort(
+                (a: any, b: any) => {
+                    let aIndex = preferredWallets.indexOf(a.name);
+                    if (aIndex === -1) {
+                        aIndex = safeWallets.length;
+                    }
+
+                    let bIndex = preferredWallets.indexOf(b.name);
+                    if (bIndex === -1) {
+                        bIndex = safeWallets.length;
+                    }
+
+                    return a - b;
+                }
+            )
+        }
 
         if (showMobile) {
             return <MobileWallet />

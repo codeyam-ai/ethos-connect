@@ -6,4 +6,5 @@ export interface EthosConfiguration {
   network?: string
   hideEmailSignIn?: boolean
   hideWalletSignIn?: boolean
+  preferredWallets?: string[]
 }

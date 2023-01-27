@@ -30,6 +30,7 @@ const EthosConnectProvider = ({ ethosConfiguration, onWalletConnected, connectMe
                 connectMessage={connectMessage}
                 dappName={dappName}
                 dappIcon={dappIcon}
+                preferredWallets={ethosConfiguration?.preferredWallets}
             />
         </ConnectContext.Provider>
     ) 
