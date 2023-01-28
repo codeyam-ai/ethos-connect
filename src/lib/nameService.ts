@@ -23,24 +23,30 @@ export const getSuiName = async (address: string, network: string, sender: strin
 
   try {
     const resolverBytes = get(
-      await suiProvider.devInspectMoveCall(sender, {
-        packageObjectId: PACKAGE_ADDRESS,
-        module: 'base_registry',
-        function: 'get_record_by_key',
-        typeArguments: [],
-        arguments: [REGISTRY_ADDRESS, `${trimAddress(address)}.addr.reverse`],
+      await suiProvider.devInspectTransaction(sender, {
+        kind: 'moveCall',
+        data: {
+          packageObjectId: PACKAGE_ADDRESS,
+          module: 'base_registry',
+          function: 'get_record_by_key',
+          typeArguments: [],
+          arguments: [REGISTRY_ADDRESS, `${trimAddress(address)}.addr.reverse`],  
+        }
       }),
       DEV_INSPECT_RESULT_PATH_1,
     );
     if (!resolverBytes) return address;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
-    const resolverResponse = await suiProvider.devInspectMoveCall(sender, {
-      packageObjectId: PACKAGE_ADDRESS,
-      module: 'resolver',
-      function: 'name',
-      typeArguments: [],
-      arguments: [resolver, address],
+    const resolverResponse = await suiProvider.devInspectTransaction(sender, {
+      kind: 'moveCall',
+      data: {
+        packageObjectId: PACKAGE_ADDRESS,
+        module: 'resolver',
+        function: 'name',
+        typeArguments: [],
+        arguments: [resolver, address],  
+      }
     })
   
     const nameByteArray = get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
@@ -58,24 +64,30 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
   const suiProvider = new JsonRpcProvider(network || DEFAULT_NETWORK);
 
   try {
-    const resolverResponse = await suiProvider.devInspectMoveCall(sender, {
-        packageObjectId: PACKAGE_ADDRESS,
-        module: 'base_registry',
-        function: 'get_record_by_key',
-        typeArguments: [],
-        arguments: [REGISTRY_ADDRESS, domain],
+    const resolverResponse = await suiProvider.devInspectTransaction(sender, {
+        kind: 'moveCall',
+        data: {
+          packageObjectId: PACKAGE_ADDRESS,
+          module: 'base_registry',
+          function: 'get_record_by_key',
+          typeArguments: [],
+          arguments: [REGISTRY_ADDRESS, domain],  
+        }
       });
 
     const resolverBytes = get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
     if (!resolverBytes) return domain;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
-    const resolverResponse2 = await suiProvider.devInspectMoveCall(sender, {
-        packageObjectId: PACKAGE_ADDRESS,
-        module: 'resolver',
-        function: 'addr',
-        typeArguments: [],
-        arguments: [resolver, domain],
+    const resolverResponse2 = await suiProvider.devInspectTransaction(sender, {
+        kind: 'moveCall',
+        data: {
+          packageObjectId: PACKAGE_ADDRESS,
+          module: 'resolver',
+          function: 'addr',
+          typeArguments: [],
+          arguments: [resolver, domain],  
+        }
     })
     const addr = get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
 
