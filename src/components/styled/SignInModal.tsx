@@ -21,6 +21,7 @@ import hooks from '../../hooks/hooks'
 import MobileWallet from './MobileWallet'
 import Header from './Header'
 import Or from './Or'
+import log from '../../lib/log';
 
 export type SignInModalProps = {
     connectMessage?: string | ReactNode,
@@ -141,10 +142,11 @@ const SignInModal = ({
                         bIndex = safeWallets.length;
                     }
 
-                    return a - b;
+                    return aIndex - bIndex;
                 }
             )
         }
+        log("preferredWallets", preferredWallets, safeWallets)
 
         if (showMobile) {
             return <MobileWallet />
