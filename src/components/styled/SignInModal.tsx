@@ -230,7 +230,7 @@ const SignInModal = ({
                 )}
             </Header>
         )
-    }, [safeConnectMessage, safeDappName, hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet])
+    }, [safeConnectMessage, safeDappName, hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet, preferredWallets])
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet
