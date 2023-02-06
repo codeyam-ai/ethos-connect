@@ -12,6 +12,7 @@ import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import useWalletAdapters from "./useWalletAdapters";
 import { Preapproval } from "types/Preapproval";
 import log from "../lib/log";
+import { SignAndExecuteTransactionOptions } from 'types/Signer';
 
 const DEFAULT_STORAGE_KEY = "preferredSuiWallet";
 
@@ -32,7 +33,8 @@ export interface WalletContextState {
     getAccounts: () => Promise<SuiAddress[]>;
   
     signAndExecuteTransaction(
-      transaction: SignableTransaction
+      transaction: SignableTransaction,
+      options?: SignAndExecuteTransactionOptions
     ): Promise<SuiTransactionResponse>;
   }
   
@@ -173,7 +175,7 @@ const useSuiWalletConnect = () => {
         setWallet(null);
     }, [wallet])
 
-    const signAndExecuteTransaction = useCallback(async (transaction) => {
+    const signAndExecuteTransaction = useCallback(async (transaction, options) => {
         if (wallet == null) {
             throw new Error("Wallet Not Connected");
         }
@@ -182,7 +184,7 @@ const useSuiWalletConnect = () => {
                 'Wallet does not support "signAndExecuteTransaction" method'
             );
         }
-        return wallet.signAndExecuteTransaction(transaction);
+        return wallet.signAndExecuteTransaction(transaction, options);
     }, [wallet]);
 
     const requestPreapproval = useCallback(async (preapproval: Preapproval) => {
