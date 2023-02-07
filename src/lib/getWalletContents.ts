@@ -139,8 +139,8 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     type: data.type,
                     balance: data.fields.balance
                 })
-            } else if (isBagNFT(object)) {
-                const bagNFT = await getBagNFT(provider, object);
+            } else if (isBagNFT(object.details)) {
+                const bagNFT = await getBagNFT(provider, object.details);
                 
                 if ("name" in bagNFT) {
                     nfts.push({
