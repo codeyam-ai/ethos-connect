@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import store from 'store2'
 import log from '../lib/log'
-import useSuiWallet from './useSuiWallet' 
+import useSuiWallet from './useSuiWallet'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { JsonRpcProvider } from '@mysten/sui.js';
@@ -23,14 +23,16 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     signer: null
   })
 
-  const { 
+  const {
     wallets,
     selectWallet,
+    connected,
+    connecting,
     noConnection: suiNoConnection,
-    signer: suiSigner, 
-    setSigner: setSuiSigner 
+    signer: suiSigner,
+    setSigner: setSuiSigner
   } = useSuiWallet();
-  
+
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
     const suiStore = store.namespace('sui')
@@ -48,25 +50,25 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
-    
+
     if (type) {
       methodsChecked.current[type] = true;
     }
-    
+
     const allMethodsChecked = !Object.values(methodsChecked.current).includes(false)
     if (!signer && !allMethodsChecked) return;
-    
+
     signerFound.current = !!signer;
 
     const network = typeof ethosConfiguration?.network === "string" ? ethosConfiguration.network : DEFAULT_NETWORK
     const provider = new JsonRpcProvider(network);
-    
+
     setProviderAndSigner({ provider, signer })
   }, [logoutCount]);
 
   useEffect(() => {
     if (!ethosConfiguration) return;
-    
+
     log("mobile", "listening to mobile connection from EthosConnectProvider")
     listenForMobileConnection(
       (mobileSigner: any) => {
@@ -100,11 +102,11 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
       log('useConnect', 'Setting providerAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }
-    
+
     fetchEthosSigner()
   }, [checkSigner, ethosConfiguration])
 
-  return { wallets, selectWallet, providerAndSigner, logout };
+  return { wallets, selectWallet, providerAndSigner, logout, connecting, connected };
 }
 
 export default useConnect;

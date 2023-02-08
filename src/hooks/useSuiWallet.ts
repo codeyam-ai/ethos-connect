@@ -14,14 +14,14 @@ export interface SuiWalletResponse {
 }
 
 const useSuiWallet = (): SuiWalletResponse => {
-    const { 
+    const {
         wallet,
-        wallets, 
-        select: selectWallet, 
-        connecting, 
+        wallets,
+        select: selectWallet,
+        connecting,
         noConnection,
         connected,
-        getAccounts, 
+        getAccounts,
         getAddress,
         signAndExecuteTransaction,
         requestPreapproval,
@@ -42,9 +42,9 @@ const useSuiWallet = (): SuiWalletResponse => {
     }), [wallet, connected, getAccounts, getAddress, signAndExecuteTransaction, requestPreapproval, sign]);
 
     const [signer, setSigner] = useState<ExtensionSigner | null>(
-        connected ?  constructedSigner : null
+        connected ? constructedSigner : null
     )
-  
+
     useEffect(() => {
         setSigner(connected ? constructedSigner : null)
     }, [connected, constructedSigner])

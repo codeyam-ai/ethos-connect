@@ -1,6 +1,6 @@
-import { 
+import {
     useCallback,
-    useEffect, 
+    useEffect,
     useMemo,
     useState,
 } from 'react'
@@ -22,7 +22,7 @@ export interface UseContextArgs {
     onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void
 }
 
-const useContext = ({ configuration, onWalletConnected }: UseContextArgs): ConnectContextContents => {  
+const useContext = ({ configuration, onWalletConnected }: UseContextArgs): ConnectContextContents => {
     const [ethosConfiguration, setEthosConfiguration] = useState<EthosConfiguration | undefined>(configuration)
 
     const init = useCallback((config?: EthosConfiguration) => {
@@ -39,11 +39,11 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     useEffect(() => {
         init(configuration);
     }, [configuration])
-  
-    const { wallets, selectWallet, providerAndSigner, logout } = useConnect(ethosConfiguration)
+
+    const { wallets, selectWallet, providerAndSigner, logout, connecting, connected } = useConnect(ethosConfiguration)
     const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || Network.DEVNET)
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
+
     const modal: ModalContextContents = useMemo(() => {
         const openModal = () => {
             setIsModalOpen(true)
@@ -63,14 +63,12 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     const wallet = useMemo(() => {
         const { provider, signer } = providerAndSigner;
         let status;
-        if (provider) {
-            if (signer) {
-                status = EthosConnectStatus.Connected
-            } else {
-                status = EthosConnectStatus.NoConnection
-            }
-        } else {
+        if (connecting) {
             status = EthosConnectStatus.Loading
+        } else if (provider && connected) {
+            status = EthosConnectStatus.Connected
+        } else {
+            status = EthosConnectStatus.NoConnection
         }
 
         const context: WalletContextContents = {
@@ -83,7 +81,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
             selectWallet,
             provider
         }
-        
+
         if (signer) {
             context.wallet = {
                 ...signer,
@@ -91,15 +89,16 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
                 contents
             }
         }
-        
+
         return context;
     }, [
-        wallets, 
-        selectWallet, 
+        wallets,
+        selectWallet,
         address,
         providerAndSigner,
         contents,
-        logout
+        logout,
+        connecting,
     ])
 
     useEffect(() => {
@@ -132,7 +131,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         modal,
         providerAndSigner
     }), [wallet, modal, providerAndSigner]);
-    
+
     return { ...value, ethosConfiguration, init }
 }
 
