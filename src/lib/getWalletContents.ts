@@ -137,7 +137,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 tokens[subtype].coins.push({
                     objectId: reference?.objectId,
                     type: data.type,
-                    balance: data.fields.balance
+                    balance: newBN(data.fields.balance)
                 })
             } else if (isBagNFT(object.details)) {
                 const bagNFT = await getBagNFT(provider, object.details);
