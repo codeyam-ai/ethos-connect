@@ -54,7 +54,7 @@ describe('getWalletBalance', () => {
       expect(contents?.suiBalance).toStrictEqual(totalBalance)
       expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);
       expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
-      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toBe(sui.suiCoin3.details.data.fields.balance)  
+      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin3.details.data.fields.balance)  
   })
 })
 
