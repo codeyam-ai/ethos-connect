@@ -63,7 +63,10 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     const wallet = useMemo(() => {
         const { provider, signer } = providerAndSigner;
         let status;
-        if (connecting) {
+
+        if (signer?.type === 'hosted') {
+            status = EthosConnectStatus.Connected
+        } else if (connecting) {
             status = EthosConnectStatus.Loading
         } else if (provider && connected) {
             status = EthosConnectStatus.Connected
