@@ -103,7 +103,15 @@ const useSuiWalletConnect = () => {
                 let preferredWalletName = localStorage.getItem(DEFAULT_STORAGE_KEY);
 
                 if (typeof preferredWalletName !== "string") {
-                    if (location.origin === "https://ethoswallet.xyz" || location.origin === "https://beta.ethoswallet.xyz") {
+                    log('suiWalletConnect', "Connected Wallets", (wallets || []).map((w) => w.name));
+
+                    const ethosMobile = (wallets || []).find(
+                        (w) => w.name === "Ethos Mobile"
+                    );
+
+                    if (ethosMobile) {
+                        preferredWalletName = ethosMobile.name;
+                    } else if (location.origin === "https://ethoswallet.xyz" || location.origin === "https://beta.ethoswallet.xyz") {
                         log('suiWalletConnect', "Wallet explorer", (wallets || []).map((w) => w.name));
                         const ethosWallet = (wallets || []).find(
                             (w) => w.name === "Ethos Wallet"
