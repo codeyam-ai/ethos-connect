@@ -8,8 +8,8 @@ import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
 import sui from '../../__mocks__/sui.mock'
 import { HostedSigner } from '../../src/types/Signer';
-import { Network } from '@mysten/sui.js'
 import BigNumber from 'bignumber.js';
+import { DEFAULT_NETWORK } from '../../src/lib/constants';
 
 describe('EthosConnectProvider', () => {
   const signer = {
@@ -83,7 +83,7 @@ describe('EthosConnectProvider', () => {
       apiKey: 'test-id',
       walletAppUrl: 'https://ethoswallet.xyz',
       chain: Chain.Sui,
-      network: Network.DEVNET
+      network: DEFAULT_NETWORK
     }
 
     const initializeSpy = jest.spyOn(lib, 'initializeEthos')

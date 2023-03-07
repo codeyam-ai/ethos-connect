@@ -1,4 +1,4 @@
-import { JsonRpcProvider } from "@mysten/sui.js";
+import { Connection, JsonRpcProvider } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
@@ -28,7 +28,8 @@ const empty: WalletContents = {
 }
 
 const getWalletContents = async ({ address, network, existingContents = empty }: GetWalletContentsArgs): Promise<WalletContents | null> => {
-    const provider = new JsonRpcProvider(network || DEFAULT_NETWORK);
+    const connection = new Connection({ fullnode: network || DEFAULT_NETWORK })
+    const provider = new JsonRpcProvider(connection);
 
     if (!address) {
         return empty

@@ -1,5 +1,5 @@
 import get from 'lodash/get.js';
-import { JsonRpcProvider } from '@mysten/sui.js';
+import { Connection, JsonRpcProvider } from '@mysten/sui.js';
 import { DEFAULT_NETWORK } from './constants';
 
 const PACKAGE_ADDRESS = '0xe7ed73e4c2c1b38729155bf5c44dc4496a9edd2f';
@@ -19,7 +19,8 @@ const trimAddress = (address: string) => String(address?.match(/0x0{0,}([\w\d]+)
 const toFullAddress = (trimmedAddress: string) => (trimmedAddress ? `0x${trimmedAddress.padStart(40, '0')}` : '');
 
 export const getSuiName = async (address: string, network: string, sender: string = SENDER) => {
-  const suiProvider = new JsonRpcProvider(network || DEFAULT_NETWORK);
+  const connection = new Connection({ fullnode: network || DEFAULT_NETWORK })
+  const suiProvider = new JsonRpcProvider(connection);
 
   try {
     const resolverBytes = get(
@@ -61,7 +62,8 @@ export const getSuiName = async (address: string, network: string, sender: strin
 };
 
 export const getSuiAddress = async (domain: string, network: string, sender: string = SENDER) => {
-  const suiProvider = new JsonRpcProvider(network || DEFAULT_NETWORK);
+  const connection = new Connection({ fullnode: network || DEFAULT_NETWORK })
+  const suiProvider = new JsonRpcProvider(connection);
 
   try {
     const resolverResponse = await suiProvider.devInspectTransaction(sender, {

@@ -196,8 +196,8 @@ const getBagNFT = async (provider: JsonRpcProvider, nft: SuiObject) => {
     const id = _.get(nft, ID_PATH);
     const bagId = _.get(nft, BAG_ID_PATH);
     const owner = _.get(nft, LOGICAL_OWNER_PATH);
-    const bagObjects = await provider.getObjectsOwnedByObject(bagId || "");
-    const objectIds = bagObjects.map((bagObject) => bagObject.objectId);
+    const bagObjects = await provider.getDynamicFields(bagId || "");
+    const objectIds = bagObjects.data.map((bagObject) => bagObject.objectId);
     const objects = await provider.getObjectBatch(objectIds);
     return {
         id,

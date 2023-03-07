@@ -4,7 +4,7 @@ import log from '../lib/log'
 import useSuiWallet from './useSuiWallet'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
-import { JsonRpcProvider } from '@mysten/sui.js';
+import { Connection, JsonRpcProvider } from '@mysten/sui.js';
 import { ExtensionSigner, HostedSigner } from 'types/Signer'
 import lib from '../lib/lib'
 import { EthosConfiguration } from '../types/EthosConfiguration'
@@ -61,7 +61,8 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     signerFound.current = !!signer;
 
     const network = typeof ethosConfiguration?.network === "string" ? ethosConfiguration.network : DEFAULT_NETWORK
-    const provider = new JsonRpcProvider(network);
+    const connection = new Connection({ fullnode: network })
+    const provider = new JsonRpcProvider(connection);
 
     setProviderAndSigner({ provider, signer })
   }, [logoutCount]);

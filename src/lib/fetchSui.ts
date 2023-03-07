@@ -1,6 +1,4 @@
-import { Network } from "@mysten/sui.js";
-
-const fetchSui = async (method: string, params: string[]) => {
+const fetchSui = async (network: string, method: string, params: string[]) => {
   const data = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -12,7 +10,7 @@ const fetchSui = async (method: string, params: string[]) => {
     })
   }
 
-  const response = await fetch(Network.DEVNET, data);
+  const response = await fetch(network, data);
   const json = await response.json();
   // console.log("SUI JSON", json, response, json.result?.EffectResponse?.effects, method, params)
   

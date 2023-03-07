@@ -15,7 +15,7 @@ import { ModalContextContents } from '../types/ModalContextContents';
 import { ConnectContextContents } from '../types/ConnectContextContents';
 import { EthosConfiguration } from '../types/EthosConfiguration';
 import { ProviderAndSigner } from '../types/ProviderAndSigner';
-import { Network } from '@mysten/sui.js';
+import { DEFAULT_NETWORK } from '../lib/constants';
 
 export interface UseContextArgs {
     configuration?: EthosConfiguration,
@@ -28,7 +28,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     const init = useCallback((config?: EthosConfiguration) => {
         if (!config) return;
         if (!config?.chain) config.chain = Chain.Sui;
-        if (!config?.network) config.network = Network.DEVNET;
+        if (!config?.network) config.network = DEFAULT_NETWORK;
         if (!config?.walletAppUrl) config.walletAppUrl = 'https://ethoswallet.xyz';
 
         log('EthosConnectProvider', 'EthosConnectProvider Configuration:', config)
@@ -41,7 +41,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     }, [configuration])
 
     const { wallets, selectWallet, providerAndSigner, logout, connecting, connected } = useConnect(ethosConfiguration)
-    const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || Network.DEVNET)
+    const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || DEFAULT_NETWORK)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const modal: ModalContextContents = useMemo(() => {
