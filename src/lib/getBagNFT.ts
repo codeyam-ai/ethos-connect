@@ -1,6 +1,6 @@
 import { getObjectFields, is, SuiObjectData } from '@mysten/sui.js';
 import _ from 'lodash';
-import { ipfsConversion } from 'lib/getWalletContents';
+import { ipfsConversion } from '../lib/getWalletContents';
 
 import type {
     JsonRpcProvider,

@@ -40,25 +40,15 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         return empty;
     }
 
-    const referenceAndData = (object: any) => {
-      if (
-        typeof object.details === "string" || 
-        !("reference" in object.details)
-      ) return {};
-
-      return object.details;
-    }
-
     const currentObjects = [];
     let newObjectInfos = [];
     if (existingContents?.objects && existingContents.objects.length > 0) {
         for (const objectInfo of objectInfos) {
             const existingObject = existingContents?.objects.find(
                 (existingObject) => {
-                    const { reference } = referenceAndData(existingObject);
                     return (
-                        reference?.objectId === objectInfo.objectId &&
-                        reference?.version === objectInfo.version
+                        existingObject.objectId === objectInfo.objectId &&
+                        existingObject.version === objectInfo.version
                     )
                 }
             );
@@ -76,7 +66,12 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     if (newObjectInfos.length === 0) return null;
 
     const newObjectIds = newObjectInfos.map((o: any) => o.objectId);
-    const newObjects = await provider.getObjectBatch(newObjectIds);
+    const newObjects = await provider.getObjectBatch(newObjectIds, {
+        showContent: true,
+        showType: true,
+        showOwner: true,
+        showDisplay: true
+    });
     const objects = currentObjects.concat(newObjects);
 
     let suiBalance = newBN(0);
@@ -84,49 +79,48 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     const tokens: {[key: string]: any}= {};
     const convenenienceObjects: ConvenenienceSuiObject[] = [];
     for (const object of objects) {
+        const { details } = object
+        const { content: { fields } } = details;
         try {
-            const { reference, data } = referenceAndData(object);
-            if (!reference) continue;  
-            
-            const typeStringComponents = (data.type || "").split('<');
+            const typeStringComponents = (details.type || "").split('<');
             const subtype = (typeStringComponents[1] || "").replace(/>/, '')
             const typeComponents = typeStringComponents[0].split('::');
             const type = typeComponents[typeComponents.length - 1];
 
-            const { name, description, ...extraFields } = data.fields || {}
+            const { name, description, ...extraFields } = fields || {}
             convenenienceObjects.push({
                 ...object,
-                type: data?.type,
-                objectId: reference?.objectId,
+                type: object?.type,
+                objectId: object?.objectId,
                 name,
                 description,
                 extraFields
             })
 
             if (type === 'DevNetNFT') {
-                let { url } = data.fields;
+                let { url } = fields;
                 let safeUrl = ipfsConversion(url)
                 nfts.push({
                     chain: 'Sui',
                     package: '0x2',
                     type,
                     module: 'sui',
-                    address: reference?.objectId,
-                    objectId: reference?.objectId,
-                    name: data.fields.name,
-                    description: data.fields.description,
+                    address: object?.objectId,
+                    objectId: object?.objectId,
+                    name: fields.name,
+                    description: fields.description,
                     imageUri: safeUrl,
                     collection: {
                         name: "DevNetNFT",
-                        type: data?.type
+                        type: object?.type
                     },
                     links: {
-                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${reference?.objectId}`
+                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${object?.objectId}`
                     }
                 });
             } else if (type === 'Coin') {
                 if (subtype === '0x2::sui::SUI') {
-                    suiBalance = sumBN(suiBalance, data.fields.balance);
+                    suiBalance = sumBN(suiBalance, fields.balance);
                 }
                 
                 tokens[subtype] ||= {
@@ -134,28 +128,28 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     coins: []
                 }
                 
-                tokens[subtype].balance = sumBN(tokens[subtype].balance, data.fields.balance);
+                tokens[subtype].balance = sumBN(tokens[subtype].balance, fields.balance);
                 tokens[subtype].coins.push({
-                    objectId: reference?.objectId,
-                    type: data.type,
-                    balance: newBN(data.fields.balance)
+                    objectId: object?.objectId,
+                    type: object.type,
+                    balance: newBN(fields.balance)
                 })
             } else if (isBagNFT(object.details)) {
                 const bagNFT = await getBagNFT(provider, object.details);
                 
                 if ("name" in bagNFT) {
                     nfts.push({
-                        type: data?.type,
+                        type: object?.type,
                         package: typeComponents[0],
                         chain: 'Sui',
-                        address: reference?.objectId,
-                        objectId: reference?.objectId,
+                        address: object?.objectId,
+                        objectId: object?.objectId,
                         name: bagNFT.name,
                         description: bagNFT.description,
                         imageUri: ipfsConversion(bagNFT.url),
                         module: typeComponents[1],
                         links: {
-                            'Explorer': `https://explorer.sui.io/objects/${reference?.objectId}`
+                            'Explorer': `https://explorer.sui.io/objects/${object?.objectId}`
                         }
                     });       
                 }
@@ -164,18 +158,18 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 const safeUrl = ipfsConversion(url || image_url || image);
                 if (safeUrl) {
                     nfts.push({
-                        type: data?.type,
+                        type: object?.type,
                         package: typeComponents[0],
                         chain: 'Sui',
-                        address: reference?.objectId,
-                        objectId: reference?.objectId,
+                        address: object?.objectId,
+                        objectId: object?.objectId,
                         name: name,
                         description: description,
                         imageUri: safeUrl,
                         extraFields: remaining,
                         module: typeComponents[1],
                         links: {
-                            'Explorer': `https://explorer.sui.io/objects/${reference?.objectId}`
+                            'Explorer': `https://explorer.sui.io/objects/${object?.objectId}`
                         }
                     });    
                 }
