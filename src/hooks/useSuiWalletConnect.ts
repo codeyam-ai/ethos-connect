@@ -6,7 +6,7 @@ import {
   import type {
     SuiAddress,
     SuiTransactionResponse,
-    SignableTransaction,
+    Transaction,
   } from "@mysten/sui.js";
 import { WalletAdapter } from "@mysten/wallet-adapter-base";
 import useWalletAdapters from "./useWalletAdapters";
@@ -33,7 +33,7 @@ export interface WalletContextState {
     getAccounts: () => Promise<SuiAddress[]>;
   
     signAndExecuteTransaction(
-      transaction: SignableTransaction,
+      transaction: Uint8Array | Transaction,
       options?: SignAndExecuteTransactionOptions
     ): Promise<SuiTransactionResponse>;
   }
