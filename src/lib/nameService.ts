@@ -1,5 +1,5 @@
 import get from 'lodash/get.js';
-import { Connection, JsonRpcProvider } from '@mysten/sui.js';
+import { Connection, JsonRpcProvider, Transaction } from '@mysten/sui.js';
 import { DEFAULT_NETWORK } from './constants';
 
 const PACKAGE_ADDRESS = '0xe7ed73e4c2c1b38729155bf5c44dc4496a9edd2f';
@@ -23,32 +23,34 @@ export const getSuiName = async (address: string, network: string, sender: strin
   const suiProvider = new JsonRpcProvider(connection);
 
   try {
+    const registryTx = new Transaction();
+    registryTx.add(
+      Transaction.Commands.MoveCall({
+        target: `${PACKAGE_ADDRESS}::base_registry::get_record_by_key`,
+        arguments: [
+          registryTx.object(REGISTRY_ADDRESS), 
+          registryTx.pure(`${trimAddress(address)}.addr.reverse`)
+        ],
+      })
+    )
     const resolverBytes = get(
-      await suiProvider.devInspectTransaction(sender, {
-        kind: 'moveCall',
-        data: {
-          packageObjectId: PACKAGE_ADDRESS,
-          module: 'base_registry',
-          function: 'get_record_by_key',
-          typeArguments: [],
-          arguments: [REGISTRY_ADDRESS, `${trimAddress(address)}.addr.reverse`],  
-        }
-      }),
+      await suiProvider.devInspectTransaction(sender, registryTx),
       DEV_INSPECT_RESULT_PATH_1,
     );
     if (!resolverBytes) return address;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
-    const resolverResponse = await suiProvider.devInspectTransaction(sender, {
-      kind: 'moveCall',
-      data: {
-        packageObjectId: PACKAGE_ADDRESS,
-        module: 'resolver',
-        function: 'name',
-        typeArguments: [],
-        arguments: [resolver, address],  
-      }
-    })
+    const resolverTx = new Transaction();
+    resolverTx.add(
+      Transaction.Commands.MoveCall({
+        target: `${PACKAGE_ADDRESS}::resolver::name`,
+        arguments: [
+          registryTx.object(resolver), 
+          registryTx.pure(address)
+        ],
+      })
+    )
+    const resolverResponse = await suiProvider.devInspectTransaction(sender, resolverTx)
   
     const nameByteArray = get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
     if (!nameByteArray) return address;
@@ -66,31 +68,33 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
   const suiProvider = new JsonRpcProvider(connection);
 
   try {
-    const resolverResponse = await suiProvider.devInspectTransaction(sender, {
-        kind: 'moveCall',
-        data: {
-          packageObjectId: PACKAGE_ADDRESS,
-          module: 'base_registry',
-          function: 'get_record_by_key',
-          typeArguments: [],
-          arguments: [REGISTRY_ADDRESS, domain],  
-        }
-      });
+    const registryTx = new Transaction();
+    registryTx.add(
+      Transaction.Commands.MoveCall({
+        target: `${PACKAGE_ADDRESS}::base_registry::get_record_by_key`,
+        arguments: [
+          registryTx.object(REGISTRY_ADDRESS), 
+          registryTx.pure(domain)
+        ],
+      })
+    )
+    const resolverResponse = await suiProvider.devInspectTransaction(sender, registryTx);
 
     const resolverBytes = get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
     if (!resolverBytes) return domain;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
-    const resolverResponse2 = await suiProvider.devInspectTransaction(sender, {
-        kind: 'moveCall',
-        data: {
-          packageObjectId: PACKAGE_ADDRESS,
-          module: 'resolver',
-          function: 'addr',
-          typeArguments: [],
-          arguments: [resolver, domain],  
-        }
-    })
+    const resolverTx = new Transaction();
+    resolverTx.add(
+      Transaction.Commands.MoveCall({
+        target: `${PACKAGE_ADDRESS}::resolver::addr`,
+        arguments: [
+          registryTx.object(resolver), 
+          registryTx.pure(domain)
+        ],
+      })
+    )
+    const resolverResponse2 = await suiProvider.devInspectTransaction(sender, resolverTx)
     const addr = get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
 
     if (!addr) return domain;

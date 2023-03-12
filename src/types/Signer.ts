@@ -1,8 +1,8 @@
 import type { Preapproval } from './Preapproval'
 import type { 
   ExecuteTransactionRequestType,
-  SignableTransaction,
-  SuiTransactionResponse
+  SuiTransactionResponse,
+  Transaction
 } from '@mysten/sui.js';
 
 export enum SignerType {
@@ -20,7 +20,7 @@ export interface Signer {
   icon?: string,
   getAccounts: () => Promise<string[]>,
   getAddress: () => Promise<string>,
-  signAndExecuteTransaction: (transaction: SignableTransaction, options?: SignAndExecuteTransactionOptions) => Promise<SuiTransactionResponse>,
+  signAndExecuteTransaction: (transaction: Uint8Array | Transaction, options?: SignAndExecuteTransactionOptions) => Promise<SuiTransactionResponse>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
   sign: (message: any) => Promise<any>,
   disconnect: () => void

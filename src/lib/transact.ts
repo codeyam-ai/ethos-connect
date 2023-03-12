@@ -1,20 +1,21 @@
-import { SignableTransaction } from '@mysten/sui.js'
 import log from './log'
 import { SignAndExecuteTransactionOptions } from '../types/Signer'
 
+import type { Transaction } from '@mysten/sui.js';
+
 type TransactArgs = {
   signer: any
-  signableTransaction: SignableTransaction
+  transaction: Uint8Array | Transaction
   options?: SignAndExecuteTransactionOptions
 }
 
 const transact = async ({
   signer,
-  signableTransaction,
+  transaction,
   options
 }: TransactArgs) => {
-  log("transact", "Starting transaction", signer, signableTransaction)
-  return signer.signAndExecuteTransaction(signableTransaction, options)
+  log("transact", "Starting transaction", signer, transaction)
+  return signer.signAndExecuteTransaction(transaction, options)
 }
 
 export default transact
