@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import store from 'store2'
 import log from '../lib/log'
-import useSuiWallet from './useSuiWallet'
+import useWalletKit from './useWalletKit'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { Connection, JsonRpcProvider } from '@mysten/sui.js';
@@ -31,7 +31,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     noConnection: suiNoConnection,
     signer: suiSigner,
     setSigner: setSuiSigner
-  } = useSuiWallet();
+  } = useWalletKit();
 
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
