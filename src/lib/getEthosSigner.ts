@@ -1,11 +1,11 @@
 import store from 'store2'
 // import { Chain } from '../enums/Chain'
-import { HostedSigner, SignerType, SignAndExecuteTransactionInput } from '../types/Signer'
+import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
 import type { SuiTransactionResponse } from '@mysten/sui.js'
-import type { WalletAccount, WalletIcon } from '@mysten/wallet-standard';
+import type { WalletAccount, WalletIcon, SuiSignAndExecuteTransactionInput, SuiSignAndExecuteTransactionOptions } from '@mysten/wallet-standard';
 
 const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
@@ -15,7 +15,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const currentAccount = null//accounts[0]
 
-    const signAndExecuteTransaction = (input: SignAndExecuteTransactionInput): Promise<SuiTransactionResponse> => {
+    const signAndExecuteTransaction = (input: SuiSignAndExecuteTransactionInput, options?: SuiSignAndExecuteTransactionOptions): Promise<SuiTransactionResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -27,7 +27,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
             
             hostedInteraction({
                 action: 'transaction',
-                data: { input },
+                data: { input, options },
                 onResponse: transactionEventListener,
                 showWallet: true
             })

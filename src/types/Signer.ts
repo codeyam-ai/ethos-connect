@@ -1,26 +1,11 @@
 import type { Preapproval } from './Preapproval'
-import type { 
-  ExecuteTransactionRequestType,
-  SuiTransactionResponse,
-  Transaction
-} from '@mysten/sui.js';
-import type { WalletAccount, IdentifierString } from '@mysten/wallet-standard'
+import type { SuiTransactionResponse } from '@mysten/sui.js';
+import type { WalletAccount, SuiSignTransactionInput, SuiSignAndExecuteTransactionOptions } from '@mysten/wallet-standard'
 
 export enum SignerType {
   Extension = "extension",
   Hosted = "hosted"
 }
-
-export interface SignAndExecuteTransactionOptions {
-  requestType?: ExecuteTransactionRequestType
-}
-
-export interface SignAndExecuteTransactionInput {
-  transaction: Transaction,
-  account: WalletAccount,
-  chain: IdentifierString
-}
-
 
 export interface Signer {
   type: SignerType,
@@ -28,7 +13,7 @@ export interface Signer {
   icon?: string,
   accounts: readonly WalletAccount[],
   currentAccount: WalletAccount | null,
-  signAndExecuteTransaction: (input: SignAndExecuteTransactionInput, options?: SignAndExecuteTransactionOptions) => Promise<SuiTransactionResponse>,
+  signAndExecuteTransaction: (input: SuiSignTransactionInput, options?: SuiSignAndExecuteTransactionOptions) => Promise<SuiTransactionResponse>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
   signMessage: (message: any) => Promise<any>,
   disconnect: () => void
