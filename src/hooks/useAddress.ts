@@ -6,10 +6,8 @@ const useAddress = () => {
     const [address, setAddress] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!signer) return;
-        signer.getAddress().then(
-            (address: string) => setAddress(address)
-        );
+        if (!signer?.currentAccount) return;
+        setAddress(signer.currentAccount.address)
     }, [signer]);
 
     return address;

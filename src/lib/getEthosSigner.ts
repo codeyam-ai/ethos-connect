@@ -1,27 +1,21 @@
 import store from 'store2'
-import { Chain } from '../enums/Chain'
-import { HostedSigner, SignerType } from '../types/Signer'
+// import { Chain } from '../enums/Chain'
+import { HostedSigner, SignerType, SignAndExecuteTransactionInput } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { SuiTransactionResponse, Transaction } from '@mysten/sui.js'
-import type { WalletIcon } from '@mysten/wallet-standard';
+import type { SuiTransactionResponse } from '@mysten/sui.js'
+import type { WalletAccount, WalletIcon } from '@mysten/wallet-standard';
 
 const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
-    const getAccounts = async () => {
-        if (!user) return [];
-        return user.accounts.filter((account: any) => account.chain === Chain.Sui)
-    }
+    const accounts: WalletAccount[] = []//user.accounts.filter((account: any) => account.chain === Chain.Sui)
 
-    const getAddress = async () => {
-        const accounts = await getAccounts();
-        return accounts[0]?.address;
-    }
+    const currentAccount = null//accounts[0]
 
-    const signAndExecuteTransaction = (transaction: Uint8Array | Transaction): Promise<SuiTransactionResponse> => {
+    const signAndExecuteTransaction = (input: SignAndExecuteTransactionInput): Promise<SuiTransactionResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -33,7 +27,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
             
             hostedInteraction({
                 action: 'transaction',
-                data: { transaction },
+                data: { input },
                 onResponse: transactionEventListener,
                 showWallet: true
             })
@@ -44,7 +38,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         return Promise.resolve(true);
     }
 
-    const sign = (message: string | Uint8Array): Promise<any> => {
+    const signMessage = (message: string | Uint8Array): Promise<any> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -88,11 +82,11 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         name: "Ethos",
         icon: dataIcon,
         email: user.email,
-        getAccounts,
-        getAddress,
+        accounts,
+        currentAccount,
         signAndExecuteTransaction,
         requestPreapproval,
-        sign,
+        signMessage,
         disconnect,
         logout
     } : null

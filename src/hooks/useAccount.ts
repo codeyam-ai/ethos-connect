@@ -11,7 +11,7 @@ const useAccount = (signer: Signer | null, network: string) => {
     if (!signer) return;
 
     const initAccount = async () => {
-      const address = await signer?.getAddress();
+      const address = signer.currentAccount?.address
       if (!address) {
         return
       }

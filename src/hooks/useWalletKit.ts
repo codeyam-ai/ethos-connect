@@ -3,6 +3,7 @@ import type { WalletAdapterList } from '@mysten/wallet-adapter-base';
 import { createWalletKitCore } from '@mysten/wallet-kit-core'
 import { UnsafeBurnerWalletAdapter, WalletStandardAdapterProvider } from '@mysten/wallet-adapter-all-wallets';
 import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
+import { ExtensionSigner, SignerType } from '../types/Signer';
 
 export interface UseWalletKitArgs {
     configuredAdapters?: WalletAdapterList;
@@ -49,8 +50,27 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
 
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
+      const constructedSigner = useMemo<ExtensionSigner | null>(() => {
+        const state = walletKitRef.current?.getState();
+        const wallet = state?.currentWallet;
+        if (!wallet) return null;
+
+        return {
+          type: SignerType.Extension,
+          name: wallet?.name,
+          icon: wallet?.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet?.icon,
+          accounts: state.accounts,
+          currentAccount: state.currentAccount,
+          signAndExecuteTransaction: wallet.signAndExecuteTransaction,
+          requestPreapproval: () => { return Promise.resolve(true) },
+          signMessage: wallet.signMessage,
+          disconnect: wallet.disconnect
+        }
+      }, []);
+
       return {
         wallets,
+        signer: constructedSigner,
         ...walletFunctions
       }
 }

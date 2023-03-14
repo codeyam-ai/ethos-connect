@@ -1,4 +1,4 @@
-import get from 'lodash/get.js';
+import _ from 'lodash';
 import { Connection, JsonRpcProvider, Transaction } from '@mysten/sui.js';
 import { DEFAULT_NETWORK } from './constants';
 
@@ -33,8 +33,11 @@ export const getSuiName = async (address: string, network: string, sender: strin
         ],
       })
     )
-    const resolverBytes = get(
-      await suiProvider.devInspectTransaction(sender, registryTx),
+    const resolverBytes = _.get(
+      await suiProvider.devInspectTransaction({
+        transaction: registryTx,
+        sender
+      }),
       DEV_INSPECT_RESULT_PATH_1,
     );
     if (!resolverBytes) return address;
@@ -50,9 +53,12 @@ export const getSuiName = async (address: string, network: string, sender: strin
         ],
       })
     )
-    const resolverResponse = await suiProvider.devInspectTransaction(sender, resolverTx)
+    const resolverResponse = await suiProvider.devInspectTransaction({
+      transaction: resolverTx,
+      sender
+    })
   
-    const nameByteArray = get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
+    const nameByteArray = _.get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
     if (!nameByteArray) return address;
 
     const name = toString(nameByteArray);
@@ -78,9 +84,12 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
         ],
       })
     )
-    const resolverResponse = await suiProvider.devInspectTransaction(sender, registryTx);
+    const resolverResponse = await suiProvider.devInspectTransaction({
+      transaction: registryTx,
+      sender
+    });
 
-    const resolverBytes = get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
+    const resolverBytes = _.get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
     if (!resolverBytes) return domain;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
@@ -94,8 +103,11 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
         ],
       })
     )
-    const resolverResponse2 = await suiProvider.devInspectTransaction(sender, resolverTx)
-    const addr = get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
+    const resolverResponse2 = await suiProvider.devInspectTransaction({
+      transaction: resolverTx,
+      sender, 
+    })
+    const addr = _.get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
 
     if (!addr) return domain;
 

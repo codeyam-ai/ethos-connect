@@ -35,7 +35,9 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         return empty
     }
     
-    const objectInfos = await provider.getObjectsOwnedByAddress(address);
+    const objectInfos = await provider.getObjectsOwnedByAddress({
+        owner: address
+    });
     if (objectInfos.length === 0) {
         return empty;
     }
@@ -66,11 +68,14 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     if (newObjectInfos.length === 0) return null;
 
     const newObjectIds = newObjectInfos.map((o: any) => o.objectId);
-    const newObjects = await provider.getObjectBatch(newObjectIds, {
-        showContent: true,
-        showType: true,
-        showOwner: true,
-        showDisplay: true
+    const newObjects = await provider.multiGetObjects({
+        ids: newObjectIds, 
+        options: {
+            showContent: true,
+            showType: true,
+            showOwner: true,
+            showDisplay: true
+        }
     });
     const objects = currentObjects.concat(newObjects);
 

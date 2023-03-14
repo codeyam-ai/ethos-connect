@@ -25,6 +25,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
 
   const {
     wallets,
+    signer: suiSigner,
     getState,
     connect,
     disconnect
@@ -41,7 +42,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     for (const key of Object.keys(methodsChecked.current)) {
       methodsChecked.current[key] = false;
     }
-    setLogoutCount(prev => prev + 1);
+    setLogoutCount((prev: number) => prev + 1);
   }, [disconnect])
 
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
@@ -81,10 +82,10 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     if (!ethosConfiguration) return;
 
     const state = getState();
-    log('useConnect', 'Setting providerAndSigner extension', state)
+    console.log('useConnect', 'Setting providerAndSigner extension', state)
     if (!state.isConnecting && !state.isConnected) return
 
-    // checkSigner(suiSigner, 'extension')
+    checkSigner(suiSigner, 'extension')
   }, [getState, checkSigner, ethosConfiguration])
 
   useEffect(() => {
