@@ -5,7 +5,14 @@ import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
 import type { SuiTransactionResponse } from '@mysten/sui.js'
-import type { WalletAccount, WalletIcon, SuiSignAndExecuteTransactionInput, SuiSignAndExecuteTransactionOptions } from '@mysten/wallet-standard';
+import type { 
+    SuiSignMessageOutput, 
+    SuiSignAndExecuteTransactionOptions,
+    WalletAccount, 
+    WalletIcon 
+} from '@mysten/wallet-standard';
+import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
+import { EthosSignAndExecuteTransactionInput } from '../types/EthosSignAndExecuteTransactionInput'
 
 const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
@@ -15,7 +22,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const currentAccount = null//accounts[0]
 
-    const signAndExecuteTransaction = (input: SuiSignAndExecuteTransactionInput, options?: SuiSignAndExecuteTransactionOptions): Promise<SuiTransactionResponse> => {
+    const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionInput, options?: SuiSignAndExecuteTransactionOptions): Promise<SuiTransactionResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -38,7 +45,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         return Promise.resolve(true);
     }
 
-    const signMessage = (message: string | Uint8Array): Promise<any> => {
+    const signMessage = (input: EthosSignMessageInput): Promise<SuiSignMessageOutput> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -50,7 +57,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
             
             hostedInteraction({
                 action: 'sign',
-                data: { signData: message },
+                data: { signData: input.message },
                 onResponse: transactionEventListener,
                 showWallet: true
             })

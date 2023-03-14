@@ -1,9 +1,12 @@
-import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react'
 import type { WalletAdapterList } from '@mysten/wallet-adapter-base';
 import { createWalletKitCore } from '@mysten/wallet-kit-core'
 import { UnsafeBurnerWalletAdapter, WalletStandardAdapterProvider } from '@mysten/wallet-adapter-all-wallets';
 import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
 import { ExtensionSigner, SignerType } from '../types/Signer';
+import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
+import { EthosSignAndExecuteTransactionInput } from '../types/EthosSignAndExecuteTransactionInput';
+import { DEFAULT_CHAIN } from '../lib/constants';
 
 export interface UseWalletKitArgs {
     configuredAdapters?: WalletAdapterList;
@@ -36,7 +39,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
       }
     
       // Automatically trigger the autoconnect logic when we mount, and whenever wallets change:
-      const { wallets, status, currentAccount } = useSyncExternalStore(
+      const { wallets, status, currentWallet, accounts, currentAccount } = useSyncExternalStore(
           walletKitRef.current.subscribe,
           walletKitRef.current.getState,
           walletKitRef.current.getState
@@ -50,14 +53,41 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
 
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
+      const signAndExecuteTransaction = useCallback((input: EthosSignAndExecuteTransactionInput) => {
+        if (!currentWallet || !currentAccount) {
+          throw new Error("No wallet connect to sign message");
+        }
+
+        const account = input.account || currentAccount
+        const chain  = input.chain || DEFAULT_CHAIN
+
+        return currentWallet.signAndExecuteTransaction({
+          ...input,
+          account,
+          chain
+        })
+      }, [currentWallet, currentAccount])
+
+      const signMessage = useCallback((input: EthosSignMessageInput) => {
+        if (!currentWallet || !currentAccount) {
+          throw new Error("No wallet connect to sign message");
+        }
+
+        const account = input.account || currentAccount
+
+        const message = typeof input.message === 'string' ?
+          new Uint8Array(Buffer.from(input.message, 'utf8')) :
+          input.message;
+
+        return currentWallet.signMessage({
+          ...input,
+          message,
+          account,
+        })
+      }, [currentWallet, currentAccount])
+
       const constructedSigner = useMemo<ExtensionSigner | null>(() => {
-        if (!currentAccount) return null;
-
-        const state = walletKitRef.current?.getState();
-        if (!state) return null;
-
-        const { accounts, currentWallet } = state;
-        if (!currentWallet) return null;
+        if (!currentWallet || !currentAccount) return null;
         
         return {
           type: SignerType.Extension,
@@ -65,12 +95,12 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           icon: currentWallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : currentWallet.icon,
           accounts,
           currentAccount,
-          signAndExecuteTransaction: currentWallet.signAndExecuteTransaction,
+          signAndExecuteTransaction,
           requestPreapproval: () => { return Promise.resolve(true) },
-          signMessage: currentWallet.signMessage,
+          signMessage,
           disconnect: () => currentWallet.disconnect()
         }
-      }, [currentAccount]);
+      }, [currentWallet, accounts, currentAccount]);
 
       return {
         wallets,
