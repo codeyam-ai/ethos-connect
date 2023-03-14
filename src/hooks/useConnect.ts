@@ -25,6 +25,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
 
   const {
     wallets,
+    status: suiStatus,
     signer: suiSigner,
     getState,
     connect,
@@ -82,11 +83,11 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     if (!ethosConfiguration) return;
 
     const state = getState();
-    console.log('useConnect', 'Setting providerAndSigner extension', state)
+    log('useConnect', 'Setting providerAndSigner extension', state)
     if (!state.isConnecting && !state.isConnected) return
 
     checkSigner(suiSigner, 'extension')
-  }, [getState, checkSigner, ethosConfiguration])
+  }, [suiStatus, getState, checkSigner, suiSigner, ethosConfiguration])
 
   useEffect(() => {
     if (!ethosConfiguration) return;

@@ -36,7 +36,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
       }
     
       // Automatically trigger the autoconnect logic when we mount, and whenever wallets change:
-      const { wallets } = useSyncExternalStore(
+      const { wallets, status, currentWallet } = useSyncExternalStore(
           walletKitRef.current.subscribe,
           walletKitRef.current.getState,
           walletKitRef.current.getState
@@ -46,7 +46,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           if (!disableAutoConnect) {
               walletKitRef.current?.autoconnect();
           }
-      }, [wallets]);
+      }, [status, wallets]);
 
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
@@ -66,10 +66,11 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           signMessage: wallet.signMessage,
           disconnect: wallet.disconnect
         }
-      }, []);
+      }, [currentWallet]);
 
       return {
         wallets,
+        status,
         signer: constructedSigner,
         ...walletFunctions
       }
