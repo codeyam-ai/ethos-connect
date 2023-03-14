@@ -25,7 +25,7 @@ const CopyWalletAddressButton = (props: MenuButtonProps) => {
         </>
     ), []);
 
-    const onClick = useCallback((e) => {
+    const onClick = useCallback((e: any) => {
         const element = e.target;
         const innerHTML = element.innerHTML;
         element.innerHTML = "Copied!"

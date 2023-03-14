@@ -70,10 +70,13 @@
   "dependencies": {
     "@mysten/sui.js": "../sui/sdk/typescript",
     "@mysten/wallet-adapter-all-wallets": "../sui/sdk/wallet-adapter/adapters/all-wallets",
+    "@mysten/wallet-adapter-base": "../sui/sdk/wallet-adapter/adapters/base-adapter",
     "@mysten/wallet-kit-core": "../sui/sdk/wallet-adapter/wallet-kit-core",
     "@superstate/react": "^0.1.0",
     "bignumber.js": "^9.1.1",
+    "cross-fetch": "^3.1.5",
     "encoding": "^0.1.13",
+    "eslint": "^8.36.0",
     "lodash": "^4.17.21",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",

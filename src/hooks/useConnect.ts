@@ -25,13 +25,10 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
 
   const {
     wallets,
-    selectWallet,
-    connected,
-    connecting,
-    noConnection: suiNoConnection,
-    signer: suiSigner,
-    setSigner: setSuiSigner
-  } = useWalletKit();
+    getState,
+    connect,
+    disconnect
+  } = useWalletKit({});
 
   const [logoutCount, setLogoutCount] = useState(0);
   const logout = useCallback(() => {
@@ -40,12 +37,12 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
 
     signerFound.current = false;
     setProviderAndSigner((prev: ProviderAndSigner) => ({ ...prev, signer: null }))
-    setSuiSigner(null);
+    disconnect()
     for (const key of Object.keys(methodsChecked.current)) {
       methodsChecked.current[key] = false;
     }
     setLogoutCount(prev => prev + 1);
-  }, [])
+  }, [disconnect])
 
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
@@ -83,11 +80,12 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
   useEffect(() => {
     if (!ethosConfiguration) return;
 
-    log('useConnect', 'Setting providerAndSigner extension', suiSigner, suiNoConnection)
-    if (!suiNoConnection && !suiSigner) return
+    const state = getState();
+    log('useConnect', 'Setting providerAndSigner extension', state)
+    if (!state.isConnecting && !state.isConnected) return
 
-    checkSigner(suiSigner, 'extension')
-  }, [suiNoConnection, suiSigner, checkSigner, ethosConfiguration])
+    // checkSigner(suiSigner, 'extension')
+  }, [getState, checkSigner, ethosConfiguration])
 
   useEffect(() => {
     if (!ethosConfiguration) return;
@@ -107,7 +105,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     fetchEthosSigner()
   }, [checkSigner, ethosConfiguration])
 
-  return { wallets, selectWallet, providerAndSigner, logout, connecting, connected };
+  return { wallets, providerAndSigner, connect, logout, getState };
 }
 
 export default useConnect;

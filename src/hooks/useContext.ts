@@ -40,7 +40,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         init(configuration);
     }, [configuration])
 
-    const { wallets, selectWallet, providerAndSigner, logout, connecting, connected } = useConnect(ethosConfiguration)
+    const { wallets, connect: selectWallet, providerAndSigner, logout, getState } = useConnect(ethosConfiguration)
     const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || DEFAULT_NETWORK)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -62,13 +62,14 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
 
     const wallet = useMemo(() => {
         const { provider, signer } = providerAndSigner;
+        const extensionState = getState();
         let status;
 
         if (signer?.type === 'hosted') {
             status = EthosConnectStatus.Connected
-        } else if (connecting) {
+        } else if (extensionState.isConnecting) {
             status = EthosConnectStatus.Loading
-        } else if (provider && connected) {
+        } else if (provider && extensionState.isConnected) {
             status = EthosConnectStatus.Connected
         } else {
             status = EthosConnectStatus.NoConnection
@@ -101,7 +102,6 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         providerAndSigner,
         contents,
         logout,
-        connecting,
     ])
 
     useEffect(() => {

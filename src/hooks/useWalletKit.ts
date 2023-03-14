@@ -1,8 +1,20 @@
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
-import { createWalletKitCore, type WalletKitCore } from '@mysten/wallet-kit-core'
-import { WalletStandardAdapterProvider } from '@mysten/wallet-adapter-all-wallets';
+import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react'
+import type { WalletAdapterList } from '@mysten/wallet-adapter-base';
+import { createWalletKitCore } from '@mysten/wallet-kit-core'
+import { UnsafeBurnerWalletAdapter, WalletStandardAdapterProvider } from '@mysten/wallet-adapter-all-wallets';
+import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
 
-const useWalletKit = () => {
+export interface UseWalletKitArgs {
+    configuredAdapters?: WalletAdapterList;
+    features?: string[];
+    enableUnsafeBurner?: boolean;
+    preferredWallets?: string[];
+    storageAdapter?: StorageAdapter;
+    storageKey?: string;
+    disableAutoConnect?: boolean;
+}
+
+const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
     const adapters = useMemo(
         () =>
           configuredAdapters ?? [
@@ -28,11 +40,19 @@ const useWalletKit = () => {
           walletKitRef.current.getState,
           walletKitRef.current.getState
       );
+
       useEffect(() => {
           if (!disableAutoConnect) {
               walletKitRef.current?.autoconnect();
           }
       }, [wallets]);
+
+      const { autoconnect, ...walletFunctions } = walletKitRef.current;
+
+      return {
+        wallets,
+        ...walletFunctions
+      }
 }
 
 export default useWalletKit
