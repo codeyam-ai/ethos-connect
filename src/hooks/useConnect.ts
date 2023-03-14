@@ -41,8 +41,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
         signer: null
       })
     }
-  }, [suiStatus]);
-  // }, [suiStatus, providerAndSigner, onWalletConnected])
+  }, [suiStatus, providerAndSigner, onWalletConnected]);
   
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
