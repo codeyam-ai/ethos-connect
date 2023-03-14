@@ -36,7 +36,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
       }
     
       // Automatically trigger the autoconnect logic when we mount, and whenever wallets change:
-      const { wallets, status, currentWallet } = useSyncExternalStore(
+      const { wallets, status, currentAccount } = useSyncExternalStore(
           walletKitRef.current.subscribe,
           walletKitRef.current.getState,
           walletKitRef.current.getState
@@ -51,22 +51,26 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
       const constructedSigner = useMemo<ExtensionSigner | null>(() => {
-        const state = walletKitRef.current?.getState();
-        const wallet = state?.currentWallet;
-        if (!wallet) return null;
+        if (!currentAccount) return null;
 
+        const state = walletKitRef.current?.getState();
+        if (!state) return null;
+
+        const { accounts, currentWallet } = state;
+        if (!currentWallet) return null;
+        
         return {
           type: SignerType.Extension,
-          name: wallet?.name,
-          icon: wallet?.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet?.icon,
-          accounts: state.accounts,
-          currentAccount: state.currentAccount,
-          signAndExecuteTransaction: wallet.signAndExecuteTransaction,
+          name: currentWallet.name,
+          icon: currentWallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : currentWallet.icon,
+          accounts,
+          currentAccount,
+          signAndExecuteTransaction: currentWallet.signAndExecuteTransaction,
           requestPreapproval: () => { return Promise.resolve(true) },
-          signMessage: wallet.signMessage,
-          disconnect: wallet.disconnect
+          signMessage: currentWallet.signMessage,
+          disconnect: currentWallet.disconnect
         }
-      }, [currentWallet]);
+      }, [currentAccount]);
 
       return {
         wallets,
