@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import store from 'store2'
 import log from '../lib/log'
 import useWalletKit from './useWalletKit'
 import listenForMobileConnection from '../lib/listenForMobileConnection'
@@ -10,7 +9,7 @@ import lib from '../lib/lib'
 import { EthosConfiguration } from '../types/EthosConfiguration'
 import { DEFAULT_NETWORK } from '../lib/constants';
 
-const useConnect = (ethosConfiguration?: EthosConfiguration) => {
+const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void) => {
   const signerFound = useRef<boolean>(false)
   const methodsChecked = useRef<any>({
     'ethos': false,
@@ -28,24 +27,15 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     status: suiStatus,
     signer: suiSigner,
     getState,
-    connect,
-    disconnect
+    connect
   } = useWalletKit({});
 
-  const [logoutCount, setLogoutCount] = useState(0);
-  const logout = useCallback(() => {
-    const suiStore = store.namespace('sui')
-    suiStore('disconnected', true);
-
-    signerFound.current = false;
-    setProviderAndSigner((prev: ProviderAndSigner) => ({ ...prev, signer: null }))
-    disconnect()
-    for (const key of Object.keys(methodsChecked.current)) {
-      methodsChecked.current[key] = false;
+  useEffect(() => {
+    if (suiStatus === "CONNECTED" && providerAndSigner) {
+      onWalletConnected && onWalletConnected(providerAndSigner)
     }
-    setLogoutCount((prev: number) => prev + 1);
-  }, [disconnect])
-
+  }, [suiStatus, providerAndSigner, onWalletConnected])
+  
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
@@ -64,7 +54,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     const provider = new JsonRpcProvider(connection);
 
     setProviderAndSigner({ provider, signer })
-  }, [logoutCount]);
+  }, []);
 
   useEffect(() => {
     if (!ethosConfiguration) return;
@@ -107,7 +97,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     fetchEthosSigner()
   }, [checkSigner, ethosConfiguration])
 
-  return { wallets, providerAndSigner, connect, logout, getState };
+  return { wallets, providerAndSigner, connect, getState };
 }
 
 export default useConnect;

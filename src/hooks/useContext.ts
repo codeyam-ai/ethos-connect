@@ -40,7 +40,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         init(configuration);
     }, [configuration])
 
-    const { wallets, connect: selectWallet, providerAndSigner, logout, getState } = useConnect(ethosConfiguration)
+    const { wallets, connect: selectWallet, providerAndSigner, getState } = useConnect(ethosConfiguration, onWalletConnected)
     const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || DEFAULT_NETWORK)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -100,26 +100,8 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         selectWallet,
         address,
         providerAndSigner,
-        contents,
-        logout,
+        contents
     ])
-
-    useEffect(() => {
-        log('EthosConnectProvider', 'checking provider', providerAndSigner)
-        if (!providerAndSigner?.provider) return;
-        log('EthosConnectProvider', 'calling onWalletConnected', providerAndSigner)
-
-        if (providerAndSigner.signer) {
-            setIsModalOpen(false);
-            const rawDisconnect = providerAndSigner.signer.disconnect;
-            providerAndSigner.signer.disconnect = async () => {
-                await rawDisconnect();
-                logout();
-            }
-        }
-
-        onWalletConnected && onWalletConnected(providerAndSigner)
-    }, [providerAndSigner])
 
     useEffect(() => {
         if (isModalOpen) {

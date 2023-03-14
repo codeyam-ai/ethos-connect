@@ -68,7 +68,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           signAndExecuteTransaction: currentWallet.signAndExecuteTransaction,
           requestPreapproval: () => { return Promise.resolve(true) },
           signMessage: currentWallet.signMessage,
-          disconnect: currentWallet.disconnect
+          disconnect: () => currentWallet.disconnect()
         }
       }, [currentAccount]);
 
