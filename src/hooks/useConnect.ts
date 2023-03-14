@@ -33,6 +33,13 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
   useEffect(() => {
     if (suiStatus === "CONNECTED" && providerAndSigner) {
       onWalletConnected && onWalletConnected(providerAndSigner)
+    } else {
+      methodsChecked.current["extension"] = false;
+      signerFound.current = false;
+      setProviderAndSigner({
+        provider: providerAndSigner.provider,
+        signer: null
+      })
     }
   }, [suiStatus, providerAndSigner, onWalletConnected])
   
