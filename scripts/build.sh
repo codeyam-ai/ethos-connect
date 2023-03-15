@@ -19,7 +19,7 @@ rewriteImports="${SCRIPT_DIR}/rewrite-imports.cjs"
 # Setup shared options for esbuild
 sharedOptions=()
 sharedOptions+=("--platform=browser")
-sharedOptions+=("--target=es2019")
+sharedOptions+=("--target=es2020")
 
 # Generate actual builds
 # ESM
