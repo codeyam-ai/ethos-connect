@@ -672,7 +672,7 @@
   dependencies:
     bs58 "^5.0.0"
 
-"@mysten/sui.js@../sui/sdk/typescript", "@mysten/sui.js@file:../sui/sdk/typescript":
+"@mysten/sui.js@../sui/sui-local/sdk/typescript", "@mysten/sui.js@file:../sui/sui-local/sdk/typescript":
   version "0.29.1"
   dependencies:
     "@mysten/bcs" "workspace:*"
@@ -686,44 +686,44 @@
     superstruct "^1.0.3"
     tweetnacl "^1.0.3"
 
-"@mysten/wallet-adapter-all-wallets@../sui/sdk/wallet-adapter/adapters/all-wallets":
+"@mysten/wallet-adapter-all-wallets@../sui/sui-local/sdk/wallet-adapter/adapters/all-wallets":
   version "0.4.3"
   dependencies:
-    "@mysten/wallet-adapter-unsafe-burner" "file:../sui/sdk/wallet-adapter/adapters/unsafe-burner"
-    "@mysten/wallet-adapter-wallet-standard" "file:../sui/sdk/wallet-adapter/adapters/wallet-standard-adapter"
+    "@mysten/wallet-adapter-unsafe-burner" "file:../sui/sui-local/sdk/wallet-adapter/adapters/unsafe-burner"
+    "@mysten/wallet-adapter-wallet-standard" "file:../sui/sui-local/sdk/wallet-adapter/adapters/wallet-standard-adapter"
 
-"@mysten/wallet-adapter-base@../sui/sdk/wallet-adapter/adapters/base-adapter", "@mysten/wallet-adapter-base@file:../sui/sdk/wallet-adapter/adapters/base-adapter":
+"@mysten/wallet-adapter-base@../sui/sui-local/sdk/wallet-adapter/adapters/base-adapter", "@mysten/wallet-adapter-base@file:../sui/sui-local/sdk/wallet-adapter/adapters/base-adapter":
   version "0.6.3"
   dependencies:
-    "@mysten/sui.js" "file:../sui/sdk/typescript"
-    "@mysten/wallet-standard" "file:../sui/sdk/wallet-adapter/wallet-standard"
+    "@mysten/sui.js" "file:../sui/sui-local/sdk/typescript"
+    "@mysten/wallet-standard" "file:../sui/sui-local/sdk/wallet-adapter/wallet-standard"
 
-"@mysten/wallet-adapter-unsafe-burner@file:../sui/sdk/wallet-adapter/adapters/unsafe-burner":
+"@mysten/wallet-adapter-unsafe-burner@file:../sui/sui-local/sdk/wallet-adapter/adapters/unsafe-burner":
   version "0.7.1"
   dependencies:
-    "@mysten/sui.js" "file:../sui/sdk/typescript"
-    "@mysten/wallet-adapter-base" "file:../sui/sdk/wallet-adapter/adapters/base-adapter"
-    "@mysten/wallet-standard" "file:../sui/sdk/wallet-adapter/wallet-standard"
+    "@mysten/sui.js" "file:../sui/sui-local/sdk/typescript"
+    "@mysten/wallet-adapter-base" "file:../sui/sui-local/sdk/wallet-adapter/adapters/base-adapter"
+    "@mysten/wallet-standard" "file:../sui/sui-local/sdk/wallet-adapter/wallet-standard"
 
-"@mysten/wallet-adapter-wallet-standard@file:../sui/sdk/wallet-adapter/adapters/wallet-standard-adapter":
+"@mysten/wallet-adapter-wallet-standard@file:../sui/sui-local/sdk/wallet-adapter/adapters/wallet-standard-adapter":
   version "0.6.3"
   dependencies:
-    "@mysten/sui.js" "file:../sui/sdk/typescript"
-    "@mysten/wallet-adapter-base" "file:../sui/sdk/wallet-adapter/adapters/base-adapter"
-    "@mysten/wallet-standard" "file:../sui/sdk/wallet-adapter/wallet-standard"
+    "@mysten/sui.js" "file:../sui/sui-local/sdk/typescript"
+    "@mysten/wallet-adapter-base" "file:../sui/sui-local/sdk/wallet-adapter/adapters/base-adapter"
+    "@mysten/wallet-standard" "file:../sui/sui-local/sdk/wallet-adapter/wallet-standard"
     mitt "^3.0.0"
 
-"@mysten/wallet-kit-core@../sui/sdk/wallet-adapter/wallet-kit-core":
+"@mysten/wallet-kit-core@../sui/sui-local/sdk/wallet-adapter/wallet-kit-core":
   version "0.3.3"
   dependencies:
-    "@mysten/sui.js" "file:../sui/sdk/typescript"
-    "@mysten/wallet-adapter-base" "file:../sui/sdk/wallet-adapter/adapters/base-adapter"
-    "@mysten/wallet-standard" "file:../sui/sdk/wallet-adapter/wallet-standard"
+    "@mysten/sui.js" "file:../sui/sui-local/sdk/typescript"
+    "@mysten/wallet-adapter-base" "file:../sui/sui-local/sdk/wallet-adapter/adapters/base-adapter"
+    "@mysten/wallet-standard" "file:../sui/sui-local/sdk/wallet-adapter/wallet-standard"
 
-"@mysten/wallet-standard@file:../sui/sdk/wallet-adapter/wallet-standard":
+"@mysten/wallet-standard@file:../sui/sui-local/sdk/wallet-adapter/wallet-standard":
   version "0.4.3"
   dependencies:
-    "@mysten/sui.js" "file:../sui/sdk/typescript"
+    "@mysten/sui.js" "file:../sui/sui-local/sdk/typescript"
     "@wallet-standard/core" "1.0.1"
 
 "@noble/hashes@^1.2.0", "@noble/hashes@~1.2.0":

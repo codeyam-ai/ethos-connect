@@ -95,8 +95,8 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             const { name, description, ...extraFields } = fields || {}
             convenenienceObjects.push({
                 ...object,
-                type: object?.type,
-                objectId: object?.objectId,
+                type: details?.type,
+                objectId: details?.objectId,
                 name,
                 description,
                 extraFields
@@ -110,17 +110,17 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     package: '0x2',
                     type,
                     module: 'sui',
-                    address: object?.objectId,
-                    objectId: object?.objectId,
+                    address: details?.objectId,
+                    objectId: details?.objectId,
                     name: fields.name,
                     description: fields.description,
                     imageUri: safeUrl,
                     collection: {
                         name: "DevNetNFT",
-                        type: object?.type
+                        type: details?.type
                     },
                     links: {
-                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${object?.objectId}`
+                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${details?.objectId}`
                     }
                 });
             } else if (type === 'Coin') {
@@ -135,20 +135,22 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 
                 tokens[subtype].balance = sumBN(tokens[subtype].balance, fields.balance);
                 tokens[subtype].coins.push({
-                    objectId: object?.objectId,
-                    type: object.type,
-                    balance: newBN(fields.balance)
+                    objectId: details?.objectId,
+                    type: details?.type,
+                    balance: newBN(fields.balance),
+                    digest: details?.digest,
+                    version: details?.version
                 })
             } else if (isBagNFT(object.details)) {
                 const bagNFT = await getBagNFT(provider, object.details);
                 
                 if ("name" in bagNFT) {
                     nfts.push({
-                        type: object?.type,
+                        type: details?.type,
                         package: typeComponents[0],
                         chain: 'Sui',
-                        address: object?.objectId,
-                        objectId: object?.objectId,
+                        address: details?.objectId,
+                        objectId: details?.objectId,
                         name: bagNFT.name,
                         description: bagNFT.description,
                         imageUri: ipfsConversion(bagNFT.url),
@@ -163,11 +165,11 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 const safeUrl = ipfsConversion(url || image_url || image);
                 if (safeUrl) {
                     nfts.push({
-                        type: object?.type,
+                        type: details?.type,
                         package: typeComponents[0],
                         chain: 'Sui',
-                        address: object?.objectId,
-                        objectId: object?.objectId,
+                        address: details?.objectId,
+                        objectId: details?.objectId,
                         name: name,
                         description: description,
                         imageUri: safeUrl,
