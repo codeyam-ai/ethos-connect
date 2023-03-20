@@ -38,20 +38,27 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     const objectInfos = await provider.getOwnedObjects({
         owner: address
     });
-    if (objectInfos.length === 0) {
+    if (objectInfos.data.length === 0) {
         return empty;
     }
 
     const currentObjects = [];
     let newObjectInfos = [];
     if (existingContents?.objects && existingContents.objects.length > 0) {
-        for (const objectInfo of objectInfos) {
+        for (const objectInfo of objectInfos.data) {
             const existingObject = existingContents?.objects.find(
                 (existingObject) => {
-                    return (
-                        existingObject.objectId === objectInfo.objectId &&
-                        existingObject.version === objectInfo.version
-                    )
+                    if (
+                        typeof objectInfo.details === "object" &&
+                        typeof existingObject.details === "object"
+                    ) {
+                        return (
+                            existingObject.details.objectId === objectInfo.details.objectId &&
+                            existingObject.details.version === objectInfo.details.version
+                        )    
+                    } else {
+                        return false;
+                    }
                 }
             );
             
@@ -62,12 +69,19 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             }
         }
     } else {
-        newObjectInfos = objectInfos;
+        newObjectInfos = objectInfos.data;
     }
 
     if (newObjectInfos.length === 0) return null;
 
-    const newObjectIds = newObjectInfos.map((o: any) => o.objectId);
+    const newObjectIds = newObjectInfos.map((o) => {
+        if (typeof o.details === "object") {
+            return o.details.objectId
+        } else {
+            return ""
+        }
+    }).filter((objectId) => objectId.length > 0);
+    
     const newObjects = await provider.multiGetObjects({
         ids: newObjectIds, 
         options: {
