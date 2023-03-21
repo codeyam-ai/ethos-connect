@@ -28,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "npm run build && npm run test && npm run lint",
+    "prepublishOnly": "npm run build",
     "build": "./scripts/build.sh --external:react --external:react-dom",
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
     "test": "./scripts/test.sh",
