@@ -5,8 +5,8 @@ import { sumBN } from '../../src/lib/bigNumber';
 
 describe('getWalletBalance', () => {  
     beforeEach(() => {
-        sui.getObjectsOwnedByAddress.mockClear()
-        sui.getObjectBatch.mockClear();
+        sui.getOwnedObjects.mockClear()
+        sui.multiGetObjects.mockClear();
     })
     
     it('should get balance for given wallet', async () => {
@@ -17,8 +17,8 @@ describe('getWalletBalance', () => {
             sui.suiCoin2.details.data.fields.balance
         )
 
-        expect(sui.getObjectsOwnedByAddress).toBeCalledTimes(1)
-        expect(sui.getObjectBatch).toBeCalledTimes(1)
+        expect(sui.getOwnedObjects).toBeCalledTimes(1)
+        expect(sui.multiGetObjects).toBeCalledTimes(1)
         expect(contents?.suiBalance).toEqual(balance)
         const suiTokens = contents?.tokens['0x2::sui::SUI']
         expect(suiTokens?.balance).toEqual(balance)
@@ -29,13 +29,13 @@ describe('getWalletBalance', () => {
     it('should not request objects that have not changed', async () => {
         const contents = await getWalletContents({ address: '0x123', existingContents })
         
-        expect(sui.getObjectsOwnedByAddress).toBeCalledTimes(1)
-        expect(sui.getObjectBatch).toBeCalledTimes(0)
+        expect(sui.getOwnedObjects).toBeCalledTimes(1)
+        expect(sui.multiGetObjects).toBeCalledTimes(0)
         expect(contents).toBeNull();
     })
 
     it('should add and remove objects as necessary', async () => {
-      sui.getObjectsOwnedByAddress.mockReturnValueOnce(
+      sui.getOwnedObjects.mockReturnValueOnce(
         Promise.resolve([sui.suiCoin, sui.suiCoin3].map((o: any) => ({ 
           objectId: o.details.reference.objectId,
           version: o.details.reference.version
@@ -49,7 +49,7 @@ describe('getWalletBalance', () => {
         sui.suiCoin3.details.data.fields.balance
       )
       
-      expect(sui.getObjectBatch).toBeCalledWith(["COIN3"])
+      expect(sui.multiGetObjects).toBeCalledWith(["COIN3"])
       expect(contents?.nfts.length).toBe(0)
       expect(contents?.suiBalance).toStrictEqual(totalBalance)
       expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);

@@ -61,17 +61,19 @@ const suiCoin3 = {
     }    
 }
 
-const getObjectsOwnedByAddress = jest.fn(
-    () => Promise.resolve([suiCoin, suiCoin2, nft].map((o: any) => ({ 
-        objectId: o.details.reference.objectId,
-        version: o.details.reference.version
-    })))
+const getOwnedObjects = jest.fn(
+    () => Promise.resolve({
+        data: [suiCoin, suiCoin2, nft].map((o: any) => ({ 
+            objectId: o.details.reference.objectId,
+            version: o.details.reference.version
+        }))
+    })
 )
 
-const getObjectBatch = jest.fn(
-    (objectIds: string[]) => {
+const multiGetObjects = jest.fn(
+    ({ ids }: { ids: string[] }) => {
         return [suiCoin, suiCoin2, suiCoin3, nft].filter(
-            (o: any) => objectIds.includes(o.details.reference.objectId)
+            (o: any) => ids.includes(o.details.reference.objectId)
         )
     }
 )
@@ -81,10 +83,10 @@ export default {
     suiCoin2,
     suiCoin3,
     nft, 
-    getObjectsOwnedByAddress,
-    getObjectBatch,
+    getOwnedObjects,
+    multiGetObjects,
     provider: {
-        getObjectsOwnedByAddress,
-        getObjectBatch
+        getOwnedObjects,
+        multiGetObjects
     }
 }

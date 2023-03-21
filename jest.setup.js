@@ -24,10 +24,9 @@ jest.mock('./src/lib/getConfiguration', () => ({
 }));
 
 jest.mock('@mysten/sui.js', () => ({
-    JsonRpcProvider: function () {
+    JsonRpcProvider: jest.fn(() => {
         return sui.provider
-    } ,
-    Connection: function() {
-
-    }
+    }), 
+    Connection: jest.fn(),
+    Transaction: jest.fn()
 }));
