@@ -1,21 +1,18 @@
 import log from './log'
 
-import type { Transaction } from '@mysten/sui.js';
-import type { SuiSignAndExecuteTransactionOptions } from '@mysten/wallet-standard';
+import type { SuiSignAndExecuteTransactionInput } from '@mysten/wallet-standard';
 
 type TransactArgs = {
   signer: any
-  transaction: Uint8Array | Transaction
-  options?: SuiSignAndExecuteTransactionOptions
+  transactionInput: SuiSignAndExecuteTransactionInput
 }
 
 const transact = async ({
   signer,
-  transaction,
-  options
+  transactionInput
 }: TransactArgs) => {
-  log("transact", "Starting transaction", signer, transaction)
-  return signer.signAndExecuteTransaction(transaction, options)
+  log("transact", "Starting transaction", signer, transactionInput)
+  return signer.signAndExecuteTransaction(transactionInput)
 }
 
 export default transact

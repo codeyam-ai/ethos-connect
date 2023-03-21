@@ -5,7 +5,7 @@ import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { Connection, JsonRpcProvider } from '@mysten/sui.js';
 import { ExtensionSigner, HostedSigner } from 'types/Signer'
-import lib from '../lib/lib'
+// import lib from '../lib/lib'
 import { EthosConfiguration } from '../types/EthosConfiguration'
 import { DEFAULT_NETWORK } from '../lib/constants';
 
@@ -81,7 +81,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
 
     const state = getState();
     log('useConnect', 'Setting providerAndSigner extension', state)
-    if (!state.isConnecting && !state.isConnected) return
+    if (state.isConnecting) return
 
     checkSigner(suiSigner, 'extension')
   }, [suiStatus, getState, checkSigner, suiSigner, ethosConfiguration])
@@ -96,7 +96,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     }
 
     const fetchEthosSigner = async () => {
-      const signer = await lib.getEthosSigner()
+      const signer = null// await lib.getEthosSigner()
       log('useConnect', 'Setting providerAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }

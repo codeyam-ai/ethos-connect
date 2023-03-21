@@ -2,7 +2,6 @@ import type { Preapproval } from './Preapproval'
 import type { SuiTransactionResponse } from '@mysten/sui.js';
 import type { 
   SuiSignMessageOutput,
-  SuiSignAndExecuteTransactionOptions,
   WalletAccount 
 } from '@mysten/wallet-standard'
 import { EthosSignMessageInput } from './EthosSignMessageInput';
@@ -19,7 +18,7 @@ export interface Signer {
   icon?: string,
   accounts: readonly WalletAccount[],
   currentAccount: WalletAccount | null,
-  signAndExecuteTransaction: (input: EthosSignAndExecuteTransactionInput, options?: SuiSignAndExecuteTransactionOptions) => Promise<SuiTransactionResponse>,
+  signAndExecuteTransaction: (input: EthosSignAndExecuteTransactionInput) => Promise<SuiTransactionResponse>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
   signMessage: (input: EthosSignMessageInput) => Promise<SuiSignMessageOutput>,
   disconnect: () => void
