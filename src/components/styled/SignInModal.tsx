@@ -91,7 +91,7 @@ const SignInModal = ({
         if (hideEmailSignIn && hideWalletSignIn) {
             throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
         }
-    }, [])
+    }, [hideEmailSignIn, hideWalletSignIn])
 
     useEffect(() => {
         if (!safeDappName) {
