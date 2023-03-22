@@ -7,6 +7,7 @@ import { ExtensionSigner, SignerType } from '../types/Signer';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
 import { EthosSignAndExecuteTransactionInput } from '../types/EthosSignAndExecuteTransactionInput';
 import { DEFAULT_CHAIN } from '../lib/constants';
+import { Preapproval } from 'types/Preapproval';
 
 export interface UseWalletKitArgs {
     configuredAdapters?: WalletAdapterList;
@@ -86,6 +87,24 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
         })
       }, [currentWallet, currentAccount])
 
+      const requestPreapproval = useCallback(async (preapproval: Preapproval) => {
+        if (!currentWallet || !currentAccount) {
+          throw new Error("No wallet connect to preapprove transactions");
+        }
+
+        const ethosWallet = (window as any).ethosWallet
+        if (!ethosWallet || currentWallet.name !== "Ethos Wallet") {
+            console.log("Wallet does not support preapproval")
+            return false;
+        }
+
+        if (!preapproval.address) {
+          preapproval.address = currentAccount.address;
+        }
+
+        return ethosWallet.requestPreapproval(preapproval)
+      }, [currentWallet, currentAccount])
+
       const constructedSigner = useMemo<ExtensionSigner | null>(() => {
         if (!currentWallet || !currentAccount) return null;
         
@@ -96,7 +115,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           accounts,
           currentAccount,
           signAndExecuteTransaction,
-          requestPreapproval: () => { return Promise.resolve(true) },
+          requestPreapproval,
           signMessage,
           disconnect: () => currentWallet.disconnect()
         }

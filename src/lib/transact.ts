@@ -1,10 +1,10 @@
 import log from './log'
 
-import type { SuiSignAndExecuteTransactionInput } from '@mysten/wallet-standard';
+import type { EthosSignAndExecuteTransactionInput } from 'types/EthosSignAndExecuteTransactionInput';
 
 type TransactArgs = {
   signer: any
-  transactionInput: SuiSignAndExecuteTransactionInput
+  transactionInput: EthosSignAndExecuteTransactionInput
 }
 
 const transact = async ({
