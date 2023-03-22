@@ -42,10 +42,10 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     if (suiStatus === WalletKitCoreConnectionStatus.DISCONNECTED) {
       methodsChecked.current["extension"] = false;
       signerFound.current = false;
-      setProviderAndSigner({
-        provider: null,
+      setProviderAndSigner((prev) => ({
+        ...prev,
         signer: null
-      })
+      }))
     }
   }, [suiStatus])
   
