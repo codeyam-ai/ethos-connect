@@ -2,6 +2,7 @@ import sui from '../../__mocks__/sui.mock'
 import { newBN } from '../../src/lib/bigNumber';
 import getWalletContents from '../../src/lib/getWalletContents';
 import { sumBN } from '../../src/lib/bigNumber';
+import { WalletContents } from '../../src/types/WalletContents';
 
 describe('getWalletBalance', () => {  
     beforeEach(() => {
@@ -27,7 +28,7 @@ describe('getWalletBalance', () => {
     })
 
     it('should not request objects that have not changed', async () => {
-        const contents = await getWalletContents({ address: '0x123', existingContents })
+        const contents = await getWalletContents({ network: "test", address: '0x123', existingContents })
         
         expect(sui.getOwnedObjects).toBeCalledTimes(1)
         expect(sui.multiGetObjects).toBeCalledTimes(0)
@@ -36,13 +37,15 @@ describe('getWalletBalance', () => {
 
     it('should add and remove objects as necessary', async () => {
       sui.getOwnedObjects.mockReturnValueOnce(
-        Promise.resolve([sui.suiCoin, sui.suiCoin3].map((o: any) => ({ 
-          objectId: o.details.reference.objectId,
-          version: o.details.reference.version
-        })))
+        Promise.resolve({
+          data: [sui.suiCoin, sui.suiCoin3].map((o: any) => ({ 
+            objectId: o.details.reference.objectId,
+            version: o.details.reference.version
+          }))
+        })
       )
 
-      const contents = await getWalletContents({ address: '0x123', existingContents })
+      const contents = await getWalletContents({ network: "test", address: '0x123', existingContents })
 
       const totalBalance = sumBN(
         sui.suiCoin.details.data.fields.balance,
@@ -55,24 +58,28 @@ describe('getWalletBalance', () => {
       expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);
       expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
       expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin3.details.data.fields.balance)  
-  })
+    })
 })
 
-const existingContents = {
+const existingContents: WalletContents = {
     suiBalance: newBN(15000),
     tokens: {
       '0x2::sui::SUI': {
-        balance: newBN(15000),
+        balance: 15000,
         coins: [
           {
             objectId: 'COIN1',
             type: '0x2::coin::Coin<0x2::sui::SUI>',
-            balance: newBN(10000)
+            balance: newBN(10000),
+            digest: "DIGEST",
+            version: 0
           },
           {
             objectId: 'COIN2',
             type: '0x2::coin::Coin<0x2::sui::SUI>',
-            balance: newBN(5000)
+            balance: newBN(5000),
+            digest: "DIGEST",
+            version: 0
           }
         ]
       }
@@ -87,10 +94,8 @@ const existingContents = {
         name: 'NAME',
         description: undefined,
         imageUri: 'IMAGE',
-        previewUri: 'IMAGE',
-        thumbnailUri: 'IMAGE',
         extraFields: {},
-        module: undefined,
+        module: "MODULE",
         links: {
           'DevNet Explorer': 'https://explorer.devnet.sui.io/objects/NFT'
         }

@@ -10,15 +10,18 @@ import sui from '../../__mocks__/sui.mock'
 import { HostedSigner } from '../../src/types/Signer';
 import BigNumber from 'bignumber.js';
 import { DEFAULT_NETWORK } from '../../src/lib/constants';
+import type { SuiSignMessageOutput, WalletAccount } from '@mysten/wallet-standard';
 
 describe('EthosConnectProvider', () => {
   const signer = {
     type: SignerType.Hosted,
     getAddress: () => Promise.resolve("ADDRESS"),
+    accounts: [] as readonly WalletAccount[],
+    currentAccount: null,
     getAccounts: () => Promise.resolve([]),
     signAndExecuteTransaction: (_transaction) => Promise.resolve({} as any),
     requestPreapproval: (_preApproval) => Promise.resolve(true),
-    sign: (_message) => Promise.resolve(true),
+    signMessage: (_message) => Promise.resolve({} as SuiSignMessageOutput),
     disconnect: () => {},
     logout: () => {}
   } as HostedSigner

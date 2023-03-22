@@ -1,5 +1,5 @@
 import type { Preapproval } from './Preapproval'
-import type { SuiTransactionResponse } from '@mysten/sui.js';
+import type { SuiAddress, SuiTransactionResponse } from '@mysten/sui.js';
 import type { 
   SuiSignMessageOutput,
   WalletAccount 
@@ -16,6 +16,7 @@ export interface Signer {
   type: SignerType,
   name?: string,
   icon?: string,
+  getAddress: () => Promise<SuiAddress | null>
   accounts: readonly WalletAccount[],
   currentAccount: WalletAccount | null,
   signAndExecuteTransaction: (input: EthosSignAndExecuteTransactionInput) => Promise<SuiTransactionResponse>,

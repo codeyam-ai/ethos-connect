@@ -112,6 +112,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           type: SignerType.Extension,
           name: currentWallet.name,
           icon: currentWallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : currentWallet.icon,
+          getAddress: async () => currentAccount?.address,
           accounts,
           currentAccount,
           signAndExecuteTransaction,

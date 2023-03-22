@@ -1,5 +1,5 @@
 import store from 'store2'
-// import { Chain } from '../enums/Chain'
+import { Chain } from '../enums/Chain'
 import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
@@ -18,9 +18,9 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
-    const accounts: WalletAccount[] = []//user.accounts.filter((account: any) => account.chain === Chain.Sui)
+    const accounts: WalletAccount[] = (user?.accounts || []).filter((account: any) => account.chain === Chain.Sui)
 
-    const currentAccount = null//accounts[0]
+    const currentAccount = accounts[0]
 
     const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionInput, options?: SuiSignAndExecuteTransactionOptions): Promise<SuiTransactionResponse> => {
         return new Promise((resolve, reject) => {
@@ -89,6 +89,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         name: "Ethos",
         icon: dataIcon,
         email: user.email,
+        getAddress: async () => currentAccount?.address,
         accounts,
         currentAccount,
         signAndExecuteTransaction,
