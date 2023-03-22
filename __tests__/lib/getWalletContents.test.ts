@@ -14,8 +14,8 @@ describe('getWalletBalance', () => {
         const contents = await getWalletContents({ address: '0x123', network: "TEST" })
         
         const balance = sumBN(
-            sui.suiCoin.details.data.fields.balance,
-            sui.suiCoin2.details.data.fields.balance
+            sui.suiCoin.details.content.fields.balance,
+            sui.suiCoin2.details.content.fields.balance
         )
 
         expect(sui.getOwnedObjects).toBeCalledTimes(1)
@@ -38,9 +38,11 @@ describe('getWalletBalance', () => {
     it('should add and remove objects as necessary', async () => {
       sui.getOwnedObjects.mockReturnValueOnce(
         Promise.resolve({
-          data: [sui.suiCoin, sui.suiCoin3].map((o: any) => ({ 
-            objectId: o.details.reference.objectId,
-            version: o.details.reference.version
+          data: [sui.suiCoin, sui.suiCoin3].map((o: any) => ({
+            details: {
+              objectId: o.details.objectId,
+              version: o.details.version  
+            } 
           }))
         })
       )
@@ -48,16 +50,24 @@ describe('getWalletBalance', () => {
       const contents = await getWalletContents({ network: "test", address: '0x123', existingContents })
 
       const totalBalance = sumBN(
-        sui.suiCoin.details.data.fields.balance,
-        sui.suiCoin3.details.data.fields.balance
+        sui.suiCoin.details.content.fields.balance,
+        sui.suiCoin3.details.content.fields.balance
       )
       
-      expect(sui.multiGetObjects).toBeCalledWith(["COIN3"])
+      expect(sui.multiGetObjects).toBeCalledWith({
+        ids: ["COIN3"],
+        options: {
+          showContent: true,
+          showDisplay: true,
+          showOwner: true,
+          showType: true
+        }
+      })
       expect(contents?.nfts.length).toBe(0)
       expect(contents?.suiBalance).toStrictEqual(totalBalance)
       expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);
       expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
-      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin3.details.data.fields.balance)  
+      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin3.details.content.fields.balance)  
     })
 })
 
@@ -72,14 +82,14 @@ const existingContents: WalletContents = {
             type: '0x2::coin::Coin<0x2::sui::SUI>',
             balance: newBN(10000),
             digest: "DIGEST",
-            version: 0
+            version: 2
           },
           {
             objectId: 'COIN2',
             type: '0x2::coin::Coin<0x2::sui::SUI>',
             balance: newBN(5000),
             digest: "DIGEST",
-            version: 0
+            version: 6
           }
         ]
       }
@@ -104,29 +114,32 @@ const existingContents: WalletContents = {
     objects: [
       {
         details: {
-          data: {
-            type: '0x2::coin::Coin<0x2::sui::SUI>',
+          type: '0x2::coin::Coin<0x2::sui::SUI>',
+          content: {
             fields: { balance: newBN(10000) }
           },
-          reference: { objectId: 'COIN1', version: 2 }
+          objectId: 'COIN1',
+          version: 2
         }
       },
       {
         details: {
-          data: {
-            type: '0x2::coin::Coin<0x2::sui::SUI>',
+          type: '0x2::coin::Coin<0x2::sui::SUI>',
+          content: {
             fields: { balance: newBN(5000) }
           },
-          reference: { objectId: 'COIN2', version: 6 }
+          objectId: 'COIN2', 
+          version: 6
         }
       },
       {
         details: {
+          type: 'random-address',
           data: {
-            type: 'random-address',
             fields: { url: 'IMAGE', name: 'NAME' }
           },
-          reference: { objectId: 'NFT', version: 1 }
+          objectId: 'NFT',
+          version: 1 
         }
       }
     ]

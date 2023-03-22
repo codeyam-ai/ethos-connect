@@ -110,6 +110,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             convenenienceObjects.push({
                 ...object,
                 type: details?.type,
+                version: details?.version,
                 objectId: details?.objectId,
                 name,
                 description,
@@ -200,6 +201,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         }
     } 
 
+    console.log("convenenienceObjects", convenenienceObjects)
     return { suiBalance, tokens, nfts, objects: convenenienceObjects }
 }
 
