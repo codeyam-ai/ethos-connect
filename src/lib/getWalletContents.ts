@@ -201,7 +201,6 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         }
     } 
 
-    console.log("convenenienceObjects", convenenienceObjects)
     return { suiBalance, tokens, nfts, objects: convenenienceObjects }
 }
 

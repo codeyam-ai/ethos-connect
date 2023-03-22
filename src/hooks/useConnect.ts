@@ -35,17 +35,19 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     const { provider, signer } = providerAndSigner;
     if (!provider && !signer) return;
 
+    onWalletConnected && onWalletConnected(providerAndSigner)
+  }, [suiStatus, providerAndSigner, onWalletConnected]);
+
+  useEffect(() => {
     if (suiStatus === WalletKitCoreConnectionStatus.DISCONNECTED) {
       methodsChecked.current["extension"] = false;
       signerFound.current = false;
       setProviderAndSigner({
-        provider: providerAndSigner.provider,
+        provider: null,
         signer: null
       })
     }
-
-    onWalletConnected && onWalletConnected(providerAndSigner)
-  }, [suiStatus, providerAndSigner, onWalletConnected]);
+  }, [suiStatus])
   
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
@@ -64,7 +66,6 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     const connection = new Connection({ fullnode: network })
     const provider = new JsonRpcProvider(connection);
 
-    console.log("SET PROVIDER AND SIGNER", provider, signer)
     setProviderAndSigner({ provider, signer })
   }, []);
 
