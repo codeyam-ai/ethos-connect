@@ -37,17 +37,6 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
 
     onWalletConnected && onWalletConnected(providerAndSigner)
   }, [suiStatus, providerAndSigner, onWalletConnected]);
-
-  useEffect(() => {
-    if (suiStatus === WalletKitCoreConnectionStatus.DISCONNECTED) {
-      methodsChecked.current["extension"] = false;
-      signerFound.current = false;
-      setProviderAndSigner((prev) => ({
-        ...prev,
-        signer: null
-      }))
-    }
-  }, [suiStatus])
   
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
@@ -68,6 +57,17 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
 
     setProviderAndSigner({ provider, signer })
   }, []);
+
+  useEffect(() => {
+    if (suiStatus === WalletKitCoreConnectionStatus.DISCONNECTED) {
+      methodsChecked.current["extension"] = false;
+      signerFound.current = false;
+      setProviderAndSigner((prev) => ({
+        ...prev,
+        signer: null
+      }))
+    }
+  }, [suiStatus])
 
   useEffect(() => {
     if (!ethosConfiguration) return;
