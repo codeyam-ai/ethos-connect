@@ -6,4 +6,5 @@ export const appBaseUrl =
 
 export const captchaSiteKey = '6LcXUDshAAAAAPTZ3E7xi3-335IA9rncYVoey_ls';
 export const DEFAULT_NETWORK = "https://fullnode.devnet.sui.io/"
+export const DEFAULT_FAUCET = "https://faucet.devnet.sui.io/"
 export const DEFAULT_CHAIN = "sui::devnet"
