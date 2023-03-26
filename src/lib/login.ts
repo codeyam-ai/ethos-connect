@@ -9,11 +9,11 @@ export type loginArgs = {
 }
 
 const login = async ({ email, provider, apiKey }: loginArgs) => {
-  const { walletAppUrl } = lib.getConfiguration();
+  const { walletAppUrl, redirectTo } = lib.getConfiguration();
   const userStore = store.namespace('users')
 
   if (provider) {
-    const returnTo = location.href;
+    const returnTo = redirectTo ?? location.href;
     const fullUrl = `${walletAppUrl}/auth?apiKey=${apiKey}&returnTo=${encodeURIComponent(returnTo)}`
     location.href = `${walletAppUrl}/socialauth?provider=${provider}&redirectTo=${encodeURIComponent(fullUrl)}`;
     return;
@@ -38,7 +38,7 @@ const login = async ({ email, provider, apiKey }: loginArgs) => {
       data: {
         email,
         provider,
-        returnTo: window.location.href,
+        returnTo: redirectTo ?? window.location.href,
         apiKey
       },
     })

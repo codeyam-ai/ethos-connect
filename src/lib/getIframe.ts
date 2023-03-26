@@ -20,28 +20,32 @@ const getIframe = (show?: boolean) => {
     iframe.style.height = '1px'
   }
 
-  if (!iframe) {
-    const queryParams = new URLSearchParams(window.location.search)
-    const auth = queryParams.get('auth')
+  const queryParams = new URLSearchParams(window.location.search)
+  const accessToken = queryParams.get('access_token')
+  const refreshToken = queryParams.get('refresh_token')
 
-    let fullWalletAppUrl = walletAppUrl + `/wallet?apiKey=${apiKey}`
-    if (auth) {
-      fullWalletAppUrl += `&auth=${auth}`
+  let fullWalletAppUrl = walletAppUrl + `/wallet?apiKey=${apiKey}`
+  if (accessToken && refreshToken) {
+    fullWalletAppUrl += `&accessToken=${accessToken}&refreshToken=${refreshToken}`
 
-      queryParams.delete('auth')
-      let fullPath = location.protocol + '//' + location.host + location.pathname
-      if (queryParams.toString().length > 0) {
-        fullPath += '?' + queryParams.toString()
-      }
-      store.namespace('auth')('access_token', auth)
-      window.history.pushState({}, '', fullPath)
-    } else {
-      const accessToken = store.namespace('auth')('access_token')
-      if (accessToken) {
-        fullWalletAppUrl += `&auth=${accessToken}`
-      }
+    queryParams.delete('access_token')
+    queryParams.delete('refresh_token')
+    let fullPath = location.protocol + '//' + location.host + location.pathname
+    if (queryParams.toString().length > 0) {
+      fullPath += '?' + queryParams.toString()
     }
+    store.namespace('auth')('access_token', accessToken)
+    store.namespace('auth')('refresh_token', refreshToken)
+    window.history.pushState({}, '', fullPath)
+  } else {
+    const accessToken = store.namespace('auth')('access_token')
+    const refreshToken = store.namespace('auth')('refresh_token')
+    if (accessToken && refreshToken) {
+      fullWalletAppUrl += `&access_token=${accessToken}&refresh_token=${refreshToken}`
+    }
+  }
 
+  if (!iframe) {
     log('getIframe', 'Load Iframe', fullWalletAppUrl)
     iframe = document.createElement('IFRAME') as HTMLIFrameElement
     iframe.src = fullWalletAppUrl
