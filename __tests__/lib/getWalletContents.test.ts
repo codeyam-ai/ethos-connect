@@ -14,8 +14,8 @@ describe('getWalletBalance', () => {
         const contents = await getWalletContents({ address: '0x123', network: "TEST" })
         
         const balance = sumBN(
-            sui.suiCoin.details.content.fields.balance,
-            sui.suiCoin2.details.content.fields.balance
+            sui.suiCoin.data.content.fields.balance,
+            sui.suiCoin2.data.content.fields.balance
         )
 
         expect(sui.getOwnedObjects).toBeCalledTimes(1)
@@ -39,9 +39,9 @@ describe('getWalletBalance', () => {
       sui.getOwnedObjects.mockReturnValueOnce(
         Promise.resolve({
           data: [sui.suiCoin, sui.suiCoin3].map((o: any) => ({
-            details: {
-              objectId: o.details.objectId,
-              version: o.details.version  
+            data: {
+              objectId: o.data.objectId,
+              version: o.data.version  
             } 
           }))
         })
@@ -50,8 +50,8 @@ describe('getWalletBalance', () => {
       const contents = await getWalletContents({ network: "test", address: '0x123', existingContents })
 
       const totalBalance = sumBN(
-        sui.suiCoin.details.content.fields.balance,
-        sui.suiCoin3.details.content.fields.balance
+        sui.suiCoin.data.content.fields.balance,
+        sui.suiCoin3.data.content.fields.balance
       )
       
       expect(sui.multiGetObjects).toBeCalledWith({
@@ -67,7 +67,7 @@ describe('getWalletBalance', () => {
       expect(contents?.suiBalance).toStrictEqual(totalBalance)
       expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);
       expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
-      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin3.details.content.fields.balance)  
+      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin3.data.content.fields.balance)  
     })
 })
 
@@ -113,7 +113,7 @@ const existingContents: WalletContents = {
     ],
     objects: [
       {
-        details: {
+        data: {
           type: '0x2::coin::Coin<0x2::sui::SUI>',
           content: {
             fields: { balance: newBN(10000) }
@@ -123,7 +123,7 @@ const existingContents: WalletContents = {
         }
       },
       {
-        details: {
+        data: {
           type: '0x2::coin::Coin<0x2::sui::SUI>',
           content: {
             fields: { balance: newBN(5000) }
@@ -133,7 +133,7 @@ const existingContents: WalletContents = {
         }
       },
       {
-        details: {
+        data: {
           type: 'random-address',
           data: {
             fields: { url: 'IMAGE', name: 'NAME' }

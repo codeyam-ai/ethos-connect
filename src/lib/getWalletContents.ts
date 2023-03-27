@@ -49,12 +49,12 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             const existingObject = existingContents?.objects.find(
                 (existingObject) => {
                     if (
-                        typeof objectInfo.details === "object" &&
-                        typeof existingObject.details === "object"
+                        typeof objectInfo.data === "object" &&
+                        typeof existingObject.data === "object"
                     ) {
                         return (
-                            existingObject.details.objectId === objectInfo.details.objectId &&
-                            existingObject.details.version === objectInfo.details.version
+                            existingObject.data.objectId === objectInfo.data.objectId &&
+                            existingObject.data.version === objectInfo.data.version
                         )    
                     } else {
                         return false;
@@ -75,8 +75,8 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     if (newObjectInfos.length === 0) return null;
 
     const newObjectIds = newObjectInfos.map((o) => {
-        if (typeof o.details === "object") {
-            return o.details.objectId
+        if (typeof o.data === "object") {
+            return o.data.objectId
         } else {
             return ""
         }
@@ -98,10 +98,10 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     const tokens: {[key: string]: any}= {};
     const convenenienceObjects: ConvenenienceSuiObject[] = [];
     for (const object of objects) {
-        const { details } = object
-        const { content: { fields } } = details;
+        const { data } = object
+        const { content: { fields } } = data;
         try {
-            const typeStringComponents = (details.type || "").split('<');
+            const typeStringComponents = (data.type || "").split('<');
             const subtype = (typeStringComponents[1] || "").replace(/>/, '')
             const typeComponents = typeStringComponents[0].split('::');
             const type = typeComponents[typeComponents.length - 1];
@@ -109,9 +109,9 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             const { name, description, ...extraFields } = fields || {}
             convenenienceObjects.push({
                 ...object,
-                type: details?.type,
-                version: details?.version,
-                objectId: details?.objectId,
+                type: data?.type,
+                version: data?.version,
+                objectId: data?.objectId,
                 name,
                 description,
                 extraFields
@@ -125,17 +125,17 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     package: '0x2',
                     type,
                     module: 'sui',
-                    address: details?.objectId,
-                    objectId: details?.objectId,
+                    address: data?.objectId,
+                    objectId: data?.objectId,
                     name: fields.name,
                     description: fields.description,
                     imageUri: safeUrl,
                     collection: {
                         name: "DevNetNFT",
-                        type: details?.type
+                        type: data?.type
                     },
                     links: {
-                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${details?.objectId}`
+                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${data?.objectId}`
                     }
                 });
             } else if (type === 'Coin') {
@@ -150,22 +150,22 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 
                 tokens[subtype].balance = sumBN(tokens[subtype].balance, fields.balance);
                 tokens[subtype].coins.push({
-                    objectId: details?.objectId,
-                    type: details?.type,
+                    objectId: data?.objectId,
+                    type: data?.type,
                     balance: newBN(fields.balance),
-                    digest: details?.digest,
-                    version: details?.version
+                    digest: data?.digest,
+                    version: data?.version
                 })
-            } else if (isBagNFT(object.details)) {
-                const bagNFT = await getBagNFT(provider, object.details);
+            } else if (isBagNFT(object.data)) {
+                const bagNFT = await getBagNFT(provider, object.data);
                 
                 if ("name" in bagNFT) {
                     nfts.push({
-                        type: details?.type,
+                        type: data?.type,
                         package: typeComponents[0],
                         chain: 'Sui',
-                        address: details?.objectId,
-                        objectId: details?.objectId,
+                        address: data?.objectId,
+                        objectId: data?.objectId,
                         name: bagNFT.name,
                         description: bagNFT.description,
                         imageUri: ipfsConversion(bagNFT.url),
@@ -180,11 +180,11 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 const safeUrl = ipfsConversion(url || image_url || image);
                 if (safeUrl) {
                     nfts.push({
-                        type: details?.type,
+                        type: data?.type,
                         package: typeComponents[0],
                         chain: 'Sui',
-                        address: details?.objectId,
-                        objectId: details?.objectId,
+                        address: data?.objectId,
+                        objectId: data?.objectId,
                         name: name,
                         description: description,
                         imageUri: safeUrl,

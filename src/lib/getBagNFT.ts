@@ -102,10 +102,10 @@ const LOGICAL_OWNER_PATH = 'data.fields.logical_owner';
 export const NftParser: SuiObjectParser<NftRpcResponse, NftRaw> = {
     parser: (data, suiData, rpcResponse) => {
         if (
-            typeof rpcResponse.details === 'object' &&
-            'owner' in rpcResponse.details
+            typeof rpcResponse.data === 'object' &&
+            'owner' in rpcResponse.data
         ) {
-            const { owner } = rpcResponse.details;
+            const { owner } = rpcResponse.data;
 
             const matches = (suiData.content as SuiMoveObject).type.match(
                 NftRegex
@@ -120,7 +120,7 @@ export const NftParser: SuiObjectParser<NftRpcResponse, NftRaw> = {
             return {
                 owner,
                 type: suiData.content?.dataType,
-                id: rpcResponse.details.objectId,
+                id: rpcResponse.data.objectId,
                 packageObjectId,
                 packageModule,
                 packageModuleClassName,
@@ -135,9 +135,9 @@ export const NftParser: SuiObjectParser<NftRpcResponse, NftRaw> = {
 };
 
 const isTypeMatchRegex = (d: SuiObjectResponse, regex: RegExp) => {
-    const { details } = d;
-    if (is(details, SuiObjectData)) {
-        const { content } = details;
+    const { data } = d;
+    if (is(data, SuiObjectData)) {
+        const { content } = data;
         if (content && 'type' in content) {
             return content.type.match(regex);
         }

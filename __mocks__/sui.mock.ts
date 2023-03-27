@@ -1,7 +1,7 @@
 import { newBN } from "../src/lib/bigNumber"
 
 const nft = {
-    details: {
+    data: {
         type: 'random-address',
         content: {
             fields: {
@@ -15,7 +15,7 @@ const nft = {
 }
 
 const suiCoin = {
-    details: {
+    data: {
         type: '0x2::coin::Coin<0x2::sui::SUI>',
         content: {
             fields: {
@@ -28,7 +28,7 @@ const suiCoin = {
 }
 
 const suiCoin2 = {
-    details: {
+    data: {
         type: '0x2::coin::Coin<0x2::sui::SUI>',
         content: {
             fields: {
@@ -41,7 +41,7 @@ const suiCoin2 = {
 }
 
 const suiCoin3 = {
-    details: {
+    data: {
         type: '0x2::coin::Coin<0x2::sui::SUI>',
         content: {
             fields: {
@@ -56,9 +56,9 @@ const suiCoin3 = {
 const getOwnedObjects = jest.fn(
     () => Promise.resolve({
         data: [suiCoin, suiCoin2, nft].map((o: any) => ({ 
-            details: {
-                objectId: o.details.objectId,
-                version: o.details.version 
+            data: {
+                objectId: o.data.objectId,
+                version: o.data.version 
             }
         }))
     })
@@ -67,7 +67,7 @@ const getOwnedObjects = jest.fn(
 const multiGetObjects = jest.fn(
     ({ ids }: { ids: string[] }) => {
         return [suiCoin, suiCoin2, suiCoin3, nft].filter(
-            (o: any) => ids.includes(o.details.objectId)
+            (o: any) => ids.includes(o.data.objectId)
         )
     }
 )

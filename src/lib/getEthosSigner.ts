@@ -7,12 +7,12 @@ import hostedInteraction, { HostedInteractionResponse } from './hostedInteractio
 import type { SuiTransactionResponse } from '@mysten/sui.js'
 import type { 
     SuiSignMessageOutput, 
-    SuiSignAndExecuteTransactionOptions,
     WalletAccount, 
     WalletIcon 
 } from '@mysten/wallet-standard';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
 import { EthosSignAndExecuteTransactionInput } from '../types/EthosSignAndExecuteTransactionInput'
+import { DEFAULT_CHAIN } from '../lib/constants';
 
 const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
@@ -22,7 +22,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const currentAccount = accounts[0]
 
-    const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionInput, options?: SuiSignAndExecuteTransactionOptions): Promise<SuiTransactionResponse> => {
+    const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionInput): Promise<SuiTransactionResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -31,10 +31,19 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
                     reject({ error: data?.response?.error || "User rejected transaction."})
                 }
             }
+
+            const serializedTransaction = input.transaction.serialize();
+            const account = input.account || currentAccount.address
+            const chain  = input.chain || DEFAULT_CHAIN
             
             hostedInteraction({
                 action: 'transaction',
-                data: { input, options },
+                data: { 
+                    input,
+                    serializedTransaction,
+                    account,
+                    chain
+                 },
                 onResponse: transactionEventListener,
                 showWallet: true
             })
