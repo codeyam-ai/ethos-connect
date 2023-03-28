@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Connection, JsonRpcProvider, Transaction } from '@mysten/sui.js';
+import { Connection, JsonRpcProvider, TransactionBlock } from '@mysten/sui.js';
 import { DEFAULT_NETWORK } from './constants';
 
 const PACKAGE_ADDRESS = '0xe7ed73e4c2c1b38729155bf5c44dc4496a9edd2f';
@@ -23,9 +23,9 @@ export const getSuiName = async (address: string, network: string, sender: strin
   const suiProvider = new JsonRpcProvider(connection);
 
   try {
-    const registryTx = new Transaction();
+    const registryTx = new TransactionBlock();
     registryTx.add(
-      Transaction.Commands.MoveCall({
+      TransactionBlock.Transactions.MoveCall({
         target: `${PACKAGE_ADDRESS}::base_registry::get_record_by_key`,
         arguments: [
           registryTx.object(REGISTRY_ADDRESS), 
@@ -34,8 +34,8 @@ export const getSuiName = async (address: string, network: string, sender: strin
       })
     )
     const resolverBytes = _.get(
-      await suiProvider.devInspectTransaction({
-        transaction: registryTx,
+      await suiProvider.devInspectTransactionBlock({
+        transactionBlock: registryTx,
         sender
       }),
       DEV_INSPECT_RESULT_PATH_1,
@@ -43,9 +43,9 @@ export const getSuiName = async (address: string, network: string, sender: strin
     if (!resolverBytes) return address;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
-    const resolverTx = new Transaction();
+    const resolverTx = new TransactionBlock();
     resolverTx.add(
-      Transaction.Commands.MoveCall({
+      TransactionBlock.Transactions.MoveCall({
         target: `${PACKAGE_ADDRESS}::resolver::name`,
         arguments: [
           registryTx.object(resolver), 
@@ -53,8 +53,8 @@ export const getSuiName = async (address: string, network: string, sender: strin
         ],
       })
     )
-    const resolverResponse = await suiProvider.devInspectTransaction({
-      transaction: resolverTx,
+    const resolverResponse = await suiProvider.devInspectTransactionBlock({
+      transactionBlock: resolverTx,
       sender
     })
   
@@ -74,9 +74,9 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
   const suiProvider = new JsonRpcProvider(connection);
 
   try {
-    const registryTx = new Transaction();
+    const registryTx = new TransactionBlock();
     registryTx.add(
-      Transaction.Commands.MoveCall({
+      TransactionBlock.Transactions.MoveCall({
         target: `${PACKAGE_ADDRESS}::base_registry::get_record_by_key`,
         arguments: [
           registryTx.object(REGISTRY_ADDRESS), 
@@ -84,8 +84,8 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
         ],
       })
     )
-    const resolverResponse = await suiProvider.devInspectTransaction({
-      transaction: registryTx,
+    const resolverResponse = await suiProvider.devInspectTransactionBlock({
+      transactionBlock: registryTx,
       sender
     });
 
@@ -93,9 +93,9 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
     if (!resolverBytes) return domain;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
-    const resolverTx = new Transaction();
+    const resolverTx = new TransactionBlock();
     resolverTx.add(
-      Transaction.Commands.MoveCall({
+      TransactionBlock.Transactions.MoveCall({
         target: `${PACKAGE_ADDRESS}::resolver::addr`,
         arguments: [
           registryTx.object(resolver), 
@@ -103,8 +103,8 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
         ],
       })
     )
-    const resolverResponse2 = await suiProvider.devInspectTransaction({
-      transaction: resolverTx,
+    const resolverResponse2 = await suiProvider.devInspectTransactionBlock({
+      transactionBlock: resolverTx,
       sender, 
     })
     const addr = _.get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)

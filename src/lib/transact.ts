@@ -1,10 +1,10 @@
 import log from './log'
 
-import type { EthosSignAndExecuteTransactionInput } from 'types/EthosSignAndExecuteTransactionInput';
+import type { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput';
 
 type TransactArgs = {
   signer: any
-  transactionInput: EthosSignAndExecuteTransactionInput
+  transactionInput: EthosSignAndExecuteTransactionBlockInput
 }
 
 const transact = async ({

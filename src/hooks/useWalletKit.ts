@@ -5,7 +5,7 @@ import { UnsafeBurnerWalletAdapter, WalletStandardAdapterProvider } from '@myste
 import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
 import { ExtensionSigner, SignerType } from '../types/Signer';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
-import { EthosSignAndExecuteTransactionInput } from '../types/EthosSignAndExecuteTransactionInput';
+import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput';
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Preapproval } from 'types/Preapproval';
 
@@ -54,7 +54,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
 
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
-      const signAndExecuteTransaction = useCallback((input: EthosSignAndExecuteTransactionInput) => {
+      const signAndExecuteTransaction = useCallback((input: EthosSignAndExecuteTransactionBlockInput) => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
         }
@@ -62,7 +62,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
         const account = input.account || currentAccount
         const chain  = input.chain || DEFAULT_CHAIN
 
-        return currentWallet.signAndExecuteTransaction({
+        return currentWallet.signAndExecuteTransactionBlock({
           ...input,
           account,
           chain

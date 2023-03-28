@@ -4,14 +4,14 @@ import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { SuiTransactionResponse } from '@mysten/sui.js'
+import type { SuiTransactionBlockResponse } from '@mysten/sui.js'
 import type { 
     SuiSignMessageOutput, 
     WalletAccount, 
     WalletIcon 
 } from '@mysten/wallet-standard';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
-import { EthosSignAndExecuteTransactionInput } from '../types/EthosSignAndExecuteTransactionInput'
+import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput'
 import { DEFAULT_CHAIN } from '../lib/constants';
 
 const getEthosSigner = async (): Promise<HostedSigner | null> => {
@@ -22,7 +22,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const currentAccount = accounts[0]
 
-    const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionInput): Promise<SuiTransactionResponse> => {
+    const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -32,7 +32,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
                 }
             }
 
-            const serializedTransaction = input.transaction.serialize();
+            const serializedTransaction = input.transactionBlock.serialize();
             const account = input.account || currentAccount.address
             const chain  = input.chain || DEFAULT_CHAIN
             

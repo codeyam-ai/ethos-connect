@@ -1,4 +1,4 @@
-import { Transaction } from '@mysten/sui.js';
+import { TransactionBlock } from '@mysten/sui.js';
 
 import EthosConnectProvider from './components/EthosConnectProvider'
 import SignInButton from './components/styled/SignInButton'
@@ -94,7 +94,7 @@ export {
   SignInButton,
   ethos,
   EthosConnectStatus,
-  Transaction
+  TransactionBlock
 }
 
 export type {
