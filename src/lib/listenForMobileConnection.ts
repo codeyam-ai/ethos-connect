@@ -1,9 +1,10 @@
-import { ProviderAndSigner } from '../types/ProviderAndSigner'
+// import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import getConfiguration from './getConfiguration'
 import log from './log'
 
-const listenForMobileConnection = async (onConnect: (providerAndSigner: ProviderAndSigner) => void) => {
-  const { walletAppUrl } = getConfiguration()
+// const listenForMobileConnection = async (onConnect: (providerAndSigner: ProviderAndSigner) => void) => {
+const listenForMobileConnection = async () => {
+    const { walletAppUrl } = getConfiguration()
 
   const connectionEventListener = (message: any) => {
     if (message.origin === walletAppUrl) {
@@ -11,7 +12,7 @@ const listenForMobileConnection = async (onConnect: (providerAndSigner: Provider
       if (action !== 'connect') return
 
       if (!data.address) {
-        onConnect({ provider: {}, signer: null })
+        // onConnect({ provider: {}, signer: null })
         return;
       };
 
@@ -26,7 +27,7 @@ const listenForMobileConnection = async (onConnect: (providerAndSigner: Provider
       }
 
       log('mobile', 'Mobile connection established', provider, signer)
-      onConnect({ provider, signer } as ProviderAndSigner)
+      // onConnect({ provider, signer } as ProviderAndSigner)
     }
   }
 

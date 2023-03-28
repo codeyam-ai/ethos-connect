@@ -38,6 +38,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     const objectInfos = await provider.getOwnedObjects({
         owner: address
     });
+
     if (objectInfos.data.length === 0) {
         return empty;
     }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import log from '../lib/log'
 import useWalletKit from './useWalletKit'
-import listenForMobileConnection from '../lib/listenForMobileConnection'
+// import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { Connection, JsonRpcProvider } from '@mysten/sui.js';
 import { ExtensionSigner, HostedSigner } from 'types/Signer'
@@ -73,13 +73,13 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     if (!ethosConfiguration) return;
 
     log("mobile", "listening to mobile connection from EthosConnectProvider")
-    listenForMobileConnection(
-      (mobileSigner: any) => {
-        log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
-        log("mobile", "Setting provider and signer", mobileSigner)
-        checkSigner(mobileSigner, 'mobile')
-      }
-    )
+    // listenForMobileConnection(
+    //   (mobileSigner: any) => {
+    //     log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
+    //     log("mobile", "Setting provider and signer", mobileSigner)
+    //     checkSigner(mobileSigner, 'mobile')
+    //   }
+    // )
   }, [checkSigner, ethosConfiguration])
 
   useEffect(() => {
