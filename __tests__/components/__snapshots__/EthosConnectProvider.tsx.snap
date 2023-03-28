@@ -65,7 +65,7 @@ Array [
               "display": "flex",
               "justifyContent": "center",
               "minHeight": "100%",
-              "padding": "1rem",
+              "padding": "0",
               "textAlign": "center",
             }
           }
@@ -79,6 +79,7 @@ Array [
                 "overflow": "hidden",
                 "position": "relative",
                 "transitionProperty": "all",
+                "width": "360px",
               }
             }
           >
@@ -213,6 +214,7 @@ Array [
                         "flexGrow": "0",
                         "fontSize": "inherit",
                         "fontWeight": "500",
+                        "gap": "12px",
                         "justifyContent": "center",
                         "opacity": 0.5,
                         "order": "0",
@@ -289,6 +291,7 @@ Array [
                       "flexGrow": "0",
                       "fontSize": "inherit",
                       "fontWeight": "400",
+                      "gap": "12px",
                       "justifyContent": "space-between",
                       "opacity": 1,
                       "order": "0",

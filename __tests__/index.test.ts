@@ -11,7 +11,8 @@ it('should expose the correct components', () => {
     DetachedEthosConnectProvider.name,
     SignInButton.name,
     'ethos',
-    'EthosConnectStatus'
+    'EthosConnectStatus',
+    'TransactionBlock'
   ]
   expect(Object.keys(ReactApi)).toEqual(exportNames)
 })

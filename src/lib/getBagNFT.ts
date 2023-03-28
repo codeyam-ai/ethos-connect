@@ -1,10 +1,11 @@
-import { is, SuiObject } from '@mysten/sui.js';
+import { getObjectFields, is, SuiObjectData } from '@mysten/sui.js';
 import _ from 'lodash';
+import { ipfsConversion } from '../lib/getWalletContents';
 
 import type {
-    GetObjectDataResponse,
     JsonRpcProvider,
-    SuiMoveObject    
+    SuiMoveObject,
+    SuiObjectResponse,    
 } from '@mysten/sui.js';
 
 export type BagNFT = {
@@ -21,8 +22,8 @@ export interface WithIds {
 
 type FetchFnParser<RpcResponse, DataModel> = (
     typedData: RpcResponse,
-    suiObject: SuiObject,
-    rpcResponse: GetObjectDataResponse
+    suiObject: SuiObjectData,
+    rpcResponse: SuiObjectResponse
 ) => DataModel | undefined;
 
 type SuiObjectParser<RpcResponse, DataModel> = {
@@ -101,12 +102,12 @@ const LOGICAL_OWNER_PATH = 'data.fields.logical_owner';
 export const NftParser: SuiObjectParser<NftRpcResponse, NftRaw> = {
     parser: (data, suiData, rpcResponse) => {
         if (
-            typeof rpcResponse.details === 'object' &&
-            'data' in rpcResponse.details
+            typeof rpcResponse.data === 'object' &&
+            'owner' in rpcResponse.data
         ) {
-            const { owner } = rpcResponse.details;
+            const { owner } = rpcResponse.data;
 
-            const matches = (suiData.data as SuiMoveObject).type.match(
+            const matches = (suiData.content as SuiMoveObject).type.match(
                 NftRegex
             );
             if (!matches) {
@@ -118,8 +119,8 @@ export const NftParser: SuiObjectParser<NftRpcResponse, NftRaw> = {
 
             return {
                 owner,
-                type: suiData.data.dataType,
-                id: rpcResponse.details.reference.objectId,
+                type: suiData.content?.dataType,
+                id: rpcResponse.data.objectId,
                 packageObjectId,
                 packageModule,
                 packageModuleClassName,
@@ -133,72 +134,72 @@ export const NftParser: SuiObjectParser<NftRpcResponse, NftRaw> = {
     regex: NftRegex,
 };
 
-const isTypeMatchRegex = (d: GetObjectDataResponse, regex: RegExp) => {
-    const { details } = d;
-    if (is(details, SuiObject)) {
-        const { data } = details;
-        if ('type' in data) {
-            return data.type.match(regex);
+const isTypeMatchRegex = (d: SuiObjectResponse, regex: RegExp) => {
+    const { data } = d;
+    if (is(data, SuiObjectData)) {
+        const { content } = data;
+        if (content && 'type' in content) {
+            return content.type.match(regex);
         }
     }
     return false;
 };
 
-export const parseDomains = (domains: GetObjectDataResponse[]) => {
+export const parseDomains = (domains: SuiObjectResponse[]) => {
     const response: Partial<NftDomains> = {};
     const urlDomain = domains.find((d) => isTypeMatchRegex(d, UrlDomainRegex));
     const displayDomain = domains.find((d) =>
         isTypeMatchRegex(d, DisplayDomainRegex)
     );
 
-    if (
-        urlDomain &&
-        is(urlDomain.details, SuiObject) &&
-        'fields' in urlDomain.details.data
-    ) {
-        const { data } = urlDomain.details;
-        response.url = (data.fields as UrlDomainRpcResponse).value.fields.url;
+    if (urlDomain && getObjectFields(urlDomain)) {
+        const url = (getObjectFields(urlDomain) as UrlDomainRpcResponse).value
+            .fields.url;
+        response.url = ipfsConversion(url);
     }
-    if (
-        displayDomain &&
-        is(displayDomain.details, SuiObject) &&
-        'fields' in displayDomain.details.data
-    ) {
-        const { data } = displayDomain.details;
+    if (displayDomain && getObjectFields(displayDomain)) {
         response.description = (
-            data.fields as DisplayDomainRpcResponse
+            getObjectFields(displayDomain) as DisplayDomainRpcResponse
         ).value.fields.description;
         response.name = (
-            data.fields as DisplayDomainRpcResponse
+            getObjectFields(displayDomain) as DisplayDomainRpcResponse
         ).value.fields.name;
     }
 
     return response;
 };
 
-export const isBagNFT = (nft: SuiObject): boolean => {
+export const isBagNFT = (data: SuiObjectData): boolean => {
     return (
-        nft?.data &&
-        'fields' in nft.data &&
-        'logical_owner' in nft.data.fields &&
-        'bag' in nft.data.fields
+        !!data.content &&
+            'fields' in data.content &&
+            'logical_owner' in data.content.fields &&
+            'bag' in data.content.fields
     );
 }
 
-const getBagNFT = async (provider: JsonRpcProvider, nft: SuiObject) => {
+const getBagNFT = async (provider: JsonRpcProvider, data: SuiObjectData) => {
     if (
-        !isBagNFT(nft) ||
-        !_.has(nft, ID_PATH) ||
-        !_.has(nft, BAG_ID_PATH) ||
-        !_.has(nft, LOGICAL_OWNER_PATH)
-    ) return nft;    
+        !isBagNFT(data) ||
+        !_.has(data, ID_PATH) ||
+        !_.has(data, BAG_ID_PATH) ||
+        !_.has(data, LOGICAL_OWNER_PATH)
+    ) return data;    
 
-    const id = _.get(nft, ID_PATH);
-    const bagId = _.get(nft, BAG_ID_PATH);
-    const owner = _.get(nft, LOGICAL_OWNER_PATH);
-    const bagObjects = await provider.getDynamicFields(bagId || "");
+    const id = _.get(data, ID_PATH);
+    const bagId = _.get(data, BAG_ID_PATH);
+    const owner = _.get(data, LOGICAL_OWNER_PATH);
+    const bagObjects = await provider.getDynamicFields({ parentId: bagId || "" });
     const objectIds = bagObjects.data.map((bagObject) => bagObject.objectId);
-    const objects = await provider.getObjectBatch(objectIds);
+    const objects = await provider.multiGetObjects({
+        ids: objectIds,
+        options: {
+            showContent: true,
+            showDisplay: true,
+            showOwner: true,
+            showType: true
+        }
+    });
     return {
         id,
         owner,

@@ -23,6 +23,8 @@ import Header from './Header'
 import Or from './Or'
 import log from '../../lib/log';
 
+import type { WalletAdapter } from '@mysten/wallet-adapter-base';
+
 export type SignInModalProps = {
     connectMessage?: string | ReactNode,
     dappName?: string,
@@ -67,6 +69,7 @@ const SignInModal = ({
     const [showInstallWallet, setShowInstallWallet] = useState(false);
 
     const [safeDappName, setSafeDappName] = useState(dappName);
+    const [safeWallets, setSafeWallets] = useState<WalletAdapter[] | undefined>();
 
     useHandleElementWithIdClicked(closeOnClickId, closeModal)
 
@@ -88,13 +91,37 @@ const SignInModal = ({
         if (hideEmailSignIn && hideWalletSignIn) {
             throw new Error("hideEmailSignIn and hideWalletSignIn cannot both be true");
         }
-    }, [])
+    }, [hideEmailSignIn, hideWalletSignIn])
 
     useEffect(() => {
         if (!safeDappName) {
             setSafeDappName(document.title)
         }
     }, [safeDappName])
+
+    useEffect(() => {
+        let safeWallets: WalletAdapter[] = wallets || [];
+        if (preferredWallets && preferredWallets.length > 0) {
+            safeWallets = safeWallets.sort(
+                (a: any, b: any) => {
+                    let aIndex = preferredWallets.indexOf(a.name);
+                    if (aIndex === -1) {
+                        aIndex = safeWallets.length;
+                    }
+
+                    let bIndex = preferredWallets.indexOf(b.name);
+                    if (bIndex === -1) {
+                        bIndex = safeWallets.length;
+                    }
+
+                    return aIndex - bIndex;
+                }
+            )
+        }
+        log("preferredWallets", preferredWallets, safeWallets)
+
+        setSafeWallets(safeWallets)
+    }, [wallets, preferredWallets, log])
 
     // const _toggleMobile = useCallback(() => {
     //     setShowMobile((prev) => !prev)
@@ -127,26 +154,9 @@ const SignInModal = ({
     }, [safeDappName, connectMessage]);
 
     const modalContent = useMemo(() => {
-        let safeWallets = wallets || []
-
-        if (preferredWallets && preferredWallets.length > 0) {
-            safeWallets = safeWallets.sort(
-                (a: any, b: any) => {
-                    let aIndex = preferredWallets.indexOf(a.name);
-                    if (aIndex === -1) {
-                        aIndex = safeWallets.length;
-                    }
-
-                    let bIndex = preferredWallets.indexOf(b.name);
-                    if (bIndex === -1) {
-                        bIndex = safeWallets.length;
-                    }
-
-                    return aIndex - bIndex;
-                }
-            )
+        if (!safeWallets) {
+            return <></>
         }
-        log("preferredWallets", preferredWallets, safeWallets)
 
         if (showMobile) {
             return <MobileWallet />
@@ -232,7 +242,7 @@ const SignInModal = ({
                 )}
             </Header>
         )
-    }, [safeConnectMessage, safeDappName, hideEmailSignIn, hideWalletSignIn, wallets, showEmail, showMobile, showInstallWallet, preferredWallets])
+    }, [safeConnectMessage, safeDappName, hideEmailSignIn, hideWalletSignIn, safeWallets, showEmail, showMobile, showInstallWallet])
 
     const subpage = useMemo(() => {
         return showMobile || showInstallWallet

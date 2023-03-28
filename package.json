@@ -1,6 +1,6 @@
 {
   "name": "ethos-connect",
-  "version": "0.0.104",
+  "version": "0.0.107",
   "description": "Build on Sui with ease with the Ethos Wallet APIs. Connect with all wallets and users with no wallet.",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "npm run build && npm run test && npm run lint",
+    "prepublishOnly": "npm run build",
     "build": "./scripts/build.sh --external:react --external:react-dom",
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
     "test": "./scripts/test.sh",
@@ -39,8 +39,8 @@
     "clean": "rimraf ./dist"
   },
   "peerDependencies": {
-    "react": "^16 || ^17 || ^18",
-    "react-dom": "^16 || ^17 || ^18"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@swc/core": "^1.2.197",
@@ -51,8 +51,8 @@
     "@types/jest": "^28.1.0",
     "@types/lodash": "^4.14.191",
     "@types/qrcode": "^1.4.2",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "@types/react-google-recaptcha": "^2.1.5",
     "@types/react-test-renderer": "^18.0.0",
     "esbuild": "^0.11.18",
@@ -68,13 +68,15 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.29.1",
-    "@mysten/wallet-adapter-all-wallets": "^0.4.3",
-    "@mysten/wallet-adapter-base": "^0.6.3",
-    "@mysten/wallet-adapter-react": "^11.0.0",
+    "@mysten/sui.js": "^0.30.0",
+    "@mysten/wallet-adapter-all-wallets": "^0.5.0",
+    "@mysten/wallet-adapter-base": "^0.7.0",
+    "@mysten/wallet-kit-core": "^0.4.0",
     "@superstate/react": "^0.1.0",
     "bignumber.js": "^9.1.1",
+    "cross-fetch": "^3.1.5",
     "encoding": "^0.1.13",
+    "eslint": "^8.36.0",
     "lodash": "^4.17.21",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",

@@ -415,6 +415,7 @@ export const iconButton = (width: number, disabled: boolean = false, primary: bo
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "row",
+    gap: "12px",
     justifyContent: noIcon ? "center" : "space-between",
     alignItems: "center",
     padding: primary ? "20px 20px" : "16px 16px 16px 20px",

@@ -4,24 +4,25 @@ import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { SignableTransaction, SuiTransactionResponse } from '@mysten/sui.js'
-import type { WalletIcon } from '@mysten/wallet-standard';
+import type { SuiTransactionBlockResponse } from '@mysten/sui.js'
+import type { 
+    SuiSignMessageOutput, 
+    WalletAccount, 
+    WalletIcon 
+} from '@mysten/wallet-standard';
+import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
+import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput'
+import { DEFAULT_CHAIN } from '../lib/constants';
 
 const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
-    const getAccounts = async () => {
-        if (!user) return [];
-        return user.accounts.filter((account: any) => account.chain === Chain.Sui)
-    }
+    const accounts: WalletAccount[] = (user?.accounts || []).filter((account: any) => account.chain === Chain.Sui)
 
-    const getAddress = async () => {
-        const accounts = await getAccounts();
-        return accounts[0]?.address;
-    }
+    const currentAccount = accounts[0]
 
-    const signAndExecuteTransaction = (details: SignableTransaction): Promise<SuiTransactionResponse> => {
+    const signAndExecuteTransactionBlock = (input: EthosSignAndExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -30,10 +31,19 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
                     reject({ error: data?.response?.error || "User rejected transaction."})
                 }
             }
+
+            const serializedTransaction = input.transactionBlock.serialize();
+            const account = input.account || currentAccount.address
+            const chain  = input.chain || DEFAULT_CHAIN
             
             hostedInteraction({
                 action: 'transaction',
-                data: { details },
+                data: { 
+                    input,
+                    serializedTransaction,
+                    account,
+                    chain
+                 },
                 onResponse: transactionEventListener,
                 showWallet: true
             })
@@ -44,7 +54,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         return Promise.resolve(true);
     }
 
-    const sign = (message: string | Uint8Array): Promise<any> => {
+    const signMessage = (input: EthosSignMessageInput): Promise<SuiSignMessageOutput> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -56,7 +66,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
             
             hostedInteraction({
                 action: 'sign',
-                data: { signData: message },
+                data: { signData: input.message },
                 onResponse: transactionEventListener,
                 showWallet: true
             })
@@ -88,11 +98,12 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         name: "Ethos",
         icon: dataIcon,
         email: user.email,
-        getAccounts,
-        getAddress,
-        signAndExecuteTransaction,
+        getAddress: async () => currentAccount?.address,
+        accounts,
+        currentAccount,
+        signAndExecuteTransactionBlock,
         requestPreapproval,
-        sign,
+        signMessage,
         disconnect,
         logout
     } : null

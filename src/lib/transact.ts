@@ -1,20 +1,19 @@
-import { SignableTransaction } from '@mysten/sui.js'
 import log from './log'
-import { SignAndExecuteTransactionOptions } from '../types/Signer'
+
+import type { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput';
+import { ExtensionSigner, HostedSigner } from '../types/Signer';
 
 type TransactArgs = {
-  signer: any
-  signableTransaction: SignableTransaction
-  options?: SignAndExecuteTransactionOptions
+  signer: HostedSigner | ExtensionSigner
+  transactionInput: EthosSignAndExecuteTransactionBlockInput
 }
 
 const transact = async ({
   signer,
-  signableTransaction,
-  options
+  transactionInput
 }: TransactArgs) => {
-  log("transact", "Starting transaction", signer, signableTransaction)
-  return signer.signAndExecuteTransaction(signableTransaction, options)
+  log("transact", "Starting transaction", signer, transactionInput)
+  return signer.signAndExecuteTransactionBlock(transactionInput)
 }
 
 export default transact

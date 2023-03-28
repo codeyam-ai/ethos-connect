@@ -33,7 +33,7 @@ const Email = ({ setSigningIn, setEmailSent, width }: EmailProps) => {
         event({ action: 'send_email', category: 'sign_in', label: email, value: 1 })
     }, [validEmail, login, email, apiKey]);
 
-    const _handleChange = useCallback((e) => {
+    const _handleChange = useCallback((e: any) => {
         setEmail(e.target.value)
     }, [])
 

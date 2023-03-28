@@ -23,7 +23,9 @@ export interface SuiNFT {
 export interface Coin {
     type: string,
     objectId: string,
-    balance: BigNumber
+    balance: BigNumber,
+    digest: string,
+    version: number
 }
 
 export interface Token {

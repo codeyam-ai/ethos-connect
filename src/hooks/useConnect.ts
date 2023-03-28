@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import store from 'store2'
 import log from '../lib/log'
-import useSuiWallet from './useSuiWallet'
-import listenForMobileConnection from '../lib/listenForMobileConnection'
+import useWalletKit from './useWalletKit'
+// import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { Connection, JsonRpcProvider } from '@mysten/sui.js';
 import { ExtensionSigner, HostedSigner } from 'types/Signer'
 import lib from '../lib/lib'
 import { EthosConfiguration } from '../types/EthosConfiguration'
 import { DEFAULT_NETWORK } from '../lib/constants';
+import { WalletKitCoreConnectionStatus } from '@mysten/wallet-kit-core'
 
-const useConnect = (ethosConfiguration?: EthosConfiguration) => {
+const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void) => {
   const signerFound = useRef<boolean>(false)
   const methodsChecked = useRef<any>({
     'ethos': false,
@@ -25,28 +25,19 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
 
   const {
     wallets,
-    selectWallet,
-    connected,
-    connecting,
-    noConnection: suiNoConnection,
+    status: suiStatus,
     signer: suiSigner,
-    setSigner: setSuiSigner
-  } = useSuiWallet();
+    getState,
+    connect
+  } = useWalletKit({});
 
-  const [logoutCount, setLogoutCount] = useState(0);
-  const logout = useCallback(() => {
-    const suiStore = store.namespace('sui')
-    suiStore('disconnected', true);
+  useEffect(() => {
+    const { provider, signer } = providerAndSigner;
+    if (!provider && !signer) return;
 
-    signerFound.current = false;
-    setProviderAndSigner((prev: ProviderAndSigner) => ({ ...prev, signer: null }))
-    setSuiSigner(null);
-    for (const key of Object.keys(methodsChecked.current)) {
-      methodsChecked.current[key] = false;
-    }
-    setLogoutCount(prev => prev + 1);
-  }, [])
-
+    onWalletConnected && onWalletConnected(providerAndSigner)
+  }, [suiStatus, providerAndSigner, onWalletConnected]);
+  
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
@@ -65,29 +56,41 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     const provider = new JsonRpcProvider(connection);
 
     setProviderAndSigner({ provider, signer })
-  }, [logoutCount]);
+  }, []);
+
+  useEffect(() => {
+    if (suiStatus === WalletKitCoreConnectionStatus.DISCONNECTED) {
+      methodsChecked.current["extension"] = false;
+      signerFound.current = false;
+      setProviderAndSigner((prev) => ({
+        ...prev,
+        signer: null
+      }))
+    }
+  }, [suiStatus])
 
   useEffect(() => {
     if (!ethosConfiguration) return;
 
     log("mobile", "listening to mobile connection from EthosConnectProvider")
-    listenForMobileConnection(
-      (mobileSigner: any) => {
-        log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
-        log("mobile", "Setting provider and signer", mobileSigner)
-        checkSigner(mobileSigner, 'mobile')
-      }
-    )
+    // listenForMobileConnection(
+    //   (mobileSigner: any) => {
+    //     log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
+    //     log("mobile", "Setting provider and signer", mobileSigner)
+    //     checkSigner(mobileSigner, 'mobile')
+    //   }
+    // )
   }, [checkSigner, ethosConfiguration])
 
   useEffect(() => {
     if (!ethosConfiguration) return;
 
-    log('useConnect', 'Setting providerAndSigner extension', suiSigner, suiNoConnection)
-    if (!suiNoConnection && !suiSigner) return
+    const state = getState();
+    log('useConnect', 'Setting providerAndSigner extension', state)
+    if (state.isConnecting) return
 
     checkSigner(suiSigner, 'extension')
-  }, [suiNoConnection, suiSigner, checkSigner, ethosConfiguration])
+  }, [suiStatus, getState, checkSigner, suiSigner, ethosConfiguration])
 
   useEffect(() => {
     if (!ethosConfiguration) return;
@@ -107,7 +110,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration) => {
     fetchEthosSigner()
   }, [checkSigner, ethosConfiguration])
 
-  return { wallets, selectWallet, providerAndSigner, logout, connecting, connected };
+  return { wallets, providerAndSigner, connect, getState };
 }
 
 export default useConnect;

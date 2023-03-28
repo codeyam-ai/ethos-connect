@@ -40,7 +40,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         init(configuration);
     }, [configuration])
 
-    const { wallets, selectWallet, providerAndSigner, logout, connecting, connected } = useConnect(ethosConfiguration)
+    const { wallets, connect: selectWallet, providerAndSigner, getState } = useConnect(ethosConfiguration, onWalletConnected)
     const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || DEFAULT_NETWORK)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -62,13 +62,14 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
 
     const wallet = useMemo(() => {
         const { provider, signer } = providerAndSigner;
+        const extensionState = getState();
         let status;
 
         if (signer?.type === 'hosted') {
             status = EthosConnectStatus.Connected
-        } else if (connecting) {
+        } else if (extensionState.isConnecting) {
             status = EthosConnectStatus.Loading
-        } else if (provider && connected) {
+        } else if (provider && extensionState.isConnected) {
             status = EthosConnectStatus.Connected
         } else {
             status = EthosConnectStatus.NoConnection
@@ -99,27 +100,8 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         selectWallet,
         address,
         providerAndSigner,
-        contents,
-        logout,
-        connecting,
+        contents
     ])
-
-    useEffect(() => {
-        log('EthosConnectProvider', 'checking provider', providerAndSigner)
-        if (!providerAndSigner?.provider) return;
-        log('EthosConnectProvider', 'calling onWalletConnected', providerAndSigner)
-
-        if (providerAndSigner.signer) {
-            setIsModalOpen(false);
-            const rawDisconnect = providerAndSigner.signer.disconnect;
-            providerAndSigner.signer.disconnect = async () => {
-                await rawDisconnect();
-                logout();
-            }
-        }
-
-        onWalletConnected && onWalletConnected(providerAndSigner)
-    }, [providerAndSigner])
 
     useEffect(() => {
         if (isModalOpen) {

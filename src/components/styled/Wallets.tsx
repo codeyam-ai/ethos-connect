@@ -10,7 +10,7 @@ export type WalletProps = {
 }
 
 const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
-    const _connectExtension = useCallback((e) => {
+    const _connectExtension = useCallback((e: any) => {
         if (!selectWallet) return;
 
         let element = e.target;
