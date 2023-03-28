@@ -19,7 +19,7 @@ export interface Signer {
   getAddress: () => Promise<SuiAddress | null>
   accounts: readonly WalletAccount[],
   currentAccount: WalletAccount | null,
-  signAndExecuteTransaction: (input: EthosSignAndExecuteTransactionBlockInput) => Promise<SuiTransactionBlockResponse>,
+  signAndExecuteTransactionBlock: (input: EthosSignAndExecuteTransactionBlockInput) => Promise<SuiTransactionBlockResponse>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
   signMessage: (input: EthosSignMessageInput) => Promise<SuiSignMessageOutput>,
   disconnect: () => void

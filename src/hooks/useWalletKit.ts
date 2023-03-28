@@ -54,7 +54,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
 
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
-      const signAndExecuteTransaction = useCallback((input: EthosSignAndExecuteTransactionBlockInput) => {
+      const signAndExecuteTransactionBlock = useCallback((input: EthosSignAndExecuteTransactionBlockInput) => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
         }
@@ -115,7 +115,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           getAddress: async () => currentAccount?.address,
           accounts,
           currentAccount,
-          signAndExecuteTransaction,
+          signAndExecuteTransactionBlock,
           requestPreapproval,
           signMessage,
           disconnect: () => currentWallet.disconnect()

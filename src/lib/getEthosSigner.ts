@@ -22,7 +22,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
 
     const currentAccount = accounts[0]
 
-    const signAndExecuteTransaction = (input: EthosSignAndExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
+    const signAndExecuteTransactionBlock = (input: EthosSignAndExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -101,7 +101,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
         getAddress: async () => currentAccount?.address,
         accounts,
         currentAccount,
-        signAndExecuteTransaction,
+        signAndExecuteTransactionBlock,
         requestPreapproval,
         signMessage,
         disconnect,

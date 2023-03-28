@@ -19,7 +19,7 @@ describe('EthosConnectProvider', () => {
     accounts: [] as readonly WalletAccount[],
     currentAccount: null,
     getAccounts: () => Promise.resolve([]),
-    signAndExecuteTransaction: (_transaction) => Promise.resolve({} as any),
+    signAndExecuteTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
     requestPreapproval: (_preApproval) => Promise.resolve(true),
     signMessage: (_message) => Promise.resolve({} as SuiSignMessageOutput),
     disconnect: () => {},
