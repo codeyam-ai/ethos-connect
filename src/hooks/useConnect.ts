@@ -35,8 +35,11 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     const { provider, signer } = providerAndSigner;
     if (!provider && !signer) return;
 
+    const extensionState = getState();
+    if (extensionState.isConnecting || extensionState.isError) return;
+
     onWalletConnected && onWalletConnected(providerAndSigner)
-  }, [suiStatus, providerAndSigner, onWalletConnected]);
+  }, [suiStatus, providerAndSigner, onWalletConnected, getState]);
   
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
     log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
@@ -87,7 +90,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
 
     const state = getState();
     log('useConnect', 'Setting providerAndSigner extension', state)
-    if (state.isConnecting) return
+    if (state.isConnecting || state.isError) return
 
     checkSigner(suiSigner, 'extension')
   }, [suiStatus, getState, checkSigner, suiSigner, ethosConfiguration])

@@ -24,6 +24,7 @@ export interface UseContextArgs {
 
 const useContext = ({ configuration, onWalletConnected }: UseContextArgs): ConnectContextContents => {
     const [ethosConfiguration, setEthosConfiguration] = useState<EthosConfiguration | undefined>(configuration)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const init = useCallback((config?: EthosConfiguration) => {
         if (!config) return;
@@ -40,9 +41,13 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         init(configuration);
     }, [configuration])
 
-    const { wallets, connect: selectWallet, providerAndSigner, getState } = useConnect(ethosConfiguration, onWalletConnected)
+    const _onWalletConnected = useCallback((providerAndSigner: ProviderAndSigner) => {
+        setIsModalOpen(false);
+        onWalletConnected && onWalletConnected(providerAndSigner);
+    }, [onWalletConnected]);
+
+    const { wallets, connect: selectWallet, providerAndSigner, getState } = useConnect(ethosConfiguration, _onWalletConnected)
     const { address, contents } = useAccount(providerAndSigner.signer, configuration?.network || DEFAULT_NETWORK)
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const modal: ModalContextContents = useMemo(() => {
         const openModal = () => {
