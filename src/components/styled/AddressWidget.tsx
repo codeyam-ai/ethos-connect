@@ -59,7 +59,7 @@ const AddressWidget = ({
                 </div>
                 {wallet ? (
                     <>
-                        <div>
+                        <div style={sui()}>
                             {formatBalance(wallet.contents?.suiBalance)}{' '}
                             Sui
                         </div>
@@ -127,6 +127,13 @@ export const primary = () => (
         gap: '12px',
     } as React.CSSProperties
 )
+
+export const sui = () => (
+    {
+        whiteSpace: "nowrap"
+    } as React.CSSProperties
+)
+
 
 export const address = () => (
     {
