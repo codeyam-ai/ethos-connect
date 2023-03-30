@@ -1,7 +1,7 @@
 import React, { 
   ReactNode 
 } from 'react'
-import { EthosConfiguration } from 'types/EthosConfiguration'
+import { EthosConfiguration } from '../types/EthosConfiguration'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import SignInModal from './styled/SignInModal'
 import ConnectContext from './ConnectContext'

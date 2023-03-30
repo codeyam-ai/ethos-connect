@@ -66,7 +66,7 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
             
             hostedInteraction({
                 action: 'sign',
-                data: { signData: input.message },
+                data: { ...input, signData: input.message },
                 onResponse: transactionEventListener,
                 showWallet: true
             })
