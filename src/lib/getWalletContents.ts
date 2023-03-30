@@ -100,7 +100,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     const convenenienceObjects: ConvenenienceSuiObject[] = [];
     for (const object of objects) {
         const { data } = object
-        const { content: { fields } } = data;
+        const { display, content: { fields } } = data;
         try {
             const typeStringComponents = (data.type || "").split('<');
             const subtype = (typeStringComponents[1] || "").replace(/>/, '')
@@ -108,6 +108,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             const type = typeComponents[typeComponents.length - 1];
 
             const { name, description, ...extraFields } = fields || {}
+            
             convenenienceObjects.push({
                 ...object,
                 type: data?.type,
@@ -115,31 +116,11 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 objectId: data?.objectId,
                 name,
                 description,
+                display,
                 extraFields
             })
 
-            if (type === 'DevNetNFT') {
-                let { url } = fields;
-                let safeUrl = ipfsConversion(url)
-                nfts.push({
-                    chain: 'Sui',
-                    package: '0x2',
-                    type,
-                    module: 'sui',
-                    address: data?.objectId,
-                    objectId: data?.objectId,
-                    name: fields.name,
-                    description: fields.description,
-                    imageUri: safeUrl,
-                    collection: {
-                        name: "DevNetNFT",
-                        type: data?.type
-                    },
-                    links: {
-                        'DevNet Explorer': `https://explorer.devnet.sui.io/objects/${data?.objectId}`
-                    }
-                });
-            } else if (type === 'Coin') {
+            if (type === 'Coin') {
                 if (subtype === '0x2::sui::SUI') {
                     suiBalance = sumBN(suiBalance, fields.balance);
                 }
@@ -155,7 +136,8 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     type: data?.type,
                     balance: newBN(fields.balance),
                     digest: data?.digest,
-                    version: data?.version
+                    version: data?.version,
+                    display
                 })
             } else if (isBagNFT(object.data)) {
                 const bagNFT = await getBagNFT(provider, object.data);
@@ -167,9 +149,13 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         chain: 'Sui',
                         address: data?.objectId,
                         objectId: data?.objectId,
-                        name: bagNFT.name,
-                        description: bagNFT.description,
-                        imageUri: ipfsConversion(bagNFT.url),
+                        name: display?.name ?? bagNFT.name,
+                        description: display?.name ?? bagNFT.description,
+                        imageUri: ipfsConversion(display?.image_url ?? bagNFT.url),
+                        link: display?.link,
+                        creator: display?.creator,
+                        projectUrl: display?.project_url,
+                        display,
                         module: typeComponents[1],
                         links: {
                             'Explorer': `https://explorer.sui.io/objects/${object?.objectId}`
@@ -186,9 +172,13 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         chain: 'Sui',
                         address: data?.objectId,
                         objectId: data?.objectId,
-                        name: name,
-                        description: description,
-                        imageUri: safeUrl,
+                        name: display?.name ?? name,
+                        description: display?.description ?? description,
+                        imageUri: display?.image_url ?? safeUrl,
+                        link: display?.link,
+                        creator: display?.creator,
+                        projectUrl: display?.project_url,
+                        display,
                         extraFields: remaining,
                         module: typeComponents[1],
                         links: {

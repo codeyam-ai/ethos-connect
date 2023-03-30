@@ -6,4 +6,5 @@ export interface ConvenenienceSuiObject extends SuiObjectData {
     type: string,
     name?: string,
     description?: string
+    display?: Record<string, string>
 }

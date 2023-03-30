@@ -14,7 +14,11 @@ export interface SuiNFT {
     objectId: string,
     name?: string,
     description?: string,
-    imageUri?: string
+    imageUri?: string,
+    link?: string,
+    creator?: string,
+    projectUrl?: string,
+    display: Record<string, string>,
     extraFields?: Record<string, string>,
     collection?: SuiNFTCollection,
     links?: Record<string, string>
