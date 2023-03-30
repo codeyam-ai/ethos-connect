@@ -151,7 +151,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         objectId: data?.objectId,
                         name: display?.name ?? bagNFT.name,
                         description: display?.name ?? bagNFT.description,
-                        imageUri: ipfsConversion(display?.image_url ?? bagNFT.url),
+                        imageUri: ipfsConversion(display?.img_url ?? bagNFT.url),
                         link: display?.link,
                         creator: display?.creator,
                         projectUrl: display?.project_url,
@@ -164,7 +164,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 }
             } else {
                 const { url, image_url, image, ...remaining } = extraFields || {}
-                const safeUrl = ipfsConversion(url || image_url || image);
+                const safeUrl = ipfsConversion(display?.img_url || url || image_url || image);
                 if (safeUrl) {
                     nfts.push({
                         type: data?.type,
@@ -174,7 +174,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         objectId: data?.objectId,
                         name: display?.name ?? name,
                         description: display?.description ?? description,
-                        imageUri: display?.image_url ?? safeUrl,
+                        imageUri: safeUrl,
                         link: display?.link,
                         creator: display?.creator,
                         projectUrl: display?.project_url,
