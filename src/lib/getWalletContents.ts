@@ -101,7 +101,9 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         const convenenienceObjects: ConvenenienceSuiObject[] = [];
         for (const object of objects) {
             const { data } = object
-            const { display, content: { fields } } = data ?? { content: {} };
+            if (!data) continue;
+
+            const { display, content: { fields } } = data;
             try {
                 const typeStringComponents = (data.type || "").split('<');
                 const subtype = (typeStringComponents[1] || "").replace(/>/, '')
@@ -188,7 +190,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         });    
                     }
                 }
-            } catch (error) {
+            } catch (error: unknown) {
                 console.log("Error retrieving object", object, error);
             }
         } 
