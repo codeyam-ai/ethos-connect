@@ -37,7 +37,13 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         }
         
         const objectInfos = await provider.getOwnedObjects({
-            owner: address
+            owner: address,
+            options: {
+                showType: true,
+                showOwner: true,
+                showContent: true,
+                showDisplay: true,
+            }
         });
 
         if (objectInfos.data.length === 0) {
@@ -76,23 +82,24 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
 
         if (newObjectInfos.length === 0) return null;
 
-        const newObjectIds = newObjectInfos.map((o) => {
-            if (typeof o.data === "object") {
-                return o.data.objectId
-            } else {
-                return ""
-            }
-        }).filter((objectId) => objectId.length > 0);
+        const newObjects = newObjectInfos;
+        // const newObjects = newObjectInfos.map((o) => {
+        //     if (typeof o.data === "object") {
+        //         return o.data.objectId
+        //     } else {
+        //         return ""
+        //     }
+        // }).filter((objectId) => objectId.length > 0);
         
-        const newObjects = await provider.multiGetObjects({
-            ids: newObjectIds, 
-            options: {
-                showContent: true,
-                showType: true,
-                showOwner: true,
-                showDisplay: true
-            }
-        });
+        // const newObjects = await provider.multiGetObjects({
+        //     ids: newObjectIds, 
+        //     options: {
+        //         showContent: true,
+        //         showType: true,
+        //         showOwner: true,
+        //         showDisplay: true
+        //     }
+        // });
         const objects = currentObjects.concat(newObjects);
 
         let suiBalance = newBN(0);
