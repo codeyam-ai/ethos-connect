@@ -100,14 +100,14 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
     const convenenienceObjects: ConvenenienceSuiObject[] = [];
     for (const object of objects) {
         const { data } = object
-        const { display, content: { fields } } = data;
+        const { display, content: { fields } } = data ?? { content: {} };
         try {
             const typeStringComponents = (data.type || "").split('<');
             const subtype = (typeStringComponents[1] || "").replace(/>/, '')
             const typeComponents = typeStringComponents[0].split('::');
             const type = typeComponents[typeComponents.length - 1];
 
-            const { name, description, ...extraFields } = fields || {}
+            const { name, description, ...extraFields } = fields ?? {}
             
             convenenienceObjects.push({
                 ...object,
@@ -151,7 +151,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         objectId: data?.objectId,
                         name: display?.name ?? bagNFT.name,
                         description: display?.name ?? bagNFT.description,
-                        imageUri: ipfsConversion(display?.img_url ?? bagNFT.url),
+                        imageUri: ipfsConversion(display?.image_url ?? bagNFT.url),
                         link: display?.link,
                         creator: display?.creator,
                         projectUrl: display?.project_url,
@@ -164,7 +164,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                 }
             } else {
                 const { url, image_url, image, ...remaining } = extraFields || {}
-                const safeUrl = ipfsConversion(display?.img_url || url || image_url || image);
+                const safeUrl = ipfsConversion(display?.image_url || url || image_url || image);
                 if (safeUrl) {
                     nfts.push({
                         type: data?.type,
