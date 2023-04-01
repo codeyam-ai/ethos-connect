@@ -23,23 +23,19 @@ export interface UseContextArgs {
 }
 
 const useContext = ({ configuration, onWalletConnected }: UseContextArgs): ConnectContextContents => {
-    const [ethosConfiguration, setEthosConfiguration] = useState<EthosConfiguration | undefined>(configuration)
+    const [ethosConfiguration, setEthosConfiguration] = useState<EthosConfiguration>({
+        network: DEFAULT_NETWORK,
+        chain: Chain.Sui,
+        walletAppUrl: 'https://ethoswallet.xyz',
+        ...configuration
+    })
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const init = useCallback((config?: EthosConfiguration) => {
-        if (!config) return;
-        if (!config?.chain) config.chain = Chain.Sui;
-        if (!config?.network) config.network = DEFAULT_NETWORK;
-        if (!config?.walletAppUrl) config.walletAppUrl = 'https://ethoswallet.xyz';
-
+    const init = useCallback((config: EthosConfiguration) => {
         log('EthosConnectProvider', 'EthosConnectProvider Configuration:', config)
         lib.initializeEthos(config)
         setEthosConfiguration(config);
     }, []);
-
-    useEffect(() => {
-        init(configuration);
-    }, [configuration])
 
     const _onWalletConnected = useCallback((providerAndSigner: ProviderAndSigner) => {
         setIsModalOpen(false);
