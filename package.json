@@ -43,6 +43,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "2.1.7",
     "@swc/core": "^1.2.197",
     "@swc/jest": "^0.2.21",
     "@testing-library/jest-dom": "^5.16.4",
