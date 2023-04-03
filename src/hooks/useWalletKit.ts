@@ -8,8 +8,10 @@ import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
 import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput';
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Preapproval } from 'types/Preapproval';
+import { Chain } from 'enums/Chain';
 
 export interface UseWalletKitArgs {
+    defaultChain: Chain
     configuredAdapters?: WalletAdapterList;
     features?: string[];
     enableUnsafeBurner?: boolean;
@@ -19,7 +21,7 @@ export interface UseWalletKitArgs {
     disableAutoConnect?: boolean;
 }
 
-const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
+const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
     const adapters = useMemo(
         () =>
           configuredAdapters ?? [
@@ -60,14 +62,14 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
         }
 
         const account = input.account || currentAccount
-        const chain  = input.chain || DEFAULT_CHAIN
+        const chain  = input.chain || defaultChain || DEFAULT_CHAIN
 
         return currentWallet.signAndExecuteTransactionBlock({
           ...input,
           account,
           chain
         })
-      }, [currentWallet, currentAccount])
+      }, [currentWallet, currentAccount, defaultChain])
 
       const signMessage = useCallback((input: EthosSignMessageInput) => {
         if (!currentWallet || !currentAccount) {
@@ -102,8 +104,12 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           preapproval.address = currentAccount.address;
         }
 
+        if (!preapproval.chain) {
+          preapproval.chain = defaultChain ?? DEFAULT_CHAIN;
+        }
+
         return ethosWallet.requestPreapproval(preapproval)
-      }, [currentWallet, currentAccount])
+      }, [currentWallet, currentAccount, defaultChain])
 
       const constructedSigner = useMemo<ExtensionSigner | null>(() => {
         if (!currentWallet || !currentAccount) return null;
@@ -120,7 +126,7 @@ const useWalletKit = ({ configuredAdapters, features, enableUnsafeBurner, prefer
           signMessage,
           disconnect: () => currentWallet.disconnect()
         }
-      }, [currentWallet, accounts, currentAccount]);
+      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, requestPreapproval, signMessage]);
 
       return {
         wallets,

@@ -7,7 +7,7 @@ import { Connection, JsonRpcProvider } from '@mysten/sui.js';
 import { ExtensionSigner, HostedSigner } from 'types/Signer'
 import lib from '../lib/lib'
 import { EthosConfiguration } from '../types/EthosConfiguration'
-import { DEFAULT_NETWORK } from '../lib/constants';
+import { DEFAULT_CHAIN, DEFAULT_NETWORK } from '../lib/constants';
 import { WalletKitCoreConnectionStatus } from '@mysten/wallet-kit-core'
 
 const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void) => {
@@ -29,7 +29,16 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     signer: suiSigner,
     getState,
     connect
-  } = useWalletKit({});
+  } = useWalletKit({ defaultChain: ethosConfiguration?.chain ?? DEFAULT_CHAIN });
+
+  useEffect(() => {
+    signerFound.current = false;
+    methodsChecked.current = {
+      'ethos': false,
+      // 'mobile': false,
+      'extension': false
+    }
+  }, [ethosConfiguration]);
 
   useEffect(() => {
     const { provider, signer } = providerAndSigner;
@@ -105,7 +114,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     }
 
     const fetchEthosSigner = async () => {
-      const signer = await lib.getEthosSigner()
+      const signer = await lib.getEthosSigner({ defaultChain: ethosConfiguration.chain ?? DEFAULT_CHAIN })
       log('useConnect', 'Setting providerAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }

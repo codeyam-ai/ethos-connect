@@ -6,7 +6,6 @@ import {
 } from 'react'
 import lib from '../lib/lib'
 import log from '../lib/log'
-import { Chain } from '../enums/Chain'
 import { WalletContextContents } from '../types/WalletContextContents'
 import useAccount from './useAccount'
 import useConnect from './useConnect'
@@ -15,7 +14,7 @@ import { ModalContextContents } from '../types/ModalContextContents';
 import { ConnectContextContents } from '../types/ConnectContextContents';
 import { EthosConfiguration } from '../types/EthosConfiguration';
 import { ProviderAndSigner } from '../types/ProviderAndSigner';
-import { DEFAULT_NETWORK } from '../lib/constants';
+import { DEFAULT_NETWORK, DEFAULT_CHAIN } from '../lib/constants';
 
 export interface UseContextArgs {
     configuration?: EthosConfiguration,
@@ -25,7 +24,7 @@ export interface UseContextArgs {
 const useContext = ({ configuration, onWalletConnected }: UseContextArgs): ConnectContextContents => {
     const [ethosConfiguration, setEthosConfiguration] = useState<EthosConfiguration>({
         network: DEFAULT_NETWORK,
-        chain: Chain.Sui,
+        chain: DEFAULT_CHAIN,
         walletAppUrl: 'https://ethoswallet.xyz',
         ...configuration
     })
@@ -36,6 +35,12 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         lib.initializeEthos(config)
         setEthosConfiguration(config);
     }, []);
+
+    useEffect(() => {
+        if (!configuration) return;
+        if (JSON.stringify(ethosConfiguration) === JSON.stringify(configuration)) return;
+        init(configuration);
+    }, [ethosConfiguration, configuration]);
 
     const _onWalletConnected = useCallback((providerAndSigner: ProviderAndSigner) => {
         setIsModalOpen(false);
@@ -101,7 +106,8 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         selectWallet,
         address,
         providerAndSigner,
-        contents
+        contents,
+        ethosConfiguration
     ])
 
     useEffect(() => {

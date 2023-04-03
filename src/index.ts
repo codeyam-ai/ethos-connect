@@ -32,6 +32,7 @@ import useWallet from './hooks/useWallet'
 // Enums (must be exported as objects, NOT types)
 import { EthosConnectStatus } from './enums/EthosConnectStatus';
 import { AddressWidgetButtons } from './enums/AddressWidgetButtons'
+import { Chain } from './enums/Chain';
 
 // Types, interfaces, and enums
 import { Wallet } from './types/Wallet';
@@ -94,7 +95,8 @@ export {
   SignInButton,
   ethos,
   EthosConnectStatus,
-  TransactionBlock
+  TransactionBlock,
+  Chain
 }
 
 export type {

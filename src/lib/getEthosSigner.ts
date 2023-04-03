@@ -1,5 +1,4 @@
 import store from 'store2'
-import { Chain } from '../enums/Chain'
 import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
@@ -13,12 +12,13 @@ import type {
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
 import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput'
 import { DEFAULT_CHAIN } from '../lib/constants';
+import { Chain } from 'enums/Chain'
 
-const getEthosSigner = async (): Promise<HostedSigner | null> => {
+const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
-    const accounts: WalletAccount[] = (user?.accounts || []).filter((account: any) => account.chain === Chain.Sui)
+    const accounts: WalletAccount[] = (user?.accounts || []).filter((account: any) => account.chain === 'sui')
 
     const currentAccount = accounts[0]
 
@@ -33,8 +33,8 @@ const getEthosSigner = async (): Promise<HostedSigner | null> => {
             }
 
             const serializedTransaction = input.transactionBlock.serialize();
-            const account = input.account || currentAccount.address
-            const chain  = input.chain || DEFAULT_CHAIN
+            const account = input.account ?? currentAccount.address
+            const chain  = input.chain ?? defaultChain ?? DEFAULT_CHAIN
             
             hostedInteraction({
                 action: 'transaction',
