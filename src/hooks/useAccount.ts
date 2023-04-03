@@ -5,10 +5,12 @@ import { WalletContents } from 'types/WalletContents';
 
 const useAccount = (signer: Signer | null, network: string) => {
   const [account, setAccount] = useState<any | null>({})
+  const latestNetwork = useRef<string>(network);
   const existingContents = useRef<WalletContents | undefined>();
  
   useEffect(() => {
     if (!signer) return;
+    latestNetwork.current = network;
 
     const initAccount = async () => {
       const address = signer.currentAccount?.address
@@ -22,7 +24,7 @@ const useAccount = (signer: Signer | null, network: string) => {
         existingContents: existingContents.current
       });
 
-      if (!contents) return;
+      if (!contents || network !== latestNetwork.current) return;
 
       existingContents.current = contents;
       setAccount({
