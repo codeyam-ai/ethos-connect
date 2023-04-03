@@ -85,7 +85,7 @@ describe('EthosConnectProvider', () => {
     const expectedEthosConfiguration: EthosConfiguration = {
       apiKey: 'test-id',
       walletAppUrl: 'https://ethoswallet.xyz',
-      chain: Chain.Sui,
+      chain: Chain.SUI_DEVNET,
       network: DEFAULT_NETWORK
     }
 

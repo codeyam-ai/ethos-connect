@@ -37,6 +37,10 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     }, []);
 
     useEffect(() => {
+        lib.initializeEthos(ethosConfiguration)
+    }, [ethosConfiguration])
+
+    useEffect(() => {
         if (!configuration) return;
         if (JSON.stringify(ethosConfiguration) === JSON.stringify(configuration)) return;
         init(configuration);

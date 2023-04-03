@@ -12,7 +12,8 @@ it('should expose the correct components', () => {
     SignInButton.name,
     'ethos',
     'EthosConnectStatus',
-    'TransactionBlock'
+    'TransactionBlock',
+    'Chain'
   ]
   expect(Object.keys(ReactApi)).toEqual(exportNames)
 })

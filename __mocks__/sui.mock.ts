@@ -56,10 +56,11 @@ const suiCoin3 = {
 const getOwnedObjects = jest.fn(
     () => Promise.resolve({
         data: [suiCoin, suiCoin2, nft].map((o: any) => ({ 
-            data: {
-                objectId: o.data.objectId,
-                version: o.data.version 
-            }
+            ...o
+            // data: {
+            //     objectId: o.data.objectId,
+            //     version: o.data.version 
+            // }
         }))
     })
 )
