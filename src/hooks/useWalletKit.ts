@@ -124,7 +124,10 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
           signAndExecuteTransactionBlock,
           requestPreapproval,
           signMessage,
-          disconnect: () => currentWallet.disconnect()
+          disconnect: () => {
+            currentWallet.disconnect();
+            walletKitRef.current?.disconnect();
+          }
         }
       }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, requestPreapproval, signMessage]);
 

@@ -29,7 +29,25 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     signer: suiSigner,
     getState,
     connect
-  } = useWalletKit({ defaultChain: ethosConfiguration?.chain ?? DEFAULT_CHAIN });
+  } = useWalletKit({ 
+    defaultChain: ethosConfiguration?.chain ?? DEFAULT_CHAIN, 
+    preferredWallets: ethosConfiguration?.preferredWallets, 
+    disableAutoConnect: ethosConfiguration?.disableAutoConnect 
+  });
+
+  const disconnect = useCallback(() => {
+    signerFound.current = false;
+    methodsChecked.current = {
+      'ethos': false,
+      // 'mobile': false,
+      'extension': false
+    }
+
+    setProviderAndSigner((prev) => ({
+      ...prev,
+      signer: null
+    }));
+  }, [])
 
   useEffect(() => {
     signerFound.current = false;
@@ -67,8 +85,16 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     const connection = new Connection({ fullnode: network })
     const provider = new JsonRpcProvider(connection);
 
+    if (signer) {
+      const _disconnect = signer?.disconnect;
+      signer.disconnect = () => {
+        _disconnect();
+        disconnect();
+      }  
+    }
+
     setProviderAndSigner({ provider, signer })
-  }, []);
+  }, [disconnect]);
 
   useEffect(() => {
     if (suiStatus === WalletKitCoreConnectionStatus.DISCONNECTED) {

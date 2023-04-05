@@ -78,10 +78,12 @@ const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promis
             const transactionEventListener = () => {
                 resolve(true);
             }
-        
+            
             hostedInteraction({
                 action: 'logout',
-                data: { fromWallet },
+                data: { 
+                    fromWallet: typeof fromWallet === 'boolean' ? fromWallet : false  
+                },
                 onResponse: transactionEventListener
             })
 

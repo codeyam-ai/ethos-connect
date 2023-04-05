@@ -7,5 +7,6 @@ export interface EthosConfiguration {
   hideEmailSignIn?: boolean
   hideWalletSignIn?: boolean
   preferredWallets?: string[]
-  redirectTo?: string
+  redirectTo?: string;
+  disableAutoConnect?: boolean;
 }
