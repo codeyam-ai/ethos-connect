@@ -5,6 +5,7 @@ import getBagNFT, { isBagNFT } from "./getBagNFT";
 // import fetchSui from "./fetchSui";
 import { ConvenenienceSuiObject } from '../types/ConvenienceSuiObject';
 import { DEFAULT_NETWORK } from './constants';
+import getDisplay from "./getDisplay";
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -111,6 +112,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
             if (!data) continue;
 
             const { display, content: { fields } } = data;
+            const safeDisplay = getDisplay(display);
             try {
                 const typeStringComponents = (data.type || "").split('<');
                 const subtype = (typeStringComponents[1] || "").replace(/>/, '')
@@ -126,7 +128,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     objectId: data?.objectId,
                     name,
                     description,
-                    display,
+                    display: safeDisplay,
                     extraFields
                 })
 
@@ -147,7 +149,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                         balance: newBN(fields.balance),
                         digest: data?.digest,
                         version: data?.version,
-                        display
+                        display: safeDisplay
                     })
                 } else if (isBagNFT(object.data)) {
                     const bagNFT = await getBagNFT(provider, object.data);
@@ -159,13 +161,13 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                             chain: 'Sui',
                             address: data?.objectId,
                             objectId: data?.objectId,
-                            name: display?.name ?? bagNFT.name,
-                            description: display?.name ?? bagNFT.description,
-                            imageUri: ipfsConversion(display?.image_url ?? bagNFT.url),
-                            link: display?.link,
-                            creator: display?.creator,
-                            projectUrl: display?.project_url,
-                            display,
+                            name: safeDisplay?.name ?? bagNFT.name,
+                            description: safeDisplay?.name ?? bagNFT.description,
+                            imageUri: ipfsConversion(safeDisplay?.image_url ?? bagNFT.url),
+                            link: safeDisplay?.link,
+                            creator: safeDisplay?.creator,
+                            projectUrl: safeDisplay?.project_url,
+                            display: safeDisplay,
                             module: typeComponents[1],
                             links: {
                                 'Explorer': `https://explorer.sui.io/objects/${object?.objectId}`
@@ -174,7 +176,7 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                     }
                 } else {
                     const { url, image_url, image, ...remaining } = extraFields || {}
-                    const safeUrl = ipfsConversion(display?.image_url || url || image_url || image);
+                    const safeUrl = ipfsConversion(safeDisplay?.image_url || url || image_url || image);
                     if (safeUrl) {
                         nfts.push({
                             type: data?.type,
@@ -182,13 +184,13 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
                             chain: 'Sui',
                             address: data?.objectId,
                             objectId: data?.objectId,
-                            name: display?.name ?? name,
-                            description: display?.description ?? description,
+                            name: safeDisplay?.name ?? name,
+                            description: safeDisplay?.description ?? description,
                             imageUri: safeUrl,
-                            link: display?.link,
-                            creator: display?.creator,
-                            projectUrl: display?.project_url,
-                            display,
+                            link: safeDisplay?.link,
+                            creator: safeDisplay?.creator,
+                            projectUrl: safeDisplay?.project_url,
+                            display: safeDisplay,
                             extraFields: remaining,
                             module: typeComponents[1],
                             links: {
