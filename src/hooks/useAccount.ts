@@ -1,10 +1,16 @@
+import { SuiAddress } from '@mysten/sui.js';
 import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useRef, useState } from 'react'
 import { Signer } from 'types/Signer';
 import { WalletContents } from 'types/WalletContents';
 
+export type Account = {
+  address?: SuiAddress;
+  contents?: WalletContents;
+}
+
 const useAccount = (signer: Signer | null, network: string) => {
-  const [account, setAccount] = useState<any | null>({})
+  const [account, setAccount] = useState<Account>({});
   const latestNetwork = useRef<string>(network);
   const existingContents = useRef<WalletContents | undefined>();
  
@@ -17,6 +23,7 @@ const useAccount = (signer: Signer | null, network: string) => {
       if (!address) {
         return
       }
+      setAccount((prev) => ({ ...prev, address }))
       
       const contents = await getWalletContents({
         address,
@@ -27,10 +34,7 @@ const useAccount = (signer: Signer | null, network: string) => {
       if (!contents || network !== latestNetwork.current) return;
 
       existingContents.current = contents;
-      setAccount({
-        address,
-        contents
-      })
+      setAccount((prev) => ({ ...prev, contents }))
     }
 
     initAccount();

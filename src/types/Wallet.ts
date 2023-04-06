@@ -4,5 +4,5 @@ import { Signer } from "./Signer";
 
 export interface Wallet extends Signer {
     address: SuiAddress,
-    contents: WalletContents
+    contents?: WalletContents
 } 

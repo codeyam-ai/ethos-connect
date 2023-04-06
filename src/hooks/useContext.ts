@@ -110,7 +110,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
             provider
         }
 
-        if (signer) {
+        if (signer && address) {
             context.wallet = {
                 ...signer,
                 address,
