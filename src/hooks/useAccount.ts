@@ -23,7 +23,10 @@ const useAccount = (signer: Signer | null, network: string) => {
       if (!address) {
         return
       }
-      setAccount((prev) => ({ ...prev, address }))
+      setAccount((prev) => { 
+        if (prev.address === address) return prev;
+        return { ...prev, address }
+      });
       
       const contents = await getWalletContents({
         address,
