@@ -28,7 +28,7 @@ const empty: WalletContents = {
     objects: []  
 }
 
-const getWalletContents = async ({ address, network, existingContents = empty }: GetWalletContentsArgs): Promise<WalletContents | null> => {
+const getWalletContents = async ({ address, network, existingContents }: GetWalletContentsArgs): Promise<WalletContents | null> => {
     try {
         const connection = new Connection({ fullnode: network || DEFAULT_NETWORK })
         const provider = new JsonRpcProvider(connection);
@@ -48,6 +48,9 @@ const getWalletContents = async ({ address, network, existingContents = empty }:
         });
 
         if (objectInfos.data.length === 0) {
+            if (existingContents === empty) {
+                return null;
+            }
             return empty;
         }
 
