@@ -731,10 +731,10 @@
   dependencies:
     bs58 "^5.0.0"
 
-"@mysten/sui.js@0.31.0":
-  version "0.31.0"
-  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.31.0.tgz#299c2942af271a9d6f235fe8a7378b9143e3cbb8"
-  integrity sha512-yDM1JaY3N5VY4lsM/9H1Etdo/Ha0d9OalXkQGK4QjV4VFGxSSzDBeAJpuT+zI72QuzhWqqCeLZogcmpfsUCSpA==
+"@mysten/sui.js@0.32.0", "@mysten/sui.js@^0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.32.0.tgz#8880e77ef081323659110d3c7e57af84b92c7303"
+  integrity sha512-HuvV+oKxkhVvdeVnDacApS+ga5VPUWMHPuDofepsynGibe2Ho1GKt5bcn047CXpBy0sloR9slY1oXvs44v9FHQ==
   dependencies:
     "@mysten/bcs" "0.7.0"
     "@noble/curves" "^0.9.0"
@@ -748,10 +748,10 @@
     superstruct "^1.0.3"
     tweetnacl "^1.0.3"
 
-"@mysten/sui.js@0.32.0", "@mysten/sui.js@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.32.0.tgz#8880e77ef081323659110d3c7e57af84b92c7303"
-  integrity sha512-HuvV+oKxkhVvdeVnDacApS+ga5VPUWMHPuDofepsynGibe2Ho1GKt5bcn047CXpBy0sloR9slY1oXvs44v9FHQ==
+"@mysten/sui.js@0.32.1":
+  version "0.32.1"
+  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.32.1.tgz#d1ba3f324ef3335abde352be5d5fea131b9196ba"
+  integrity sha512-HD3D/3g//dx5e/1W42krEv4+Zl5PP0faH229jFOhnOktIRGxRrDfb6eU2+juclTug2e68JseTiX2QulIh+2/FQ==
   dependencies:
     "@mysten/bcs" "0.7.0"
     "@noble/curves" "^0.9.0"
@@ -773,13 +773,21 @@
     "@mysten/wallet-adapter-unsafe-burner" "0.8.2"
     "@mysten/wallet-adapter-wallet-standard" "0.7.2"
 
-"@mysten/wallet-adapter-base@0.7.2", "@mysten/wallet-adapter-base@^0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@mysten/wallet-adapter-base/-/wallet-adapter-base-0.7.1.tgz#2de4574798454d0e4ae67129c30c02f06eabed0c"
-  integrity sha512-QfZCGyG2qYMEYuUiI3+qJlAdSHDR6L7bIhqPAHeV4TwFvU2WT3+3lvcLXJYDKi+5yCWqoNuTD3X2hKB92zWQ4Q==
+"@mysten/wallet-adapter-base@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@mysten/wallet-adapter-base/-/wallet-adapter-base-0.7.2.tgz#ccf59cbb4fac82b84f7d1c36fd434ce38f8b4578"
+  integrity sha512-BRMiUYP8gjV4iqVb8eUnZg1DOPMe/WQwRmkhVnMrKsbvFqgGz7EOaQaoYJ4hbat/lC/rwLno42GxcZsOVxa0JQ==
   dependencies:
-    "@mysten/sui.js" "0.31.0"
-    "@mysten/wallet-standard" "0.5.1"
+    "@mysten/sui.js" "0.32.0"
+    "@mysten/wallet-standard" "0.5.2"
+
+"@mysten/wallet-adapter-base@^0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@mysten/wallet-adapter-base/-/wallet-adapter-base-0.7.3.tgz#bace22b828991b946eca6176d1f7857e549d9175"
+  integrity sha512-LCQSbsUT0+4IddLc/ZRP2xDxpi6LBMvlPugDoI5919ocFWu3007EcSq02gm951mi403NWUdVxuEWiBeA6LW4lg==
+  dependencies:
+    "@mysten/sui.js" "0.32.1"
+    "@mysten/wallet-standard" "0.5.3"
 
 "@mysten/wallet-adapter-unsafe-burner@0.8.2":
   version "0.8.2"
@@ -809,20 +817,20 @@
     "@mysten/wallet-adapter-base" "0.7.2"
     "@mysten/wallet-standard" "0.5.2"
 
-"@mysten/wallet-standard@0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@mysten/wallet-standard/-/wallet-standard-0.5.1.tgz#984426c18369a115957385083e7d6f7140d68091"
-  integrity sha512-r4pWqVZ4blziaBrhVpexNve+oQUGZDOeIlH24VGg4HZ3QWu4VH9GNF34OraY8yjuwyrDsJwXBPxm0U++jobDtA==
-  dependencies:
-    "@mysten/sui.js" "0.31.0"
-    "@wallet-standard/core" "1.0.3"
-
 "@mysten/wallet-standard@0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@mysten/wallet-standard/-/wallet-standard-0.5.2.tgz#0d6b43f0abd44e5fbcff1df58425b622c6b352f6"
   integrity sha512-CQfKyRcKdShy63I/T7Ek8jzGzfMzDk+o2erA1y97S+cUK0b/U961z84EwPqV4afAYB0vb37nQ4TXKjSYtAtcGA==
   dependencies:
     "@mysten/sui.js" "0.32.0"
+    "@wallet-standard/core" "1.0.3"
+
+"@mysten/wallet-standard@0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@mysten/wallet-standard/-/wallet-standard-0.5.3.tgz#60006a4a45ab7e1267f46a7c17f31aa185017b39"
+  integrity sha512-lEb8MZnmW2Eqfkc28yU9vkVDlMR5okEJGxN0li/JWF6PFqVD2odRCXUlT8mqdzGVMktnTGX4YfB9foTN+apJuA==
+  dependencies:
+    "@mysten/sui.js" "0.32.1"
     "@wallet-standard/core" "1.0.3"
 
 "@noble/curves@^0.9.0":
