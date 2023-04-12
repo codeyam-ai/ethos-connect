@@ -1,47 +1,47 @@
 import { TransactionBlock } from '@mysten/sui.js';
 
-import EthosConnectProvider from './components/EthosConnectProvider'
-import SignInButton from './components/styled/SignInButton'
+import EthosConnectProvider from './components/EthosConnectProvider';
+import SignInButton from './components/styled/SignInButton';
 
-import { showSignInModal, hideSignInModal } from './components/styled/SignInModal';
+import { hideSignInModal, showSignInModal } from './components/styled/SignInModal';
 
-import AddressWidget from './components/styled/AddressWidget'
-import MenuButton from './components/styled/MenuButton'
-import HoverColorButton from './components/headless/HoverColorButton'
+import HoverColorButton from './components/headless/HoverColorButton';
+import AddressWidget from './components/styled/AddressWidget';
+import MenuButton from './components/styled/MenuButton';
 
-import login from './lib/login'
-import logout from './lib/logout'
-import sign from './lib/sign'
-import transact from './lib/transact'
-import preapprove from './lib/preapprove'
-import getWalletContents, { ipfsConversion } from './lib/getWalletContents'
+import getWalletContents, { ipfsConversion } from './lib/getWalletContents';
+import login from './lib/login';
+import logout from './lib/logout';
+import preapprove from './lib/preapprove';
+import sign from './lib/sign';
+import transact from './lib/transact';
 
-import showWallet from './lib/showWallet'
-import hideWallet from './lib/hideWallet'
+import hideWallet from './lib/hideWallet';
+import showWallet from './lib/showWallet';
 
-import dripSui from './lib/dripSui'
-import { getSuiAddress, getSuiName } from './lib/nameService'
 import { formatBalance } from './lib/bigNumber';
+import dripSui from './lib/dripSui';
+import { getSuiAddress, getSuiName } from './lib/nameService';
 import truncateMiddle from './lib/truncateMiddle';
 
-import useProviderAndSigner from './hooks/useProviderAndSigner'
-import useAddress from './hooks/useAddress'
-import useContents from './hooks/useContents'
-import useWallet from './hooks/useWallet'
+import useAddress from './hooks/useAddress';
+import useContents from './hooks/useContents';
+import useProviderAndSigner from './hooks/useProviderAndSigner';
+import useWallet from './hooks/useWallet';
 
 // Enums (must be exported as objects, NOT types)
-import { EthosConnectStatus } from './enums/EthosConnectStatus';
-import { AddressWidgetButtons } from './enums/AddressWidgetButtons'
+import { AddressWidgetButtons } from './enums/AddressWidgetButtons';
 import { Chain } from './enums/Chain';
+import { EthosConnectStatus } from './enums/EthosConnectStatus';
 
 // Types, interfaces, and enums
-import { Wallet } from './types/Wallet';
-import { WalletContents } from './types/WalletContents';
 import { ProviderAndSigner } from './types/ProviderAndSigner';
 import { Signer } from './types/Signer';
+import { Wallet } from './types/Wallet';
+import { SuiNFT, Token, WalletContents } from './types/WalletContents';
 
-import useContext from './hooks/useContext';
 import DetachedEthosConnectProvider from './components/DetachedEthosConnectProvider';
+import useContext from './hooks/useContext';
 
 const components = {
   AddressWidget,
@@ -97,11 +97,14 @@ export {
   EthosConnectStatus,
   TransactionBlock,
   Chain
-}
-
+};
 export type {
   Wallet,
   WalletContents,
   ProviderAndSigner,
-  Signer
-}
+  Signer,
+  SuiNFT,
+  Token
+};
+
+
