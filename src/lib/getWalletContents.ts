@@ -58,6 +58,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         let newObjectInfos = [];
         if (existingContents?.objects && existingContents.objects.length > 0) {
             for (const objectInfo of objectInfos.data) {
+                if (!objectInfo.data || objectInfo.error) continue;
                 const existingObject = existingContents?.objects.find(
                     (existingObject) => {
                         if (

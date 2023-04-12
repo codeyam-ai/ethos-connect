@@ -34,7 +34,7 @@ const useAccount = (signer: Signer | null, network: string) => {
         existingContents: existingContents.current
       });
 
-      if (!contents || network !== latestNetwork.current) return;
+      if (!contents || network !== latestNetwork.current || JSON.stringify(existingContents.current) === JSON.stringify(contents)) return;
 
       existingContents.current = contents;
       setAccount((prev) => ({ ...prev, contents }))
