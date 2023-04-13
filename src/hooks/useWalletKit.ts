@@ -6,9 +6,11 @@ import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
 import { ExtensionSigner, SignerType } from '../types/Signer';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
 import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput';
+import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlockInput';
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Preapproval } from 'types/Preapproval';
 import { Chain } from 'enums/Chain';
+import { SignedTransaction } from '@mysten/sui.js';
 
 export interface UseWalletKitArgs {
     defaultChain: Chain
@@ -70,6 +72,21 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
         })
       }, [currentWallet, currentAccount, defaultChain])
 
+      const signTransactionBlock = useCallback((input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
+        if (!currentWallet || !currentAccount) {
+          throw new Error("No wallet connect to sign message");
+        }
+
+        const account = input.account || currentAccount
+        const chain  = input.chain || defaultChain || DEFAULT_CHAIN
+
+        return currentWallet.signTransactionBlock({
+          ...input,
+          account,
+          chain
+        })
+      }, [currentWallet, currentAccount, defaultChain])
+
       const signMessage = useCallback((input: EthosSignMessageInput) => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
@@ -121,6 +138,7 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
           accounts,
           currentAccount,
           signAndExecuteTransactionBlock,
+          signTransactionBlock,
           requestPreapproval,
           signMessage,
           disconnect: () => {

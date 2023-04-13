@@ -3,7 +3,7 @@ import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { SuiTransactionBlockResponse } from '@mysten/sui.js'
+import type { SignedTransaction, SuiTransactionBlockResponse } from '@mysten/sui.js'
 import type { 
     SuiSignMessageOutput, 
     WalletAccount, 
@@ -11,6 +11,7 @@ import type {
 } from '@mysten/wallet-standard';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
 import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput'
+import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlockInput'
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Chain } from 'enums/Chain'
 
@@ -23,6 +24,34 @@ const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promis
     const currentAccount = accounts[0]
 
     const signAndExecuteTransactionBlock = (input: EthosSignAndExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
+        return new Promise((resolve, reject) => {
+            const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
+                if (approved) {
+                    resolve(data.response);
+                } else {
+                    reject({ error: data?.response?.error || "User rejected transaction."})
+                }
+            }
+
+            const serializedTransaction = input.transactionBlock.serialize();
+            const account = input.account ?? currentAccount.address
+            const chain  = input.chain ?? defaultChain ?? DEFAULT_CHAIN
+            
+            hostedInteraction({
+                action: 'transaction',
+                data: { 
+                    input,
+                    serializedTransaction,
+                    account,
+                    chain
+                 },
+                onResponse: transactionEventListener,
+                showWallet: true
+            })
+        });
+    }
+
+    const signTransactionBlock = (input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -104,6 +133,7 @@ const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promis
         accounts,
         currentAccount,
         signAndExecuteTransactionBlock,
+        signTransactionBlock,
         requestPreapproval,
         signMessage,
         disconnect,
