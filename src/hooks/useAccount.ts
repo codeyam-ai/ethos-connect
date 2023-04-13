@@ -3,6 +3,7 @@ import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useRef, useState } from 'react'
 import { Signer } from 'types/Signer';
 import { WalletContents } from 'types/WalletContents';
+import { WalletAccount } from '@mysten/wallet-standard';
 
 export type Account = {
   address?: SuiAddress;
@@ -10,6 +11,7 @@ export type Account = {
 }
 
 const useAccount = (signer: Signer | null, network: string) => {
+  const [altAccount, setAltAccount] = useState<WalletAccount | undefined>();
   const [account, setAccount] = useState<Account>({});
   const latestNetwork = useRef<string>(network);
   const existingContents = useRef<WalletContents | undefined>();
@@ -19,7 +21,7 @@ const useAccount = (signer: Signer | null, network: string) => {
     latestNetwork.current = network;
 
     const initAccount = async () => {
-      const address = signer.currentAccount?.address
+      const address = altAccount?.address ?? signer.currentAccount?.address
       if (!address) {
         return
       }
@@ -44,9 +46,9 @@ const useAccount = (signer: Signer | null, network: string) => {
     const interval = setInterval(initAccount, 5000);
 
     return () => clearInterval(interval);
-  }, [network, signer])
+  }, [network, signer, altAccount])
 
-  return account;
+  return { account, altAccount, setAltAccount };
 }
 
 export default useAccount;

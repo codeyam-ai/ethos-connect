@@ -65,8 +65,17 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         onWalletConnected && onWalletConnected(providerAndSigner);
     }, [onWalletConnected]);
 
-    const { wallets, connect: selectWallet, providerAndSigner, getState } = useConnect(ethosConfiguration, _onWalletConnected)
-    const { address, contents } = useAccount(providerAndSigner.signer, ethosConfiguration?.network ?? DEFAULT_NETWORK)
+    const { 
+        wallets, 
+        connect: selectWallet, 
+        providerAndSigner, 
+        getState 
+    } = useConnect(ethosConfiguration, _onWalletConnected)
+    const { 
+        account: { address, contents },
+        altAccount,
+        setAltAccount
+     } = useAccount(providerAndSigner.signer, ethosConfiguration?.network ?? DEFAULT_NETWORK)
 
     const modal: ModalContextContents = useMemo(() => {
         const openModal = () => {
@@ -107,7 +116,9 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
                 icon: w.icon,
             })),
             selectWallet,
-            provider
+            provider,
+            altAccount,
+            setAltAccount
         }
 
         if (signer && address) {
@@ -123,6 +134,8 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         wallets,
         selectWallet,
         address,
+        altAccount,
+        setAltAccount,
         providerAndSigner,
         contents,
         ethosConfiguration

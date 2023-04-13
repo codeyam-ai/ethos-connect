@@ -63,7 +63,6 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
 
         const account = input.account || currentAccount
         const chain  = input.chain || defaultChain || DEFAULT_CHAIN
-
         return currentWallet.signAndExecuteTransactionBlock({
           ...input,
           account,
