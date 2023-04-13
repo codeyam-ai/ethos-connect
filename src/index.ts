@@ -1,4 +1,5 @@
 import { TransactionBlock } from '@mysten/sui.js';
+import { WalletAccount } from '@mysten/wallet-standard';
 
 import EthosConnectProvider from './components/EthosConnectProvider';
 import SignInButton from './components/styled/SignInButton';
@@ -100,6 +101,7 @@ export {
 };
 export type {
   Wallet,
+  WalletAccount,
   WalletContents,
   ProviderAndSigner,
   Signer,

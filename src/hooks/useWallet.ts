@@ -6,7 +6,7 @@ import { EthosConnectStatus } from "../enums/EthosConnectStatus";
 const useWallet = (): WalletContextContents => {
     const { wallet } = useContext(ConnectContext);
 
-    return wallet || { status: EthosConnectStatus.Loading, provider: null };
+    return wallet ?? { status: EthosConnectStatus.Loading, provider: null, setAltAccount: () => { } };
 }
 
 export default useWallet;
