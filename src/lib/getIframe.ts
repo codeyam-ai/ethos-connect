@@ -26,7 +26,7 @@ const getIframe = (show?: boolean) => {
 
   let fullWalletAppUrl = walletAppUrl + `/wallet?apiKey=${apiKey}`
   if (accessToken && refreshToken) {
-    fullWalletAppUrl += `&accessToken=${accessToken}&refreshToken=${refreshToken}`
+    fullWalletAppUrl += `&access_token=${accessToken}&refresh_token=${refreshToken}`
 
     queryParams.delete('access_token')
     queryParams.delete('refresh_token')

@@ -211,7 +211,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         return { suiBalance, tokens, nfts, objects: convenenienceObjects }
     } catch (error: unknown) {
         console.log("Error retrieving wallet contents", error);
-        return empty;
+        return null;
     }
 }
 
