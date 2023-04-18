@@ -30,7 +30,9 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "./scripts/build.sh --external:react --external:react-dom",
+    "build:tsup": "tsup src/index.ts --out-dir tsup --dts --format esm,cjs",
     "watch": "./scripts/watch.sh --external:react --external:react-dom",
+    "watch:tsup": "npm run build:tsup -- --watch",
     "test": "./scripts/test.sh",
     "test:watch": "./scripts/test.sh --watch",
     "test:snapshot": "npx jest --update-snapshot",
@@ -66,6 +68,7 @@
     "react-test-renderer": "^18.2.0",
     "rimraf": "^3.0.2",
     "snapshot-diff": "^0.8.1",
+    "tsup": "^6.7.0",
     "typescript": "^4.7.3"
   },
   "dependencies": {
