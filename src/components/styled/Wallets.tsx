@@ -23,10 +23,8 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
     }, []);
 
     const icon = useCallback((wallet: WalletAdapter) => {
-        const src = wallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : wallet.icon
-
         return (
-            <img src={src} height={32} width={32} />
+            <img src={wallet.icon} height={32} width={32} />
         )
     }, []);
 
