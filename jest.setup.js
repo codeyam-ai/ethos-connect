@@ -28,5 +28,6 @@ jest.mock('@mysten/sui.js', () => ({
         return sui.provider
     }), 
     Connection: jest.fn(),
-    Transaction: jest.fn()
+    Transaction: jest.fn(),
+    SUI_TYPE_ARG: "0x2::sui::SUI"
 }));

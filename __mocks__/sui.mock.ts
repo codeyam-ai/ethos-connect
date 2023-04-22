@@ -1,8 +1,8 @@
-import { newBN } from "../src/lib/bigNumber"
+import { newBN, sumBN } from "../src/lib/bigNumber"
 
 const nft = {
     data: {
-        type: 'random-address',
+        type: 'PACKAGE::MODULE::NFT',
         content: {
             fields: {
                 url: "IMAGE",
@@ -10,7 +10,8 @@ const nft = {
             }
         },
         objectId: 'NFT',
-        version: 1
+        version: 1,
+        digest: "NFT"
     }
 }
 
@@ -23,7 +24,8 @@ const suiCoin = {
             }
         },
         objectId: 'COIN1',
-        version: 2
+        version: 2,
+        digest: "COIN1"
     }    
 }
 
@@ -36,7 +38,8 @@ const suiCoin2 = {
             }
         },
         objectId: 'COIN2',
-        version: 6
+        version: 6,
+        digest: "COIN2"
     }    
 }
 
@@ -49,19 +52,14 @@ const suiCoin3 = {
             }
         },
         objectId: 'COIN3',
-        version: 36
+        version: 36,
+        digest: "COIN3"
     }    
 }
 
 const getOwnedObjects = jest.fn(
     () => Promise.resolve({
-        data: [suiCoin, suiCoin2, nft].map((o: any) => ({ 
-            ...o
-            // data: {
-            //     objectId: o.data.objectId,
-            //     version: o.data.version 
-            // }
-        }))
+        data: [suiCoin, suiCoin3, nft]
     })
 )
 
@@ -73,6 +71,20 @@ const multiGetObjects = jest.fn(
     }
 )
 
+const getAllBalances = jest.fn(
+    () => {
+        return [
+            {
+                coinType: '0x2::sui::SUI',
+                totalBalance: [suiCoin, suiCoin3].reduce(
+                    (acc, c) => sumBN(acc, c.data.content.fields.balance), 
+                    newBN(0)
+                ).toString(),
+            }
+        ]
+    }
+)
+
 export default {
     suiCoin,
     suiCoin2,
@@ -80,8 +92,10 @@ export default {
     nft, 
     getOwnedObjects,
     multiGetObjects,
+    getAllBalances,
     provider: {
         getOwnedObjects,
-        multiGetObjects
+        multiGetObjects,
+        getAllBalances
     }
 }

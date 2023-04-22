@@ -1,4 +1,4 @@
-import { Connection, JsonRpcProvider } from "@mysten/sui.js";
+import { CoinBalance, Connection, JsonRpcProvider, SUI_TYPE_ARG } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
@@ -23,6 +23,7 @@ export type GetWalletContentsArgs = {
 
 const empty: WalletContents = {
     suiBalance: newBN(0),
+    balances: {},
     nfts: [],
     tokens: {},
     objects: []  
@@ -37,6 +38,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             return empty
         }
         
+        const coinBalances = await provider.getAllBalances({ owner: address });
         const objectInfos = await provider.getOwnedObjects({
             owner: address,
             options: {
@@ -88,26 +90,20 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         if (newObjectInfos.length === 0) return null;
 
         const newObjects = newObjectInfos;
-        // const newObjects = newObjectInfos.map((o) => {
-        //     if (typeof o.data === "object") {
-        //         return o.data.objectId
-        //     } else {
-        //         return ""
-        //     }
-        // }).filter((objectId) => objectId.length > 0);
-        
-        // const newObjects = await provider.multiGetObjects({
-        //     ids: newObjectIds, 
-        //     options: {
-        //         showContent: true,
-        //         showType: true,
-        //         showOwner: true,
-        //         showDisplay: true
-        //     }
-        // });
         const objects = currentObjects.concat(newObjects);
 
         let suiBalance = newBN(0);
+        const balances = coinBalances.reduce(
+            (acc, coinBalance) => {
+                acc[coinBalance.coinType] = coinBalance;
+                if (coinBalance.coinType === SUI_TYPE_ARG) {
+                    suiBalance = newBN(coinBalance.totalBalance);
+                }
+                return acc;
+            }, 
+            {} as Record<string, CoinBalance>
+        )
+
         const nfts: SuiNFT[] = [];
         const tokens: {[key: string]: any}= {};
         const convenenienceObjects: ConvenenienceSuiObject[] = [];
@@ -137,10 +133,6 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 })
 
                 if (type === 'Coin') {
-                    if (subtype === '0x2::sui::SUI') {
-                        suiBalance = sumBN(suiBalance, fields.balance);
-                    }
-                    
                     tokens[subtype] ||= {
                         balance: 0,
                         coins: []
@@ -208,7 +200,17 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             }
         } 
 
-        return { suiBalance, tokens, nfts, objects: convenenienceObjects }
+        
+
+        return { 
+            suiBalance, 
+            balances, 
+            tokens, 
+            nfts, 
+            objects: convenenienceObjects, 
+            hasNextPage: objectInfos.hasNextPage,
+            nextCursor: objectInfos.nextCursor ?? undefined
+        };
     } catch (error: unknown) {
         console.log("Error retrieving wallet contents", error);
         return null;
