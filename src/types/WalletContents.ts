@@ -1,5 +1,6 @@
 import { CoinBalance } from "@mysten/sui.js"
 import BigNumber from "bignumber.js"
+import { ConvenenienceSuiObject } from "./ConvenienceSuiObject"
 
 export interface SuiNFTCollection {
     name: string,
@@ -15,12 +16,12 @@ export interface SuiNFT {
     objectId: string,
     name?: string,
     description?: string,
-    imageUri?: string,
+    imageUrl?: string,
     link?: string,
     creator?: string,
     projectUrl?: string,
     display?: Record<string, string>,
-    extraFields?: Record<string, string>,
+    fields?: Record<string, string>,
     collection?: SuiNFTCollection,
     links?: Record<string, string>
 }
@@ -44,7 +45,7 @@ export interface WalletContents {
     balances: {[key: string]: CoinBalance},
     tokens: {[key: string]: Token},
     nfts: SuiNFT[]
-    objects: any[],
+    objects: ConvenenienceSuiObject[],
     hasNextPage?: boolean,
     nextCursor?: string | {
         objectId: string;

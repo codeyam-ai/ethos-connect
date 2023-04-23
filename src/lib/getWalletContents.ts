@@ -1,4 +1,4 @@
-import { CoinBalance, Connection, JsonRpcProvider, SUI_TYPE_ARG } from "@mysten/sui.js";
+import { CoinBalance, Connection, JsonRpcProvider, SUI_TYPE_ARG, SuiObjectData } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
@@ -56,20 +56,19 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             return empty;
         }
 
-        const currentObjects = [];
-        let newObjectInfos = [];
+        const currentObjects: SuiObjectData[] = [];
+        let newObjectInfos: SuiObjectData[] = [];
         if (existingContents?.objects && existingContents.objects.length > 0) {
             for (const objectInfo of objectInfos.data) {
                 if (!objectInfo.data || objectInfo.error) continue;
                 const existingObject = existingContents?.objects.find(
                     (existingObject) => {
                         if (
-                            typeof objectInfo.data === "object" &&
-                            typeof existingObject.data === "object"
+                            typeof objectInfo.data === "object"
                         ) {
                             return (
-                                existingObject.data.objectId === objectInfo.data.objectId &&
-                                existingObject.data.version === objectInfo.data.version
+                                existingObject.objectId === objectInfo.data.objectId &&
+                                existingObject.version === objectInfo.data.version
                             )    
                         } else {
                             return false;
@@ -80,11 +79,13 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 if (existingObject) {
                     currentObjects.push(existingObject);
                 } else {
-                    newObjectInfos.push(objectInfo);
+                    newObjectInfos.push(objectInfo.data);
                 }
             }
         } else {
-            newObjectInfos = objectInfos.data;
+            newObjectInfos = objectInfos.data
+                .filter((objectInfo) => !!objectInfo.data && !objectInfo.error)
+                .map((objectInfo) => objectInfo.data as SuiObjectData);
         }
 
         if (newObjectInfos.length === 0) return null;
@@ -107,11 +108,9 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         const nfts: SuiNFT[] = [];
         const tokens: {[key: string]: any}= {};
         const convenenienceObjects: ConvenenienceSuiObject[] = [];
-        for (const object of objects) {
-            const { data } = object
-            if (!data) continue;
-
-            const { display, content: { fields } } = data;
+        for (const data of objects) {
+            const { display, content } = data;
+            const { fields } = (content?.dataType === "moveObject" ? content : { fields: {} as Record<string, string>});
             const safeDisplay = getDisplay(display);
             try {
                 const typeStringComponents = (data.type || "").split('<');
@@ -119,17 +118,22 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 const typeComponents = typeStringComponents[0].split('::');
                 const type = typeComponents[typeComponents.length - 1];
 
-                const { name, description, ...extraFields } = fields ?? {}
-                
+                const safeUrl = ipfsConversion(
+                    safeDisplay?.image_url ??
+                    safeDisplay?.img_url ??
+                    safeDisplay?.img_url ??
+                    fields?.url ??
+                    fields?.image_url ??
+                    fields?.img_url
+                );  
+
                 convenenienceObjects.push({
-                    ...object,
-                    type: data?.type,
-                    version: data?.version,
-                    objectId: data?.objectId,
-                    name,
-                    description,
+                    ...data,
+                    name: safeDisplay?.name ?? fields?.name,
+                    description: safeDisplay?.description ?? fields?.description,
+                    imageUrl: safeUrl,
                     display: safeDisplay,
-                    extraFields
+                    fields
                 })
 
                 if (type === 'Coin') {
@@ -147,60 +151,56 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                         version: data?.version,
                         display: safeDisplay
                     })
-                } else if (isBagNFT(object.data)) {
-                    const bagNFT = await getBagNFT(provider, object.data);
+                } else if (isBagNFT(data)) {
+                    const bagNFT = await getBagNFT(provider, data);
                     
                     if ("name" in bagNFT) {
                         nfts.push({
-                            type: data?.type,
+                            type: data.type ?? "Unknown",
                             package: typeComponents[0],
                             chain: 'Sui',
                             address: data?.objectId,
                             objectId: data?.objectId,
                             name: safeDisplay?.name ?? bagNFT.name,
-                            description: safeDisplay?.name ?? bagNFT.description,
-                            imageUri: ipfsConversion(safeDisplay?.image_url ?? bagNFT.url),
+                            description: safeDisplay?.description ?? bagNFT.description,
+                            imageUrl: safeUrl,
                             link: safeDisplay?.link,
                             creator: safeDisplay?.creator,
                             projectUrl: safeDisplay?.project_url,
                             display: safeDisplay,
                             module: typeComponents[1],
                             links: {
-                                'Explorer': `https://explorer.sui.io/objects/${object?.objectId}`
+                                'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
                             }
                         });       
                     }
                 } else {
-                    const { url, image_url, image, ...remaining } = extraFields || {}
-                    const safeUrl = ipfsConversion(safeDisplay?.image_url || url || image_url || image);
                     if (safeUrl) {
                         nfts.push({
-                            type: data?.type,
+                            type: data.type ?? "Unknown",
                             package: typeComponents[0],
                             chain: 'Sui',
                             address: data?.objectId,
                             objectId: data?.objectId,
-                            name: safeDisplay?.name ?? name,
-                            description: safeDisplay?.description ?? description,
-                            imageUri: safeUrl,
+                            name: safeDisplay?.name ?? fields?.name,
+                            description: safeDisplay?.description ?? fields?.description,
+                            imageUrl: safeUrl,
                             link: safeDisplay?.link,
                             creator: safeDisplay?.creator,
                             projectUrl: safeDisplay?.project_url,
                             display: safeDisplay,
-                            extraFields: remaining,
+                            fields,
                             module: typeComponents[1],
                             links: {
-                                'Explorer': `https://explorer.sui.io/objects/${object?.objectId}`
+                                'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
                             }
                         });    
                     }
                 }
             } catch (error: unknown) {
-                console.log("Error retrieving object", object, error);
+                console.log("Error retrieving object", data, error);
             }
-        } 
-
-        
+        }
 
         return { 
             suiBalance, 
