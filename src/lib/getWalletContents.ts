@@ -68,7 +68,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                         ) {
                             return (
                                 existingObject.objectId === objectInfo.data.objectId &&
-                                existingObject.version === objectInfo.data.version
+                                existingObject.version.toString() === objectInfo.data.version.toString()
                             )    
                         } else {
                             return false;

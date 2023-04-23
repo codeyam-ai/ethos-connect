@@ -67,106 +67,123 @@ describe('getWalletBalance', () => {
 })
 
 const existingContents: WalletContents = {
-  suiBalance: newBN(60000),
-  balances: {
-    '0x2::sui::SUI': { coinType: '0x2::sui::SUI', totalBalance: '60000' } as CoinBalance
+  "suiBalance": newBN("60000"),
+  "balances": {
+    "0x2::sui::SUI": {
+      "coinType": "0x2::sui::SUI",
+      "totalBalance": "60000"
+    } as CoinBalance
   },
-  tokens: {
-    '0x2::sui::SUI': {
-      balance: newBN(60000),
-      coins: [
+  "tokens": {
+    "0x2::sui::SUI": {
+      "balance": newBN("60000"),
+      "coins": [
         {
-          objectId: 'COIN1',
-          type: '0x2::coin::Coin<0x2::sui::SUI>',
-          balance: newBN(10000),
-          digest: 'COIN1',
-          version: 2,
-          display: undefined
+          "objectId": "COIN1",
+          "type": "0x2::coin::Coin<0x2::sui::SUI>",
+          "balance": newBN("10000"),
+          "digest": "COIN1",
+          "version": 2
         },
         {
-          objectId: 'COIN3',
-          type: '0x2::coin::Coin<0x2::sui::SUI>',
-          balance: newBN(50000),
-          digest: 'COIN3',
-          version: 36,
-          display: undefined
+          "objectId": "COIN3",
+          "type": "0x2::coin::Coin<0x2::sui::SUI>",
+          "balance": newBN("50000"),
+          "digest": "COIN3",
+          "version": 36
         }
       ]
     }
   },
-  nfts: [
+  "nfts": [
     {
-      type: 'PACKAGE::MODULE::NFT',
-      package: 'PACKAGE',
-      chain: 'Sui',
-      address: 'NFT',
-      objectId: 'NFT',
-      name: 'NAME',
-      description: undefined,
-      imageUri: 'IMAGE',
-      link: undefined,
-      creator: undefined,
-      projectUrl: undefined,
-      display: undefined,
-      extraFields: {},
-      module: 'MODULE',
-      links: { Explorer: 'https://explorer.sui.io/objects/undefined' }
+      "type": "PACKAGE::MODULE::NFT",
+      "packageObjectId": "PACKAGE",
+      "moduleName": "MODULE",
+      "structName": "NFT",
+      "chain": "Sui",
+      "address": "NFT",
+      "objectId": "NFT",
+      "name": "NAME",
+      "imageUrl": "IMAGE",
+      "fields": {
+        "url": "IMAGE",
+        "name": "NAME"
+      },
+      "links": {
+        "Explorer": "https://explorer.sui.io/objects/NFT"
+      }
     }
   ],
-  objects: [
+  "objects": [
     {
-      data: {
-        type: '0x2::coin::Coin<0x2::sui::SUI>',
-        content: {
-          fields: { balance: newBN(10000) }
+      "type": "0x2::coin::Coin<0x2::sui::SUI>",
+      "content": {
+        "dataType": "moveObject",
+        "type": "COIN",
+        "fields": {
+          "balance": "10000"
         },
-        objectId: 'COIN1',
-        version: 2,
-        digest: 'COIN1'
+        "hasPublicTransfer": true
       },
-      type: '0x2::coin::Coin<0x2::sui::SUI>',
-      version: 2,
-      objectId: 'COIN1',
-      name: undefined,
-      description: undefined,
-      display: undefined,
-      extraFields: { balance: newBN(10000) }
+      "objectId": "COIN1",
+      "version": "2",
+      "digest": "COIN1",
+      "packageObjectId": "0x2",
+      "moduleName": "coin",
+      "structName": "Coin",
+      "imageUrl": "",
+      "fields": {
+        "balance": "10000"
+      },
+      "isCoin": true
     },
     {
-      data: {
-        type: '0x2::coin::Coin<0x2::sui::SUI>',
-        content: {
-          fields: { balance: newBN(50000) }
+      "type": "0x2::coin::Coin<0x2::sui::SUI>",
+      "content": {
+        "dataType": "moveObject",
+        "type": "COIN",
+        "fields": {
+          "balance": "50000"
         },
-        objectId: 'COIN3',
-        version: 36,
-        digest: 'COIN3'
+        "hasPublicTransfer": true
       },
-      type: '0x2::coin::Coin<0x2::sui::SUI>',
-      version: 36,
-      objectId: 'COIN3',
-      name: undefined,
-      description: undefined,
-      display: undefined,
-      extraFields: { balance: newBN(50000) }
+      "objectId": "COIN3",
+      "version": "36",
+      "digest": "COIN3",
+      "packageObjectId": "0x2",
+      "moduleName": "coin",
+      "structName": "Coin",
+      "imageUrl": "",
+      "fields": {
+        "balance": "50000"
+      },
+      "isCoin": true
     },
     {
-      data: {
-        type: 'PACKAGE::MODULE::NFT',
-        content: { fields: { url: 'IMAGE', name: 'NAME' } },
-        objectId: 'NFT',
-        version: 1,
-        digest: 'NFT'
+      "type": "PACKAGE::MODULE::NFT",
+      "content": {
+        "dataType": "moveObject",
+        "type": "NFT",
+        "fields": {
+          "url": "IMAGE",
+          "name": "NAME"
+        },
+        "hasPublicTransfer": true
       },
-      type: 'PACKAGE::MODULE::NFT',
-      version: 1,
-      objectId: 'NFT',
-      name: 'NAME',
-      description: undefined,
-      display: undefined,
-      extraFields: { url: 'IMAGE' }
+      "objectId": "NFT",
+      "version": "1",
+      "digest": "NFT",
+      "packageObjectId": "PACKAGE",
+      "moduleName": "MODULE",
+      "structName": "NFT",
+      "name": "NAME",
+      "imageUrl": "IMAGE",
+      "fields": {
+        "url": "IMAGE",
+        "name": "NAME"
+      },
+      "isCoin": false
     }
-  ],
-  hasNextPage: undefined,
-  nextCursor: undefined
+  ]
 }

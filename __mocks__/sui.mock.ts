@@ -4,6 +4,7 @@ const nft = {
     data: {
         type: 'PACKAGE::MODULE::NFT',
         content: {
+            dataType: "moveObject",
             fields: {
                 url: "IMAGE",
                 name: "NAME"
@@ -19,6 +20,7 @@ const suiCoin = {
     data: {
         type: '0x2::coin::Coin<0x2::sui::SUI>',
         content: {
+            dataType: "moveObject",
             fields: {
                 balance: newBN(10000)
             }
@@ -33,6 +35,7 @@ const suiCoin2 = {
     data: {
         type: '0x2::coin::Coin<0x2::sui::SUI>',
         content: {
+            dataType: "moveObject",
             fields: {
                 balance: newBN(5000)
             }
@@ -47,6 +50,7 @@ const suiCoin3 = {
     data: {
         type: '0x2::coin::Coin<0x2::sui::SUI>',
         content: {
+            dataType: "moveObject",
             fields: {
                 balance: newBN(50000)
             }
