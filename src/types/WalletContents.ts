@@ -10,8 +10,9 @@ export interface SuiNFTCollection {
 export interface SuiNFT {
     chain: string,
     type: string,
-    package: string,
-    module: string
+    packageObjectId: string,
+    moduleName: string
+    structName: string,
     address: string,
     objectId: string,
     name?: string,

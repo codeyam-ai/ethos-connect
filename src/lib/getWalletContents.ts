@@ -116,7 +116,9 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 const typeStringComponents = (data.type || "").split('<');
                 const subtype = (typeStringComponents[1] || "").replace(/>/, '')
                 const typeComponents = typeStringComponents[0].split('::');
-                const type = typeComponents[typeComponents.length - 1];
+                const packageObjectId = typeComponents[0];
+                const moduleName = typeComponents[1];
+                const structName = typeComponents[typeComponents.length - 1];
 
                 const safeUrl = ipfsConversion(
                     safeDisplay?.image_url ??
@@ -129,14 +131,18 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
 
                 convenenienceObjects.push({
                     ...data,
+                    packageObjectId,
+                    moduleName,
+                    structName,
                     name: safeDisplay?.name ?? fields?.name,
                     description: safeDisplay?.description ?? fields?.description,
                     imageUrl: safeUrl,
                     display: safeDisplay,
-                    fields
+                    fields,
+                    isCoin: structName === 'Coin'
                 })
 
-                if (type === 'Coin') {
+                if (structName === 'Coin') {
                     tokens[subtype] ||= {
                         balance: 0,
                         coins: []
@@ -156,8 +162,10 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                     
                     if ("name" in bagNFT) {
                         nfts.push({
-                            type: data.type ?? "Unknown",
-                            package: typeComponents[0],
+                            type: data.type ?? "unknown", 
+                            packageObjectId, 
+                            moduleName, 
+                            structName,
                             chain: 'Sui',
                             address: data?.objectId,
                             objectId: data?.objectId,
@@ -168,7 +176,6 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                             creator: safeDisplay?.creator,
                             projectUrl: safeDisplay?.project_url,
                             display: safeDisplay,
-                            module: typeComponents[1],
                             links: {
                                 'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
                             }
@@ -178,7 +185,9 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                     if (safeUrl) {
                         nfts.push({
                             type: data.type ?? "Unknown",
-                            package: typeComponents[0],
+                            packageObjectId,
+                            moduleName,
+                            structName,
                             chain: 'Sui',
                             address: data?.objectId,
                             objectId: data?.objectId,
@@ -190,7 +199,6 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                             projectUrl: safeDisplay?.project_url,
                             display: safeDisplay,
                             fields,
-                            module: typeComponents[1],
                             links: {
                                 'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
                             }
