@@ -1,4 +1,4 @@
-import { CoinBalance, Connection, JsonRpcProvider, SUI_TYPE_ARG, SuiObjectData } from "@mysten/sui.js";
+import { CoinBalance, Connection, JsonRpcProvider, SUI_TYPE_ARG, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
@@ -6,6 +6,7 @@ import getBagNFT, { isBagNFT } from "./getBagNFT";
 import { ConvenenienceSuiObject } from '../types/ConvenienceSuiObject';
 import { DEFAULT_NETWORK } from './constants';
 import getDisplay from "./getDisplay";
+import { getKioskObjects, isKiosk } from "./getKioskNFT";
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -104,6 +105,22 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             }, 
             {} as Record<string, CoinBalance>
         )
+
+        let kioskObjects: SuiObjectResponse[] = [];
+        for (const object of objects) {
+            if (isKiosk(object)) {
+                kioskObjects = [
+                    ...kioskObjects,
+                    ...(await getKioskObjects(provider, object))
+                ]
+            }
+        }
+
+        for (const kioskObject of kioskObjects) {
+            if (kioskObject.data) {
+                objects.push(kioskObject.data);
+            }
+        }
 
         const nfts: SuiNFT[] = [];
         const tokens: {[key: string]: any}= {};
