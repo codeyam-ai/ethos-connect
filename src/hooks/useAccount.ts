@@ -1,8 +1,8 @@
 import { SuiAddress } from '@mysten/sui.js';
 import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useRef, useState } from 'react'
-import { Signer } from 'types/Signer';
-import { WalletContents } from 'types/WalletContents';
+import { Signer } from '../types/Signer';
+import { WalletContents } from '../types/WalletContents';
 import { WalletAccount } from '@mysten/wallet-standard';
 
 export type Account = {

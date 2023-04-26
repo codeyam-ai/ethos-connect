@@ -1,5 +1,5 @@
 
-import { Preapproval } from "types/Preapproval";
+import { Preapproval } from "../types/Preapproval";
 
 export type PreapprovalArgs = {
   signer: any,

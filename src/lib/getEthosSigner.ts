@@ -13,7 +13,7 @@ import { EthosSignMessageInput } from '../types/EthosSignMessageInput'
 import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput'
 import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlockInput'
 import { DEFAULT_CHAIN } from '../lib/constants';
-import { Chain } from 'enums/Chain'
+import { Chain } from '../enums/Chain'
 
 const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promise<HostedSigner | null> => {
 

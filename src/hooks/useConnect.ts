@@ -4,7 +4,7 @@ import useWalletKit from './useWalletKit'
 // import listenForMobileConnection from '../lib/listenForMobileConnection'
 import { ProviderAndSigner } from '../types/ProviderAndSigner'
 import { Connection, JsonRpcProvider } from '@mysten/sui.js';
-import { ExtensionSigner, HostedSigner } from 'types/Signer'
+import { ExtensionSigner, HostedSigner } from '../types/Signer'
 import lib from '../lib/lib'
 import { EthosConfiguration } from '../types/EthosConfiguration'
 import { DEFAULT_CHAIN, DEFAULT_NETWORK } from '../lib/constants';

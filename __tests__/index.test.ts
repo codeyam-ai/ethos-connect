@@ -5,7 +5,7 @@ import { EthosConnectProvider, DetachedEthosConnectProvider, SignInButton } from
  * Looks a bit of a silly test, however this ensures that we don't accidentally expose something to
  * the outside world that we didn't want!
  */
-it('should expose the correct components', () => {
+test('should expose the correct components', () => {
   const exportNames = [
     EthosConnectProvider.name,
     DetachedEthosConnectProvider.name,

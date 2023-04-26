@@ -1,6 +1,6 @@
 import store from 'store2'
-import { User } from 'types/User'
 import lib from './lib'
+import { User } from '../types/User'
 
 export type loginArgs = {
   email?: string, 

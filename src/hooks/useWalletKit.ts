@@ -8,8 +8,8 @@ import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
 import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndExecuteTransactionBlockInput';
 import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlockInput';
 import { DEFAULT_CHAIN } from '../lib/constants';
-import { Preapproval } from 'types/Preapproval';
-import { Chain } from 'enums/Chain';
+import { Preapproval } from '../types/Preapproval';
+import { Chain } from '../enums/Chain';
 import { SignedTransaction } from '@mysten/sui.js';
 
 export interface UseWalletKitArgs {

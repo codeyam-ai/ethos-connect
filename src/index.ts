@@ -111,5 +111,3 @@ export type {
   SuiNFT,
   Token
 };
-
-
