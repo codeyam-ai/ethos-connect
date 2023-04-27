@@ -1,5 +1,5 @@
 import { JsonRpcProvider, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
-import { get } from "lodash";
+import _ from 'lodash';
 
 export const isKiosk = (data: SuiObjectData): boolean => {
     return (
@@ -16,7 +16,7 @@ export const getKioskObjects = async (
     data: SuiObjectData
 ): Promise<SuiObjectResponse[]> => {
     if (!isKiosk(data)) return [];
-    const kiosk = get(data, 'content.fields.kiosk');
+    const kiosk = _.get(data, 'content.fields.kiosk');
     if (!kiosk) return [];
     const allKioskObjets = await provider.getDynamicFields({
         parentId: kiosk,
