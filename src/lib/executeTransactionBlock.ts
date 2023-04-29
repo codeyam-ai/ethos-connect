@@ -1,4 +1,4 @@
-// import log from './log'
+import log from './log'
 
 import { ExtensionSigner, HostedSigner } from '../types/Signer';
 import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput';
@@ -12,7 +12,7 @@ const executeTransactionBlock = async ({
   signer,
   transactionInput
 }: TransactArgs) => {
-  console.log("transact", "Starting transaction", signer, transactionInput)
+  log("transact", "Starting transaction", signer, transactionInput)
   return signer.executeTransactionBlock(transactionInput)
 }
 
