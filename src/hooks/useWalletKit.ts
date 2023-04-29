@@ -75,6 +75,7 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
       }, [currentWallet, currentAccount, defaultChain])
 
       const executeTransactionBlock = useCallback((input: EthosExecuteTransactionBlockInput) => {
+        console.log("executeTransactionBlock", input)
         return provider.executeTransactionBlock(input)
       }, [provider])
 

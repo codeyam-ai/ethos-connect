@@ -1,19 +1,19 @@
-import log from './log'
+// import log from './log'
 
-import type { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlockInput';
 import { ExtensionSigner, HostedSigner } from '../types/Signer';
+import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput';
 
 type TransactArgs = {
   signer: HostedSigner | ExtensionSigner
-  transactionInput: EthosSignTransactionBlockInput
+  transactionInput: EthosExecuteTransactionBlockInput
 }
 
-const signTransactionBlock = async ({
+const executeTransactionBlock = async ({
   signer,
   transactionInput
 }: TransactArgs) => {
-  log("transact", "Starting transaction", signer, transactionInput)
-  return signer.signTransactionBlock(transactionInput)
+  console.log("transact", "Starting transaction", signer, transactionInput)
+  return signer.executeTransactionBlock(transactionInput)
 }
 
-export default signTransactionBlock
+export default executeTransactionBlock
