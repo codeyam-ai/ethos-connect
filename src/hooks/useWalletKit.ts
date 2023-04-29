@@ -10,10 +10,12 @@ import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlo
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Preapproval } from 'types/Preapproval';
 import { Chain } from 'enums/Chain';
-import { SignedTransaction } from '@mysten/sui.js';
+import { JsonRpcProvider, SignedTransaction } from '@mysten/sui.js';
+import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput';
 
 export interface UseWalletKitArgs {
     defaultChain: Chain
+    provider: JsonRpcProvider;
     configuredAdapters?: WalletAdapterList;
     features?: string[];
     enableUnsafeBurner?: boolean;
@@ -23,7 +25,7 @@ export interface UseWalletKitArgs {
     disableAutoConnect?: boolean;
 }
 
-const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
+const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
     const adapters = useMemo(
         () =>
           configuredAdapters ?? [
@@ -71,6 +73,10 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
           chain
         })
       }, [currentWallet, currentAccount, defaultChain])
+
+      const executeTransactionBlock = useCallback((input: EthosExecuteTransactionBlockInput) => {
+        return provider.executeTransactionBlock(input)
+      }, [provider])
 
       const signTransactionBlock = useCallback((input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
         if (!currentWallet || !currentAccount) {
@@ -138,6 +144,7 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
           accounts,
           currentAccount,
           signAndExecuteTransactionBlock,
+          executeTransactionBlock,
           signTransactionBlock,
           requestPreapproval,
           signMessage,
@@ -146,7 +153,7 @@ const useWalletKit = ({ defaultChain, configuredAdapters, features, enableUnsafe
             walletKitRef.current?.disconnect();
           }
         }
-      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, requestPreapproval, signMessage]);
+      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, executeTransactionBlock, requestPreapproval, signMessage]);
 
       return {
         wallets,

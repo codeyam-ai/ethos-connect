@@ -16,6 +16,7 @@ import logout from './lib/logout';
 import preapprove from './lib/preapprove';
 import sign from './lib/sign';
 import transact from './lib/transact';
+import signTransactionBlock from './lib/signTransactionBlock';
 
 import hideWallet from './lib/hideWallet';
 import showWallet from './lib/showWallet';
@@ -63,6 +64,7 @@ const ethos = {
 
   sign,
   transact,
+  signTransactionBlock,
   preapprove,
 
   showWallet,

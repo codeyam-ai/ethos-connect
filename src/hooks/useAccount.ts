@@ -10,7 +10,7 @@ export type Account = {
   contents?: WalletContents;
 }
 
-const useAccount = (signer: Signer | null, network: string) => {
+const useAccount = (signer: Signer | null, network: string, explicitInterval?: number) => {
   const [altAccount, setAltAccount] = useState<WalletAccount | undefined>();
   const [account, setAccount] = useState<Account>({});
   const latestNetwork = useRef<string>(network);
@@ -43,7 +43,7 @@ const useAccount = (signer: Signer | null, network: string) => {
     }
 
     initAccount();
-    const interval = setInterval(initAccount, 5000);
+    const interval = setInterval(initAccount, explicitInterval ?? 5000);
 
     return () => clearInterval(interval);
   }, [network, signer, altAccount])

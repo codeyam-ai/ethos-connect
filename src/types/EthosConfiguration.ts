@@ -9,4 +9,5 @@ export interface EthosConfiguration {
   preferredWallets?: string[]
   redirectTo?: string;
   disableAutoConnect?: boolean;
+  pollingInterval?: number;
 }
