@@ -1,5 +1,5 @@
 import type { Preapproval } from './Preapproval'
-import type { SignedTransaction, SuiAddress, SuiTransactionBlockResponse } from '@mysten/sui.js';
+import type { JsonRpcProvider, SignedTransaction, SuiAddress, SuiTransactionBlockResponse } from '@mysten/sui.js';
 import type { 
   SuiSignMessageOutput,
   WalletAccount 
@@ -26,7 +26,8 @@ export interface Signer {
   signTransactionBlock: (input: EthosSignTransactionBlockInput) => Promise<SignedTransaction>,
   requestPreapproval: (preApproval: Preapproval) => Promise<boolean>,
   signMessage: (input: EthosSignMessageInput) => Promise<SuiSignMessageOutput>,
-  disconnect: () => void
+  disconnect: () => void,
+  provider: JsonRpcProvider
 }
 
 export interface ExtensionSigner extends Signer {

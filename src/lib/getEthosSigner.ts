@@ -143,7 +143,8 @@ const getEthosSigner = async ({ provider, defaultChain }: { provider: JsonRpcPro
         requestPreapproval,
         signMessage,
         disconnect,
-        logout
+        logout,
+        provider
     } : null
    
 }

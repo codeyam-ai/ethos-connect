@@ -75,7 +75,6 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
       }, [currentWallet, currentAccount, defaultChain])
 
       const executeTransactionBlock = useCallback((input: EthosExecuteTransactionBlockInput) => {
-        console.log("executeTransactionBlock", input)
         return provider.executeTransactionBlock(input)
       }, [provider])
 
@@ -152,9 +151,10 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
           disconnect: () => {
             currentWallet.disconnect();
             walletKitRef.current?.disconnect();
-          }
+          },
+          provider
         }
-      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, executeTransactionBlock, requestPreapproval, signMessage]);
+      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, executeTransactionBlock, requestPreapproval, signMessage, provider]);
 
       return {
         wallets,
