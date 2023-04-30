@@ -3,7 +3,7 @@ import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { SignedTransaction, SuiTransactionBlockResponse } from '@mysten/sui.js'
+import type { JsonRpcProvider, SignedTransaction, SuiTransactionBlockResponse } from '@mysten/sui.js'
 import type { 
     SuiSignMessageOutput, 
     WalletAccount, 
@@ -14,8 +14,9 @@ import { EthosSignAndExecuteTransactionBlockInput } from '../types/EthosSignAndE
 import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlockInput'
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Chain } from 'enums/Chain'
+import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput'
 
-const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promise<HostedSigner | null> => {
+const getEthosSigner = async ({ provider, defaultChain }: { provider: JsonRpcProvider, defaultChain: Chain }): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
@@ -49,6 +50,10 @@ const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promis
                 showWallet: true
             })
         });
+    }
+
+    const executeTransactionBlock = (input: EthosExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
+        return provider.executeTransactionBlock(input);
     }
 
     const signTransactionBlock = (input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
@@ -133,11 +138,13 @@ const getEthosSigner = async ({ defaultChain }: { defaultChain: Chain }): Promis
         accounts,
         currentAccount,
         signAndExecuteTransactionBlock,
+        executeTransactionBlock,
         signTransactionBlock,
         requestPreapproval,
         signMessage,
         disconnect,
-        logout
+        logout,
+        provider
     } : null
    
 }
