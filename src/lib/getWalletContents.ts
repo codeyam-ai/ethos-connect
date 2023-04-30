@@ -1,4 +1,4 @@
-import { CoinBalance, Connection, JsonRpcProvider, SUI_TYPE_ARG, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
+import { CoinBalance, Connection, JsonRpcProvider, PaginatedObjectsResponse, SUI_TYPE_ARG, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
 import getBagNFT, { isBagNFT } from "./getBagNFT";
@@ -40,17 +40,46 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         }
         
         const coinBalances = await provider.getAllBalances({ owner: address });
-        const objectInfos = await provider.getOwnedObjects({
-            owner: address,
-            options: {
-                showType: true,
-                showOwner: true,
-                showContent: true,
-                showDisplay: true,
-            }
-        });
 
-        if (objectInfos.data.length === 0) {
+        let objectInfos: SuiObjectResponse[] = [];
+        let nextCursor: PaginatedObjectsResponse['nextCursor'] | undefined = undefined;
+        let limitedNextCursor: PaginatedObjectsResponse['nextCursor'] | undefined | null = undefined;
+        let page = 0;
+        let hasNextPage = false;
+        while (limitedNextCursor !== null) {
+            page += 1;
+
+            const pageObjectInfos: PaginatedObjectsResponse = await provider.getOwnedObjects({
+                owner: address,
+                options: {
+                    showType: true,
+                    showOwner: true,
+                    showContent: true,
+                    showDisplay: true,
+                },
+                cursor: limitedNextCursor
+            });
+
+            objectInfos = [
+                ...objectInfos,
+                ...pageObjectInfos.data
+            ];
+
+            hasNextPage = pageObjectInfos.hasNextPage;
+            nextCursor = pageObjectInfos.nextCursor ?? undefined;
+
+            if (page > 20) {
+                limitedNextCursor = null;
+            } else {
+                if (hasNextPage) {
+                    limitedNextCursor = nextCursor ?? null;
+                } else {
+                    limitedNextCursor = null;
+                }
+            }
+        }
+
+        if (objectInfos.length === 0) {
             if (existingContents === empty) {
                 return null;
             }
@@ -60,7 +89,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         const currentObjects: SuiObjectData[] = [];
         let newObjectInfos: SuiObjectData[] = [];
         if (existingContents?.objects && existingContents.objects.length > 0) {
-            for (const objectInfo of objectInfos.data) {
+            for (const objectInfo of objectInfos) {
                 if (!objectInfo.data || objectInfo.error) continue;
                 const existingObject = existingContents?.objects.find(
                     (existingObject) => {
@@ -84,7 +113,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 }
             }
         } else {
-            newObjectInfos = objectInfos.data
+            newObjectInfos = objectInfos
                 .filter((objectInfo) => !!objectInfo.data && !objectInfo.error)
                 .map((objectInfo) => objectInfo.data as SuiObjectData);
         }
@@ -233,8 +262,8 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             tokens, 
             nfts, 
             objects: convenenienceObjects, 
-            hasNextPage: objectInfos.hasNextPage,
-            nextCursor: objectInfos.nextCursor ?? undefined
+            hasNextPage,
+            nextCursor: nextCursor ?? undefined
         };
     } catch (error: unknown) {
         console.log("Error retrieving wallet contents", error);
