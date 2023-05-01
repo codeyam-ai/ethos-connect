@@ -9,8 +9,9 @@ import { SignerType } from '../../src/types/Signer'
 import sui from '../../__mocks__/sui.mock'
 import { HostedSigner } from '../../src/types/Signer';
 import BigNumber from 'bignumber.js';
-import { DEFAULT_NETWORK } from '../../src/lib/constants';
+import { DEFAULT_CHAIN, DEFAULT_NETWORK } from '../../src/lib/constants';
 import type { SuiSignMessageOutput, WalletAccount } from '@mysten/wallet-standard';
+import { JsonRpcProvider } from '@mysten/sui.js'
 
 describe('EthosConnectProvider', () => {
   const signer = {
@@ -20,10 +21,13 @@ describe('EthosConnectProvider', () => {
     currentAccount: null,
     getAccounts: () => Promise.resolve([]),
     signAndExecuteTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
+    signTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
+    executeTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
     requestPreapproval: (_preApproval) => Promise.resolve(true),
     signMessage: (_message) => Promise.resolve({} as SuiSignMessageOutput),
     disconnect: () => {},
-    logout: () => {}
+    logout: () => {},
+    provider: new JsonRpcProvider()
   } as HostedSigner
 
   let receivedProvider
@@ -42,9 +46,10 @@ describe('EthosConnectProvider', () => {
 
     jest.spyOn(lib, 'getWalletContents').mockReturnValue(Promise.resolve({
       suiBalance: new BigNumber(0),
+      balances: {},
       tokens: {},
       nfts: [],
-      objects: []
+      objects: [],
     }))
   })
 
@@ -85,7 +90,7 @@ describe('EthosConnectProvider', () => {
     const expectedEthosConfiguration: EthosConfiguration = {
       apiKey: 'test-id',
       walletAppUrl: 'https://ethoswallet.xyz',
-      chain: Chain.SUI_DEVNET,
+      chain: DEFAULT_CHAIN,
       network: DEFAULT_NETWORK
     }
 
