@@ -69,10 +69,10 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "0.0.0-experimental-20230428232312",
-    "@mysten/wallet-adapter-all-wallets": "0.0.0-experimental-20230428232312",
-    "@mysten/wallet-adapter-base": "0.0.0-experimental-20230428232312",
-    "@mysten/wallet-kit-core": "0.0.0-experimental-20230428232312",
+    "@mysten/sui.js": "0.33.0",
+    "@mysten/wallet-adapter-all-wallets": "0.5.5",
+    "@mysten/wallet-adapter-base": "0.7.5",
+    "@mysten/wallet-kit-core": "0.4.5",
     "@superstate/react": "^0.1.0",
     "bignumber.js": "^9.1.1",
     "cross-fetch": "^3.1.5",
