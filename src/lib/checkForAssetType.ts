@@ -1,8 +1,17 @@
-import { ObjectId, PaginatedObjectsResponse } from "@mysten/sui.js";
+import { ObjectId, PaginatedObjectsResponse, SuiObjectDataFilter, SuiObjectDataOptions } from "@mysten/sui.js";
 import { Signer } from "../types/Signer";
 import { Wallet } from '../types/Wallet';
 
-const checkForAssetType = async ({ signer, wallet, type, cursor }: { signer?: Signer, wallet?: Wallet, type: ObjectId, cursor?: PaginatedObjectsResponse['nextCursor'] }) => {
+export interface CheckForAssetTypeArgs { 
+    signer?: Signer;
+    wallet?: Wallet;
+    type?: ObjectId;
+    cursor?: PaginatedObjectsResponse['nextCursor'];
+    options?: SuiObjectDataOptions;
+    filter: SuiObjectDataFilter;
+}
+
+const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter }: CheckForAssetTypeArgs) => {
     let owner;
     if (wallet) {
         owner = wallet.address;
@@ -18,8 +27,12 @@ const checkForAssetType = async ({ signer, wallet, type, cursor }: { signer?: Si
     
     const assets = await provider.getOwnedObjects({
         owner,
-        filter: {
+        filter: filter ?? {
             StructType: type
+        },
+        options: options ?? {
+            showContent: true,
+            showDisplay: true
         },
         cursor
     })
