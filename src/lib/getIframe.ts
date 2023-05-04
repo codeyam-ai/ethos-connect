@@ -4,7 +4,7 @@ import log from './log'
 import postIFrameMessage from './postIFrameMessage'
 
 const getIframe = (show?: boolean) => {
-  const { apiKey, walletAppUrl } = getConfiguration()
+  const { apiKey, walletAppUrl, network } = getConfiguration()
   log('getIframe', 'getIframe', apiKey, walletAppUrl)
   
   if (!apiKey || !walletAppUrl) return;
@@ -24,7 +24,7 @@ const getIframe = (show?: boolean) => {
   const accessToken = queryParams.get('access_token')
   const refreshToken = queryParams.get('refresh_token')
 
-  let fullWalletAppUrl = walletAppUrl + `/wallet?apiKey=${apiKey}`
+  let fullWalletAppUrl = walletAppUrl + `/wallet?apiKey=${apiKey}&network=${network}`
   if (accessToken && refreshToken) {
     fullWalletAppUrl += `&access_token=${accessToken}&refresh_token=${refreshToken}`
 
@@ -89,6 +89,8 @@ const getIframe = (show?: boolean) => {
       scrollY = window.scrollY
       iframe.style.top = scrollY + 'px'
     })
+  } else if (iframe.src !== fullWalletAppUrl) {
+    iframe.src = fullWalletAppUrl
   }
 
   if (show) {
