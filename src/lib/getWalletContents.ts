@@ -11,7 +11,7 @@ import { getKioskObjects, isKiosk } from "./getKioskNFT";
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
     if (src.indexOf('ipfs') === 0) {  
-        src = `https://ipfs.io/ipfs/${src.substring(5)}`;
+        return src.replace(/^ipfs:\/\//, 'https://ipfs.io/ipfs/');
     }
     return src;
 }
@@ -169,7 +169,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 const safeUrl = ipfsConversion(
                     safeDisplay?.image_url ??
                     safeDisplay?.img_url ??
-                    safeDisplay?.img_url ??
+                    safeDisplay?.url ??
                     fields?.url ??
                     fields?.image_url ??
                     fields?.img_url
