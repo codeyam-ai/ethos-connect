@@ -23,12 +23,12 @@ export interface AddressWidgetProps {
     externalContext?: any
 }
 
-const AddressWidget = ({ 
-    includeMenu = true, 
+const AddressWidget = ({
+    includeMenu = true,
     buttonColor = primaryColor,
     extraButtons = [],
     excludeButtons = [],
-    externalContext 
+    externalContext
 }: AddressWidgetProps) => {
     const { wallet } = externalContext?.wallet || useWallet();
     const [showMenu, setShowMenu] = useState(false);
@@ -52,61 +52,62 @@ const AddressWidget = ({
     }, [wallet])
 
     return (
-        <div style={container()} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            <div style={primary()}>
-                <div>
-                    <Sui color="#222532" width={12} />
-                </div>
-                {wallet ? (
-                    <>
-                        <div style={sui()}>
-                            {formatBalance(wallet.contents?.suiBalance)}{' '}
-                            Sui
-                        </div>
-                        <div style={address()}>
-                            {wallet.icon && (
-                                <img 
-                                    style={walletIcon()}
-                                    src={wallet.icon}
-                                />
-                            )}
-                            {truncateMiddle(wallet.address)}
-                        </div>
-                    </>
-                ) : (
-                    <SignInButton style={signIn()} externalContext={externalContext} />
-                )}
-            </div>
-            {includeMenu && showMenu && (
-                <div style={menu()}>
-                    {!excludeButtons.includes(AddressWidgetButtons.CopyWalletAddress) && (
-                        <CopyWalletAddressButton 
-                            externalContext={externalContext}
-                            hoverBackgroundColor={buttonColor} 
-                        />
-                    )}
-                    
-                    {!excludeButtons.includes(AddressWidgetButtons.WalletExplorer) && (
-                        <WalletExplorerButton
-                            hoverBackgroundColor={buttonColor} 
-                        />
-                    )}
-                    {extraButtons}
-                    {!excludeButtons.includes(AddressWidgetButtons.Logout) && (
-                        <LogoutButton
-                            externalContext={externalContext}
-                            hoverBackgroundColor={buttonColor}
-                        />
+        <SignInButton style={signIn()} externalContext={externalContext}>
+            <div style={container()} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+                <div style={primary()}>
+                    <div>
+                        <Sui color="#222532" width={12} />
+                    </div>
+                    {wallet ? (
+                        <>
+                            <div style={sui()}>
+                                {formatBalance(wallet.contents?.suiBalance)}{' '}
+                                Sui
+                            </div>
+                            <div style={address()}>
+                                {wallet.icon && (
+                                    <img
+                                        style={walletIcon()}
+                                        src={wallet.icon}
+                                    />
+                                )}
+                                {truncateMiddle(wallet.address)}
+                            </div>
+                        </>
+                    ) : (
+                        <div>Sign In</div>
                     )}
                 </div>
-            )}
+                {includeMenu && showMenu && (
+                    <div style={menu()}>
+                        {!excludeButtons.includes(AddressWidgetButtons.CopyWalletAddress) && (
+                            <CopyWalletAddressButton
+                                externalContext={externalContext}
+                                hoverBackgroundColor={buttonColor}
+                            />
+                        )}
 
-        </div>
+                        {!excludeButtons.includes(AddressWidgetButtons.WalletExplorer) && (
+                            <WalletExplorerButton
+                                hoverBackgroundColor={buttonColor}
+                            />
+                        )}
+                        {extraButtons}
+                        {!excludeButtons.includes(AddressWidgetButtons.Logout) && (
+                            <LogoutButton
+                                externalContext={externalContext}
+                                hoverBackgroundColor={buttonColor}
+                            />
+                        )}
+                    </div>
+                )}
+
+            </div>
+        </SignInButton>
     )
 }
 
 export default AddressWidget;
-
 export const container = () => (
     {
         position: "relative",
@@ -166,7 +167,7 @@ export const menu = () => (
 )
 
 export const signIn = () => (
-    {  
+    {
         padding: "0 12px 0 0",
         background: "none",
         whiteSpace: "nowrap"
@@ -174,7 +175,7 @@ export const signIn = () => (
 );
 
 export const walletIcon = () => (
-    {  
+    {
         width: "20px",
         height: "20px"
     } as React.CSSProperties
