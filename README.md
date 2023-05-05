@@ -2,7 +2,7 @@
 
 ### Documentation
 
-For full documentation on Ethos Connect please visit [Ethos Connect](https://ethoswallet.xyz/dev). 
+For full documentation on EthosConnect please visit [EthosConnect docs](https://ethoswallet.xyz/dev).
 
 
 ### Setting up local development
