@@ -7,6 +7,7 @@ import { ConvenenienceSuiObject } from '../types/ConvenienceSuiObject';
 import { DEFAULT_NETWORK } from './constants';
 import getDisplay from "./getDisplay";
 import { getKioskObjects, isKiosk } from "./getKioskNFT";
+import { ExtendedSuiObjectData } from "types/ExtendedSuiObjectData";
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -86,8 +87,8 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             return empty;
         }
 
-        const currentObjects: SuiObjectData[] = [];
-        let newObjectInfos: SuiObjectData[] = [];
+        const currentObjects: ExtendedSuiObjectData[] = [];
+        let newObjectInfos: ExtendedSuiObjectData[] = [];
         if (existingContents?.objects && existingContents.objects.length > 0) {
             for (const objectInfo of objectInfos) {
                 if (!objectInfo.data || objectInfo.error) continue;
@@ -135,19 +136,18 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             {} as Record<string, CoinBalance>
         )
 
-        let kioskObjects: SuiObjectResponse[] = [];
         for (const object of objects) {
             if (isKiosk(object)) {
-                kioskObjects = [
-                    ...kioskObjects,
-                    ...(await getKioskObjects(provider, object))
-                ]
-            }
-        }
+                const kioskObjects = await getKioskObjects(provider, object)
 
-        for (const kioskObject of kioskObjects) {
-            if (kioskObject.data) {
-                objects.push(kioskObject.data);
+                for (const kioskObject of kioskObjects) {
+                    if (kioskObject.data) {
+                        objects.push({
+                            ...kioskObject.data,
+                            kiosk: object
+                        });
+                    }
+                }
             }
         }
 
@@ -224,7 +224,8 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                             display: safeDisplay,
                             links: {
                                 'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
-                            }
+                            },
+                            kiosk: data.kiosk
                         });       
                     }
                 } else {
@@ -247,7 +248,8 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                             fields,
                             links: {
                                 'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
-                            }
+                            },
+                            kiosk: data.kiosk
                         });    
                     }
                 }

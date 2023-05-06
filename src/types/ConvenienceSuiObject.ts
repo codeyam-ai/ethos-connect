@@ -10,4 +10,5 @@ export interface ConvenenienceSuiObject extends SuiObjectData {
     fields?: Record<string, string>,
     display?: Record<string, string>,
     isCoin: boolean,
+    kiosk?: SuiObjectData
 }

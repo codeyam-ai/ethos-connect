@@ -46,6 +46,7 @@ import { SuiNFT, Token, WalletContents } from './types/WalletContents';
 
 import DetachedEthosConnectProvider from './components/DetachedEthosConnectProvider';
 import useContext from './hooks/useContext';
+import { ExtendedSuiObjectData } from './types/ExtendedSuiObjectData';
 
 const components = {
   AddressWidget,
@@ -115,7 +116,8 @@ export type {
   ProviderAndSigner,
   Signer,
   SuiNFT,
-  Token
+  Token,
+  ExtendedSuiObjectData
 };
 
 
