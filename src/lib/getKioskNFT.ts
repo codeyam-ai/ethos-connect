@@ -1,4 +1,5 @@
 import { JsonRpcProvider, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
+import { DynamicFieldInfo } from "@mysten/sui.js/dist/types/dynamic_fields";
 import _ from 'lodash';
 
 export const isKiosk = (data: SuiObjectData): boolean => {
@@ -16,24 +17,45 @@ export const getKioskObjects = async (
     data: SuiObjectData
 ): Promise<SuiObjectResponse[]> => {
     if (!isKiosk(data)) return [];
-    const kiosk = _.get(data, 'content.fields.kiosk');
-    if (!kiosk) return [];
-    const allKioskObjets = await provider.getDynamicFields({
-        parentId: kiosk,
-    });
-    const relevantKioskObjects = allKioskObjets.data.filter(
-        (kioskObject) => kioskObject.name.type === '0x2::kiosk::Item'
-    );
-    const objectIds = relevantKioskObjects.map((item) => item.objectId);
+        const kiosk = _.get(data, 'content.fields.kiosk');
+        if (!kiosk) return [];
+        let allKioskObjects: DynamicFieldInfo[] = [];
+        let cursor: string | undefined | null;
+        while (cursor !== null) {
+            const response = await provider.getDynamicFields({
+                parentId: kiosk,
+            });
+            if (!response.data) return [];
+            allKioskObjects = [...(allKioskObjects || []), ...response.data];
+            if (!response.hasNextPage) {
+                cursor = null;
+            } else {
+                cursor = response.nextCursor;
+            }
+        }
 
-    const objects = await provider.multiGetObjects({
-        ids: objectIds,
-        options: {
-            showContent: true,
-            showType: true,
-            showDisplay: true,
-            showOwner: true,
-        },
-    });
-    return objects;
+        const relevantKioskObjects = allKioskObjects.filter(
+            (kioskObject) => kioskObject.name.type === '0x2::kiosk::Item'
+        );
+        const objectIds = relevantKioskObjects.map((item) => item.objectId);
+
+        let objects: SuiObjectResponse[] = [];
+        const groupSize = 30;
+        for (let i = 0; i < objectIds.length; i += groupSize) {
+            const group = objectIds.slice(i, i + groupSize);
+
+            const groupObjects = await provider.multiGetObjects({
+                ids: group,
+                options: {
+                    showContent: true,
+                    showType: true,
+                    showDisplay: true,
+                    showOwner: true,
+                },
+            });
+
+            objects = [...objects, ...groupObjects];
+        }
+
+        return objects;
 }
