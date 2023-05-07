@@ -67,12 +67,11 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             ];
 
             hasNextPage = pageObjectInfos.hasNextPage;
-            nextCursor = pageObjectInfos.nextCursor ?? undefined;
 
             if (page > 20) {
                 limitedNextCursor = null;
             } else {
-                if (hasNextPage) {
+                if (hasNextPage && nextCursor !== pageObjectInfos.nextCursor) {
                     limitedNextCursor = nextCursor ?? null;
                 } else {
                     limitedNextCursor = null;

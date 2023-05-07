@@ -27,10 +27,10 @@ export const getKioskObjects = async (
             });
             if (!response.data) return [];
             allKioskObjects = [...(allKioskObjects || []), ...response.data];
-            if (!response.hasNextPage) {
-                cursor = null;
-            } else {
+            if (response.hasNextPage && response.nextCursor !== cursor) {
                 cursor = response.nextCursor;
+            } else {
+                cursor = null;                
             }
         }
 
