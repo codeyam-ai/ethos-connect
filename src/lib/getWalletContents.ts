@@ -40,8 +40,13 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             return empty
         }
 
-        const invalidTokensResponse = await fetch('https://raw.githubusercontent.com/EthosWallet/valid_packages/main/public/invalid_tokens.json');
-        const invalidTokens = await invalidTokensResponse.json();
+        let invalidTokens: string[] = [];
+        try {
+            const invalidTokensResponse = await fetch('https://raw.githubusercontent.com/EthosWallet/valid_packages/main/public/invalid_tokens.json');
+            invalidTokens = await invalidTokensResponse.json();
+        } catch (e) {
+            console.error(e);
+        }
 
         const coinBalances = await provider.getAllBalances({ owner: address });
         const validCoinBalances = coinBalances.filter((coinBalance) => (
