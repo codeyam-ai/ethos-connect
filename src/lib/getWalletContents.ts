@@ -39,8 +39,14 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         if (!address) {
             return empty
         }
-        
+
+        const invalidTokensResponse = await fetch('https://raw.githubusercontent.com/EthosWallet/valid_packages/main/public/invalid_tokens.json');
+        const invalidTokens = await invalidTokensResponse.json();
+
         const coinBalances = await provider.getAllBalances({ owner: address });
+        const validCoinBalances = coinBalances.filter((coinBalance) => (
+            !invalidTokens.includes(coinBalance.coinType.split('::')[0])
+        ));
 
         let objectInfos: SuiObjectResponse[] = [];
         let nextCursor: PaginatedObjectsResponse['nextCursor'] | undefined = undefined;
@@ -124,7 +130,7 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
         const objects = currentObjects.concat(newObjects);
 
         let suiBalance = newBN(0);
-        const balances = coinBalances.reduce(
+        const balances = validCoinBalances.reduce(
             (acc, coinBalance) => {
                 acc[coinBalance.coinType] = coinBalance;
                 if (coinBalance.coinType === SUI_TYPE_ARG) {
