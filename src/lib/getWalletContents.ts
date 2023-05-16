@@ -8,6 +8,7 @@ import { DEFAULT_NETWORK } from './constants';
 import getDisplay from "./getDisplay";
 import { getKioskObjects, isKiosk } from "./getKioskNFT";
 import { ExtendedSuiObjectData } from "types/ExtendedSuiObjectData";
+import store from "store2";
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -42,8 +43,10 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
 
         let invalidTokens: string[] = [];
         try {
+            invalidTokens = store.get('invalidTokens') ?? [];
             const invalidTokensResponse = await fetch('https://raw.githubusercontent.com/EthosWallet/valid_packages/main/public/invalid_tokens.json');
             invalidTokens = await invalidTokensResponse.json();
+            store.set('invalidTokens', invalidTokens);
         } catch (e) {
             console.error(e);
         }
