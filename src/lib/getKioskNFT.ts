@@ -24,6 +24,7 @@ export const getKioskObjects = async (
         while (cursor !== null) {
             const response = await provider.getDynamicFields({
                 parentId: kiosk,
+                cursor
             });
             if (!response.data) return [];
             allKioskObjects = [...(allKioskObjects || []), ...response.data];
