@@ -29,5 +29,5 @@ jest.mock('@mysten/sui.js', () => ({
     }), 
     Connection: jest.fn(),
     Transaction: jest.fn(),
-    SUI_TYPE_ARG: "0x2::sui::SUI"
+    SUI_TYPE_ARG: "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI"
 }));

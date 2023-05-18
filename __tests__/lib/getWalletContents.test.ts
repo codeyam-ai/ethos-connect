@@ -21,7 +21,7 @@ describe('getWalletBalance', () => {
 
         expect(sui.getOwnedObjects).toBeCalledTimes(1)
         expect(contents?.suiBalance).toEqual(balance)
-        const suiTokens = contents?.tokens['0x2::sui::SUI']
+        const suiTokens = contents?.tokens['0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI']
         expect(suiTokens?.balance).toEqual(balance)
         expect(suiTokens?.coins.length).toEqual(2)
         expect(contents?.nfts.length).toEqual(1)
@@ -43,7 +43,7 @@ describe('getWalletBalance', () => {
       )
       sui.getAllBalances.mockReturnValueOnce(
         [{
-          coinType: '0x2::sui::SUI',
+          coinType: '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI',
           totalBalance: [sui.suiCoin, sui.suiCoin2].reduce(
               (acc, c) => sumBN(acc, c.data.content.fields.balance), 
               newBN(0)
@@ -60,34 +60,34 @@ describe('getWalletBalance', () => {
 
       expect(contents?.nfts.length).toBe(0)
       expect(contents?.suiBalance).toStrictEqual(totalBalance)
-      expect(contents?.tokens['0x2::sui::SUI'].balance).toStrictEqual(totalBalance);
-      expect(contents?.tokens['0x2::sui::SUI'].coins.length).toBe(2);  
-      expect(contents?.tokens['0x2::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin2.data.content.fields.balance)  
+      expect(contents?.tokens['0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI'].balance).toStrictEqual(totalBalance);
+      expect(contents?.tokens['0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI'].coins.length).toBe(2);  
+      expect(contents?.tokens['0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI'].coins[1].balance).toStrictEqual(sui.suiCoin2.data.content.fields.balance)  
     })
 })
 
 const existingContents: WalletContents = {
   "suiBalance": newBN("60000"),
   "balances": {
-    "0x2::sui::SUI": {
-      "coinType": "0x2::sui::SUI",
+    "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI": {
+      "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
       "totalBalance": "60000"
     } as CoinBalance
   },
   "tokens": {
-    "0x2::sui::SUI": {
+    "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI": {
       "balance": newBN("60000"),
       "coins": [
         {
           "objectId": "COIN1",
-          "type": "0x2::coin::Coin<0x2::sui::SUI>",
+          "type": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>",
           "balance": newBN("10000"),
           "digest": "COIN1",
           "version": 2
         },
         {
           "objectId": "COIN3",
-          "type": "0x2::coin::Coin<0x2::sui::SUI>",
+          "type": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>",
           "balance": newBN("50000"),
           "digest": "COIN3",
           "version": 36
@@ -117,7 +117,7 @@ const existingContents: WalletContents = {
   ],
   "objects": [
     {
-      "type": "0x2::coin::Coin<0x2::sui::SUI>",
+      "type": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>",
       "content": {
         "dataType": "moveObject",
         "type": "COIN",
@@ -139,7 +139,7 @@ const existingContents: WalletContents = {
       "isCoin": true
     },
     {
-      "type": "0x2::coin::Coin<0x2::sui::SUI>",
+      "type": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>",
       "content": {
         "dataType": "moveObject",
         "type": "COIN",

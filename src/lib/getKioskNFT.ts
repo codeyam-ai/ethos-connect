@@ -36,7 +36,7 @@ export const getKioskObjects = async (
         }
 
         const relevantKioskObjects = allKioskObjects.filter(
-            (kioskObject) => kioskObject.name.type === '0x2::kiosk::Item'
+            (kioskObject) => kioskObject.name.type === '0x0000000000000000000000000000000000000000000000000000000000000002::kiosk::Item'
         );
         const objectIds = relevantKioskObjects.map((item) => item.objectId);
 

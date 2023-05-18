@@ -18,7 +18,7 @@ const nft = {
 
 const suiCoin = {
     data: {
-        type: '0x2::coin::Coin<0x2::sui::SUI>',
+        type: '0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
         content: {
             dataType: "moveObject",
             fields: {
@@ -33,7 +33,7 @@ const suiCoin = {
 
 const suiCoin2 = {
     data: {
-        type: '0x2::coin::Coin<0x2::sui::SUI>',
+        type: '0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
         content: {
             dataType: "moveObject",
             fields: {
@@ -48,7 +48,7 @@ const suiCoin2 = {
 
 const suiCoin3 = {
     data: {
-        type: '0x2::coin::Coin<0x2::sui::SUI>',
+        type: '0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
         content: {
             dataType: "moveObject",
             fields: {
@@ -79,7 +79,7 @@ const getAllBalances = jest.fn(
     () => {
         return [
             {
-                coinType: '0x2::sui::SUI',
+                coinType: '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI',
                 totalBalance: [suiCoin, suiCoin3].reduce(
                     (acc, c) => sumBN(acc, c.data.content.fields.balance), 
                     newBN(0)
