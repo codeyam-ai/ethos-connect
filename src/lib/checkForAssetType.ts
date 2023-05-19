@@ -19,7 +19,6 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
     } else if (signer) {
         owner = signer.currentAccount?.address;
     }
-    owner = '0xe7f6ec43df3d62ea09faaecbbe9c5bae216d7e663bbe21d6eeafadeb7dceb802'
 
     if (!owner) return;
 
