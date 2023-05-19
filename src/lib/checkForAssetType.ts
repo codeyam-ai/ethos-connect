@@ -1,6 +1,7 @@
-import { ObjectId, PaginatedObjectsResponse, SuiObjectDataFilter, SuiObjectDataOptions } from "@mysten/sui.js";
+import { ObjectId, PaginatedObjectsResponse, SuiObjectData, SuiObjectDataFilter, SuiObjectDataOptions } from "@mysten/sui.js";
 import { Signer } from "../types/Signer";
 import { Wallet } from '../types/Wallet';
+import { getKioskObjects } from "./getKioskNFT";
 
 export interface CheckForAssetTypeArgs { 
     signer?: Signer;
@@ -8,7 +9,7 @@ export interface CheckForAssetTypeArgs {
     type?: ObjectId;
     cursor?: PaginatedObjectsResponse['nextCursor'];
     options?: SuiObjectDataOptions;
-    filter: SuiObjectDataFilter;
+    filter?: SuiObjectDataFilter;
 }
 
 const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter }: CheckForAssetTypeArgs) => {
@@ -18,6 +19,7 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
     } else if (signer) {
         owner = signer.currentAccount?.address;
     }
+    owner = '0xe7f6ec43df3d62ea09faaecbbe9c5bae216d7e663bbe21d6eeafadeb7dceb802'
 
     if (!owner) return;
 
@@ -25,10 +27,34 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
 
     if (!provider) return;
     
+    const kioskTokens = await provider.getOwnedObjects({
+        owner,
+        filter: {
+            StructType: "0x95a441d389b07437d00dd07e0b6f05f513d7659b13fd7c5d3923c7d9d847199b::ob_kiosk::OwnerToken"
+        },
+        options: options ?? {
+            showContent: true,
+            showType: true,
+        },
+        cursor
+    })
+
+    const kioskAssets: SuiObjectData[] = [];
+    for (const kioskToken of kioskTokens.data) {
+        if (kioskToken.data) {
+            const kioskObjects = await getKioskObjects(provider, kioskToken.data)
+            for (const kioskObject of kioskObjects) {
+                if (kioskObject.data && kioskObject.data?.type === type) {
+                    kioskAssets.push(kioskObject.data);
+                }
+            }
+        }
+    }
+
     const assets = await provider.getOwnedObjects({
         owner,
         filter: filter ?? {
-            StructType: type
+            StructType: type ?? ''
         },
         options: options ?? {
             showContent: true,
@@ -37,7 +63,7 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
         cursor
     })
 
-    return assets;
+    return (assets.data ?? []).map((a) => a.data).concat(kioskAssets);    
 }
 
 export default checkForAssetType;
