@@ -1,5 +1,6 @@
 import { getObjectFields, is, SuiObjectData } from '@mysten/sui.js';
-import _ from 'lodash';
+import has from 'lodash-es/has';
+import get from 'lodash-es/get';
 import { ipfsConversion } from '../lib/getWalletContents';
 
 import type {
@@ -181,14 +182,14 @@ export const isBagNFT = (data: SuiObjectData): boolean => {
 const getBagNFT = async (provider: JsonRpcProvider, data: SuiObjectData) => {
     if (
         !isBagNFT(data) ||
-        !_.has(data, ID_PATH) ||
-        !_.has(data, BAG_ID_PATH) ||
-        !_.has(data, LOGICAL_OWNER_PATH)
+        !has(data, ID_PATH) ||
+        !has(data, BAG_ID_PATH) ||
+        !has(data, LOGICAL_OWNER_PATH)
     ) return data;    
 
-    const id = _.get(data, ID_PATH);
-    const bagId = _.get(data, BAG_ID_PATH);
-    const owner = _.get(data, LOGICAL_OWNER_PATH);
+    const id = get(data, ID_PATH);
+    const bagId = get(data, BAG_ID_PATH);
+    const owner = get(data, LOGICAL_OWNER_PATH);
     const bagObjects = await provider.getDynamicFields({ parentId: bagId || "" });
     const objectIds = bagObjects.data.map((bagObject) => bagObject.objectId);
     const objects = await provider.multiGetObjects({
