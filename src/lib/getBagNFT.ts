@@ -1,6 +1,6 @@
 import { getObjectFields, is, SuiObjectData } from '@mysten/sui.js';
-import has from 'lodash-es/has';
-import get from 'lodash-es/get';
+import has from 'lodash-es/has.js';
+import get from 'lodash-es/get.js';
 import { ipfsConversion } from '../lib/getWalletContents';
 
 import type {

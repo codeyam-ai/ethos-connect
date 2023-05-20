@@ -1,6 +1,6 @@
 import { JsonRpcProvider, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
 import { DynamicFieldInfo } from "@mysten/sui.js/dist/types/dynamic_fields";
-import get from 'lodash-es/get';
+import get from 'lodash-es/get.js';
 
 export const isKiosk = (data: SuiObjectData): boolean => {
     return (

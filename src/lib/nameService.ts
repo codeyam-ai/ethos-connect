@@ -1,4 +1,4 @@
-import get from 'lodash-es/get';
+import get from 'lodash-es/get.js';
 import { Connection, JsonRpcProvider, TransactionBlock } from '@mysten/sui.js';
 import { DEFAULT_NETWORK } from './constants';
 
