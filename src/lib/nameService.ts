@@ -12,7 +12,7 @@ const toHexString = (byteArray: Uint8Array) =>
   byteArray?.length > 0 ? Array.from(byteArray, (byte) => ('0' + (byte & 0xff).toString(16)).slice(-2)).join('') : '';
 
 const toString = (byteArray: Uint8Array) =>
-  byteArray?.length > 0 ? new TextDecoder().decode(Buffer.from(byteArray.slice(1)).buffer) : '';
+  byteArray?.length > 0 ? new TextDecoder().decode((byteArray.slice(1)).buffer) : '';
 
 const trimAddress = (address: string) => String(address?.match(/0x0{0,}([\w\d]+)/)?.[1]);
 
