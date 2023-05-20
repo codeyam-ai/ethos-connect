@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import get from 'lodash-es/get';
 import { Connection, JsonRpcProvider, TransactionBlock } from '@mysten/sui.js';
 import { DEFAULT_NETWORK } from './constants';
 
@@ -33,7 +33,7 @@ export const getSuiName = async (address: string, network: string, sender: strin
         ],
       })
     )
-    const resolverBytes = _.get(
+    const resolverBytes = get(
       await suiProvider.devInspectTransactionBlock({
         transactionBlock: registryTx,
         sender
@@ -58,7 +58,7 @@ export const getSuiName = async (address: string, network: string, sender: strin
       sender
     })
   
-    const nameByteArray = _.get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
+    const nameByteArray = get(resolverResponse, DEV_INSPECT_RESULT_PATH_0);
     if (!nameByteArray) return address;
 
     const name = toString(nameByteArray);
@@ -89,7 +89,7 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
       sender
     });
 
-    const resolverBytes = _.get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
+    const resolverBytes = get(resolverResponse, DEV_INSPECT_RESULT_PATH_1);
     if (!resolverBytes) return domain;
 
     const resolver = toFullAddress(toHexString(resolverBytes));
@@ -107,7 +107,7 @@ export const getSuiAddress = async (domain: string, network: string, sender: str
       transactionBlock: resolverTx,
       sender, 
     })
-    const addr = _.get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
+    const addr = get(resolverResponse2, DEV_INSPECT_RESULT_PATH_0)
 
     if (!addr) return domain;
 
