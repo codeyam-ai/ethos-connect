@@ -6,7 +6,11 @@ import { WalletContents } from '../../src/types/WalletContents';
 import { CoinBalance } from '@mysten/sui.js';
 
 describe('getWalletBalance', () => {  
+    let spyFetch: jest.SpyInstance
+    
     beforeEach(() => {
+        global.fetch = jest.fn()
+        spyFetch = jest.spyOn(global, 'fetch').mockResolvedValue({ json: async () => ([]) } as Response)
         sui.getOwnedObjects.mockClear()
         sui.multiGetObjects.mockClear();
     })
