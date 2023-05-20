@@ -101,7 +101,7 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
         const account = input.account || currentAccount
 
         const message = typeof input.message === 'string' ?
-          new Uint8Array(Buffer.from(input.message, 'utf8')) :
+          new TextEncoder().encode(input.message) :
           input.message;
 
         return currentWallet.signMessage({
