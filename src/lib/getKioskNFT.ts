@@ -7,8 +7,10 @@ export const isKiosk = (data: SuiObjectData): boolean => {
         !!data.type &&
         data.type.includes('kiosk') &&
         !!data.content &&
-        'fields' in data.content &&
-        'kiosk' in data.content.fields
+        'fields' in data.content && (
+            'kiosk' in data.content.fields ||
+            'for' in data.content.fields
+        )
     );
 }
 
@@ -17,7 +19,8 @@ export const getKioskObjects = async (
     data: SuiObjectData
 ): Promise<SuiObjectResponse[]> => {
     if (!isKiosk(data)) return [];
-        const kiosk = get(data, 'content.fields.kiosk');
+        let kiosk = get(data, 'content.fields.kiosk');
+        if (!kiosk) kiosk = get(data, 'content.fields.for');
         if (!kiosk) return [];
         let allKioskObjects: DynamicFieldInfo[] = [];
         let cursor: string | undefined | null;
@@ -36,7 +39,10 @@ export const getKioskObjects = async (
         }
 
         const relevantKioskObjects = allKioskObjects.filter(
-            (kioskObject) => kioskObject.name.type === '0x0000000000000000000000000000000000000000000000000000000000000002::kiosk::Item'
+            (kioskObject) => (
+                kioskObject.name.type === '0x0000000000000000000000000000000000000000000000000000000000000002::kiosk::Item' ||
+                kioskObject.name.type === '0x2::kiosk::Item'
+            )
         );
         const objectIds = relevantKioskObjects.map((item) => item.objectId);
 
