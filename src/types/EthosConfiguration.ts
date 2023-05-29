@@ -1,4 +1,6 @@
 import { Chain } from '../enums/Chain'
+import { InvalidPackages } from '../types/InvalidPackages';
+
 export interface EthosConfiguration {
   apiKey?: string
   walletAppUrl?: string
@@ -10,4 +12,5 @@ export interface EthosConfiguration {
   redirectTo?: string;
   disableAutoConnect?: boolean;
   pollingInterval?: number;
+  invalidPackages?: InvalidPackages;
 }

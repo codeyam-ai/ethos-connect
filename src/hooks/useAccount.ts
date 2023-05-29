@@ -2,15 +2,16 @@ import { SuiAddress } from '@mysten/sui.js';
 import getWalletContents from '../lib/getWalletContents';
 import { useEffect, useRef, useState } from 'react'
 import { Signer } from 'types/Signer';
-import { WalletContents } from 'types/WalletContents';
+import { WalletContents } from '../types/WalletContents';
 import { WalletAccount } from '@mysten/wallet-standard';
+import { InvalidPackages } from '../types/InvalidPackages';
 
 export type Account = {
   address?: SuiAddress;
   contents?: WalletContents;
 }
 
-const useAccount = (signer: Signer | null, network: string, explicitInterval?: number) => {
+const useAccount = (signer: Signer | null, network: string, explicitInterval?: number, invalidPackages?: InvalidPackages) => {
   const [altAccount, setAltAccount] = useState<WalletAccount | undefined>();
   const [account, setAccount] = useState<Account>({});
   const latestNetwork = useRef<string>(network);
@@ -33,7 +34,8 @@ const useAccount = (signer: Signer | null, network: string, explicitInterval?: n
       const contents = await getWalletContents({
         address,
         network, 
-        existingContents: existingContents.current
+        existingContents: existingContents.current,
+        invalidPackageModifications: invalidPackages
       });
 
       if (!contents || network !== latestNetwork.current || JSON.stringify(existingContents.current) === JSON.stringify(contents)) return;

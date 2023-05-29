@@ -9,6 +9,7 @@ import getDisplay from "./getDisplay";
 import { getKioskObjects, isKiosk } from "./getKioskNFT";
 import { ExtendedSuiObjectData } from "types/ExtendedSuiObjectData";
 import store from "store2";
+import { InvalidPackages } from "types/InvalidPackages";
 
 export const ipfsConversion = (src?: string): string => {
     if (!src) return "";
@@ -21,7 +22,8 @@ export const ipfsConversion = (src?: string): string => {
 export type GetWalletContentsArgs = {
     address: string,
     network: string,
-    existingContents?: WalletContents
+    existingContents?: WalletContents,
+    invalidPackageModifications?: InvalidPackages
 }
 
 const empty: WalletContents = {
@@ -32,7 +34,7 @@ const empty: WalletContents = {
     objects: []  
 }
 
-const getWalletContents = async ({ address, network, existingContents }: GetWalletContentsArgs): Promise<WalletContents | null> => {
+const getWalletContents = async ({ address, network, existingContents, invalidPackageModifications }: GetWalletContentsArgs): Promise<WalletContents | null> => {
     try {
         const connection = new Connection({ fullnode: network || DEFAULT_NETWORK })
         const provider = new JsonRpcProvider(connection);
@@ -41,19 +43,29 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
             return empty
         }
 
-        let invalidTokens: string[] = [];
+        let invalidPackages: string[] = [];
         try {
-            invalidTokens = store.get('invalidTokens') ?? [];
-            const invalidTokensResponse = await fetch('https://raw.githubusercontent.com/EthosWallet/valid_packages/main/public/invalid_tokens.json');
-            invalidTokens = await invalidTokensResponse.json();
-            store.set('invalidTokens', invalidTokens);
+            invalidPackages = store.get('invalidPackages') ?? [];
+            const invalidPackagesResponse = await fetch('https://raw.githubusercontent.com/EthosWallet/valid_packages/main/public/invalid_tokens.json');
+            invalidPackages = await invalidPackagesResponse.json();
+            store.set('invalidPackages', invalidPackages);
+
+            if (invalidPackageModifications?.invalidPackageAdditions) {
+                invalidPackages = invalidPackages.concat(invalidPackageModifications.invalidPackageAdditions);
+            }
+
+            if (invalidPackageModifications?.invalidPackageSubtractions) {
+                invalidPackages = invalidPackages.filter(
+                    (packageId) => !invalidPackageModifications.invalidPackageSubtractions.includes(packageId)
+                );
+            }
         } catch (e) {
             console.error(e);
         }
 
         const coinBalances = await provider.getAllBalances({ owner: address });
         const validCoinBalances = coinBalances.filter((coinBalance) => (
-            !invalidTokens.includes(coinBalance.coinType.split('::')[0])
+            !invalidPackages.includes(coinBalance.coinType.split('::')[0])
         ));
 
         let objectInfos: SuiObjectResponse[] = [];
@@ -178,6 +190,8 @@ const getWalletContents = async ({ address, network, existingContents }: GetWall
                 const packageObjectId = typeComponents[0];
                 const moduleName = typeComponents[1];
                 const structName = typeComponents[typeComponents.length - 1];
+
+                if (invalidPackages.includes(packageObjectId)) continue;    
 
                 const safeUrl = ipfsConversion(
                     safeDisplay?.image_url ??

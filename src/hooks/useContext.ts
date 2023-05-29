@@ -79,7 +79,8 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     } = useAccount(
         providerAndSigner.signer, 
         ethosConfiguration?.network ?? DEFAULT_NETWORK, 
-        ethosConfiguration?.pollingInterval
+        ethosConfiguration?.pollingInterval,
+        ethosConfiguration?.invalidPackages
     )
 
     const modal: ModalContextContents = useMemo(() => {
