@@ -14,7 +14,7 @@ import getWalletContents, { ipfsConversion } from './lib/getWalletContents';
 import login from './lib/login';
 import logout from './lib/logout';
 import preapprove from './lib/preapprove';
-import sign from './lib/sign';
+import signMessage from './lib/signMessage';
 import transact from './lib/transact';
 import signTransactionBlock from './lib/signTransactionBlock';
 import executeTransactionBlock from './lib/executeTransactionBlock';
@@ -65,7 +65,7 @@ const ethos = {
   login,
   logout,
 
-  sign,
+  signMessage,
   transact,
   signTransactionBlock,
   executeTransactionBlock,
