@@ -69,15 +69,17 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.34.1",
+    "@mysten/sui.js": "^0.36.0",
     "@mysten/wallet-adapter-all-wallets": "^0.5.7",
     "@mysten/wallet-adapter-base": "^0.7.7",
     "@mysten/wallet-kit-core": "^0.4.7",
+    "@open-rpc/client-js": "^1.8.1",
     "@superstate/react": "^0.1.0",
     "bignumber.js": "^9.1.1",
     "cross-fetch": "^3.1.5",
     "encoding": "^0.1.13",
     "eslint": "^8.36.0",
+    "events": "^3.3.0",
     "lodash-es": "^4.17.21",
     "qrcode": "^1.5.1",
     "react-google-recaptcha": "^2.1.0",
