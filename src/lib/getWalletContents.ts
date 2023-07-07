@@ -115,16 +115,36 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
         const currentObjects: ExtendedSuiObjectData[] = [];
         let newObjectInfos: ExtendedSuiObjectData[] = [];
         if (existingContents?.objects && existingContents.objects.length > 0) {
-            for (const objectInfo of objectInfos) {
-                if (!objectInfo.data || objectInfo.error) continue;
+            const allObjectDatas = objectInfos.map(
+                (objectInfo) => objectInfo.data
+            ) as ExtendedSuiObjectData[];
+
+            for (const data of allObjectDatas) {
+                if (!data) continue;
+                
+                if (isKiosk(data)) {
+                    const kioskObjects = await getKioskObjects(provider, data)
+                    
+                    for (const kioskObject of kioskObjects) {
+                        if (kioskObject.data) {
+                            allObjectDatas.push({
+                                ...kioskObject.data,
+                                kiosk: data    
+                            })
+                        }
+                    }
+                }
+            }
+            for (const data of allObjectDatas) {
+                if (!data) continue;
                 const existingObject = existingContents?.objects.find(
                     (existingObject) => {
                         if (
-                            typeof objectInfo.data === "object"
+                            typeof data === "object"
                         ) {
                             return (
-                                existingObject.objectId === objectInfo.data.objectId &&
-                                existingObject.version.toString() === objectInfo.data.version.toString()
+                                existingObject.objectId === data.objectId &&
+                                existingObject.version.toString() === data.version.toString()
                             )    
                         } else {
                             return false;
@@ -135,7 +155,7 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
                 if (existingObject) {
                     currentObjects.push(existingObject);
                 } else {
-                    newObjectInfos.push(objectInfo.data);
+                    newObjectInfos.push(data);
                 }
             }
         } else {
@@ -160,21 +180,6 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
             }, 
             {} as Record<string, CoinBalance>
         )
-
-        for (const object of objects) {
-            if (isKiosk(object)) {
-                const kioskObjects = await getKioskObjects(provider, object)
-
-                for (const kioskObject of kioskObjects) {
-                    if (kioskObject.data) {
-                        objects.push({
-                            ...kioskObject.data,
-                            kiosk: object
-                        });
-                    }
-                }
-            }
-        }
 
         const nfts: SuiNFT[] = [];
         const tokens: {[key: string]: any}= {};
