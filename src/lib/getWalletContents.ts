@@ -112,29 +112,30 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
             return empty;
         }
 
-        const currentObjects: ExtendedSuiObjectData[] = [];
-        let newObjectInfos: ExtendedSuiObjectData[] = [];
-        if (existingContents?.objects && existingContents.objects.length > 0) {
-            const allObjectDatas = objectInfos.map(
-                (objectInfo) => objectInfo.data
-            ) as ExtendedSuiObjectData[];
+        const allObjectDatas = objectInfos.map(
+            (objectInfo) => objectInfo.data
+        ) as ExtendedSuiObjectData[];
 
-            for (const data of allObjectDatas) {
-                if (!data) continue;
+        for (const data of allObjectDatas) {
+            if (!data) continue;
+            
+            if (isKiosk(data)) {
+                const kioskObjects = await getKioskObjects(provider, data)
                 
-                if (isKiosk(data)) {
-                    const kioskObjects = await getKioskObjects(provider, data)
-                    
-                    for (const kioskObject of kioskObjects) {
-                        if (kioskObject.data) {
-                            allObjectDatas.push({
-                                ...kioskObject.data,
-                                kiosk: data    
-                            })
-                        }
+                for (const kioskObject of kioskObjects) {
+                    if (kioskObject.data) {
+                        allObjectDatas.push({
+                            ...kioskObject.data,
+                            kiosk: data    
+                        })
                     }
                 }
             }
+        }
+
+        const currentObjects: ExtendedSuiObjectData[] = [];
+        let newObjectInfos: ExtendedSuiObjectData[] = [];
+        if (existingContents?.objects && existingContents.objects.length > 0) {            
             for (const data of allObjectDatas) {
                 if (!data) continue;
                 const existingObject = existingContents?.objects.find(
@@ -159,9 +160,8 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
                 }
             }
         } else {
-            newObjectInfos = objectInfos
-                .filter((objectInfo) => !!objectInfo.data && !objectInfo.error)
-                .map((objectInfo) => objectInfo.data as SuiObjectData);
+            newObjectInfos = allObjectDatas
+                .filter((data) => !!data) as SuiObjectData[];            
         }
 
         if (newObjectInfos.length === 0) return null;
