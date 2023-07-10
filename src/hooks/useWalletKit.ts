@@ -117,7 +117,7 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
         }
 
         const ethosWallet = (window as any).ethosWallet
-        if (!ethosWallet || currentWallet.name !== "Ethos Wallet") {
+        if (!ethosWallet || ["Ethos Wallet", "Ethos Mobile"].indexOf(currentWallet.name) === -1) {
             console.log("Wallet does not support preapproval")
             return false;
         }
