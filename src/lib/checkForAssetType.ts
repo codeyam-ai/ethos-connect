@@ -26,28 +26,30 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
 
     if (!provider) return;
     
-    const kioskTokens = await provider.getOwnedObjects({
-        owner,
-        filter: {
-            StructType: "0x95a441d389b07437d00dd07e0b6f05f513d7659b13fd7c5d3923c7d9d847199b::ob_kiosk::OwnerToken"
-        },
-        options: options ?? {
-            showContent: true,
-            showType: true,
-        },
-        cursor
-    })
-
-    const kioskAssets: SuiObjectData[] = [];
-    for (const kioskToken of kioskTokens.data) {
-        if (kioskToken.data) {
-            const kioskObjects = await getKioskObjects(provider, kioskToken.data)
-            for (const kioskObject of kioskObjects) {
-                if (kioskObject.data && kioskObject.data?.type === type) {
-                    kioskAssets.push(kioskObject.data);
+    let kioskAssets: SuiObjectData[] = [];
+    if (!cursor) {
+        const kioskTokens = await provider.getOwnedObjects({
+            owner,
+            filter: {
+                StructType: "0x95a441d389b07437d00dd07e0b6f05f513d7659b13fd7c5d3923c7d9d847199b::ob_kiosk::OwnerToken"
+            },
+            options: options ?? {
+                showContent: true,
+                showType: true,
+            },
+            cursor
+        })
+    
+        for (const kioskToken of kioskTokens.data) {
+            if (kioskToken.data) {
+                const kioskObjects = await getKioskObjects(provider, kioskToken.data)
+                for (const kioskObject of kioskObjects) {
+                    if (kioskObject.data && kioskObject.data?.type === type) {
+                        kioskAssets.push(kioskObject.data);
+                    }
                 }
             }
-        }
+        }    
     }
 
     const assets = await provider.getOwnedObjects({
@@ -62,7 +64,10 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
         cursor
     })
 
-    return (assets.data ?? []).map((a) => a.data).concat(kioskAssets);    
+    return {
+        assets: (assets.data ?? []).map((a) => a.data).concat(kioskAssets),
+        nextCursor: assets.nextCursor
+    }
 }
 
 export default checkForAssetType;
