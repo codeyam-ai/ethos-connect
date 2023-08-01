@@ -1,14 +1,10 @@
-import type { SuiObjectData } from '@mysten/sui.js';
+import type { SuiObjectData } from '@mysten/sui.js/client';
 
 const getDisplay = (
     display?: SuiObjectData['display']
-): Record<string, string> | undefined => {
-    if (!display) return;
-    if (display?.data && typeof display?.data === 'object') {
-        return display.data;
-    }
-    if (!('error' in display)) return display;
-    return;
+): Record<string, string> | null => {
+    if (!display) return null;
+    return display.data ?? null;
 };
 
 export default getDisplay;

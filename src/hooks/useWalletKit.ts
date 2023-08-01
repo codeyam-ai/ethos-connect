@@ -10,12 +10,13 @@ import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlo
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Preapproval } from 'types/Preapproval';
 import { Chain } from 'enums/Chain';
-import { JsonRpcProvider, SignedTransaction } from '@mysten/sui.js';
+import { SignedMessage, SignedTransaction } from '@mysten/sui.js';
+import { SuiClient, SuiTransactionBlockResponse } from '@mysten/sui.js/client';
 import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput';
 
 export interface UseWalletKitArgs {
     defaultChain: Chain
-    provider: JsonRpcProvider;
+    client: SuiClient;
     configuredAdapters?: WalletAdapterList;
     features?: string[];
     enableUnsafeBurner?: boolean;
@@ -25,7 +26,7 @@ export interface UseWalletKitArgs {
     disableAutoConnect?: boolean;
 }
 
-const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
+const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
     const adapters = useMemo(
         () =>
           configuredAdapters ?? [
@@ -60,7 +61,7 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
 
       const { autoconnect, ...walletFunctions } = walletKitRef.current;
 
-      const signAndExecuteTransactionBlock = useCallback((input: EthosSignAndExecuteTransactionBlockInput) => {
+      const signAndExecuteTransactionBlock = useCallback((input: EthosSignAndExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
         }
@@ -74,9 +75,9 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
         })
       }, [currentWallet, currentAccount, defaultChain])
 
-      const executeTransactionBlock = useCallback((input: EthosExecuteTransactionBlockInput) => {
-        return provider.executeTransactionBlock(input)
-      }, [provider])
+      const executeTransactionBlock = useCallback((input: EthosExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
+        return client.executeTransactionBlock(input)
+      }, [client])
 
       const signTransactionBlock = useCallback((input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
         if (!currentWallet || !currentAccount) {
@@ -93,7 +94,7 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
         })
       }, [currentWallet, currentAccount, defaultChain])
 
-      const signMessage = useCallback((input: EthosSignMessageInput) => {
+      const signMessage = useCallback((input: EthosSignMessageInput): Promise<SignedMessage> => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
         }
@@ -152,9 +153,9 @@ const useWalletKit = ({ defaultChain, provider, configuredAdapters, features, en
             currentWallet.disconnect();
             walletKitRef.current?.disconnect();
           },
-          provider
+          client
         }
-      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, executeTransactionBlock, requestPreapproval, signMessage, provider]);
+      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, executeTransactionBlock, requestPreapproval, signMessage, client]);
 
       return {
         wallets,

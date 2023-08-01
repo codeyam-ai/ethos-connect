@@ -1,4 +1,4 @@
-import { SuiObjectData } from "@mysten/sui.js";
+import { SuiObjectData } from "@mysten/sui.js/client";
 
 export interface ConvenenienceSuiObject extends SuiObjectData {
     packageObjectId: string,

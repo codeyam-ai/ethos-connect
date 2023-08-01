@@ -1,4 +1,4 @@
-import { CoinBalance, SuiObjectData } from "@mysten/sui.js"
+import { CoinBalance, SuiObjectData } from "@mysten/sui.js/client"
 import BigNumber from "bignumber.js"
 import { ConvenenienceSuiObject } from "./ConvenienceSuiObject"
 
