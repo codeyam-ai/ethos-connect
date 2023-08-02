@@ -24,7 +24,7 @@ import hideWallet from './lib/hideWallet';
 import showWallet from './lib/showWallet';
 
 import { formatBalance } from './lib/bigNumber';
-import dripSui from './lib/dripSui';
+import dripSui, { dripSuiV2 } from './lib/dripSui';
 import { getSuiAddress, getSuiName } from './lib/nameService';
 import truncateMiddle from './lib/truncateMiddle';
 
@@ -86,6 +86,7 @@ const ethos = {
   checkForAssetType,
 
   dripSui,
+  dripSuiV2,
   getSuiName,
   getSuiAddress,
   formatBalance,
