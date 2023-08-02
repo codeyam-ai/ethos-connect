@@ -13,12 +13,12 @@ import { EthosConnectStatus } from '../enums/EthosConnectStatus'
 import { ModalContextContents } from '../types/ModalContextContents';
 import { ConnectContextContents } from '../types/ConnectContextContents';
 import { EthosConfiguration } from '../types/EthosConfiguration';
-import { ProviderAndSigner } from '../types/ProviderAndSigner';
+import { ClientAndSigner } from '../types/ProviderAndSigner';
 import { DEFAULT_NETWORK, DEFAULT_CHAIN } from '../lib/constants';
 
 export interface UseContextArgs {
     configuration?: EthosConfiguration,
-    onWalletConnected?: (providerAndSigner: ProviderAndSigner) => void
+    onWalletConnected?: (clientAndSigner: ClientAndSigner) => void
 }
 
 const DEFAULT_CONFIGURATION = {
@@ -60,15 +60,15 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         init(configuration);
     }, [ethosConfiguration, configuration]);
 
-    const _onWalletConnected = useCallback((providerAndSigner: ProviderAndSigner) => {
+    const _onWalletConnected = useCallback((clientAndSigner: ClientAndSigner) => {
         setIsModalOpen(false);
-        onWalletConnected && onWalletConnected(providerAndSigner);
+        onWalletConnected && onWalletConnected(clientAndSigner);
     }, [onWalletConnected]);
 
     const { 
         wallets, 
         connect: selectWallet, 
-        providerAndSigner, 
+        clientAndSigner, 
         getState 
     } = useConnect(ethosConfiguration, _onWalletConnected)
     
@@ -77,7 +77,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         altAccount,
         setAltAccount
     } = useAccount(
-        providerAndSigner.signer, 
+        clientAndSigner.signer, 
         ethosConfiguration?.network ?? DEFAULT_NETWORK, 
         ethosConfiguration?.pollingInterval,
         ethosConfiguration?.invalidPackages
@@ -100,7 +100,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     }, [isModalOpen, setIsModalOpen])
 
     const wallet = useMemo(() => {
-        const { provider, signer } = providerAndSigner;
+        const { client, signer } = clientAndSigner;
         const extensionState = getState();
         let status;
 
@@ -108,7 +108,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
             status = EthosConnectStatus.Connected
         } else if (extensionState.isConnecting) {
             status = EthosConnectStatus.Loading
-        } else if (provider && extensionState.isConnected) {
+        } else if (client && extensionState.isConnected) {
             status = EthosConnectStatus.Connected
         } else {
             status = EthosConnectStatus.NoConnection
@@ -122,7 +122,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
                 icon: w.icon,
             })),
             selectWallet,
-            provider,
+            client,
             altAccount,
             setAltAccount
         }
@@ -142,7 +142,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
         address,
         altAccount,
         setAltAccount,
-        providerAndSigner,
+        clientAndSigner,
         contents,
         ethosConfiguration
     ])
@@ -158,8 +158,8 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
     const value = useMemo(() => ({
         wallet,
         modal,
-        providerAndSigner
-    }), [wallet, modal, providerAndSigner]);
+        clientAndSigner
+    }), [wallet, modal, clientAndSigner]);
 
     return { ...value, ethosConfiguration, init }
 }

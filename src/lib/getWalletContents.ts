@@ -187,7 +187,8 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
         const convenenienceObjects: ConvenenienceSuiObject[] = [];
         for (const data of objects) {
             const { display, content } = data;
-            const { fields } = (content?.dataType === "moveObject" ? content : { fields: {} as Record<string, string>});
+            const { fields: f } = (content?.dataType === "moveObject" ? content : { fields: {} as Record<string, string>});
+            const fields = f as Record<string, string>
             const safeDisplay = getDisplay(display);
             try {
                 const typeStringComponents = (data.type || "").split('<');

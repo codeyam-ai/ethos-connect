@@ -2,14 +2,14 @@ import React, {
   ReactNode 
 } from 'react'
 import { EthosConfiguration } from '../types/EthosConfiguration'
-import { ProviderAndSigner } from '../types/ProviderAndSigner'
+import { ClientAndSigner } from '../types/ProviderAndSigner'
 import SignInModal from './styled/SignInModal'
 import ConnectContext from './ConnectContext'
 import useContext from '../hooks/useContext'
 
 export interface EthosConnectProviderProps {
   ethosConfiguration?: EthosConfiguration
-  onWalletConnected?: ({ provider, signer }: ProviderAndSigner) => void,
+  onWalletConnected?: ({ client, signer }: ClientAndSigner) => void,
   connectMessage?: string | ReactNode
   dappName?: string
   dappIcon?: string | ReactNode
