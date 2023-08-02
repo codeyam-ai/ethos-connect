@@ -1,4 +1,4 @@
-import { TransactionBlock, verifyMessage, IntentScope } from '@mysten/sui.js';
+import { TransactionBlock } from '@mysten/sui.js';
 import { WalletAccount } from '@mysten/wallet-standard';
 
 import EthosConnectProvider from './components/EthosConnectProvider';
@@ -104,8 +104,6 @@ export {
   ethos,
   EthosConnectStatus,
   TransactionBlock,
-  verifyMessage,
-  IntentScope,
   Chain
 };
 

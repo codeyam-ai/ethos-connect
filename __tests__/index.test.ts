@@ -13,8 +13,6 @@ it('should expose the correct components', () => {
     'ethos',
     'EthosConnectStatus',
     'TransactionBlock',
-    'verifyMessage',
-    'IntentScope',
     'Chain',
   ]
   expect(Object.keys(ReactApi)).toEqual(exportNames)
