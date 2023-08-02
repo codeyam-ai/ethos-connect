@@ -3,7 +3,7 @@ import { newBN } from '../../src/lib/bigNumber';
 import getWalletContents from '../../src/lib/getWalletContents';
 import { sumBN } from '../../src/lib/bigNumber';
 import { WalletContents } from '../../src/types/WalletContents';
-import { CoinBalance } from '@mysten/sui.js';
+import { CoinBalance } from '@mysten/sui.js/client';
 
 describe('getWalletBalance', () => {  
     let spyFetch: jest.SpyInstance
