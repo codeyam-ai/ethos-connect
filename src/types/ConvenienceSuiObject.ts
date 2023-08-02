@@ -8,7 +8,7 @@ export interface ConvenenienceSuiObject extends SuiObjectData {
     description?: string
     imageUrl?: string,
     fields?: Record<string, string>,
-    display?: Record<string, string>,
+    display?: Record<string, string> | null,
     isCoin: boolean,
     kiosk?: SuiObjectData
 }
