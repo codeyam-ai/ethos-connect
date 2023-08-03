@@ -1,4 +1,4 @@
-import { SerializedSignature } from '@mysten/sui.js'
+import { SerializedSignature } from '@mysten/sui.js/cryptography'
 import { ExecuteTransactionRequestType, SuiTransactionBlockResponseOptions } from '@mysten/sui.js/client';
 
 export type EthosExecuteTransactionBlockInput = {
