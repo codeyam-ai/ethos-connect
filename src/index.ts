@@ -39,7 +39,7 @@ import { Chain } from './enums/Chain';
 import { EthosConnectStatus } from './enums/EthosConnectStatus';
 
 // Types, interfaces, and enums
-import { ProviderAndSigner } from './types/ProviderAndSigner';
+import { ClientAndSigner } from './types/ClientAndSigner';
 import { Signer } from './types/Signer';
 import { Wallet } from './types/Wallet';
 import { SuiNFT, Token, WalletContents } from './types/WalletContents';
@@ -111,7 +111,7 @@ export type {
   Wallet,
   WalletAccount,
   WalletContents,
-  ProviderAndSigner,
+  ClientAndSigner,
   Signer,
   SuiNFT,
   Token,

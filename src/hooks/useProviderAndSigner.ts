@@ -1,11 +1,11 @@
 import { useContext } from 'react';
-import { ProviderAndSigner } from 'types/ProviderAndSigner';
+import { ClientAndSigner } from 'types/ClientAndSigner';
 import ConnectContext from '../components/ConnectContext';
 
-const useProviderAndSigner = (): ProviderAndSigner => {
-  const { providerAndSigner } = useContext(ConnectContext);
+const useClientAndSigner = (): ClientAndSigner => {
+  const { clientAndSigner } = useContext(ConnectContext);
 
-  return providerAndSigner || { provider: null, signer: null };
+  return clientAndSigner || { client: null, signer: null };
 }
 
-export default useProviderAndSigner;
+export default useClientAndSigner;

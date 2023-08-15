@@ -2,7 +2,7 @@ import React, {
   ReactNode 
 } from 'react'
 import { EthosConfiguration } from '../types/EthosConfiguration'
-import { ClientAndSigner } from '../types/ProviderAndSigner'
+import { ClientAndSigner } from '../types/ClientAndSigner'
 import SignInModal from './styled/SignInModal'
 import ConnectContext from './ConnectContext'
 import useContext from '../hooks/useContext'

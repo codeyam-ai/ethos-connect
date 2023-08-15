@@ -13,7 +13,7 @@ import { EthosConnectStatus } from '../enums/EthosConnectStatus'
 import { ModalContextContents } from '../types/ModalContextContents';
 import { ConnectContextContents } from '../types/ConnectContextContents';
 import { EthosConfiguration } from '../types/EthosConfiguration';
-import { ClientAndSigner } from '../types/ProviderAndSigner';
+import { ClientAndSigner } from '../types/ClientAndSigner';
 import { DEFAULT_NETWORK, DEFAULT_CHAIN } from '../lib/constants';
 
 export interface UseContextArgs {
