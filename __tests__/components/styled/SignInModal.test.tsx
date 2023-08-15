@@ -24,8 +24,9 @@ beforeEach(() => {
     jest.spyOn(hooks, 'useWallet').mockReturnValue({
         wallets: [],
         status: EthosConnectStatus.Loading,
-        provider: null,
-        selectWallet: () => {}
+        client: null,
+        selectWallet: () => {},
+        setAltAccount: () => {},
     })
 })
 

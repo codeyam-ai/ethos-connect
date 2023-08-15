@@ -20,16 +20,9 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
 
   const client = useMemo(() => {
     const network = typeof ethosConfiguration?.network === "string" ? ethosConfiguration.network : DEFAULT_NETWORK
-    // const connection = new Connection({ fullnode: network })
-    // return new JsonRpcProvider(connection);
     const client = new SuiClient({url: network})
     return client
   }, [ethosConfiguration])
-
-  // const [providerAndSigner, setProviderAndSigner] = useState<ProviderAndSigner>({
-  //   provider: null,
-  //   signer: null
-  // })
 
   const [clientAndSigner, setClientAndSigner] = useState<ClientAndSigner>({client: null, signer: null})
 

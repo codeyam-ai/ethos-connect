@@ -1,4 +1,4 @@
-import useProviderAndSigner from "./useProviderAndSigner";
+import useProviderAndSigner from "./useClientAndSigner";
 
 const useAddress = () => {
     const { signer } = useProviderAndSigner();

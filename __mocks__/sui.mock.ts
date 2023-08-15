@@ -97,7 +97,7 @@ export default {
     getOwnedObjects,
     multiGetObjects,
     getAllBalances,
-    provider: {
+    client: {
         getOwnedObjects,
         multiGetObjects,
         getAllBalances

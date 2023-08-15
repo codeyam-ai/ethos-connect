@@ -2,11 +2,9 @@ import React from 'react'
 import { create, act } from 'react-test-renderer'
 
 import EthosConnectProvider from '../../src/components/EthosConnectProvider'
-import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
-import sui from '../../__mocks__/sui.mock'
 import { HostedSigner } from '../../src/types/Signer';
 import BigNumber from 'bignumber.js';
 import { DEFAULT_CHAIN, DEFAULT_NETWORK } from '../../src/lib/constants';
