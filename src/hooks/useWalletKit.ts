@@ -96,7 +96,10 @@ const useWalletKit = ({ defaultChain, client, preferredWallets, storageAdapter, 
           new TextEncoder().encode(input.message) :
           input.message;
 
-        return currentWallet.features['sui:signPersonalMessage'].signPersonalMessage({
+        const signFunction = currentWallet.features['sui:signPersonalMessage']?.signPersonalMessage ??
+          currentWallet.features['sui:signMessage']?.signMessage
+          
+        return signFunction({
           ...input,
           message,
           account,
