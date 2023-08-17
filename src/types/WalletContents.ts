@@ -1,4 +1,4 @@
-import { CoinBalance, SuiObjectData } from "@mysten/sui.js"
+import { CoinBalance, SuiObjectData } from "@mysten/sui.js/client"
 import BigNumber from "bignumber.js"
 import { ConvenenienceSuiObject } from "./ConvenienceSuiObject"
 
@@ -21,7 +21,7 @@ export interface SuiNFT {
     link?: string,
     creator?: string,
     projectUrl?: string,
-    display?: Record<string, string>,
+    display?: Record<string, string> | null,
     fields?: Record<string, string>,
     collection?: SuiNFTCollection,
     links?: Record<string, string>,

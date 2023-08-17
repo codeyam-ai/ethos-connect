@@ -3,21 +3,39 @@ import { newBN } from '../../src/lib/bigNumber';
 import getWalletContents from '../../src/lib/getWalletContents';
 import { sumBN } from '../../src/lib/bigNumber';
 import { WalletContents } from '../../src/types/WalletContents';
-import { CoinBalance } from '@mysten/sui.js';
+import { CoinBalance, SuiClient } from '@mysten/sui.js/client';
+
+jest.mock('@mysten/sui.js/client')
+const mockSuiClient = jest.mocked(SuiClient)
 
 describe('getWalletBalance', () => {  
     let spyFetch: jest.SpyInstance
     
     beforeEach(() => {
+        // this is a mock response for the invalid packages fetch, that is,
+        // pretend there are no invalid packages in these tests
         global.fetch = jest.fn()
         spyFetch = jest.spyOn(global, 'fetch').mockResolvedValue({ json: async () => ([]) } as Response)
+
         sui.getOwnedObjects.mockClear()
         sui.multiGetObjects.mockClear();
+
+        // ts-ignoring because this is a partial mock, and the strongly typed mock
+        // wants all 40+ methods
+        //@ts-ignore
+        mockSuiClient.mockImplementation(() => {
+          return {
+            getAllBalances: sui.getAllBalances,
+            getOwnedObjects: sui.getOwnedObjects
+          }
+        })
     })
     
     it('should get balance for given wallet', async () => {
         const contents = await getWalletContents({ address: '0x123', network: "TEST" })
         
+        expect(SuiClient).toHaveBeenCalled();
+        expect(mockSuiClient.mock.instances.length).toBe(1)
         const balance = sumBN(
             sui.suiCoin.data.content.fields.balance,
             sui.suiCoin3.data.content.fields.balance

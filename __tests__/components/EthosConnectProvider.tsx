@@ -2,45 +2,50 @@ import React from 'react'
 import { create, act } from 'react-test-renderer'
 
 import EthosConnectProvider from '../../src/components/EthosConnectProvider'
-import { Chain } from '../../src/enums/Chain'
 import { EthosConfiguration } from '../../src/types/EthosConfiguration'
 import lib from '../../src/lib/lib';
 import { SignerType } from '../../src/types/Signer'
-import sui from '../../__mocks__/sui.mock'
 import { HostedSigner } from '../../src/types/Signer';
 import BigNumber from 'bignumber.js';
 import { DEFAULT_CHAIN, DEFAULT_NETWORK } from '../../src/lib/constants';
 import type { SuiSignMessageOutput, WalletAccount } from '@mysten/wallet-standard';
-import { JsonRpcProvider } from '@mysten/sui.js'
+import {SuiClient} from '@mysten/sui.js/client'
+
+jest.mock('@mysten/sui.js/client')
+const mockSuiClient = jest.mocked(SuiClient)
 
 describe('EthosConnectProvider', () => {
-  const signer = {
-    type: SignerType.Hosted,
-    getAddress: () => Promise.resolve("ADDRESS"),
-    accounts: [] as readonly WalletAccount[],
-    currentAccount: null,
-    getAccounts: () => Promise.resolve([]),
-    signAndExecuteTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
-    signTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
-    executeTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
-    requestPreapproval: (_preApproval) => Promise.resolve(true),
-    signMessage: (_message) => Promise.resolve({} as SuiSignMessageOutput),
-    disconnect: () => {},
-    logout: () => {},
-    provider: new JsonRpcProvider()
-  } as HostedSigner
-
-  let receivedProvider
+  let signer
+  let receivedClient
   let receivedSigner
   let onWalletConnected
 
   beforeEach(() => {
+    signer = {
+      type: SignerType.Hosted,
+      getAddress: () => Promise.resolve("ADDRESS"),
+      accounts: [] as readonly WalletAccount[],
+      currentAccount: null,
+      getAccounts: () => Promise.resolve([]),
+      signAndExecuteTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
+      signTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
+      executeTransactionBlock: (_transactionBlock) => Promise.resolve({} as any),
+      requestPreapproval: (_preApproval) => Promise.resolve(true),
+      signMessage: (_message) => Promise.resolve({} as SuiSignMessageOutput),
+      disconnect: () => {},
+      logout: () => {},
+      // This client instance does not matter, the one created in useConnect
+      // is the one that actually gets used. An eventual test refactor could
+      // clean this test suite up.
+      client: new SuiClient({url: 'fake-url'})
+    } as HostedSigner
+
     jest.spyOn(lib, 'getEthosSigner').mockImplementation(() => {
       return Promise.resolve(signer)
     })
 
-    onWalletConnected = jest.fn(({ provider: p, signer: s }) => {
-      receivedProvider = p
+    onWalletConnected = jest.fn(({ client: c, signer: s }) => {
+      receivedClient = c
       receivedSigner = s
     });
 
@@ -54,8 +59,9 @@ describe('EthosConnectProvider', () => {
   })
 
   afterEach(() => {
-    receivedProvider = null
+    receivedClient = null
     receivedSigner = null
+    mockSuiClient.mockClear();
   })
 
   it('renders nothing but the children provided', async () => {
@@ -81,7 +87,11 @@ describe('EthosConnectProvider', () => {
     })
 
     expect(onWalletConnected.mock.calls.length).toBe(1)
-    expect(receivedProvider).toBe(sui.provider)
+    // The first call is from the mock above, and is not important.
+    expect(mockSuiClient).toHaveBeenCalledTimes(2);
+    const mockInstanceFromSignerMock = mockSuiClient.mock.instances[0]
+    const mockInstanceFromUseConnect = mockSuiClient.mock.instances[1]
+    expect(receivedClient).toEqual(mockInstanceFromUseConnect)
     expect(receivedSigner).toBe(signer)
   })
 

@@ -1,16 +1,15 @@
-import { Connection, JsonRpcProvider } from '@mysten/sui.js';
-import { DEFAULT_NETWORK, DEFAULT_FAUCET } from './constants';
+import { getFaucetHost, requestSuiFromFaucetV0 } from '@mysten/sui.js/faucet';
 
-type DripSuiProps = {
-  address: string,
-  network?: string
-  faucet?: string
+type DripSuiParams = {
+  address: string
+  networkName: Parameters<typeof getFaucetHost>[0]
 }
 
-const dripSui = async ({ address, network, faucet }: DripSuiProps) => {
-  const connection = new Connection({ fullnode: network ?? DEFAULT_NETWORK, faucet: `${faucet ?? DEFAULT_FAUCET}gas` })
-  const provider = new JsonRpcProvider(connection);
-  return provider.requestSuiFromFaucet(address)
+const dripSui = async ({ address, networkName }: DripSuiParams) => {
+  return requestSuiFromFaucetV0({
+    host: getFaucetHost(networkName),
+    recipient: address
+  })
 }
 
 export default dripSui

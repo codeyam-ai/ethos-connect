@@ -1,4 +1,4 @@
-import { DynamicFieldInfo, JsonRpcProvider, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
+import { DynamicFieldInfo, SuiClient, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js/client";
 import get from 'lodash-es/get.js';
 
 export const isKiosk = (data: SuiObjectData): boolean => {
@@ -14,7 +14,7 @@ export const isKiosk = (data: SuiObjectData): boolean => {
 }
 
 export const getKioskObjects = async (
-    provider: JsonRpcProvider,
+    client: SuiClient,
     data: SuiObjectData
 ): Promise<SuiObjectResponse[]> => {
     if (!isKiosk(data)) return [];
@@ -24,7 +24,7 @@ export const getKioskObjects = async (
         let allKioskObjects: DynamicFieldInfo[] = [];
         let cursor: string | undefined | null;
         while (cursor !== null) {
-            const response = await provider.getDynamicFields({
+            const response = await client.getDynamicFields({
                 parentId: kiosk,
                 cursor
             });
@@ -50,7 +50,7 @@ export const getKioskObjects = async (
         for (let i = 0; i < objectIds.length; i += groupSize) {
             const group = objectIds.slice(i, i + groupSize);
 
-            const groupObjects = await provider.multiGetObjects({
+            const groupObjects = await client.multiGetObjects({
                 ids: group,
                 options: {
                     showContent: true,

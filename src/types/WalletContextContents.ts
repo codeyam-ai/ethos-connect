@@ -1,14 +1,13 @@
-import { JsonRpcProvider } from '@mysten/sui.js';
-import type { WalletAdapter } from "@mysten/wallet-adapter-base";
-import { Wallet } from './Wallet';
+import type { Wallet } from './Wallet';
+import type { WalletAccount, WalletWithSuiFeatures } from '@mysten/wallet-standard';
+import type { SuiClient } from '@mysten/sui.js/client'
 import { EthosConnectStatus } from '../enums/EthosConnectStatus';
-import { WalletAccount } from '@mysten/wallet-standard';
 
 export type WalletContextContents = {
-    wallets?: WalletAdapter[],
+    wallets?: WalletWithSuiFeatures[],
     selectWallet?: ((walletName: string) => void),
     status: EthosConnectStatus,
-    provider: JsonRpcProvider | null,
+    client: SuiClient | null,
     wallet?: Wallet;
     altAccount?: WalletAccount;
     setAltAccount: (_account: WalletAccount) => void;

@@ -1,12 +1,12 @@
 import { WalletContextContents } from "./WalletContextContents";
 import { ModalContextContents } from './ModalContextContents';
-import { ProviderAndSigner } from './ProviderAndSigner';
+import { ClientAndSigner } from './ClientAndSigner';
 import { EthosConfiguration } from './EthosConfiguration';
 
 export interface ConnectContextContents {
     wallet?: WalletContextContents,
     modal?: ModalContextContents,
-    providerAndSigner?: ProviderAndSigner,
+    clientAndSigner?: ClientAndSigner,
     ethosConfiguration?: EthosConfiguration,
     init: (configuration: EthosConfiguration) => void
 }

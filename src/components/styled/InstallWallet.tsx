@@ -2,7 +2,7 @@ import InstallWalletIcon from "../svg/InstallWalletIcon";
 import React, { ReactNode } from "react";
 import Header from "./Header";
 import * as styles from './signInModalStyles'
-import SuiEnclosed from "../svg/SuiEnclosed";
+// import SuiEnclosed from "../svg/SuiEnclosed";
 import EthosWalletIcon from "../svg/EthosWalletIcon";
 
 export type WalletInstallInfo = {
@@ -35,11 +35,11 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
             icon: <EthosWalletIcon />,
             link: "https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli"
         },
-        {
-            name: "Sui Wallet",
-            icon: <SuiEnclosed />,
-            link: "https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
-        },
+        // {
+        //     name: "Sui Wallet",
+        //     icon: <SuiEnclosed />,
+        //     link: "https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
+        // },
         ...(walletInfos || [])
     ]
 

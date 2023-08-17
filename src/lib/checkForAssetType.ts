@@ -1,7 +1,8 @@
-import { ObjectId, PaginatedObjectsResponse, SuiObjectData, SuiObjectDataFilter, SuiObjectDataOptions } from "@mysten/sui.js";
+import { ObjectId, PaginatedObjectsResponse, SuiObjectDataFilter } from "@mysten/sui.js";
 import { Signer } from "../types/Signer";
 import { Wallet } from '../types/Wallet';
 import { getKioskObjects } from "./getKioskNFT";
+import {SuiObjectDataOptions, SuiObjectData} from '@mysten/sui.js/client'
 
 export interface CheckForAssetTypeArgs { 
     signer?: Signer;
@@ -22,13 +23,13 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
 
     if (!owner) return;
 
-    const provider = (signer ?? wallet)?.provider;
+    const client = (signer ?? wallet)?.client;
 
-    if (!provider) return;
+    if (!client) return;
     
     let kioskAssets: SuiObjectData[] = [];
     if (!cursor) {
-        const kioskTokens = await provider.getOwnedObjects({
+        const kioskTokens = await client.getOwnedObjects({
             owner,
             filter: {
                 StructType: "0x95a441d389b07437d00dd07e0b6f05f513d7659b13fd7c5d3923c7d9d847199b::ob_kiosk::OwnerToken"
@@ -42,7 +43,7 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
     
         for (const kioskToken of kioskTokens.data) {
             if (kioskToken.data) {
-                const kioskObjects = await getKioskObjects(provider, kioskToken.data)
+                const kioskObjects = await getKioskObjects(client, kioskToken.data)
                 for (const kioskObject of kioskObjects) {
                     if (kioskObject.data && kioskObject.data?.type === type) {
                         kioskAssets.push(kioskObject.data);
@@ -52,7 +53,7 @@ const checkForAssetType = async ({ signer, wallet, type, cursor, options, filter
         }    
     }
 
-    const assets = await provider.getOwnedObjects({
+    const assets = await client.getOwnedObjects({
         owner,
         filter: filter ?? {
             StructType: type ?? ''

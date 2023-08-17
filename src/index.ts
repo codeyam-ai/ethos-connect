@@ -1,4 +1,4 @@
-import { TransactionBlock, verifyMessage, IntentScope } from '@mysten/sui.js';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { WalletAccount } from '@mysten/wallet-standard';
 
 import EthosConnectProvider from './components/EthosConnectProvider';
@@ -30,7 +30,7 @@ import truncateMiddle from './lib/truncateMiddle';
 
 import useAddress from './hooks/useAddress';
 import useContents from './hooks/useContents';
-import useProviderAndSigner from './hooks/useProviderAndSigner';
+import useClientAndSigner from './hooks/useClientAndSigner';
 import useWallet from './hooks/useWallet';
 
 // Enums (must be exported as objects, NOT types)
@@ -39,7 +39,7 @@ import { Chain } from './enums/Chain';
 import { EthosConnectStatus } from './enums/EthosConnectStatus';
 
 // Types, interfaces, and enums
-import { ProviderAndSigner } from './types/ProviderAndSigner';
+import { ClientAndSigner } from './types/ClientAndSigner';
 import { Signer } from './types/Signer';
 import { Wallet } from './types/Wallet';
 import { SuiNFT, Token, WalletContents } from './types/WalletContents';
@@ -77,7 +77,7 @@ const ethos = {
   showSignInModal,
   hideSignInModal,
 
-  useProviderAndSigner,
+  useClientAndSigner,
   useAddress,
   useContents,
   useWallet,
@@ -104,8 +104,6 @@ export {
   ethos,
   EthosConnectStatus,
   TransactionBlock,
-  verifyMessage,
-  IntentScope,
   Chain
 };
 
@@ -113,7 +111,7 @@ export type {
   Wallet,
   WalletAccount,
   WalletContents,
-  ProviderAndSigner,
+  ClientAndSigner,
   Signer,
   SuiNFT,
   Token,

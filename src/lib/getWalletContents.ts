@@ -1,7 +1,7 @@
-import { CoinBalance, Connection, JsonRpcProvider, PaginatedObjectsResponse, SUI_TYPE_ARG, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js";
+import { SUI_TYPE_ARG } from "@mysten/sui.js";
+import { CoinBalance, PaginatedObjectsResponse, SuiClient, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js/client";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
-import getBagNFT, { isBagNFT } from "./getBagNFT";
 // import fetchSui from "./fetchSui";
 import { ConvenenienceSuiObject } from '../types/ConvenienceSuiObject';
 import { DEFAULT_NETWORK } from './constants';
@@ -36,8 +36,9 @@ const empty: WalletContents = {
 
 const getWalletContents = async ({ address, network, existingContents, invalidPackageModifications }: GetWalletContentsArgs): Promise<WalletContents | null> => {
     try {
-        const connection = new Connection({ fullnode: network || DEFAULT_NETWORK })
-        const provider = new JsonRpcProvider(connection);
+        const client = new SuiClient({
+            url: network || DEFAULT_NETWORK
+        })
 
         if (!address) {
             return empty
@@ -63,7 +64,7 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
             console.error(e);
         }
 
-        const coinBalances = await provider.getAllBalances({ owner: address });
+        const coinBalances = await client.getAllBalances({ owner: address });
         const validCoinBalances = coinBalances.filter((coinBalance) => (
             !invalidPackages.includes(coinBalance.coinType.split('::')[0])
         ));
@@ -76,7 +77,7 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
         while (limitedNextCursor !== null) {
             page += 1;
 
-            const pageObjectInfos: PaginatedObjectsResponse = await provider.getOwnedObjects({
+            const pageObjectInfos: PaginatedObjectsResponse = await client.getOwnedObjects({
                 owner: address,
                 options: {
                     showType: true,
@@ -120,7 +121,7 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
             if (!data) continue;
             
             if (isKiosk(data)) {
-                const kioskObjects = await getKioskObjects(provider, data)
+                const kioskObjects = await getKioskObjects(client, data)
                 
                 for (const kioskObject of kioskObjects) {
                     if (kioskObject.data) {
@@ -186,7 +187,8 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
         const convenenienceObjects: ConvenenienceSuiObject[] = [];
         for (const data of objects) {
             const { display, content } = data;
-            const { fields } = (content?.dataType === "moveObject" ? content : { fields: {} as Record<string, string>});
+            const { fields: f } = (content?.dataType === "moveObject" ? content : { fields: {} as Record<string, string>});
+            const fields = f as Record<string, string>
             const safeDisplay = getDisplay(display);
             try {
                 const typeStringComponents = (data.type || "").split('<');
@@ -235,31 +237,6 @@ const getWalletContents = async ({ address, network, existingContents, invalidPa
                         version: data?.version,
                         display: safeDisplay
                     })
-                } else if (isBagNFT(data)) {
-                    const bagNFT = await getBagNFT(provider, data);
-                    
-                    if ("name" in bagNFT) {
-                        nfts.push({
-                            type: data.type ?? "unknown", 
-                            packageObjectId, 
-                            moduleName, 
-                            structName,
-                            chain: 'Sui',
-                            address: data?.objectId,
-                            objectId: data?.objectId,
-                            name: safeDisplay?.name ?? bagNFT.name,
-                            description: safeDisplay?.description ?? bagNFT.description,
-                            imageUrl: safeUrl,
-                            link: safeDisplay?.link,
-                            creator: safeDisplay?.creator,
-                            projectUrl: safeDisplay?.project_url,
-                            display: safeDisplay,
-                            links: {
-                                'Explorer': `https://explorer.sui.io/objects/${data.objectId}`
-                            },
-                            kiosk: data.kiosk
-                        });       
-                    }
                 } else {
                     if (safeUrl) {
                         nfts.push({

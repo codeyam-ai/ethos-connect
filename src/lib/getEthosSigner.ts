@@ -3,9 +3,9 @@ import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { JsonRpcProvider, SignedTransaction, SuiTransactionBlockResponse } from '@mysten/sui.js'
 import type { 
-    SuiSignMessageOutput, 
+    SuiSignPersonalMessageOutput,
+    SuiSignTransactionBlockOutput, 
     WalletAccount, 
     WalletIcon 
 } from '@mysten/wallet-standard';
@@ -15,8 +15,9 @@ import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlo
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Chain } from 'enums/Chain'
 import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput'
+import { SuiClient, SuiTransactionBlockResponse } from '@mysten/sui.js/dist/cjs/client'
 
-const getEthosSigner = async ({ provider, defaultChain }: { provider: JsonRpcProvider, defaultChain: Chain }): Promise<HostedSigner | null> => {
+const getEthosSigner = async ({ client, defaultChain }: { client: SuiClient, defaultChain: Chain }): Promise<HostedSigner | null> => {
 
     const user: any = await activeUser()
     
@@ -53,10 +54,10 @@ const getEthosSigner = async ({ provider, defaultChain }: { provider: JsonRpcPro
     }
 
     const executeTransactionBlock = (input: EthosExecuteTransactionBlockInput): Promise<SuiTransactionBlockResponse> => {
-        return provider.executeTransactionBlock(input);
+        return client.executeTransactionBlock(input);
     }
 
-    const signTransactionBlock = (input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
+    const signTransactionBlock = (input: EthosSignTransactionBlockInput): Promise<SuiSignTransactionBlockOutput> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -88,7 +89,7 @@ const getEthosSigner = async ({ provider, defaultChain }: { provider: JsonRpcPro
         return Promise.resolve(true);
     }
 
-    const signMessage = (input: EthosSignMessageInput): Promise<SuiSignMessageOutput> => {
+    const signPersonalMessage = (input: EthosSignMessageInput): Promise<SuiSignPersonalMessageOutput> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -141,10 +142,10 @@ const getEthosSigner = async ({ provider, defaultChain }: { provider: JsonRpcPro
         executeTransactionBlock,
         signTransactionBlock,
         requestPreapproval,
-        signMessage,
+        signPersonalMessage,
         disconnect,
         logout,
-        provider
+        client
     } : null
    
 }
