@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react'
 import type { WalletAdapterList } from '@mysten/wallet-adapter-base';
 import { createWalletKitCore } from '@mysten/wallet-kit-core'
-import { UnsafeBurnerWalletAdapter, WalletStandardAdapterProvider } from '@mysten/wallet-adapter-all-wallets';
 import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
 import { ExtensionSigner, SignerType } from '../types/Signer';
 import { EthosSignMessageInput } from '../types/EthosSignMessageInput';
@@ -10,9 +9,9 @@ import { EthosSignTransactionBlockInput } from '../types/EthosSignTransactionBlo
 import { DEFAULT_CHAIN } from '../lib/constants';
 import { Preapproval } from 'types/Preapproval';
 import { Chain } from 'enums/Chain';
-import { SignedMessage, SignedTransaction } from '@mysten/sui.js';
 import { SuiClient, SuiTransactionBlockResponse } from '@mysten/sui.js/client';
 import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput';
+import { SuiSignPersonalMessageOutput, SuiSignTransactionBlockOutput } from '@mysten/wallet-standard';
 
 export interface UseWalletKitArgs {
     defaultChain: Chain
@@ -26,20 +25,12 @@ export interface UseWalletKitArgs {
     disableAutoConnect?: boolean;
 }
 
-const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enableUnsafeBurner, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
-    const adapters = useMemo(
-        () =>
-          configuredAdapters ?? [
-            new WalletStandardAdapterProvider({ features }),
-            ...(enableUnsafeBurner ? [new UnsafeBurnerWalletAdapter()] : []),
-          ],
-        [configuredAdapters]
-      );
+const useWalletKit = ({ defaultChain, client, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
+    
     
       const walletKitRef = useRef<WalletKitCore | null>(null);
       if (!walletKitRef.current) {
           walletKitRef.current = createWalletKitCore({
-              adapters,
               preferredWallets,
               storageAdapter,
               storageKey,
@@ -68,7 +59,7 @@ const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enab
 
         const account = input.account || currentAccount
         const chain  = input.chain || defaultChain || DEFAULT_CHAIN
-        return currentWallet.signAndExecuteTransactionBlock({
+        return currentWallet.features['sui:signAndExecuteTransactionBlock'].signAndExecuteTransactionBlock({
           ...input,
           account,
           chain
@@ -79,7 +70,7 @@ const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enab
         return client.executeTransactionBlock(input)
       }, [client])
 
-      const signTransactionBlock = useCallback((input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
+      const signTransactionBlock = useCallback((input: EthosSignTransactionBlockInput): Promise<SuiSignTransactionBlockOutput> => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
         }
@@ -87,14 +78,14 @@ const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enab
         const account = input.account || currentAccount
         const chain  = input.chain || defaultChain || DEFAULT_CHAIN
 
-        return currentWallet.signTransactionBlock({
+        return currentWallet.features['sui:signTransactionBlock'].signTransactionBlock({
           ...input,
           account,
           chain
         })
       }, [currentWallet, currentAccount, defaultChain])
 
-      const signMessage = useCallback((input: EthosSignMessageInput): Promise<SignedMessage> => {
+      const signPersonalMessage = useCallback((input: EthosSignMessageInput): Promise<SuiSignPersonalMessageOutput> => {
         if (!currentWallet || !currentAccount) {
           throw new Error("No wallet connect to sign message");
         }
@@ -105,7 +96,7 @@ const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enab
           new TextEncoder().encode(input.message) :
           input.message;
 
-        return currentWallet.signMessage({
+        return currentWallet.features['sui:signPersonalMessage'].signPersonalMessage({
           ...input,
           message,
           account,
@@ -148,14 +139,23 @@ const useWalletKit = ({ defaultChain, client, configuredAdapters, features, enab
           executeTransactionBlock,
           signTransactionBlock,
           requestPreapproval,
-          signMessage,
+          signPersonalMessage,
           disconnect: () => {
-            currentWallet.disconnect();
+            // currentWallet.features['standard:connect'].connect();
             walletKitRef.current?.disconnect();
           },
           client
         }
-      }, [currentWallet, accounts, currentAccount, signAndExecuteTransactionBlock, executeTransactionBlock, requestPreapproval, signMessage, client]);
+      }, [
+        currentWallet, 
+        accounts, 
+        currentAccount, 
+        signAndExecuteTransactionBlock, 
+        executeTransactionBlock, 
+        requestPreapproval, 
+        signPersonalMessage, 
+        client
+      ]);
 
       return {
         wallets,

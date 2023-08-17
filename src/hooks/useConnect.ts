@@ -73,7 +73,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
   }, [suiStatus, clientAndSigner, onWalletConnected, getState]);
   
   const checkSigner = useCallback((signer: ExtensionSigner | HostedSigner | null, type?: string) => {
-    log("useConnect", "trying to set providerAndSigner", type, signerFound.current, methodsChecked.current)
+    log("useConnect", "trying to set clientAndSigner", type, signerFound.current, methodsChecked.current)
     if (signerFound.current) return;
 
     if (type) {
@@ -113,8 +113,8 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     log("mobile", "listening to mobile connection from EthosConnectProvider")
     // listenForMobileConnection(
     //   (mobileSigner: any) => {
-    //     log('useConnect', 'Setting providerAndSigner mobile', mobileSigner)
-    //     log("mobile", "Setting provider and signer", mobileSigner)
+    //     log('useConnect', 'Setting clientAndSigner mobile', mobileSigner)
+    //     log("mobile", "Setting client and signer", mobileSigner)
     //     checkSigner(mobileSigner, 'mobile')
     //   }
     // )
@@ -124,7 +124,7 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     if (!ethosConfiguration) return;
 
     const state = getState();
-    log('useConnect', 'Setting providerAndSigner extension', state)
+    log('useConnect', 'Setting clientAndSigner extension', state)
     if (state.isConnecting || state.isError) return
 
     checkSigner(suiSigner, 'extension')
@@ -134,14 +134,14 @@ const useConnect = (ethosConfiguration?: EthosConfiguration, onWalletConnected?:
     if (!ethosConfiguration) return;
 
     if (!ethosConfiguration.apiKey) {
-      log('useConnect', 'Setting null providerAndSigner ethos');
+      log('useConnect', 'Setting null clientAndSigner ethos');
       checkSigner(null, 'ethos');
       return;
     }
 
     const fetchEthosSigner = async () => {
       const signer = await lib.getEthosSigner({ client, defaultChain: ethosConfiguration.chain ?? DEFAULT_CHAIN })
-      log('useConnect', 'Setting providerAndSigner ethos', signer)
+      log('useConnect', 'Setting clientAndSigner ethos', signer)
       checkSigner(signer, 'ethos');
     }
 

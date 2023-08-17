@@ -30,7 +30,7 @@ import truncateMiddle from './lib/truncateMiddle';
 
 import useAddress from './hooks/useAddress';
 import useContents from './hooks/useContents';
-import useProviderAndSigner from './hooks/useClientAndSigner';
+import useClientAndSigner from './hooks/useClientAndSigner';
 import useWallet from './hooks/useWallet';
 
 // Enums (must be exported as objects, NOT types)
@@ -77,7 +77,7 @@ const ethos = {
   showSignInModal,
   hideSignInModal,
 
-  useProviderAndSigner,
+  useClientAndSigner,
   useAddress,
   useContents,
   useWallet,

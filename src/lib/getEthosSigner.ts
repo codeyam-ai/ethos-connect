@@ -3,9 +3,9 @@ import { HostedSigner, SignerType } from '../types/Signer'
 import activeUser from './activeUser'
 import hostedInteraction, { HostedInteractionResponse } from './hostedInteraction'
 
-import type { SignedTransaction } from '@mysten/sui.js'
 import type { 
-    SuiSignMessageOutput, 
+    SuiSignPersonalMessageOutput,
+    SuiSignTransactionBlockOutput, 
     WalletAccount, 
     WalletIcon 
 } from '@mysten/wallet-standard';
@@ -57,7 +57,7 @@ const getEthosSigner = async ({ client, defaultChain }: { client: SuiClient, def
         return client.executeTransactionBlock(input);
     }
 
-    const signTransactionBlock = (input: EthosSignTransactionBlockInput): Promise<SignedTransaction> => {
+    const signTransactionBlock = (input: EthosSignTransactionBlockInput): Promise<SuiSignTransactionBlockOutput> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -89,7 +89,7 @@ const getEthosSigner = async ({ client, defaultChain }: { client: SuiClient, def
         return Promise.resolve(true);
     }
 
-    const signMessage = (input: EthosSignMessageInput): Promise<SuiSignMessageOutput> => {
+    const signPersonalMessage = (input: EthosSignMessageInput): Promise<SuiSignPersonalMessageOutput> => {
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
@@ -142,7 +142,7 @@ const getEthosSigner = async ({ client, defaultChain }: { client: SuiClient, def
         executeTransactionBlock,
         signTransactionBlock,
         requestPreapproval,
-        signMessage,
+        signPersonalMessage,
         disconnect,
         logout,
         client
