@@ -1,16 +1,16 @@
 import React from 'react';
-import EthosEnclosed from '../svg/EthosEnclosed';
 import Header from './Header';
 import * as styles from './signInModalStyles'
+import EthosWalletIcon from '../svg/EthosWalletIcon';
 
 const EmailSent = () => {
     return (
         <Header
             title="Ethos sent you an email"
-            dappIcon={<EthosEnclosed width={60} />}
+            dappIcon={<EthosWalletIcon />}
         >
             <div style={styles.secondaryText()}>
-                <p>
+                <p style={{ whiteSpace: 'nowrap' }}>
                     An email has been sent to you with a link to login.
                 </p>
                 <p>

@@ -108,7 +108,7 @@ const useContext = ({ configuration, onWalletConnected }: UseContextArgs): Conne
             status = EthosConnectStatus.Connected
         } else if (extensionState.isConnecting) {
             status = EthosConnectStatus.Loading
-        } else if (client && extensionState.isConnected) {
+        } else if (client && extensionState.isConnected && signer) {
             status = EthosConnectStatus.Connected
         } else {
             status = EthosConnectStatus.NoConnection

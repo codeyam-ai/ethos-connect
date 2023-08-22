@@ -32,7 +32,7 @@ const InstallWallet = ({ walletInfos, width }: InstallWalletProps) => {
     const installWallets = [
         {
             name: "Ethos Wallet",
-            icon: <EthosWalletIcon />,
+            icon: <EthosWalletIcon width={26} />,
             link: "https://chrome.google.com/webstore/detail/ethos-wallet/mcbigmjiafegjnnogedioegffbooigli"
         },
         // {
