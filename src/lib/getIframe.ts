@@ -64,11 +64,15 @@ const getIframe = (show?: boolean) => {
     window.addEventListener('message', (message) => {
       if (message.origin === walletAppUrl) {
 
-        const { action } = message.data;
+        const { action, data } = message.data;
 
         switch (action) {
           case 'close':
             close()
+            break;
+          case 'resize':
+            iframe.style.width = data.width + 'px'
+            iframe.style.height = data.height + 'px'
             break;
           case 'ready':
             iframe.setAttribute('readyToReceiveMessages', 'true')
