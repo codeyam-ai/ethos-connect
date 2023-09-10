@@ -10,7 +10,7 @@ import { Preapproval } from 'types/Preapproval';
 import { Chain } from 'enums/Chain';
 import { SuiClient, SuiTransactionBlockResponse } from '@mysten/sui.js/client';
 import { EthosExecuteTransactionBlockInput } from 'types/EthosExecuteTransactionBlockInput';
-import { SuiSignPersonalMessageOutput, SuiSignTransactionBlockOutput } from '@mysten/wallet-standard';
+import { SuiSignPersonalMessageOutput, SuiSignTransactionBlockOutput, SuiSignMessageInput } from '@mysten/wallet-standard';
 
 export interface UseWalletKitArgs {
     defaultChain: Chain
@@ -92,9 +92,16 @@ const useWalletKit = ({ defaultChain, client, preferredWallets, storageAdapter, 
           new TextEncoder().encode(input.message) :
           input.message;
 
-        const signFunction = currentWallet.features['sui:signPersonalMessage']?.signPersonalMessage ??
-          currentWallet.features['sui:signMessage']?.signMessage
-          
+        const legacySignMessage = async (input: SuiSignMessageInput) => {
+          const response = await currentWallet.features['sui:signMessage']?.signMessage(input)
+          return {
+            ...response,
+            bytes: response?.messageBytes
+          }
+        }
+
+        const signFunction = currentWallet.features['sui:signPersonalMessage']?.signPersonalMessage ?? legacySignMessage
+                    
         return signFunction({
           ...input,
           message,
@@ -130,7 +137,7 @@ const useWalletKit = ({ defaultChain, client, preferredWallets, storageAdapter, 
         return {
           type: SignerType.Extension,
           name: currentWallet.name,
-          icon: currentWallet.name === 'Sui Wallet' ? 'https://sui.io/favicon.png' : currentWallet.icon,
+          icon: currentWallet.icon,
           getAddress: async () => currentAccount?.address,
           accounts,
           currentAccount,
