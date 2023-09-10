@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react'
-import type { WalletAdapterList } from '@mysten/wallet-adapter-base';
 import { createWalletKitCore } from '@mysten/wallet-kit-core'
 import type { WalletKitCore, StorageAdapter } from '@mysten/wallet-kit-core'
 import { ExtensionSigner, SignerType } from '../types/Signer';
@@ -16,7 +15,6 @@ import { SuiSignPersonalMessageOutput, SuiSignTransactionBlockOutput } from '@my
 export interface UseWalletKitArgs {
     defaultChain: Chain
     client: SuiClient;
-    configuredAdapters?: WalletAdapterList;
     features?: string[];
     enableUnsafeBurner?: boolean;
     preferredWallets?: string[];
@@ -26,8 +24,6 @@ export interface UseWalletKitArgs {
 }
 
 const useWalletKit = ({ defaultChain, client, preferredWallets, storageAdapter, storageKey, disableAutoConnect }: UseWalletKitArgs) => {
-    
-    
       const walletKitRef = useRef<WalletKitCore | null>(null);
       if (!walletKitRef.current) {
           walletKitRef.current = createWalletKitCore({

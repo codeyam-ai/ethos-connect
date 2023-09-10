@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
-import type { WalletAdapter } from "@mysten/wallet-adapter-base";
 import * as styles from './signInModalStyles'
 import IconButton from "./IconButton";
+import type { WalletWithSuiFeatures } from '@mysten/wallet-standard';
 
 export type WalletProps = {
-    wallets?: WalletAdapter[],
+    wallets?: WalletWithSuiFeatures[],
     selectWallet?: ((name: string) => void),
     width: number
 }
@@ -22,7 +22,7 @@ const Wallets = ({ wallets, selectWallet, width }: WalletProps) => {
         selectWallet(name);
     }, []);
 
-    const icon = useCallback((wallet: WalletAdapter) => {
+    const icon = useCallback((wallet: WalletWithSuiFeatures) => {
         return (
             <img src={wallet.icon} height={32} width={32} />
         )

@@ -22,8 +22,7 @@ import MobileWallet from './MobileWallet'
 import Header from './Header'
 import Or from './Or'
 import log from '../../lib/log';
-
-import type { WalletAdapter } from '@mysten/wallet-adapter-base';
+import type { WalletWithSuiFeatures } from '@mysten/wallet-standard';
 
 export type SignInModalProps = {
     connectMessage?: string | ReactNode,
@@ -69,7 +68,7 @@ const SignInModal = ({
     const [showInstallWallet, setShowInstallWallet] = useState(false);
 
     const [safeDappName, setSafeDappName] = useState(dappName);
-    const [safeWallets, setSafeWallets] = useState<WalletAdapter[] | undefined>();
+    const [safeWallets, setSafeWallets] = useState<WalletWithSuiFeatures[] | undefined>();
 
     useHandleElementWithIdClicked(closeOnClickId, closeModal)
 
@@ -100,7 +99,7 @@ const SignInModal = ({
     }, [safeDappName])
 
     useEffect(() => {
-        let safeWallets: WalletAdapter[] = wallets || [];
+        let safeWallets: WalletWithSuiFeatures[] = wallets || [];
         if (preferredWallets && preferredWallets.length > 0) {
             safeWallets = safeWallets.sort(
                 (a: any, b: any) => {
