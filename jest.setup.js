@@ -23,8 +23,6 @@ jest.mock('./src/lib/getConfiguration', () => ({
     })
 }));
 
-jest.mock('@mysten/sui.js', () => ({
-    Connection: jest.fn(),
-    Transaction: jest.fn(),
+jest.mock('@mysten/sui.js/utils', () => ({
     SUI_TYPE_ARG: "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI"
 }));

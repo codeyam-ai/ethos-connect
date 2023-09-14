@@ -702,10 +702,10 @@
   dependencies:
     bs58 "^5.0.0"
 
-"@mysten/sui.js@0.41.2", "@mysten/sui.js@^0.41.2":
-  version "0.41.2"
-  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.41.2.tgz#0ef09ce8777f254c1a25f4108fb55c4755a60943"
-  integrity sha512-00Kkk4don9H9iRWBqXfRC4wUPY0hqAvmzxhwaYZIHj9Tmb71Nx51zLLFsxeA7dlR6cJFaXFMbZkt6WR2vP8WLQ==
+"@mysten/sui.js@0.42.0", "@mysten/sui.js@^0.42.0":
+  version "0.42.0"
+  resolved "https://registry.yarnpkg.com/@mysten/sui.js/-/sui.js-0.42.0.tgz#db57ad931aa7683fe1526cb4b308425234e1eecf"
+  integrity sha512-khYpfrWTRNk7WTuDWJx/KCbleqY1B40gVRt1DttqlNkD2lvg134xZn7F/r94jxgnUETbK+hVoQvBY7F36MsfRw==
   dependencies:
     "@mysten/bcs" "0.7.4"
     "@noble/curves" "^1.1.0"
@@ -718,20 +718,20 @@
     superstruct "^1.0.3"
     tweetnacl "^1.0.3"
 
-"@mysten/wallet-kit-core@^0.6.2":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@mysten/wallet-kit-core/-/wallet-kit-core-0.6.2.tgz#d0f45a5811b05c61a631f26be26d407da6225807"
-  integrity sha512-5+4TZmVSiD9zH2XOwr+mtdfC55UHIIKTOwX7AJ7tNVr/4ozVdzjz5alItQ9c7tjhxW+SvhqJs0AS6I8kecei2Q==
+"@mysten/wallet-kit-core@^0.6.3":
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/@mysten/wallet-kit-core/-/wallet-kit-core-0.6.3.tgz#7989a8d58ce1990851d280426e1b51ca077a3d43"
+  integrity sha512-Crm18bHFecxqDI6ZGhHCAOB8CpLQ84NB3RFpvYnyk0yDGzNcYahjaG37ns+M7cHp0jbg64ySRV/ETzOaGPfRIw==
   dependencies:
-    "@mysten/sui.js" "0.41.2"
-    "@mysten/wallet-standard" "0.7.2"
+    "@mysten/sui.js" "0.42.0"
+    "@mysten/wallet-standard" "0.8.0"
 
-"@mysten/wallet-standard@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@mysten/wallet-standard/-/wallet-standard-0.7.2.tgz#8e2019214f59e69a897a0b30cef4dea30be091fb"
-  integrity sha512-uePMPtQcSRX+ZQ44DO4U65QxFXVa9tB/cPnEGqe+YOn76hzR2Al4wQQciex/Y1EZK7GYATAzrFLzNSIJYE7QSA==
+"@mysten/wallet-standard@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@mysten/wallet-standard/-/wallet-standard-0.8.0.tgz#19bcc10ba5f4c21076f3c3040f15aaf2ae066391"
+  integrity sha512-kFh1iybKxaY+lchN+rtVBT5+UL1IHorZ81Ktg9200tcLeUqLB3V/K1PRqkj2dk0eUGDaLEH+yWjBF9hnyH4rgQ==
   dependencies:
-    "@mysten/sui.js" "0.41.2"
+    "@mysten/sui.js" "0.42.0"
     "@wallet-standard/core" "1.0.3"
 
 "@noble/curves@^1.1.0", "@noble/curves@~1.1.0":

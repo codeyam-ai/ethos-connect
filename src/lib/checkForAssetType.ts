@@ -1,13 +1,12 @@
-import { ObjectId, PaginatedObjectsResponse, SuiObjectDataFilter } from "@mysten/sui.js";
 import { Signer } from "../types/Signer";
 import { Wallet } from '../types/Wallet';
 import { getKioskObjects } from "./getKioskNFT";
-import {SuiObjectDataOptions, SuiObjectData} from '@mysten/sui.js/client'
+import { SuiObjectDataOptions, SuiObjectData, PaginatedObjectsResponse, SuiObjectDataFilter } from '@mysten/sui.js/client'
 
 export interface CheckForAssetTypeArgs { 
     signer?: Signer;
     wallet?: Wallet;
-    type?: ObjectId;
+    type?: string;
     cursor?: PaginatedObjectsResponse['nextCursor'];
     options?: SuiObjectDataOptions;
     filter?: SuiObjectDataFilter;

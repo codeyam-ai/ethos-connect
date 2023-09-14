@@ -1,4 +1,4 @@
-import { SUI_TYPE_ARG } from "@mysten/sui.js";
+import { SUI_TYPE_ARG } from "@mysten/sui.js/utils";
 import { CoinBalance, PaginatedObjectsResponse, SuiClient, SuiObjectData, SuiObjectResponse } from "@mysten/sui.js/client";
 import { SuiNFT, WalletContents } from "../types/WalletContents";
 import { newBN, sumBN } from './bigNumber';
