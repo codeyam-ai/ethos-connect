@@ -93,7 +93,10 @@ const getEthosSigner = async ({ client, defaultChain }: { client: SuiClient, def
         return new Promise((resolve, reject) => {
             const transactionEventListener = ({ approved, data }: HostedInteractionResponse) => {
                 if (approved) {
-                    resolve(data.response);
+                    resolve({
+                        ...data.response,
+                        bytes: data.response.messageBytes
+                    });
                 } else {
                     reject({ error: data?.response?.error || "User rejected signing."})
                 }

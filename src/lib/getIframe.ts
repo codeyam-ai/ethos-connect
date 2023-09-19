@@ -71,8 +71,10 @@ const getIframe = (show?: boolean) => {
             close()
             break;
           case 'resize':
-            iframe.style.width = data.width + 'px'
-            iframe.style.height = data.height + 'px'
+            if ((data.width ?? 0) > 1 && (data.height ?? 0) > 1) {
+              iframe.style.width = data.width + 'px'
+              iframe.style.height = data.height + 'px'
+            }
             break;
           case 'ready':
             iframe.setAttribute('readyToReceiveMessages', 'true')
